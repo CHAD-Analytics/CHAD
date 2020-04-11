@@ -60,27 +60,26 @@ library(plotly)
 #CountyInfo is used to measure population of a county and coordinates.
 
 CovidConfirmedCases <- as.data.frame(data.table::fread("https://usafactsstatic.blob.core.windows.net/public/data/covid-19/covid_confirmed_usafacts.csv"))
-#AFBaseLocations <- as.data.frame(data.table::fread("https://github.com/treypujats/COVID19/raw/master/covid19/data/baseinfo.rda"))
-CountyInfo <- as.data.frame(data.table::fread("https://github.com/treypujats/COVID19/raw/master/covid19/data/countyinfo.rda"))
-HospitalInfo <- as.data.frame(data.table::fread("https://github.com/treypujats/COVID19/blob/master/covid19/data/hospitalinfo.rda?raw=true"))
+CountyInfo <- as.data.frame(data.table::fread("https://github.com/treypujats/CHAD/raw/master/data/countyinfo.rda"))
+HospitalInfo <- as.data.frame(data.table::fread("https://github.com/treypujats/CHAD/blob/master/data/hospitalinfo.rda?raw=true"))
 CovidDeaths<-as.data.frame(data.table::fread("https://usafactsstatic.blob.core.windows.net/public/data/covid-19/covid_deaths_usafacts.csv"))
+HospUtlzCounty <- read.csv("https://github.com/treypujats/CHAD/raw/master/data/county_hospitals.csv")
+CountyHospRate <- read.csv("https://github.com/treypujats/CHAD/raw/master/data/CountyHospRateCalc.csv")
 #himd <- as.data.frame(data.table::fread("https://github.com/treypujats/COVID19/blob/master/covid19/data/himd.rda?raw=true"))
 #cimd <- as.data.frame(data.table::fread("https://github.com/treypujats/COVID19/blob/master/covid19/data/cimd.rda?raw=true"))
-HospUtlzCounty <- read.csv("https://github.com/treypujats/COVID19/raw/master/covid19/data/county_hospitals.csv")
-#AFBaseLocations[154,]<-c("Pentagon", "DC", "HQ", "Something", "AF", 38.8719, -77.0563 )
-CountyHospRate <- read.csv("https://github.com/treypujats/COVID19/raw/master/covid19/data/CountyHospRateCalc.csv")
+#AFBaseLocations <- as.data.frame(data.table::fread("https://github.com/treypujats/COVID19/raw/master/covid19/data/baseinfo.rda"))
+
 
 #Updated data frames to read in
-githubURL <- "https://github.com/treypujats/COVID19/blob/master/himd.RData?raw=true"
+githubURL <- "https://github.com/treypujats/CHAD/blob/master/data/cimd.RData?raw=true"
 load(url(githubURL))
 
-
-githubURL <- "https://github.com/treypujats/COVID19/blob/master/cimd.RData?raw=true"
+githubURL <- "https://github.com/treypujats/CHAD/blob/master/data/himd.RData?raw=true"
 load(url(githubURL))
 
-githubURL <- "https://github.com/treypujats/COVID19/blob/master/baseinfo.RData?raw=true"
+githubURL <- "https://github.com/treypujats/CHAD/blob/master/data/baseinfo.RData?raw=true"
 load(url(githubURL))
-# AFBaseLocations$State[80]<-"MD"
+
 
 
 
@@ -2936,11 +2935,11 @@ ForecastDataTable<-ForecastDataTable %>% arrange(ForecastDataTable$Installation)
 
 # Identify Info Pages
 # Inputs
-InfoLink <- includeMarkdown("https://raw.githubusercontent.com/treypujats/COVID19/master/covid19/InputsInfo.md")
-CalcLink <- includeMarkdown("https://raw.githubusercontent.com/treypujats/COVID19/master/covid19/CalcInfo.md")
-SourceLink <- includeMarkdown("https://raw.githubusercontent.com/treypujats/COVID19/master/covid19/SourceInfo.md")
-OverviewLink <- includeMarkdown("https://raw.githubusercontent.com/treypujats/COVID19/master/covid19/OverviewInfo.md")
-ProjLink <- includeMarkdown("https://raw.githubusercontent.com/treypujats/COVID19/master/covid19/ProjInfo.md")
+InfoLink <- includeMarkdown("https://github.com/treypujats/CHAD/raw/master/InputsInfo.md")
+CalcLink <- includeMarkdown("https://github.com/treypujats/CHAD/raw/master/CalcInfo.md")
+SourceLink <- includeMarkdown("https://github.com/treypujats/CHAD/raw/master/SourceInfo.md")
+OverviewLink <- includeMarkdown("https://github.com/treypujats/CHAD/raw/master/OverviewInfo.md")
+ProjLink <- includeMarkdown("https://github.com/treypujats/CHAD/raw/master/ProjInfo.md")
 
 
 
