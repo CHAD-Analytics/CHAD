@@ -81,8 +81,8 @@ ui <- tagList(
                                            sliderInput("proj_days",
                                                        "Projection days:",
                                                        min = 14,
-                                                       max = 365,
-                                                       value = 120),
+                                                       max = 120,
+                                                       value = 30),
                                            checkboxGroupInput("SocialDistanceValue", "Local Social Distancing Actions: ",
                                                               c("Close Schools" = "CS",
                                                                 "Businesses Telework" = "CB",
@@ -97,8 +97,8 @@ ui <- tagList(
                                            sliderInput("proj_days_national",
                                                        "Projection days:",
                                                        min = 14,
-                                                       max = 365,
-                                                       value = 120),
+                                                       max = 120,
+                                                       value = 30),
                                            checkboxGroupInput("SocialDistanceValueNational", "National Social Distancing Actions: ",
                                                               c("Close Schools" = "CSN",
                                                                 "Businesses Telework" = "CBN",
@@ -219,7 +219,7 @@ ui <- tagList(
                                   ####### END PROJECTION TAB #######
                                   
                                   ####### BEGIN National PROJECTION TAB #########
-                                  # Local Health Projections ------------------------------------------------
+                                  # National Health Projections ------------------------------------------------
                                   tabPanel(
                                       title = "National Health Projections",
                                       # fluidRow(
@@ -230,7 +230,7 @@ ui <- tagList(
                                       fluidRow(
                                           box(plotlyOutput("IHMENationaProj",height = 400)),
                                           box(plotlyOutput("CHIMENationalProj"),height = 400)),
-                                      box(plotlyOutput("NationalPlotOverlay"), width =  900)
+                                          box(plotlyOutput("NationalPlotOverlay"), width =  900)
                                   ),
                                   ####### END PROJECTION TAB #######
                                   

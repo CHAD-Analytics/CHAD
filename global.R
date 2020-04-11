@@ -1234,7 +1234,7 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals, SocialDis
         OverlayData<-rbind(DailyData,IHME_Data)
         OverlayData$ForecastDate<-as.Date(OverlayData$ForecastDate)
         
-        OverlayData<- dplyr::filter(OverlayData, ForecastDate >= Sys.Date())
+        OverlayData<- dplyr::filter(OverlayData, ForecastDate >= Sys.Date() & ForecastDate <= (Sys.Date() + DaysProjected))
         
         OverlayData<-rbind(HistoricalData, OverlayData)
         
@@ -1458,7 +1458,7 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals, SocialDis
         OverlayData<-rbind(DailyData,IHME_Data)
         OverlayData$ForecastDate<-as.Date(OverlayData$ForecastDate)
         
-        OverlayData<- dplyr::filter(OverlayData, ForecastDate >= Sys.Date())
+        OverlayData<- dplyr::filter(OverlayData, ForecastDate >= Sys.Date() & ForecastDate <= (Sys.Date() + DaysProjected) )
         
         OverlayData<-rbind(HistoricalData, OverlayData)
         
@@ -1630,7 +1630,7 @@ NationalOverlayPlot<-function(SocialDistance, DaysForecasted){
                                socialdistancing,hospitalizationrate, icurate,ventilatorrate,hospitaltime,icutime,
                                ventilatortime,daysforecasted,Ro, .5)
     
-    MyDates<-seq(Sys.Date()-(length(CovidConfirmedCases)-20), length=daysforecasted, by="1 day")
+    MyDates<-seq(Sys.Date()-(length(CovidConfirmedCases)-80), length=daysforecasted, by="1 day")
     DailyData<-data.frame(MyDates, SEIARProj$sir$hos_add)
     TotalData<-data.frame(MyDates, SEIARProj$sir$hos_cum)
     colnames(DailyData)<-c("ForecastDate", "Expected Daily Cases")
@@ -1717,10 +1717,9 @@ NationalOverlayPlot<-function(SocialDistance, DaysForecasted){
     HistoricalData$ID<-rep("Past Data", nrow(HistoricalData))
     OverlayData<-rbind(DailyData,IHMENationalData)
     OverlayData$ForecastDate<-as.Date(OverlayData$ForecastDate)
-    
-    OverlayData<- dplyr::filter(OverlayData, ForecastDate >= Sys.Date())
-    
-    OverlayData<-rbind(HistoricalData, OverlayData)
+    OverlayData<-rbind(HistoricalData, OverlayData)    
+    OverlayData<- dplyr::filter(OverlayData, ForecastDate >= Sys.Date() & ForecastDate <= (Sys.Date() + DaysForecasted))
+
     
     
     projections <-  ggplot(OverlayData, aes(x=ForecastDate, y=`Expected Hospitalizations`, color = ID, fill = ID, linetype = ID)) +
@@ -1885,7 +1884,7 @@ NationalOverlayPlot<-function(SocialDistance, DaysForecasted){
                                socialdistancing,hospitalizationrate, icurate,ventilatorrate,hospitaltime,icutime,
                                ventilatortime,daysforecasted,Ro, .5)
     
-    MyDates<-seq(Sys.Date()-(length(CovidConfirmedCases)-20), length=daysforecasted, by="1 day")
+    MyDates<-seq(Sys.Date()-(length(CovidConfirmedCases)-80), length=daysforecasted, by="1 day")
     DailyData<-data.frame(MyDates, SEIARProj$sir$hos_add)
     TotalData<-data.frame(MyDates, SEIARProj$sir$hos_cum)
     colnames(DailyData)<-c("ForecastDate", "Expected Daily Cases")
@@ -1973,7 +1972,7 @@ NationalOverlayPlot<-function(SocialDistance, DaysForecasted){
     OverlayData<-rbind(DailyData,IHMENationalData)
     OverlayData$ForecastDate<-as.Date(OverlayData$ForecastDate)
     
-    OverlayData<- dplyr::filter(OverlayData, ForecastDate >= Sys.Date())
+    OverlayData<- dplyr::filter(OverlayData, ForecastDate >= Sys.Date() & ForecastDate <= (Sys.Date() + DaysForecasted))
     
     OverlayData<-rbind(HistoricalData, OverlayData)
     
@@ -2049,7 +2048,7 @@ CHIMENationalPlot<-function(SocialDistance, DaysForecasted){
                                socialdistancing,hospitalizationrate, icurate,ventilatorrate,hospitaltime,icutime,
                                ventilatortime,daysforecasted,Ro, .5)
     
-    MyDates<-seq(Sys.Date()-(length(CovidConfirmedCases)-20), length=daysforecasted, by="1 day")
+    MyDates<-seq(Sys.Date()-(length(CovidConfirmedCases)-80), length=daysforecasted, by="1 day")
     DailyData<-data.frame(MyDates, SEIARProj$sir$hos_add)
     TotalData<-data.frame(MyDates, SEIARProj$sir$hos_cum)
     colnames(DailyData)<-c("ForecastDate", "Expected Daily Cases")
@@ -2169,7 +2168,7 @@ CHIMENationalPlot<-function(SocialDistance, DaysForecasted){
     projections
 }
 
-IHMENationalProjections<-function(){
+IHMENationalProjections<-function(DaysProjected){
     #Get IHME Data upper lower and mean combined by date
         Dataframe1<-IHME_Model %>% 
             group_by(date) %>% 
@@ -2190,7 +2189,7 @@ IHMENationalProjections<-function(){
         
         IHMENationalData$ID<-rep("IHME", nrow(IHMENationalData))
         HistoricalData$ID<-rep("Past Data", nrow(HistoricalData))
-        OverlayData<- dplyr::filter(IHMENationalData, ForecastDate >= Sys.Date())
+        OverlayData<- dplyr::filter(IHMENationalData, ForecastDate >= Sys.Date(), ForecastDate <= (Sys.Date() + DaysProjected))
         OverlayData<-rbind(HistoricalData, OverlayData)
         
         projections <-  ggplot(OverlayData, aes(x=ForecastDate, y=`Expected Hospitalizations`, color = ID, fill = ID, linetype = ID)) +
@@ -2599,7 +2598,7 @@ CHIMELocalPlot<-function(SocialDistance, ForecastedDays, IncludedCounties, Stati
 }
 
 
-IHMELocalProjections<-function(MyCounties, IncludedHospitals, ChosenBase, StatisticType){
+IHMELocalProjections<-function(MyCounties, IncludedHospitals, ChosenBase, StatisticType, DaysProjected){
     if (StatisticType == "Hospitalizations") {
         #Creating the stats and dataframes determined by the base we choose to look at.
         BaseState<-dplyr::filter(AFBaseLocations, Base == ChosenBase)
@@ -2635,7 +2634,7 @@ IHMELocalProjections<-function(MyCounties, IncludedHospitals, ChosenBase, Statis
         IHME_Region$allbed_upper = round(IHME_State$allbed_upper*PopRatio)
         IHME_Region<-data.frame(IHME_Region$date, IHME_Region$allbed_mean, IHME_Region$allbed_lower, IHME_Region$allbed_upper)
         colnames(IHME_Region)<-c("ForecastDate", "Expected Hospitalizations", "Lower Estimate","Upper Estimate")
-        IHME_Region<- dplyr::filter(IHME_Region, ForecastDate >= Sys.Date())
+        IHME_Region<- dplyr::filter(IHME_Region, ForecastDate >= Sys.Date() & ForecastDate <= (Sys.Date() + DaysProjected))
         IHME_Region$ID<-rep("IHME", nrow(IHME_Region))
         HistoricalData$ID<-rep("Past Data", nrow(HistoricalData))
         
@@ -2707,7 +2706,7 @@ IHMELocalProjections<-function(MyCounties, IncludedHospitals, ChosenBase, Statis
         IHME_Region$deaths_upper = round(IHME_State$totdea_upper*PopRatio)
         IHME_Region<-data.frame(IHME_Region$date, IHME_Region$deaths_mean, IHME_Region$deaths_lower, IHME_Region$deaths_upper)
         colnames(IHME_Region)<-c("ForecastDate", "Expected Fatalities", "Lower Estimate","Upper Estimate")
-        IHME_Region<- dplyr::filter(IHME_Region, ForecastDate >= Sys.Date())
+        IHME_Region<- dplyr::filter(IHME_Region, ForecastDate >= Sys.Date() & ForecastDate <= (Sys.Date() + DaysProjected))
         IHME_Region$ID<-rep("IHME", nrow(IHME_Region))
         HistoricalData$ID<-rep("Past Data", nrow(HistoricalData))
         
@@ -3121,7 +3120,7 @@ PlotOverlay2<-function(ChosenBase, IncludedCounties, IncludedHospitals, SocialDi
     OverlayData<-rbind(DailyData,IHME_Data)
     OverlayData$ForecastDate<-as.Date(OverlayData$ForecastDate)
     
-    OverlayData<- dplyr::filter(OverlayData, ForecastDate >= Sys.Date())
+    OverlayData<- dplyr::filter(OverlayData,ForecastDate >= Sys.Date())
     
     OverlayData<-rbind(HistoricalData, OverlayData)
     
@@ -3303,7 +3302,7 @@ PlotOverlay2<-function(ChosenBase, IncludedCounties, IncludedHospitals, SocialDi
     OverlayData<-rbind(DailyData,IHME_Data)
     OverlayData$ForecastDate<-as.Date(OverlayData$ForecastDate)
     
-    OverlayData<- dplyr::filter(OverlayData, ForecastDate >= Sys.Date())
+    OverlayData<- dplyr::filter(OverlayData, ForecastDate >= Sys.Date() & ForecastDate <= (Sys.Date() + DaysProjected))
     
     OverlayData<-rbind(HistoricalData, OverlayData)
   

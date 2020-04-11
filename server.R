@@ -204,7 +204,7 @@ server <- function(input, output) {
         DF<-cbind.data.frame(CovidConfirmedCases$State, rev(CovidConfirmedCases)[,1], rev(CovidConfirmedCases)[,1])
         colnames(DF)<-c("state","Value","LogValue")
         ChlorData<-plyr::ddply(DF, "state", numcolwise(sum))
-        ChlorData<-transform(ChlorData, LogValue = log(LogValue, base=10))
+        ChlorData<-transform(ChlorData, LogValue = round(log(LogValue, base=10),digits = 1))
         ChlorData <- transform(ChlorData, Value = as.character(format(Value,big.mark=",")))
         ChlorData<-ChlorData %>%
             mutate(state_name = state.name[match(state, state.abb)])
@@ -240,7 +240,7 @@ server <- function(input, output) {
 
         IncludedHospitals<-GetHospitals(input$Base, input$Radius)
         MyCounties <- GetCounties(input$Base, input$Radius)
-        IHMELocalProjections(MyCounties, IncludedHospitals, input$Base, input$StatisticType)
+        IHMELocalProjections(MyCounties, IncludedHospitals, input$Base, input$StatisticType, input$proj_days)
         
         
     })
@@ -329,7 +329,7 @@ server <- function(input, output) {
     
     output$IHMENationaProj<-renderPlotly({
         
-        IHMENationalProjections()
+        IHMENationalProjections(input$proj_days_national) 
     })
     
     #Overlay Projected Plots
