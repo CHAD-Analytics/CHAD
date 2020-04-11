@@ -1,0 +1,492 @@
+##################
+##### Server #####
+##################
+
+# Layout
+##############################################################################################################################################
+# The server is used to generate outputs based on the functions in the global. These outputs are then referenced in the UI and diplayed in the app
+# First:  Creating reactive functions that change based on radius and Base. The reactive functions are the most important functions in the app.
+#         Reactive functions change every time a new base is chosen or a radius is chosen. This updated the app automatically.
+# Second: This creates the output variables that can be referenced in the user interface. Each plot, statistic or map needs to have an output.
+#         There are 5 sub categories included: Common statistics, line plots, choropleth charts, projections, and data tables.
+# Third:  This creates the help settings in the app so that users can see documentation of inputs, sources, and calculations.
+##############################################################################################################################################       
+
+
+# Define server logic, within this all ouputs and reactive variables are generated. 
+server <- function(input, output) {
+    
+    # Step One
+    ###################################################################################################################################################
+    
+    
+    
+    
+    # Step Two
+    ###################################################################################################################################################
+    
+    
+    # Output common statistics -------------------------------------------------------------------------------------------------------------------------------------------
+    
+    #Finds which counties in given radius. Also Give county statistics
+    output$TotalPopulation <- renderValueBox({
+        MyCounties<-GetCounties(input$Base,input$Radius)
+        valueBox(subtitle = "Total Regional Population",
+                 comma(CalculateCounties(MyCounties)),
+                 icon = icon("list-ol"),
+                 color = "light-blue"
+        )
+        
+    })
+    
+    # Finds Covid Cases and statistics on covid per county
+    output$CovidCases <- renderValueBox({
+        MyCounties<-GetCounties(input$Base,input$Radius)
+        valueBox(subtitle = "Local Cases",
+                 comma(CalculateCovid(MyCounties)),
+                 icon = icon("list-ol"),
+                 color = "light-blue"
+        )
+        
+    })
+    
+    #Outputs change in covid cases per day
+    output$CaseChangeLocal <- renderValueBox({
+        MyCounties<-GetCounties(input$Base,input$Radius)
+        CovidCounties<-subset(CovidConfirmedCases, CountyFIPS %in% MyCounties$FIPS)
+        changeC <- sum(rev(CovidCounties)[,1] - rev(CovidCounties)[,2])
+        
+        valueBox(paste("+",toString(changeC)),
+                 subtitle = "New Confirmed Cases", 
+                 color = "light-blue")
+    })
+    
+    
+    # Finds Covid deaths and statistics on covid per county
+    output$LocalCovidDeaths <- renderValueBox({
+        MyCounties<-GetCounties(input$Base,input$Radius)
+        valueBox(subtitle = "Local Fatalities",
+                 comma(CalculateDeaths(MyCounties)),
+                 icon = icon("skull"),
+                 color = "blue"
+        )
+    })
+    
+    #Outputs change in deaths per day   
+    output$DeathChangeLocal <- renderValueBox({
+        MyCounties<-GetCounties(input$Base,input$Radius)
+        CovidCounties<-subset(CovidDeaths, CountyFIPS %in% MyCounties$FIPS)
+        changeC <- sum(rev(CovidCounties)[,1] - rev(CovidCounties)[,2])
+        
+        valueBox(paste("+",toString(changeC)),
+                 subtitle = "New Confirmed Fatalities", 
+                 color = "blue")
+    })
+    
+    #Finds hospital information within a given 100 mile radius. Calculates number of total hospital beds. Can compare to number of cases
+    # output$HospitalUtilization <- renderValueBox({
+    #     MyCounties<-GetCounties(input$Base,input$Radius)
+    #     MyHospitals<-GetHospitals(input$Base,input$Radius)
+    #     valueBox(subtitle = "Estimated Local Hospital Bed Utilization",
+    #              HospitalIncreases(MyCounties, MyHospitals),
+    #              icon = icon("hospital"),
+    #              color = "navy")
+    # })
+    
+    
+    
+    # output$HospUtlzChange <- renderValueBox({
+    #     valueBox(HospitalUtlzChng(input$Base,input$Radius),
+    #              subtitle = "Hospital Utilization Change", 
+    #              color = "navy")
+    # })
+    
+    output$CHIMEPeakDate<-renderValueBox({
+        MyCounties<-GetCounties(input$Base,input$Radius)
+        if (is.null(input$SocialDistanceValue) ){social_dist<-1}
+        
+        CS      <- "CS"       %in% input$SocialDistanceValue
+        CB    <- "CB"     %in% input$SocialDistanceValue
+        SD <- "SD"  %in% input$SocialDistanceValue
+        
+        if (CS & CB & SD){
+            social_dist <- 27
+        } else if (CS & CB){
+            social_dist <- 12
+        } else if (CS & SD){
+            social_dist <-19
+        } else if (SD & CB){
+            social_dist <-23
+        } else if (CS) {
+            social_dist <- 4
+        }  else if (CB) {
+            social_dist <- 8
+        }  else if (SD) {
+            social_dist <- 15
+        }
+        Peak<-CalculateCHIMEPeak(MyCounties, input$Base, input$Radius, social_dist, input$proj_days, input$StatisticType)
+        Peak<-format(Peak)
+        if (input$StatisticType == "Hospitalizations") {
+            valueBox(subtitle = "CHIME Predicted Peak Hospitalizations",
+                     paste(Peak),
+                     icon = icon("hospital"),
+                     color = "blue") 
+        } else {
+                valueBox(subtitle = "CHIME Predicted Total Fatalities",
+                         paste(Peak),
+                         icon = icon("skull"),
+                         color = "blue")}
+        
+    })
+    
+    # output$CHIMEMinMax<-renderValueBox({
+    #     MyCounties<-GetCounties()
+    #     Peak<-CalculateCHIMEMinMax(MyCounties, input$Base, input$Radius, input$social_dist, input$proj_days)
+    #     Peak<-format(Peak)
+    #     valueBox(subtitle = "CHIME Predicted Peak Hospitalizations",
+    #              paste(Peak),
+    #              icon = icon("hospital"),
+    #              color = "blue")
+    # })
+    
+    output$IHMEPeakDate<-renderValueBox({
+        MyHospitals<-GetHospitals(input$Base,input$Radius)
+        Peak<-CalculateIHMEPeak(input$Base, MyHospitals, input$Radius, input$StatisticType)
+        Peak<-format(Peak)
+        if (input$StatisticType == "Hospitalizations") {
+            valueBox(subtitle = "IHME Predicted Peak Hospitalizations",
+                     paste(Peak),
+                     icon = icon("hospital"),
+                     color = "navy")
+        } else {
+            valueBox(subtitle = "IHME Predicted Total Fatalities",
+                     paste(Peak),
+                     icon = icon("hospital"),
+                     color = "navy")
+        }
+        
+    })
+    
+    
+    # output$IHMEMinMax<-renderValueBox({
+    #     MyHospitals<-GetHospitals()
+    #     Peak<-CalculateIHMEMinMax(input$Base, MyHospitals, input$Radius)
+    #     valueBox(subtitle = "IHME Predicted Min/Max Hospitalizations",
+    #              paste(Peak),
+    #              icon = icon("hospital"),
+    #              color = "navy")
+    # })
+    
+    # Output line plots for the dashboard ----------------------------------------------------------------------------------------------------------------------------------------------------
+    
+    
+    #Create first plot of local health population 
+    output$LocalHealthPlot1<-renderPlotly({
+        MyCounties<-GetCounties(input$Base,input$Radius)
+        MyHospitals<-GetHospitals(input$Base,input$Radius)
+        CovidCasesPerDayChart(input$Base, input$Radius, MyCounties,MyHospitals)
+    })
+    
+    #Create second plot of local health population 
+    output$LocalHealthPlot2<-renderPlotly({
+        MyCounties<-GetCounties(input$Base,input$Radius)
+        MyHospitals<-GetHospitals(input$Base,input$Radius)
+        CovidCasesCumChart(input$Base, input$Radius, MyCounties, MyHospitals)
+    })
+    
+    
+    
+    # Output Choropleth Charts ----------------------------------------------------------------------------------------------------------------------------------------------------------
+    
+    
+    #Create Country Plot on Summary page
+    output$SummaryPlot<-renderGvis({
+        DF<-cbind.data.frame(CovidConfirmedCases$State, rev(CovidConfirmedCases)[,1], rev(CovidConfirmedCases)[,1])
+        colnames(DF)<-c("state","Value","LogValue")
+        ChlorData<-plyr::ddply(DF, "state", numcolwise(sum))
+        ChlorData<-transform(ChlorData, LogValue = log(LogValue, base=10))
+        ChlorData <- transform(ChlorData, Value = as.character(format(Value,big.mark=",")))
+        ChlorData<-ChlorData %>%
+            mutate(state_name = state.name[match(state, state.abb)])
+        ChlorData<-ChlorData[complete.cases(ChlorData$state_name), ]
+        ChlorData <- transform(ChlorData, Value =paste(state_name, " Total Cases: ", Value))
+        states <- data.frame(ChlorData$state_name, ChlorData$Value, ChlorData$LogValue)
+        colnames(states)<-c("state_name","Cases","StateColor")
+        gvisGeoChart(states, "state_name", "StateColor", hovervar = "Cases",
+                     options=list(region="US",
+                                  colors="['#D3D3D3', 'red']",
+                                  displayMode="regions", 
+                                  resolution="provinces",
+                                  width=1200,
+                                  height = 600,
+                                  legend = "none"))
+    })
+    
+    
+    #Creates the local choropleth charts that change based on which base and radius.
+    output$LocalChoroPlot<-renderPlotly({
+        MyCounties<-GetCounties(input$Base,input$Radius)
+        PlotLocalChoro(MyCounties, input$Base, input$TypeLocal)
+    })
+    
+    
+    
+    
+    # Output Projections  ---------------------------------------------------------------------------------------------------------------------------------------------------------------
+    
+    
+    #Create IHME plot by State projected hospitalization 
+    output$IHME_State_Hosp<-renderPlotly({
+
+        IncludedHospitals<-GetHospitals(input$Base, input$Radius)
+        MyCounties <- GetCounties(input$Base, input$Radius)
+        IHMELocalProjections(MyCounties, IncludedHospitals, input$Base, input$StatisticType)
+        
+        
+    })
+    
+    
+    #Output the SEIAR CHIME projections with a max, min, and expected value
+    output$SEIARProjection<-renderPlotly({
+        BaseState<-dplyr::filter(AFBaseLocations, Base == input$Base)
+        IncludedCounties<-GetCounties(input$Base,input$Radius)
+        if (is.null(input$SocialDistanceValue) ){social_dist<-1}
+
+        CS      <- "CS"       %in% input$SocialDistanceValue
+        CB    <- "CB"     %in% input$SocialDistanceValue
+        SD <- "SD"  %in% input$SocialDistanceValue
+
+        if (CS & CB & SD){
+            social_dist <- 27
+        } else if (CS & CB){
+            social_dist <- 12
+        } else if (CS & SD){
+            social_dist <-19
+        } else if (SD & CB){
+            social_dist <-23
+        } else if (CS) {
+            social_dist <- 4
+        }  else if (CB) {
+            social_dist <- 8
+        }  else if (SD) {
+            social_dist <- 15
+        }
+        
+        CHIMELocalPlot(social_dist, input$proj_days, IncludedCounties, input$StatisticType)
+
+    })
+    
+    output$CHIMENationalProj<-renderPlotly({
+        
+        if (is.null(input$SocialDistanceValueNational) ){social_dist_national<-1}
+        
+        CSN      <- "CSN"       %in% input$SocialDistanceValueNational
+        CBN    <- "CBN"     %in% input$SocialDistanceValueNational
+        SDN <- "SDN"  %in% input$SocialDistanceValueNational
+        
+        if (CSN & CBN & SDN){
+            social_dist_national <- 27
+        } else if (CSN & CBN){
+            social_dist_national <- 12
+        } else if (CSN & SDN){
+            social_dist_national <-19
+        } else if (SDN & CBN){
+            social_dist_national <-23
+        } else if (CSN) {
+            social_dist_national <- 4
+        }  else if (CBN) {
+            social_dist_national <- 8
+        }  else if (SDN) {
+            social_dist_national <- 15
+        }
+        CHIMENationalPlot(social_dist_national, input$proj_days_national)
+    })
+    
+    output$NationalPlotOverlay<-renderPlotly({
+        if (is.null(input$SocialDistanceValueNational) ){social_dist_national<-1}
+        
+        CSN      <- "CSN"       %in% input$SocialDistanceValueNational
+        CBN    <- "CBN"     %in% input$SocialDistanceValueNational
+        SDN <- "SDN"  %in% input$SocialDistanceValueNational
+        
+        if (CSN & CBN & SDN){
+            social_dist_national <- 27
+        } else if (CSN & CBN){
+            social_dist_national <- 12
+        } else if (CSN & SDN){
+            social_dist_national <-19
+        } else if (SDN & CBN){
+            social_dist_national <-23
+        } else if (CSN) {
+            social_dist_national <- 4
+        }  else if (CBN) {
+            social_dist_national <- 8
+        }  else if (SDN) {
+            social_dist_national <- 15
+        }
+        NationalOverlayPlot(social_dist_national, input$proj_days_national)
+    })
+    
+    output$IHMENationaProj<-renderPlotly({
+        
+        IHMENationalProjections()
+    })
+    
+    #Overlay Projected Plots
+    output$OverlayPlots<-renderPlotly({
+        if (is.null(input$SocialDistanceValue) ){social_dist<-1}
+        
+        CS      <- "CS"       %in% input$SocialDistanceValue
+        CB    <- "CB"     %in% input$SocialDistanceValue
+        SD <- "SD"  %in% input$SocialDistanceValue
+        
+        if (CS & CB & SD){
+            social_dist <- 27
+        } else if (CS & CB){
+            social_dist <- 12
+        } else if (CS & SD){
+            social_dist <-19
+        } else if (SD & CB){
+            social_dist <-23
+        } else if (CS) {
+            social_dist <- 4
+        }  else if (CB) {
+            social_dist <- 8
+        }  else if (SD) {
+            social_dist <- 15
+        }
+        MyCounties<-GetCounties(input$Base,input$Radius)
+        MyHospitals<-GetHospitals(input$Base,input$Radius)
+        PlotOverlay(input$Base, MyCounties, MyHospitals, social_dist, input$proj_days, input$StatisticType)
+    })
+    
+    
+    # Output any data tables ------------------------------------------------------------------------------------------------------------------------------------------------------
+    
+    
+    #Render National Data Table on summary page
+    output$NationalDataTable1<-DT::renderDataTable({
+        NationalDataTable <- DT::datatable(data.frame(NationalDataTable),rownames = FALSE, options = list(dom = 'ft',ordering = F,"pageLength" = 51))
+        NationalDataTable
+    })
+    
+    output$CountyDataTable1<-DT::renderDataTable({
+        MyCounties<-GetCounties(input$Base,input$Radius)
+        dt<-GetLocalDataTable(MyCounties)
+        dt<-DT::datatable(dt, rownames = FALSE, options = list(dom = 't',ordering = F, "pageLength"=100))
+        dt
+    })
+    
+    
+    output$ForecastDataTable<-DT::renderDataTable({
+        dt<-DT::datatable(ForecastDataTable, rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))
+        dt
+    })
+    
+    output$downloadData <- downloadHandler(
+        filename = function() { 
+            paste("SummaryDataset-", Sys.Date(), ".csv", sep="")
+        },
+        content = function(file) {
+            write.csv(ForecastDataTable, file)
+            
+        })
+    
+    
+    
+    # Output Report ------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    
+    
+    output$report <- downloadHandler(
+        # For PDF output, change this to "report.pdf"
+        filename = function(){
+            paste0('CHAD_report(',paste(Sys.Date(),sep = '_'),')','.html')
+        },
+        content = function(file) {
+            
+            # Copy the report file to a temporary directory before processing it, in
+            # case we don't have write permissions to the current working dir (which
+            # can happen when deployed).
+            
+            # tempReport <- file.path(tempdir(), "TestReport.Rmd")
+            # file.copy("TestReport.Rmd", tempReport, overwrite = TRUE)
+            
+            # src <- normalizePath("TestReport2.Rmd")
+            # owd <- setwd(tempdir())
+            # on.exit(setwd(owd))
+            # file.copy(src, "TestReport2.Rmd", overwrite = TRUE)
+            # out <- render("TestReport2.Rmd", html_document())
+            # file.rename(out, file)
+            
+            # # Set up parameters to pass to Rmd document
+            params <- list(radius = input$Radius,
+                           base = input$Base,
+                           pjDays = input$proj_days,
+                           socDis = input$SocialDistanceValue)
+            
+            # Knit the document, passing in the `params` list, and eval it in a
+            # child of the global environment (this isolates the code in the document
+            # from the code in this app).
+            rmarkdown::render("TestReport.Rmd", output_file = file,
+                              params = params,
+                              envir = new.env(parent = globalenv())
+                              )
+            
+        }
+    )
+    
+    
+    
+    
+    # Step Three
+    ###################################################################################################################################################
+    
+    #Step three provides input information for annotation of the overall app such as inputs, sources, and calculations.
+    observeEvent(input$overviewInfo, {
+        showModal(
+            modalDialog(
+                size = "l",fade = TRUE, easyClose = TRUE, title = "OVERVIEW",
+                OverviewLink)
+        )
+    })
+    
+    observeEvent(input$inputInfo, {
+        showModal(
+            modalDialog(
+                size = "l",fade = TRUE, easyClose = TRUE, title = "USER INPUTS",
+                InfoLink)
+        )
+    })
+    observeEvent(input$projInfo, {
+        showModal(
+            modalDialog(
+                size = "l",fade = TRUE, easyClose = TRUE, title = "PROJECTIONS",
+                ProjLink)
+        )
+    })
+    
+    observeEvent(input$calcInfo, {
+        showModal(
+            modalDialog(
+                size = "l",fade = TRUE, easyClose = TRUE, title = "CALCULATIONS",
+                CalcLink)
+        )
+    })
+    
+    observeEvent(input$sourceInfo, {
+        showModal(
+            modalDialog(
+                size = "l",fade = TRUE, easyClose = TRUE, title = "SOURCES",
+                SourceLink)
+        )
+    })
+    
+    
+    
+
+
+
+
+    
+    
+}

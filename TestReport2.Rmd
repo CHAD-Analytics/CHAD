@@ -1,0 +1,454 @@
+---
+title: |
+  <center> CHAD Output Summary </center>
+subtitle: |
+  <center> `r format(Sys.time(), '%d %B, %Y')` </center>
+  
+author: 
+date:
+output: html_document
+
+---
+
+
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r echo = FALSE, warning = FALSE, message = FALSE}
+# Some global stuff
+library(ggplot2)
+library(plotly)
+library(knitr)
+library(kableExtra)
+
+Counties = GetCounties(input$Base, input$Radius)
+Hospitals = GetHospitals(input$Base, input$Radius)
+CountyDT = GetLocalDataTable(Counties)
+CovidCounties = subset(CovidConfirmedCases, CountyFIPS %in% Counties$FIPS)
+CountyCovid = CalculateCovid(Counties)
+CountyDeaths = CalculateDeaths(Counties)
+TotPop = CalculateCounties(Counties)
+CovidCaseChng = sum(rev(CovidCounties)[,1] - rev(CovidCounties)[,2])
+CovidDeathChng <- sum(rev(CovidCounties)[,1] - rev(CovidCounties)[,2])
+HospUltz = HospitalIncreases(Counties, Hospitals)
+HospUltz2 = HospitalUtlzChng(input$Base, input$Radius)
+```
+
+```{r echo=FALSE}
+
+OverlayDatahosp = PlotOverlay2(input$Base, 
+                      Counties, 
+                      Hospitals, 
+                      input$social_dist, 
+                      input$proj_days,
+                      "Hospitalizations")
+
+overlayDF7h <- dplyr::filter(OverlayDatahosp, ForecastDate == Sys.Date()+7)
+overlayDF14h <- dplyr::filter(OverlayDatahosp, ForecastDate == Sys.Date()+14)
+overlayDF30h <- dplyr::filter(OverlayDatahosp, ForecastDate == Sys.Date()+30)
+
+OverlayDatafatal = PlotOverlay2(input$Base, 
+                      Counties, 
+                      Hospitals, 
+                      input$social_dist, 
+                      input$proj_days,
+                      "Deaths")
+
+overlayDF7f <- dplyr::filter(OverlayDatafatal, ForecastDate == Sys.Date()+7)
+overlayDF14f <- dplyr::filter(OverlayDatafatal, ForecastDate == Sys.Date()+14)
+overlayDF30f <- dplyr::filter(OverlayDatafatal, ForecastDate == Sys.Date()+30)
+
+```
+---
+
+
+
+
+
+<center>
+#  `r input$Base` 
+</center>
+
+The Air Force COVID-19 Health Assessment Dashboard (CHAD) was developed to provide a centralized location for leadership to receive up-to-date pandemic information specifically tailored to their installation and the surrounding local area. 
+
+This report was generated using a **`r input$Radius` mile radius** around **`r input$Base`** as the defined local area.
+
+
+
+
+## Current Local Area Info
+
+<style>
+div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 20px;}
+</style>
+<div class = "blue">
+
+<div class = "row">
+
+<div class = "col-md-5">
+
+Local Population: 
+
+**`r comma(TotPop)`**
+
+Total Cases:
+
+**`r comma(CalculateCovid(Counties))`**
+
+New Cases: 
+
+**`r paste("+",comma(CovidCaseChng))`**
+
+Total Fatalities: 
+
+**`r comma(CalculateDeaths(Counties))`**
+
+New Fatalities: 
+
+**`r paste("+",comma(CovidDeathChng))`**
+
+Estimated Hospital Bed Utilization:
+
+**`r HospUltz`**
+
+Estimated Hospital Bed Utilization Change:
+
+**`r HospUltz2`**
+
+
+
+</div>
+
+<div class = "col-md-7">
+
+```{r fig.height = 4, fig.width = 5, echo=FALSE}
+CountyChoro = PlotLocalChoro(Counties, input$Base, "County")
+CountyChoro
+```
+
+</div>
+</div>
+
+## Local Area Plots
+
+<br>
+
+### Daily Stats
+
+The charts below display daily values and cumulative values of cases, hospitalizations, and fatalities
+
+<div class = "row">
+
+<div class = "col-md-6">
+```{r fig.height = 4, fig.width = 4, echo=FALSE}
+CCDaily = CovidCasesPerDayChart(input$Base, input$Radius, Counties, Hospitals)
+CCDaily = CCDaily %>% layout(xaxis = list(showgrid = T),
+                             yaxis = list(showgrid = T))
+CCDaily
+```
+</div>
+
+<div class = "col-md-6">
+```{r fig.height = 4, fig.width = 4, echo=FALSE}
+CCtot = CovidCasesCumChart(input$Base, input$Radius, Counties, Hospitals)
+CCtot = CCtot %>% layout(xaxis = list(showgrid = T),
+                         yaxis = list(showgrid = T))
+CCtot
+```
+</div>
+
+</div>
+
+
+
+### Local Projections
+
+This section will display the projections from the IHME model and the CHIME inspired model on the same graph for daily hospitalizations and cumulative fatalities. Following each chart will be a table showing the 7, 14, and 30 day projections for each model.
+
+<br>
+
+```{r fig.height = 5, fig.width = 10,echo=FALSE}
+
+overlay = PlotOverlay(input$Base, 
+                      Counties, 
+                      Hospitals, 
+                      input$social_dist, 
+                      input$proj_days,
+                      "Hospitalizations")
+
+overlay
+
+```
+
+<br>
+
+
+<style>
+div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 20px;}
+</style>
+<div class = "blue">
+
+
+
+<div class = "row">
+
+<div class = "col-md-4">
+
+<div class = "row">
+<center>**7-Day Daily Hospitalization Projection**</center>
+</div>
+
+
+<div class = "row">
+
+
+<div class = "col-md-6">
+
+<center>IHME</center>
+
+<center>`r (dplyr::filter(overlayDF7h, ID == "IHME"))[,2]`</center>
+
+</div>
+
+
+<div class = "col-md-6">
+
+<center>CHIME</center>
+
+<center>`r (dplyr::filter(overlayDF7h, ID == "CHIME"))[,2]`</center>
+
+</div>
+
+</div>
+
+
+</div>
+
+
+
+
+<div class = "col-md-4">
+
+<div class = "row">
+<center>**14-Day Daily Hospitalization Projection**</center>
+</div>
+
+
+<div class = "row">
+
+
+<div class = "col-md-6">
+
+<center>IHME</center>
+
+<center>`r (dplyr::filter(overlayDF14h, ID == "IHME"))[,2]`</center>
+
+</div>
+
+
+<div class = "col-md-6">
+
+<center>CHIME</center>
+
+<center>`r (dplyr::filter(overlayDF14h, ID == "CHIME"))[,2]`</center>
+
+</div>
+
+</div>
+
+
+</div>
+
+
+
+<div class = "col-md-4">
+
+<div class = "row">
+<center>**30 Day Daily Hospitalization Projection**</center>
+</div>
+
+
+<div class = "row">
+
+
+<div class = "col-md-6">
+
+<center>IHME</center>
+
+<center>`r (dplyr::filter(overlayDF30h, ID == "IHME"))[,2]`</center>
+
+</div>
+
+
+<div class = "col-md-6">
+
+<center>CHIME</center>
+
+<center>`r (dplyr::filter(overlayDF30h, ID == "CHIME"))[,2]`</center>
+
+</div>
+
+</div>
+
+
+</div>
+
+
+
+</div>
+</div>
+
+
+<br><br>
+
+```{r fig.height = 5, fig.width = 9,echo=FALSE}
+
+overlay = PlotOverlay(input$Base, 
+                      Counties, 
+                      Hospitals, 
+                      input$social_dist, 
+                      input$proj_days,
+                      "Deaths")
+overlay
+```
+
+
+<br>
+
+
+<style>
+div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 20px;}
+</style>
+<div class = "blue">
+
+
+
+<div class = "row">
+
+<div class = "col-md-4">
+
+<div class = "row">
+<center>**7-Day Total Fatality Projection**</center>
+</div>
+
+
+<div class = "row">
+
+
+<div class = "col-md-6">
+
+<center>IHME</center>
+
+<center>`r (dplyr::filter(overlayDF7f, ID == "IHME"))[,2]`</center>
+
+</div>
+
+
+<div class = "col-md-6">
+
+<center>CHIME</center>
+
+<center>`r (dplyr::filter(overlayDF7f, ID == "CHIME"))[,2]`</center>
+
+</div>
+
+</div>
+
+
+</div>
+
+
+
+
+<div class = "col-md-4">
+
+<div class = "row">
+<center>**14-Day Total Fatality Projection**</center>
+</div>
+
+
+<div class = "row">
+
+
+<div class = "col-md-6">
+
+<center>IHME</center>
+
+<center>`r (dplyr::filter(overlayDF14f, ID == "IHME"))[,2]`</center>
+
+</div>
+
+
+<div class = "col-md-6">
+
+<center>CHIME</center>
+
+<center>`r (dplyr::filter(overlayDF14f, ID == "CHIME"))[,2]`</center>
+
+</div>
+
+</div>
+
+
+</div>
+
+
+
+<div class = "col-md-4">
+
+<div class = "row">
+<center>**30 Day Total Fatality Projection**</center>
+</div>
+
+
+<div class = "row">
+
+
+<div class = "col-md-6">
+
+<center>IHME</center>
+
+<center>`r (dplyr::filter(overlayDF30f, ID == "IHME"))[,2]`</center>
+
+</div>
+
+
+<div class = "col-md-6">
+
+<center>CHIME</center>
+
+<center>`r (dplyr::filter(overlayDF30f, ID == "CHIME"))[,2]`</center>
+
+</div>
+
+</div>
+
+
+</div>
+
+
+
+</div>
+</div>
+
+
+***
+***
+
+
+### Detailed County Info
+
+This table displays information for each county within `r input$Radius` miles of `r input$Base`.
+
+
+```{r echo=FALSE}
+kable(CountyDT) %>%
+  kable_styling(bootstrap_options = c("striped", "hover"))
+```
+
+
+
+
+
