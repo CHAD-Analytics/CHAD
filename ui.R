@@ -262,7 +262,7 @@ ui <- tagList(
                                   tabPanel(
                                       title = "Summary",
                                       fluidRow(
-                                          box(plotlyOutput("SummaryTabChoro"),height = 400, width = 900)),
+                                          box(plotlyOutput("SummaryTabChoro", height = 600, width = 'auto',),height = 600, width = 900)),
                                       box(title = "Projected Daily Hospitalizations",
                                           solidHeader=T, 
                                           align = "left", 
