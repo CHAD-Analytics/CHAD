@@ -229,6 +229,10 @@ server <- function(input, output) {
         PlotLocalChoro(MyCounties, input$Base, input$TypeLocal)
     })
     
+    output$SummaryTabChoro<-renderPlotly({
+        GetHeatMap(input$MAJCOMInput, input$SummaryModelType, input$SummaryForecast)
+    })
+    
     
     
     
@@ -379,8 +383,14 @@ server <- function(input, output) {
     
     
     output$ForecastDataTable<-DT::renderDataTable({
-        dt<-DT::datatable(ForecastDataTable, rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))
-        dt
+        if (input$MAJCOMInput == "All") {
+            dt<-DT::datatable(ForecastDataTable, rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))
+            dt
+        } else {
+            dt<-DT::datatable(filter(ForecastDataTable, MAJCOM == input$MAJCOMInput), rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))
+            dt
+        }
+        
     })
     
     output$downloadData <- downloadHandler(

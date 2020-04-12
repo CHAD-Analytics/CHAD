@@ -67,7 +67,7 @@ ui <- tagList(
                                            div(id = "single", style="display: none;", numericInput("tckt", "Ticket Number : ", 12345,  width = 300)),
                                            radioButtons("TypeLocal", "State or County Plot:",
                                                         c("County"="County",
-                                                          "State"="State"),)
+                                                          "State"="State"))
                                        ),
                                        br(),
                                        menuItem(
@@ -103,6 +103,29 @@ ui <- tagList(
                                                               c("Close Schools" = "CSN",
                                                                 "Businesses Telework" = "CBN",
                                                                 "Social Distance" = "SDN"))
+                                       ),
+                                       br(),
+                                       menuItem(
+                                           "Summary Tab Inputs",
+                                           tabName = "dashboard",
+                                           icon = icon("sliders-h"),
+                                           div(id = "single", style="display: none;", numericInput("tckt", "Ticket Number : ", 12345,  width = 300)),
+                                           selectInput(
+                                               "MAJCOMInput",
+                                               "MAJCOM Summary:", 
+                                               list(`MAJCOM` = MAJCOMList ), 
+                                               selectize = FALSE),
+                                           radioButtons("SummaryModelType",
+                                                        "Summary Plot Model: ",
+                                                        c("IHME"="IHME",
+                                                          "CHIME"="CHIME")),
+                                           radioButtons("SummaryForecast",
+                                                        "Choose Days Forecasted: ",
+                                                        c("7 Days"="Seven",
+                                                          "14 Days"="Fourteen",
+                                                          "30 Days"="Thirty",
+                                                          "60 Days"="Sixty"))
+
                                        ),
                                        br(),
                                        
@@ -205,7 +228,7 @@ ui <- tagList(
                                       fluidRow(
                                           valueBoxOutput("TotalPopulation"),
                                           valueBoxOutput("IHMEPeakDate"),
-                                          valueBoxOutput("CHIMEPeakDate"),
+                                          valueBoxOutput("CHIMEPeakDate")
                                           #valueBoxOutput("TotalPopulation"),
                                           #valueBoxOutput("IHMEMinMax"),
                                           #valueBoxOutput("CHIMEMinMax")
@@ -238,6 +261,8 @@ ui <- tagList(
                                   # Mission Risk ------------------------------------------------------------
                                   tabPanel(
                                       title = "Summary",
+                                      fluidRow(
+                                          box(plotlyOutput("SummaryTabChoro"),height = 400, width = 900)),
                                       box(title = "Projected Daily Hospitalizations",
                                           solidHeader=T, 
                                           align = "left", 
@@ -247,6 +272,8 @@ ui <- tagList(
                                           height = 900, 
                                           width =13,
                                           downloadButton('downloadData', 'Download data'))
+                                    
+                                      )
                                       )
 
                                   ####### END Mission Risk #######
@@ -254,11 +281,11 @@ ui <- tagList(
                                   
                       )
                   )
-    ),
+    )
     
 
               
 
-)
 
-#Close UI 
+
+

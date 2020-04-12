@@ -109,7 +109,8 @@ names(IHME_Model)[names(IHME_Model)=="state.abb"] <- "State"
 BaseList<-sort(AFBaseLocations$Base, decreasing = FALSE)
 HospitalList <- HospitalInfo$NAME
 CountyList <- CountyInfo$County
-
+MAJCOMList <- sort(unique(AFBaseLocations$`Major Command`), decreasing = FALSE)
+MAJCOMList<-c("All",MAJCOMList)
 
 #Calculate county case doubling rate for most recent day
 CovidConfirmedCases <- dplyr::filter(CovidConfirmedCases, CountyFIPS != 0)
@@ -2747,7 +2748,7 @@ IHMELocalProjections<-function(MyCounties, IncludedHospitals, ChosenBase, Statis
 
 # Output Projections ---------------------------------------------------------------------------------------------------------------------------------------------------------------
 AFrow = nrow(AFBaseLocations)
-ForecastDataTable <- setNames(data.frame(matrix(ncol = 27, nrow = 0)),c("Installation","State","Total Beds",
+ForecastDataTable <- setNames(data.frame(matrix(ncol = 28, nrow = 0)),c("Installation","MAJCOM","State","Total Beds",
                                                                         "7D IHME Forecast","7D IHME Peak","7D IHME Peak Date","7D SEIAR Forecast","7D SEIAR Peak","7D SEIAR Peak Date",
                                                                         "14D IHME Forecast","14D IHME Peak","14D IHME Peak  Date","14D SEIAR Forecast","14D SEIAR Peak","14D SEIAR Peak Date",
                                                                         "30D IHME Forecast","30D IHME Peak","30D IHME Peak Date","30D SEIAR Forecast","30D SEIAR Peak","30D SEIAR Peak Date",
@@ -2826,11 +2827,11 @@ for (i in 2:AFrow){
   pop<-SIRinputs$pop
   
   if(nrow(IHME_Region) == 0 || pop == 0){
-    NewDF <- data.frame(AFBaseLocations$Base[i],AFBaseLocations$State[i],0,0,0,0,0,0,0,
+    NewDF <- data.frame(AFBaseLocations$Base[i],AFBaseLocations$`Major Command`[i],AFBaseLocations$State[i],0,0,0,0,0,0,0,
                         0,0,0,0,0,0,
                         0,0,0,0,0,0,
                         0,0,0,0,0,0)
-    names(NewDF) <- c("Installation","State","Total Beds",
+    names(NewDF) <- c("Installation","MAJCOM","State","Total Beds",
                       "7D IHME Forecast","7D IHME Peak","7D IHME Peak Date","7D SEIAR Forecast","7D SEIAR Peak","7D SEIAR Peak Date",
                       "14D IHME Forecast","14D IHME Peak","14D IHME Peak  Date","14D SEIAR Forecast","14D SEIAR Peak","14D SEIAR Peak Date",
                       "30D IHME Forecast","30D IHME Peak","30D IHME Peak Date","30D SEIAR Forecast","30D SEIAR Peak","30D SEIAR Peak Date",
@@ -2910,12 +2911,12 @@ for (i in 2:AFrow){
     PID4<-format(PID4, format="%b-%d")
     
     
-    NewDF <- data.frame(AFBaseLocations$Base[i],AFBaseLocations$State[i],TotalBedsCounty,
+    NewDF <- data.frame(AFBaseLocations$Base[i],AFBaseLocations$`Major Command`[i],AFBaseLocations$State[i],TotalBedsCounty,
                         I1,PI1,PID1,SevDayVal,PeakSevDayVal,PeakDateSevDayVal,
                         I2,PI2,PID2,FourteenDayVal,PeakFourteenDayVal,PeakDateFourteenDayVal,
                         I3,PI3,PID3,ThirtyDayVal,PeakThirtyDayVal,PeakDateThirtyDayVal,
                         I4,PI4,PID4,SixtyDayVal,PeakSixtyDayVal,PeakDateSixtyDayVal) 
-    names(NewDF) <- c("Installation","State","Total Beds",
+    names(NewDF) <- c("Installation","MAJCOM","State","Total Beds",
                       "7D IHME Forecast","7D IHME Peak","7D IHME Peak Date","7D SEIAR Forecast","7D SEIAR Peak","7D SEIAR Peak Date",
                       "14D IHME Forecast","14D IHME Peak","14D IHME Peak  Date","14D SEIAR Forecast","14D SEIAR Peak","14D SEIAR Peak Date",
                       "30D IHME Forecast","30D IHME Peak","30D IHME Peak Date","30D SEIAR Forecast","30D SEIAR Peak","30D SEIAR Peak Date",
@@ -2928,6 +2929,75 @@ for (i in 2:AFrow){
 ForecastDataTable$Installation<-as.character(ForecastDataTable$Installation)
 ForecastDataTable<-ForecastDataTable %>% arrange(ForecastDataTable$Installation)
 
+
+
+######################## Summary Tab Heat Map
+HeatMapForecast<-merge(AFBaseLocations, ForecastDataTable, by.x = "Base", by.y = "Installation")
+HeatMapForecast<-data.frame(HeatMapForecast$Base, HeatMapForecast$Location, HeatMapForecast$State.x, HeatMapForecast$`Major Command`, HeatMapForecast$Lat, HeatMapForecast$Long,HeatMapForecast$`7D SEIAR Forecast`, HeatMapForecast$`7D IHME Forecast`,HeatMapForecast$`14D SEIAR Forecast`,  HeatMapForecast$`14D IHME Forecast`,  HeatMapForecast$`30D SEIAR Forecast`, HeatMapForecast$`30D IHME Forecast`, HeatMapForecast$`60D SEIAR Forecast`, HeatMapForecast$`60D IHME Forecast`)
+colnames(HeatMapForecast)<-c("Base","City","State","MAJCOM","Lat","Long", "Seven.IHME","Seven.CHIME","Fourteen.IHME","Fourteen.CHIME", "Thirty.IHME","Thirty.CHIME","Sixty.IHME","Sixty.CHIME")
+HeatMapForecast<-reshape(HeatMapForecast, direction='long', 
+                         varying=c('Seven.IHME', 'Seven.CHIME', 'Fourteen.IHME', 'Fourteen.CHIME','Thirty.IHME','Thirty.CHIME', 'Sixty.IHME','Sixty.CHIME'), 
+                         timevar='Days',
+                         times=c('Seven', 'Fourteen',"Thirty","Sixty"),
+                         v.names=c('CHIME', 'IHME'),
+                         idvar=c('Base','City','State','MAJCOM','Lat','Long'))
+
+GetHeatMap<-function(MAJCOMChoice,ModelChoice,ForecastChoice){
+  if (MAJCOMChoice=="All") {
+    HeatMapForecast<- HeatMapForecast %>%
+      filter(Days == ForecastChoice)
+  } else {
+    HeatMapForecast<- HeatMapForecast %>%
+      filter(MAJCOM == MAJCOMChoice & Days == ForecastChoice)
+  }
+  
+  if (ModelChoice=="IHME") {
+    
+    g <- list(
+      scope = 'usa',
+      projection = list(type = 'albers usa'),
+      showland = TRUE,
+      landcolor = toRGB("gray85"),
+      subunitwidth = 1,
+      countrywidth = 1,
+      subunitcolor = toRGB("white"),
+      countrycolor = toRGB("white")
+    )
+    
+    fig <- plot_geo(HeatMapForecast, locationmode = 'USA-states', sizes = c(10, 200))
+    fig <- fig %>% add_markers(
+      x = ~Long, y = ~Lat, size = ~IHME, color = ~IHME, hoverinfo = "text",
+      text = ~paste(HeatMapForecast$Base, "<br />", HeatMapForecast$IHME)
+    )
+    fig <- fig %>% layout(title = 'Projected Hospitalizations  <br>(Click legend to toggle)', geo = g)
+    
+    fig
+  } else {
+    
+    g <- list(
+      scope = 'usa',
+      projection = list(type = 'albers usa'),
+      showland = TRUE,
+      landcolor = toRGB("gray85"),
+      subunitwidth = 1,
+      countrywidth = 1,
+      subunitcolor = toRGB("white"),
+      countrycolor = toRGB("white")
+    )
+    
+    fig <- plot_geo(HeatMapForecast, locationmode = 'USA-states', sizes = c(10, 200))
+    fig <- fig %>% add_markers(
+      x = ~Long, y = ~Lat, size = ~CHIME, color = ~CHIME, hoverinfo = "text",
+      text = ~paste(HeatMapForecast$Base, "<br />", HeatMapForecast$CHIME)
+    )
+    fig <- fig %>% layout(title = 'Projected Hospitalizations <br>(Click legend to toggle)', geo = g)
+    
+    fig
+    
+  }
+  
+}
+####################################################################
 
 
 
