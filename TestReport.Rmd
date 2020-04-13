@@ -139,13 +139,7 @@ New Fatalities:
 
 **`r paste("+",comma(CovidDeathChng))`**
 
-Estimated Hospital Bed Utilization:
 
-**`r HospUltz`**
-
-Estimated Hospital Bed Utilization Change:
-
-**`r HospUltz2`**
 
 
 
