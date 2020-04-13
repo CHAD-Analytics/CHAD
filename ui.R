@@ -29,9 +29,9 @@ ui <- tagList(
                   dashboardHeader(title = div(img(src="AFIT_Emblem_Blue.png",height = '50',width = '110')),
                                   titleWidth = 300,
                                   dropdownMenu( 
-                                      icon = tags$div(HTML('<font size = "4">More Info... </font>  <i class="fa fa-info-circle" style = "font-size:18px;"></i> <body style="background-color:powderblue;"></body>')),
+                                      icon = tags$div(HTML('<font size = "5" color = "blue" font-weight:"bold" >More Information</font>  <i class="fa fa-info-circle" style = "font-size:18px;"></i> <body style="background-color:powderblue;"></body>')),
                                       headerText = "Want to know more?",
-                                      badgeStatus = "info",
+                                      badgeStatus = "primary",
                                       tags$li(actionLink("overviewInfo", label = "Overview", icon = icon("globe")),
                                               class = "dropdown"),
                                       tags$li(actionLink("inputInfo", label = "User Inputs", icon = icon("sliders-h")),
@@ -67,7 +67,7 @@ ui <- tagList(
                                            div(id = "single", style="display: none;", numericInput("tckt", "Ticket Number : ", 12345,  width = 300)),
                                            radioButtons("TypeLocal", "State or County Plot:",
                                                         c("County"="County",
-                                                          "State"="State"),)
+                                                          "State"="State"))
                                        ),
                                        br(),
                                        menuItem(
@@ -103,6 +103,29 @@ ui <- tagList(
                                                               c("Close Schools" = "CSN",
                                                                 "Businesses Telework" = "CBN",
                                                                 "Social Distance" = "SDN"))
+                                       ),
+                                       br(),
+                                       menuItem(
+                                           "Summary Tab Inputs",
+                                           tabName = "dashboard",
+                                           icon = icon("sliders-h"),
+                                           div(id = "single", style="display: none;", numericInput("tckt", "Ticket Number : ", 12345,  width = 300)),
+                                           selectInput(
+                                               "MAJCOMInput",
+                                               "MAJCOM Summary:", 
+                                               list(`MAJCOM` = MAJCOMList ), 
+                                               selectize = FALSE),
+                                           radioButtons("SummaryModelType",
+                                                        "Summary Plot Model: ",
+                                                        c("IHME"="IHME",
+                                                          "CHIME"="CHIME")),
+                                           radioButtons("SummaryForecast",
+                                                        "Choose Days Forecasted: ",
+                                                        c("7 Days"="Seven",
+                                                          "14 Days"="Fourteen",
+                                                          "30 Days"="Thirty",
+                                                          "60 Days"="Sixty"))
+
                                        ),
                                        br(),
                                        
@@ -205,7 +228,7 @@ ui <- tagList(
                                       fluidRow(
                                           valueBoxOutput("TotalPopulation"),
                                           valueBoxOutput("IHMEPeakDate"),
-                                          valueBoxOutput("CHIMEPeakDate"),
+                                          valueBoxOutput("CHIMEPeakDate")
                                           #valueBoxOutput("TotalPopulation"),
                                           #valueBoxOutput("IHMEMinMax"),
                                           #valueBoxOutput("CHIMEMinMax")
@@ -238,6 +261,8 @@ ui <- tagList(
                                   # Mission Risk ------------------------------------------------------------
                                   tabPanel(
                                       title = "Summary",
+                                      fluidRow(
+                                          box(plotlyOutput("SummaryTabChoro", height = 600, width = 'auto',),height = 600, width = 900)),
                                       box(title = "Projected Daily Hospitalizations",
                                           solidHeader=T, 
                                           align = "left", 
@@ -247,6 +272,8 @@ ui <- tagList(
                                           height = 900, 
                                           width =13,
                                           downloadButton('downloadData', 'Download data'))
+                                    
+                                      )
                                       )
 
                                   ####### END Mission Risk #######
@@ -254,11 +281,11 @@ ui <- tagList(
                                   
                       )
                   )
-    ),
+    )
     
 
               
 
-)
 
-#Close UI 
+
+
