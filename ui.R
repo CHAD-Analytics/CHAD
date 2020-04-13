@@ -106,7 +106,7 @@ ui <- tagList(
                                        ),
                                        br(),
                                        menuItem(
-                                           "Summary Tab Inputs",
+                                           "MAJCOM Summary Inputs",
                                            tabName = "dashboard",
                                            icon = icon("sliders-h"),
                                            div(id = "single", style="display: none;", numericInput("tckt", "Ticket Number : ", 12345,  width = 300)),
@@ -260,7 +260,7 @@ ui <- tagList(
                                   ####### BEGIN SUMMARY TAB #########
                                   # Mission Risk ------------------------------------------------------------
                                   tabPanel(
-                                      title = "Summary",
+                                      title = "MAJCOM Summary",
                                       fluidRow(
                                           box(plotlyOutput("SummaryTabChoro", height = 600, width = 'auto',),height = 600, width = 900)),
                                       box(title = "Projected Daily Hospitalizations",
