@@ -29,9 +29,9 @@ ui <- tagList(
                   dashboardHeader(title = div(img(src="AFIT_Emblem_Blue.png",height = '50',width = '110')),
                                   titleWidth = 300,
                                   dropdownMenu( 
-                                      icon = tags$div(HTML('<font size = "4">More Info... </font>  <i class="fa fa-info-circle" style = "font-size:18px;"></i> <body style="background-color:powderblue;"></body>')),
+                                      icon = tags$div(HTML('<font size = "5" color = "blue" font-weight:"bold" >More Information</font>  <i class="fa fa-info-circle" style = "font-size:18px;"></i> <body style="background-color:powderblue;"></body>')),
                                       headerText = "Want to know more?",
-                                      badgeStatus = "info",
+                                      badgeStatus = "primary",
                                       tags$li(actionLink("overviewInfo", label = "Overview", icon = icon("globe")),
                                               class = "dropdown"),
                                       tags$li(actionLink("inputInfo", label = "User Inputs", icon = icon("sliders-h")),
