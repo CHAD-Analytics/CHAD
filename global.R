@@ -147,6 +147,7 @@ CovidConfirmedCasesRate <- cbind(CovidConfirmedCases,v)
 
 
 ######################Data Specific to plotting counties and states as choropleth
+
 #Input the Included Counties as factors
 # PlottingCountyData<- read.csv("https://usafactsstatic.blob.core.windows.net/public/data/covid-19/covid_confirmed_usafacts.csv",
 #                               header = TRUE, stringsAsFactors = FALSE)
@@ -177,21 +178,26 @@ PlottingCountyData<- read.csv("https://usafactsstatic.blob.core.windows.net/publ
 PlottingCountyData$county <- tolower(removeWords(PlottingCountyData$County.Name,"County"))
 PlottingCountyData$county <-gsub(" ", "" ,PlottingCountyData$county)
 PlottingCountyData$county <- gsub("^(.*) parish, ..$","\\1", PlottingCountyData$county)
+
 #Creating state name in addition to state abb
 PlottingCountyData<-PlottingCountyData %>% 
   mutate(state_name = tolower(state.name[match(State, state.abb)]))
+
 #Calling in county data to merge and match, that way we have the correct coordinates when creating the map.
 county_df <- map_data("county")
 names(county_df) <- c("long", "lat", "group", "order", "state_name", "county")
 county_df$state <- state.abb[match(county_df$state_name, tolower(state.name))]
 county_df$state_name <- NULL
+
 #Calling in state data so we can map it correctly
 state_df <- map_data("state", projection = "albers", parameters = c(39, 45))
 colnames(county_df)[6]<-"State"
 county_df$county<-gsub(" ","",county_df$county)
 
 
-#Create National Data table on summary page
+
+#######################Create National Data table on summary page
+
 NationalDataTable<-CovidConfirmedCases
 NationalDataTable$State<-as.factor(NationalDataTable$State)
 NationalDataTable<-NationalDataTable[,-c(1,2,4)]
@@ -218,6 +224,9 @@ NationalDataTable$`Cases Per 100,000 People`<-round(NationalDataTable$`Total Cas
 ##########################################################################################################
 ##########################################################################################################
 ############################################################################################################################################
+
+
+
 #Use army models to create projections for the local area around the base
 #Establish function for army SEIAR model. This allows us to pass though a simple function to gather all statistics when we plot
 SEIAR_Model_Run<-function(num_init_cases, Pop.At.Risk, incub_period, latent_period, 
@@ -335,6 +344,7 @@ SEIAR_Model_Run<-function(num_init_cases, Pop.At.Risk, incub_period, latent_peri
         v_c <- rollsum(sir_data$vent_add,ventilated_dur)
         sir_data$vent_cum <- c(sir_data$vent_cum[1:(n_days - length(v_c))],v_c)
     } 
+    
     #write.csv(sir_data, file = 'test.csv') # for testing
     h_m <- round(max(sir_data$hos_cum), 0)
     i_m <- round(max(sir_data$icu_cum), 0)
@@ -385,171 +395,22 @@ seiar<-function(S,E,A,I,R, beta, sigma, gamma_1, gamma_2, N){
 }
 
 
-SIR_Model_Run<-function(num_init_cases, Pop.At.Risk, detect_prob, 
-                        doubling, recovery_days, social_rate, hospital_rate,
-                        icu_rate, ventilated_rate, hospital_dur, icu_dur, ventilated_dur, n_days){
-    #create parameters for model
-    total_infections <- num_init_cases / (hospital_rate/100)
-    I <- total_infections / (detect_prob / 100) 
-    S <- (Pop.At.Risk - I)
-    R <- 0
-    intrinsic_growth_rate = 2 ^(1 / doubling) -1
-    recovery_days <- recovery_days
-    gamma <- 1 / recovery_days
-    beta <- (intrinsic_growth_rate + gamma) / S * (1-social_rate/100)
-    r_t <- beta / gamma * S 
-    r_0 <- r_t / (1 - social_rate/100)
-    doubling_time_t <- 1 / log2(beta*S - gamma + 1)
-    myList <- list()
-    myList$total_infections <- total_infections
-    myList$S <- S
-    myList$I <- I
-    myList$R <- R
-    myList$intrinsic_growth_rate <- intrinsic_growth_rate
-    myList$recovery_days <- recovery_days
-    myList$gamma <- gamma
-    myList$beta <- beta
-    myList$r_t <- r_t
-    myList$r_0 <- r_0
-    myList$doubling_time_t <- doubling_time_t
-    
-    
-    
-    
-    #initial values
-    N = S + I + R
-    hos_add <- (I * hospital_rate/100)
-    hos_cum <- (I * hospital_rate/100)
-    icu_add <- (hos_add * icu_rate/100)
-    icu_cum <- (hos_cum * icu_rate/100)
-    
-    #create the data frame
-    sir_data <- data.frame(t = 1,
-                           S = S,
-                           I = I,
-                           R = R,
-                           hos_add = hos_add,
-                           hos_cum = hos_cum,
-                           icu_add = hos_add * icu_rate/100,
-                           icu_cum = hos_cum * icu_rate/100,
-                           vent_add = icu_add * ventilated_rate/100,
-                           vent_cum = icu_cum * ventilated_rate/100,
-                           Id = 0
-    )
-    
-    for(i in 2:n_days){
-        y <- sir(S,I,R, beta, gamma, N)
-        S <- y$S
-        I <- y$I
-        R <- y$R
-        
-        #calculate new infections
-        Id <- (sir_data$S[i-1] - S)
-        
-        #portion of the the newly infected that are in the hospital, ICU, and Vent
-        hos_add <- Id * hospital_rate/100
-        hos_cum <- sir_data$hos_cum[i-1] + hos_add
-        
-        icu_add <- hos_add * icu_rate/100
-        icu_cum <- sir_data$icu_cum[i-1] + icu_add
-        
-        vent_add <- icu_add * ventilated_rate/100 
-        vent_cum <- sir_data$vent_cum[i-1] + vent_add
-        
-        temp <- data.frame(t = i,
-                           S = S,
-                           I = I,
-                           R = R,
-                           hos_add = hos_add,
-                           hos_cum = hos_cum,
-                           icu_add = icu_add,
-                           icu_cum = icu_cum,
-                           vent_add = vent_add,
-                           vent_cum = vent_cum,
-                           Id = Id
-        )
-        
-        sir_data <- rbind(sir_data,temp)
-    }
-    
-    #doing some weird stuff to get a rolling sum of hospital impacts based on length of stay (los)
-    if(n_days > hospital_dur){
-        h_c <- rollsum(sir_data$hos_add,hospital_dur)
-        sir_data$hos_cum <- c(sir_data$hos_cum[1:(n_days - length(h_c))],h_c)
-    } 
-    if(n_days > icu_dur){
-        i_c <- rollsum(sir_data$icu_add,icu_dur)
-        sir_data$icu_cum <- c(sir_data$icu_cum[1:(n_days - length(i_c))],i_c)
-    } 
-    if(n_days > ventilated_dur){
-        v_c <- rollsum(sir_data$vent_add,ventilated_dur)
-        sir_data$vent_cum <- c(sir_data$vent_cum[1:(n_days - length(v_c))],v_c)
-    } 
-    #write.csv(sir_data, file = 'test.csv') # for testing
-    h_m <- round(max(sir_data$hos_cum), 0)
-    i_m <- round(max(sir_data$icu_cum), 0)
-    v_m <- round(max(sir_data$vent_cum), 0)
-    myList$sir <- sir_data
-    myList$hos_max <- h_m
-    myList$icu_max <- i_m
-    myList$vent_max <- v_m 
-    
-    h_m <- sir_data$t[which.max(sir_data$hos_cum)][1]
-    i_m <- sir_data$t[which.max(sir_data$icu_cum)][1]
-    v_m <- sir_data$t[which.max(sir_data$vent_cum)][1]
-    myList$hos_t_max <- h_m
-    myList$icu_t_max <- i_m
-    myList$vent_t_max <- v_m 
-    
-    h_m <- round(max(sir_data$hos_add), 0)
-    i_m <- round(max(sir_data$icu_add), 0)
-    v_m <- round(max(sir_data$vent_add), 0)
-    
-    myList$hos_add <- h_m
-    myList$icu_add <- i_m
-    myList$vent_add <- v_m 
-    return(myList)
-}
-
-sir<-function(S,I,R, beta, gamma, N){
-    Sn <- (-beta * S * I) + S
-    In = (beta * S * I - gamma * I) + I
-    Rn = gamma * I + R
-    if(Sn < 0) Sn = 0
-    if(In < 0) In = 0
-    if(Rn < 0) Rn = 0
-    
-    scale = N / (Sn + In + Rn )
-    myListSIR <- list()
-    myListSIR$S <- (Sn * scale)
-    myListSIR$I <- (In * scale)
-    myListSIR$R <- (Rn * scale)
-    return(myListSIR)
-}
-
-
-
-
-
-
+#######################################################
+############### Helper Functions ######################
+#######################################################
 
 GetCounties<-function(base,radius){
-    #BaseStats<-dplyr::filter(AFBaseLocations, Base == input$Base)
     
+    #Find counties in radius
     CountyInfo$DistanceMiles = cimd[,as.character(base)]
-    #for (i in 1:3143) {
-    #    CountyInfo$DistanceMiles[i]<-(distm(c(BaseStats$Long, BaseStats$Lat), c(CountyInfo$Longitude[i], CountyInfo$Latitude[i]), fun = distHaversine)/1609.34)
-    #}
     IncludedCounties<-dplyr::filter(CountyInfo, DistanceMiles <= radius)
     IncludedCounties
 }
 
 GetHospitals<-function(base,radius){
-    #Finds number of hospitals in radius
-    #BaseStats<-dplyr::filter(AFBaseLocations, Base == input$Base)
-    
+  
+    #Find number of hospitals in radius
     HospitalInfo$DistanceMiles = himd[,as.character(base)]
-    
     IncludedHospitals<-dplyr::filter(HospitalInfo, (DistanceMiles <= radius))
     IncludedHospitals<-dplyr::filter(IncludedHospitals, (TYPE=="GENERAL ACUTE CARE") | (TYPE=="CRITICAL ACCESS"))
     IncludedHospitals
@@ -557,98 +418,94 @@ GetHospitals<-function(base,radius){
 
 
 
-
-
-
-#Step Three
 ###################################################################################################################################################
+# Statistics for Local Health Page -------------------------------------------------------------------------------------------------------------------------------------
 
-# Establish Local Counties ---------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-#These Functions establishes which counties are going to be included in the analysis determined by the base and radius.
 CalculateCounties<-function(IncludedCounties){
-    #Finds which counties in given radius. Also Give county statistics
+  
+    #Get the total population in the selected region
     TotalPopulation <-  sum(IncludedCounties$Population)
     TotalPopulation
 }
 
-
-# Create Numerical Statistics for the dashboard -------------------------------------------------------------------------------------------------------------------------------------
-
-# Finds Covid Cases and statistics on covid per county
 CalculateCovid<-function(IncludedCounties){
-    #Finds which counties in given radius. Also Give county statistics
+  
+    #Get total confirmed cases in the selected region
     CovidCounties<-subset(CovidConfirmedCases, CountyFIPS %in% IncludedCounties$FIPS)
     sum(rev(CovidCounties)[,1])
 }
 
 CalculateDeaths<-function(IncludedCounties){
-    #Finds which counties in given radius. Also Give county statistics
+  
+    #Get total deaths in the selected region
     CovidCountiesDeath<-subset(CovidDeaths, CountyFIPS %in% IncludedCounties$FIPS)
-    sum(CovidCountiesDeath[,ncol(CovidCountiesDeath)])
+    sum(rev(CovidCountiesDeath)[,1])
 }
 
-HospitalIncreases<-function(IncludedCounties, IncludedHospitals){
-    #use new data set, remember to clean code later
+HospitalIncreases<-function(IncludedCounties){
+    
+    #Find hospitals in selected region
     hospCounty <- subset(HospUtlzCounty, fips %in% IncludedCounties$FIPS)
-    #Finds number of hospitals in radius
+    
+    #Calculate total beds and weighted average utilization
     TotalBeds<-sum(hospCounty$num_staffed_beds)
-    #get historic utilization
     hospCounty$bedsUsed <- hospCounty$bed_utilization * hospCounty$num_staffed_beds
     totalUsedBeds <- sum(hospCounty$bedsUsed)
     baseUtlz <- totalUsedBeds/TotalBeds
-    #Finds which counties in given radius. Also Give county statistics
+    
+    #Get COVID cases and county demographic hospitalization rates
     CovidCounties<-subset(CovidConfirmedCases, CountyFIPS %in% IncludedCounties$FIPS)
-    #Get county hospitalization rates
     CovidCountiesHospRate <- subset(CountyHospRate, FIPS %in% IncludedCounties$FIPS)
-    #changeC <- sum((rev(CovidCounties)[,1] - rev(CovidCounties)[,2])*CovidCountiesHospRate$HospRate)
+
+    #Estimate current hospital utilization
     TotalHospital<-sum(rev(CovidCounties)[,1]*CovidCountiesHospRate$HospRate)
     NotHospital<-sum(rev(CovidCounties)[,7]**CovidCountiesHospRate$HospRate)
     StillHospital<-ceiling((TotalHospital-NotHospital))
-    Upper<- round(((StillHospital)/TotalBeds+baseUtlz)*100,1)
-    #Lower<- round(((StillHospital+changeC*.207)/TotalBeds+.55)*100,1)
-    paste(Upper," %", sep = "") 
+    Utilz<- round(((StillHospital)/TotalBeds+baseUtlz)*100,1)
+    
+   # paste(Utilz," %", sep = "") 
 }
 
 
-HospitalUtlzChng <- function(base, radius){
-    IncludedCounties<-GetCounties(base,radius)
+HospitalUtlzChng <- function(IncludedCounties){
+  
+    #Find hospitals in selected region
     hospCounty <- subset(HospUtlzCounty, fips %in% IncludedCounties$FIPS)
     
-    #Finds number of hospitals in radius
+    #Calculate total beds and weighted average utilization
     TotalBeds<-sum(hospCounty$num_staffed_beds)
-    
-    #get historic utilization
     hospCounty$bedsUsed <- hospCounty$bed_utilization * hospCounty$num_staffed_beds
     totalUsedBeds <- sum(hospCounty$bedsUsed)
     baseUtlz <- totalUsedBeds/TotalBeds
     
-    #Finds which counties in given radius. Also Give county statistics
+    #Get COVID cases and county demographic hospitalization rates
     CovidCounties<-subset(CovidConfirmedCases, CountyFIPS %in% IncludedCounties$FIPS)
-    
-    #Get county hospitalization rates
     CovidCountiesHospRate <- subset(CountyHospRate, FIPS %in% IncludedCounties$FIPS)
-    TotalHospital<-sum(rev(CovidCounties)[,1]*CovidCountiesHospRate$HospRate)
-    NotHospital<-sum(rev(CovidCounties)[,7]*CovidCountiesHospRate$HospRate)
-    StillHospital<-ceiling((TotalHospital-NotHospital))
-    Upper<- round(((StillHospital)/TotalBeds+baseUtlz)*100,1)
     
-    # Yesterday
+
+    #Estimate current hospital utilization
+    TotalHospital<-sum(rev(CovidCounties)[,1]*CovidCountiesHospRate$HospRate)
+    NotHospital<-sum(rev(CovidCounties)[,7]**CovidCountiesHospRate$HospRate)
+    StillHospital<-ceiling((TotalHospital-NotHospital))
+    Utilz<- round(((StillHospital)/TotalBeds+baseUtlz)*100,1)
+    
+    # Yesterday's utilization
     TotalHospitaly<-sum(rev(CovidCounties)[,2]*CovidCountiesHospRate$HospRate)
     NotHospitaly<-sum(rev(CovidCounties)[,8]*CovidCountiesHospRate$HospRate)
     StillHospitaly<-ceiling((TotalHospitaly-NotHospitaly))
-    Uppery<-(signif(((StillHospitaly)/TotalBeds+baseUtlz)*100,3))
+    Utilzy<-(signif(((StillHospitaly)/TotalBeds+baseUtlz)*100,3))
     
     # find change
-    chng <- round((Upper-Uppery)/2, 1)
+    chng <- round((Utilz-Utilzy)/2, 1)
     
-    if (chng < 0) {
-      sign <- ""
-    } else {
-      sign <- "+"
-    }
-    
-    paste(sign,chng,"%")
+    # if (chng < 0) {
+    #   sign <- ""
+    # } else {
+    #   sign <- "+"
+    # }
+    # 
+    # paste(sign,chng,"%")
 }
 
 
@@ -972,118 +829,67 @@ CalculateIHMEPeak<-function(ChosenBase, IncludedHospitals, radius, StatisticType
 
 
 
+
+##########################################################################################################
+##########################################################################################################
+##########################################################################################################
 # Create Charts for plotting lines showing trends among the virus  ------------------------------------------------------------------------------------------------------------------
 
-#Create charts for plotting the current data
-##########################################################################################################
-##########################################################################################################
-##########################################################################################################
-#Begin function to create chart of new cases for COVID-19 is a specified region around a specified base
-CovidCasesPerDayChart<-function(ChosenBase, Radius, IncludedCounties, IncludedHospitals){
-    
-    #Find counties in radius
+
+
+#Create charts for Local Health Tab
+
+
+#This function creates the dataframe for plotting daily cases, deaths, estimated hospitalizations in selected region
+CovidCasesPerDayChart<-function(IncludedCounties){
+      
+    #Get cases and deaths in selected region
     CovidCountiesCases<-subset(CovidConfirmedCases, CountyFIPS %in% IncludedCounties$FIPS)
     CovidCountiesDeath<-subset(CovidDeaths, CountyFIPS %in% IncludedCounties$FIPS)
+    CovidCountiesHospRate <- subset(CountyHospRate, FIPS %in% IncludedCounties$FIPS)
     
-    #Recalculate datframe to have daily cases instead of cumulative
-    n<-as.numeric(length(CovidCountiesCases))
-    VectDailyCovid<-colSums(CovidCountiesCases[,29:n])
-    DailyNewCases<-VectDailyCovid[2:length(VectDailyCovid)] -
-        VectDailyCovid[1:(length(VectDailyCovid)-1)]
-    
-    #Estimation for new hospitalizations
-    DailyNewHospitalizations<-ceiling(DailyNewCases*.21)
+    #Find Daily new cases
+    DailyNewCases <- CovidCountiesCases[,6:length(CovidCountiesCases)] -
+      CovidCountiesCases[,5:(length(CovidCountiesCases)-1)]
+    DailyNewCasesT <- colSums(DailyNewCases)
     
     #Find New Deaths
-    CovidCountiesDeath<-subset(CovidDeaths, CountyFIPS %in% IncludedCounties$FIPS)
-    VectDailyDeaths<-colSums(CovidCountiesDeath[29:ncol(CovidCountiesDeath)])
-    DailyNewDeaths<-VectDailyDeaths[2:length(VectDailyDeaths)] -
-        VectDailyDeaths[1:(length(VectDailyDeaths)-1)]
+    DailyNewDeaths <- CovidCountiesDeath[,6:length(CovidCountiesDeath)] -
+      CovidCountiesDeath[,5:(length(CovidCountiesDeath)-1)]
+    DailyNewDeathsT <- colSums(DailyNewDeaths)
+    
+    #Estimation for new hospitalizations
+    DailyNewHospitalizations<-ceiling(colSums(DailyNewCases*CovidCountiesHospRate$HospRate))
     
     #Clean up the dataset to prepare for plotting
-    ForecastDate<- seq(as.Date("2020-02-17"), length=(length(DailyNewDeaths)), by="1 day")
-    Chart1Data<-cbind.data.frame(ForecastDate,DailyNewCases,DailyNewHospitalizations,DailyNewDeaths)
+    ForecastDate<- seq(as.Date("2020-1-23"), length=length(DailyNewCases), by="1 day")
+    Chart1Data<-cbind.data.frame(ForecastDate,DailyNewCasesT,DailyNewHospitalizations,DailyNewDeathsT)
     colnames(Chart1Data)<-c("ForecastDate","New Cases","New Hospitalizations","New Fatalities")
     Chart1DataSub <- melt(data.table(Chart1Data), id=c("ForecastDate"))
-    
-    #Plot for local area daily cases, hospitalizations, and deaths
-    p1 <- ggplot(Chart1DataSub) + 
-        geom_line(aes(x=ForecastDate, y=value, colour = variable), size = 0.5) +
-        scale_colour_manual(values=c("Blue", "Orange", "Red")) +
-        xlab('Date') +
-        ylab('Number of People') +
-        theme_bw() + 
-        theme(plot.title = element_text(face = "bold", size = 15, family = "sans"),
-              axis.title = element_text(face = "bold", size = 11, family = "sans"),
-              axis.text.x = element_text(angle = 60, hjust = 1), 
-              axis.line = element_line(color = "black"),
-              legend.position = "top",
-              plot.background = element_blank(),
-              panel.grid.major = element_blank(),
-              panel.grid.minor = element_blank(),
-              panel.border = element_blank()) +
-        scale_x_date(date_breaks = "1 week") +
-        labs(color='')
-    
-    p1 <- ggplotly(p1)
-    
-    p1 <- p1 %>% layout(legend = list(orientation = "h",   # show entries horizontally
-                                      xanchor = "center",  # use center of legend as anchor
-                                      x = 0.5,
-                                      y = 1.2)) %>% config(displayModeBar = FALSE)
-  
-    p1
 }
 
 
 
 #Begin function to create chart of new cases for COVID-19 is a specified region around a specified base
-CovidCasesCumChart<-function(ChosenBase, Radius, IncludedCounties, IncludedHospitals){
+CovidCasesCumChart<-function(IncludedCounties){
     
     #Find counties in radius
     CovidCountiesCases<-subset(CovidConfirmedCases, CountyFIPS %in% IncludedCounties$FIPS)
     CovidCountiesDeath<-subset(CovidDeaths, CountyFIPS %in% IncludedCounties$FIPS)
+    CovidCountiesHospRate <- subset(CountyHospRate, FIPS %in% IncludedCounties$FIPS)
     
     #Compute cumlative cases and deaths in selected counties
-    CumDailyCovid<-colSums(CovidCountiesCases[,29:length(CovidCountiesCases)])
-    CumDailyDeaths<-colSums(CovidCountiesDeath[29:ncol(CovidCountiesDeath)])
+    CumDailyCovid<-colSums(CovidCountiesCases[,5:length(CovidCountiesCases)])
+    CumDailyDeaths<-colSums(CovidCountiesDeath[5:length(CovidCountiesDeath)])
     
     #Estimation for total hospitalizations
-    CumHospitalizations<-ceiling(CumDailyCovid*0.21)
+    CumHospitalizations<-ceiling(colSums(CovidCountiesCases[,5:length(CovidCountiesCases)]*CovidCountiesHospRate$HospRate))
     
     #Clean up the dataset to get ready to plot it
-    ForecastDate<- seq(as.Date("2020-02-17"), length=(length(CumDailyDeaths)), by="1 day")
+    ForecastDate<- seq(as.Date("2020-1-23"), length=length(CumDailyCovid), by="1 day")
     Chart2Data<-cbind.data.frame(ForecastDate,CumDailyCovid,CumHospitalizations,CumDailyDeaths)
     colnames(Chart2Data)<-c("ForecastDate","Total Cases","Total Hospitalizations","Total Fatalities")
     Chart2DataSub <- melt(data.table(Chart2Data), id=c("ForecastDate"))
-    
-    #Plot for local area cumulative cases
-    p2 <- ggplot(Chart2DataSub,height = 250) + 
-        geom_line(aes(x=ForecastDate, y=value, colour = variable), size = 0.5) +
-        scale_colour_manual(values=c("Blue", "Orange", "Red"))+
-        xlab('Date') +
-        ylab('Number of People') +
-        theme_bw() + 
-        theme(plot.title = element_text(face = "bold", size = 15, family = "sans"),
-              axis.title = element_text(face = "bold", size = 11, family = "sans"),
-              axis.text.x = element_text(angle = 60, hjust = 1), 
-              axis.line = element_line(color = "black"),
-              plot.background = element_blank(),
-              panel.grid.major = element_blank(),
-              panel.grid.minor = element_blank(),
-              panel.border = element_blank(),
-              legend.position = c(0, 1),) +
-        scale_x_date(date_breaks = "1 week")
-
-    p2 <- ggplotly(p2)
-    p2 <- p2 %>% layout(legend = list(orientation = "h",   # show entries horizontally
-                                      xanchor = "center",  # use center of legend as anchor
-                                      x = 0.5,
-                                      y = 1.2)) %>% config(displayModeBar = FALSE)
-    p2 <- p2 %>% layout(xaxis = list(showgrid = F),
-                       yaxis = list(gridcolor = "lightgray"))
-    
-    p2
 }
 
 #Create charts for projecting local health data
@@ -3406,4 +3212,157 @@ PlotOverlay2<-function(ChosenBase, IncludedCounties, IncludedHospitals, SocialDi
   }
 
 }
+
+
+
+
+
+
+####################################################
+############# Non-Used Functions ###################
+####################################################
+
+
+
+# SIR_Model_Run<-function(num_init_cases, Pop.At.Risk, detect_prob, 
+#                         doubling, recovery_days, social_rate, hospital_rate,
+#                         icu_rate, ventilated_rate, hospital_dur, icu_dur, ventilated_dur, n_days){
+#     #create parameters for model
+#     total_infections <- num_init_cases / (hospital_rate/100)
+#     I <- total_infections / (detect_prob / 100) 
+#     S <- (Pop.At.Risk - I)
+#     R <- 0
+#     intrinsic_growth_rate = 2 ^(1 / doubling) -1
+#     recovery_days <- recovery_days
+#     gamma <- 1 / recovery_days
+#     beta <- (intrinsic_growth_rate + gamma) / S * (1-social_rate/100)
+#     r_t <- beta / gamma * S 
+#     r_0 <- r_t / (1 - social_rate/100)
+#     doubling_time_t <- 1 / log2(beta*S - gamma + 1)
+#     myList <- list()
+#     myList$total_infections <- total_infections
+#     myList$S <- S
+#     myList$I <- I
+#     myList$R <- R
+#     myList$intrinsic_growth_rate <- intrinsic_growth_rate
+#     myList$recovery_days <- recovery_days
+#     myList$gamma <- gamma
+#     myList$beta <- beta
+#     myList$r_t <- r_t
+#     myList$r_0 <- r_0
+#     myList$doubling_time_t <- doubling_time_t
+#     
+#     
+#     
+#     
+#     #initial values
+#     N = S + I + R
+#     hos_add <- (I * hospital_rate/100)
+#     hos_cum <- (I * hospital_rate/100)
+#     icu_add <- (hos_add * icu_rate/100)
+#     icu_cum <- (hos_cum * icu_rate/100)
+#     
+#     #create the data frame
+#     sir_data <- data.frame(t = 1,
+#                            S = S,
+#                            I = I,
+#                            R = R,
+#                            hos_add = hos_add,
+#                            hos_cum = hos_cum,
+#                            icu_add = hos_add * icu_rate/100,
+#                            icu_cum = hos_cum * icu_rate/100,
+#                            vent_add = icu_add * ventilated_rate/100,
+#                            vent_cum = icu_cum * ventilated_rate/100,
+#                            Id = 0
+#     )
+#     
+#     for(i in 2:n_days){
+#         y <- sir(S,I,R, beta, gamma, N)
+#         S <- y$S
+#         I <- y$I
+#         R <- y$R
+#         
+#         #calculate new infections
+#         Id <- (sir_data$S[i-1] - S)
+#         
+#         #portion of the the newly infected that are in the hospital, ICU, and Vent
+#         hos_add <- Id * hospital_rate/100
+#         hos_cum <- sir_data$hos_cum[i-1] + hos_add
+#         
+#         icu_add <- hos_add * icu_rate/100
+#         icu_cum <- sir_data$icu_cum[i-1] + icu_add
+#         
+#         vent_add <- icu_add * ventilated_rate/100 
+#         vent_cum <- sir_data$vent_cum[i-1] + vent_add
+#         
+#         temp <- data.frame(t = i,
+#                            S = S,
+#                            I = I,
+#                            R = R,
+#                            hos_add = hos_add,
+#                            hos_cum = hos_cum,
+#                            icu_add = icu_add,
+#                            icu_cum = icu_cum,
+#                            vent_add = vent_add,
+#                            vent_cum = vent_cum,
+#                            Id = Id
+#         )
+#         
+#         sir_data <- rbind(sir_data,temp)
+#     }
+#     
+#     #doing some weird stuff to get a rolling sum of hospital impacts based on length of stay (los)
+#     if(n_days > hospital_dur){
+#         h_c <- rollsum(sir_data$hos_add,hospital_dur)
+#         sir_data$hos_cum <- c(sir_data$hos_cum[1:(n_days - length(h_c))],h_c)
+#     } 
+#     if(n_days > icu_dur){
+#         i_c <- rollsum(sir_data$icu_add,icu_dur)
+#         sir_data$icu_cum <- c(sir_data$icu_cum[1:(n_days - length(i_c))],i_c)
+#     } 
+#     if(n_days > ventilated_dur){
+#         v_c <- rollsum(sir_data$vent_add,ventilated_dur)
+#         sir_data$vent_cum <- c(sir_data$vent_cum[1:(n_days - length(v_c))],v_c)
+#     } 
+#     #write.csv(sir_data, file = 'test.csv') # for testing
+#     h_m <- round(max(sir_data$hos_cum), 0)
+#     i_m <- round(max(sir_data$icu_cum), 0)
+#     v_m <- round(max(sir_data$vent_cum), 0)
+#     myList$sir <- sir_data
+#     myList$hos_max <- h_m
+#     myList$icu_max <- i_m
+#     myList$vent_max <- v_m 
+#     
+#     h_m <- sir_data$t[which.max(sir_data$hos_cum)][1]
+#     i_m <- sir_data$t[which.max(sir_data$icu_cum)][1]
+#     v_m <- sir_data$t[which.max(sir_data$vent_cum)][1]
+#     myList$hos_t_max <- h_m
+#     myList$icu_t_max <- i_m
+#     myList$vent_t_max <- v_m 
+#     
+#     h_m <- round(max(sir_data$hos_add), 0)
+#     i_m <- round(max(sir_data$icu_add), 0)
+#     v_m <- round(max(sir_data$vent_add), 0)
+#     
+#     myList$hos_add <- h_m
+#     myList$icu_add <- i_m
+#     myList$vent_add <- v_m 
+#     return(myList)
+# }
+# 
+# sir<-function(S,I,R, beta, gamma, N){
+#     Sn <- (-beta * S * I) + S
+#     In = (beta * S * I - gamma * I) + I
+#     Rn = gamma * I + R
+#     if(Sn < 0) Sn = 0
+#     if(In < 0) In = 0
+#     if(Rn < 0) Rn = 0
+#     
+#     scale = N / (Sn + In + Rn )
+#     myListSIR <- list()
+#     myListSIR$S <- (Sn * scale)
+#     myListSIR$I <- (In * scale)
+#     myListSIR$R <- (Rn * scale)
+#     return(myListSIR)
+# }
 
