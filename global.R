@@ -45,6 +45,7 @@ library(zoo) #used for rollsum function
 library(rmarkdown)
 library(rvest)
 library(maps)
+library(tm)
 library(plotly)
 
 
@@ -147,13 +148,38 @@ CovidConfirmedCasesRate <- cbind(CovidConfirmedCases,v)
 
 ######################Data Specific to plotting counties and states as choropleth
 #Input the Included Counties as factors
+# PlottingCountyData<- read.csv("https://usafactsstatic.blob.core.windows.net/public/data/covid-19/covid_confirmed_usafacts.csv",
+#                               header = TRUE, stringsAsFactors = FALSE)
+# PlottingCountyData$county <- tolower(gsub("([A-Za-z]+).*", "\\1", PlottingCountyData$County.Name))
+# PlottingCountyData$county <- gsub("^(.*) parish, ..$","\\1", PlottingCountyData$county)
+# #Creating state name in addition to state abb
+# PlottingCountyData<-PlottingCountyData %>% 
+#     mutate(state_name = tolower(state.name[match(State, state.abb)]))
+# #Calling in county data to merge and match, that way we have the correct coordinates when creating the map.
+# county_df <- map_data("county")
+# names(county_df) <- c("long", "lat", "group", "order", "state_name", "county")
+# county_df$state <- state.abb[match(county_df$state_name, tolower(state.name))]
+# county_df$state_name <- NULL
+# #Calling in state data so we can map it correctly
+# state_df <- map_data("state", projection = "albers", parameters = c(39, 45))
+# colnames(county_df)[6]<-"State"
+#Input the Included Counties as factors
 PlottingCountyData<- read.csv("https://usafactsstatic.blob.core.windows.net/public/data/covid-19/covid_confirmed_usafacts.csv",
                               header = TRUE, stringsAsFactors = FALSE)
-PlottingCountyData$county <- tolower(gsub("([A-Za-z]+).*", "\\1", PlottingCountyData$County.Name))
+
+# stopwords = "County"     #Your stop words file
+# x  = PlottingCountyData$County.Name        #Company column data
+# x  =  removeWords(x,stopwords)     #Remove stopwords
+# 
+# df$company_new <- x     #Add the list as new column and check
+
+
+PlottingCountyData$county <- tolower(removeWords(PlottingCountyData$County.Name,"County"))
+PlottingCountyData$county <-gsub(" ", "" ,PlottingCountyData$county)
 PlottingCountyData$county <- gsub("^(.*) parish, ..$","\\1", PlottingCountyData$county)
 #Creating state name in addition to state abb
 PlottingCountyData<-PlottingCountyData %>% 
-    mutate(state_name = tolower(state.name[match(State, state.abb)]))
+  mutate(state_name = tolower(state.name[match(State, state.abb)]))
 #Calling in county data to merge and match, that way we have the correct coordinates when creating the map.
 county_df <- map_data("county")
 names(county_df) <- c("long", "lat", "group", "order", "state_name", "county")
@@ -162,6 +188,7 @@ county_df$state_name <- NULL
 #Calling in state data so we can map it correctly
 state_df <- map_data("state", projection = "albers", parameters = c(39, 45))
 colnames(county_df)[6]<-"State"
+county_df$county<-gsub(" ","",county_df$county)
 
 
 #Create National Data table on summary page
