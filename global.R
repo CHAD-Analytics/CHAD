@@ -2451,13 +2451,13 @@ IHMELocalProjections<-function(MyCounties, IncludedHospitals, ChosenBase, Statis
 
 # Output Projections ---------------------------------------------------------------------------------------------------------------------------------------------------------------
 AFrow = nrow(AFBaseLocations)
-ForecastDataTable <- setNames(data.frame(matrix(ncol = 31, nrow = 0)),c("Installation","MAJCOM","State","Total Beds","Hopitalization Per 100,000", "Hopitalization Per 10,000", "New Hospitalizations",
+ForecastDataTable <- setNames(data.frame(matrix(ncol = 31, nrow = 0)),c("Installation","MAJCOM","State","Available Beds","Hopitalization Per 100,000", "Hopitalization Per 10,000", "New Hospitalizations",
                                                                         "7D IHME Forecast","7D IHME Peak","7D IHME Peak Date","7D SEIAR Forecast","7D SEIAR Peak","7D SEIAR Peak Date",
                                                                         "14D IHME Forecast","14D IHME Peak","14D IHME Peak  Date","14D SEIAR Forecast","14D SEIAR Peak","14D SEIAR Peak Date",
                                                                         "30D IHME Forecast","30D IHME Peak","30D IHME Peak Date","30D SEIAR Forecast","30D SEIAR Peak","30D SEIAR Peak Date",
                                                                         "60D IHME Forecast","60D IHME Peak","60D IHME Peak Date","60D SEIAR Forecast","60D SEIAR Peak","60D SEIAR Peak Date") )
 
-ForecastDataTableCases <- setNames(data.frame(matrix(ncol = 31, nrow = 0)),c("Installation","MAJCOM","State","Total Beds","Cases Per 100,000", "Cases Per 10,000", "New Cases",
+ForecastDataTableCases <- setNames(data.frame(matrix(ncol = 31, nrow = 0)),c("Installation","MAJCOM","State","Available Beds","Cases Per 100,000", "Cases Per 10,000", "New Cases",
                                                                         "7D IHME Forecast","7D IHME Peak","7D IHME Peak Date","7D SEIAR Forecast","7D SEIAR Peak","7D SEIAR Peak Date",
                                                                         "14D IHME Forecast","14D IHME Peak","14D IHME Peak  Date","14D SEIAR Forecast","14D SEIAR Peak","14D SEIAR Peak Date",
                                                                         "30D IHME Forecast","30D IHME Peak","30D IHME Peak Date","30D SEIAR Forecast","30D SEIAR Peak","30D SEIAR Peak Date",
@@ -2490,6 +2490,15 @@ for (i in 2:AFrow){
   
   IHME_State <- dplyr::filter(IHME_Model, State == AFBaseLocations$State[i])
   TotalBedsCounty <- sum(MyHospitals$BEDS)
+  
+  
+  hospCounty <- subset(HospUtlzCounty, fips %in% MyCounties$FIPS)
+  #Finds number of hospitals in radius
+  TotalBeds<-sum(hospCounty$num_staffed_beds)
+  #get historic utilization
+  hospCounty$bedsUsed <- hospCounty$bed_utilization * hospCounty$num_staffed_beds
+  totalUsedBeds <- sum(hospCounty$bedsUsed)
+  baseUtlz <- totalUsedBeds/TotalBeds
   
   #Get regional and state populations
   #MyCounties <- GetCounties()
@@ -2555,7 +2564,7 @@ for (i in 2:AFrow){
                         0,0,0,0,0,0,
                         0,0,0,0,0,0,
                         0,0,0,0,0,0)
-    names(NewDF) <- c("Installation","MAJCOM","State","Total Beds", "Hopitalization Per 100,000", "Hopitalization Per 10,000", "New Hospitalizations",
+    names(NewDF) <- c("Installation","MAJCOM","State","Available Beds", "Hopitalization Per 100,000", "Hopitalization Per 10,000", "New Hospitalizations",
                       "7D IHME Forecast","7D IHME Peak","7D IHME Peak Date","7D SEIAR Forecast","7D SEIAR Peak","7D SEIAR Peak Date",
                       "14D IHME Forecast","14D IHME Peak","14D IHME Peak  Date","14D SEIAR Forecast","14D SEIAR Peak","14D SEIAR Peak Date",
                       "30D IHME Forecast","30D IHME Peak","30D IHME Peak Date","30D SEIAR Forecast","30D SEIAR Peak","30D SEIAR Peak Date",
@@ -2565,7 +2574,7 @@ for (i in 2:AFrow){
                         0,0,0,0,0,0,
                         0,0,0,0,0,0,
                         0,0,0,0,0,0)
-    names(NewDFCases) <- c("Installation","MAJCOM","State","Total Beds", "Cases Per 100,000", "Cases Per 10,000", "New Cases",
+    names(NewDFCases) <- c("Installation","MAJCOM","State","Available Beds", "Cases Per 100,000", "Cases Per 10,000", "New Cases",
                       "7D IHME Forecast","7D IHME Peak","7D IHME Peak Date","7D SEIAR Forecast","7D SEIAR Peak","7D SEIAR Peak Date",
                       "14D IHME Forecast","14D IHME Peak","14D IHME Peak  Date","14D SEIAR Forecast","14D SEIAR Peak","14D SEIAR Peak Date",
                       "30D IHME Forecast","30D IHME Peak","30D IHME Peak Date","30D SEIAR Forecast","30D SEIAR Peak","30D SEIAR Peak Date",
@@ -2645,24 +2654,24 @@ for (i in 2:AFrow){
     PID4<-format(PID4, format="%b-%d")
     
     
-    NewDF <- data.frame(AFBaseLocations$Base[i],AFBaseLocations$`Major Command`[i],AFBaseLocations$State[i],TotalBedsCounty, HospitalizationsPer100000, HospitalizationsPer10000, NewHospitalizations,
+    NewDF <- data.frame(AFBaseLocations$Base[i],AFBaseLocations$`Major Command`[i],AFBaseLocations$State[i],round(TotalBedsCounty*(1-baseUtlz)), HospitalizationsPer100000, HospitalizationsPer10000, NewHospitalizations,
                         I1,PI1,PID1,SevDayVal,PeakSevDayVal,PeakDateSevDayVal,
                         I2,PI2,PID2,FourteenDayVal,PeakFourteenDayVal,PeakDateFourteenDayVal,
                         I3,PI3,PID3,ThirtyDayVal,PeakThirtyDayVal,PeakDateThirtyDayVal,
                         I4,PI4,PID4,SixtyDayVal,PeakSixtyDayVal,PeakDateSixtyDayVal) 
-    names(NewDF) <- c("Installation","MAJCOM","State","Total Beds", "Hopitalization Per 100,000", "Hopitalization Per 10,000","New Hospitalizations",
+    names(NewDF) <- c("Installation","MAJCOM","State","Available Beds", "Hopitalization Per 100,000", "Hopitalization Per 10,000","New Hospitalizations",
                       "7D IHME Forecast","7D IHME Peak","7D IHME Peak Date","7D SEIAR Forecast","7D SEIAR Peak","7D SEIAR Peak Date",
                       "14D IHME Forecast","14D IHME Peak","14D IHME Peak  Date","14D SEIAR Forecast","14D SEIAR Peak","14D SEIAR Peak Date",
                       "30D IHME Forecast","30D IHME Peak","30D IHME Peak Date","30D SEIAR Forecast","30D SEIAR Peak","30D SEIAR Peak Date",
                       "60D IHME Forecast","60D IHME Peak","60D IHME Peak Date","60D SEIAR Forecast","60D SEIAR Peak","60D SEIAR Peak Date")
     ForecastDataTable <- rbind(ForecastDataTable,NewDF)
     
-    NewDFCases <- data.frame(AFBaseLocations$Base[i],AFBaseLocations$`Major Command`[i],AFBaseLocations$State[i],TotalBedsCounty, CasesPer100000, CasesPer10000, NewCases,
+    NewDFCases <- data.frame(AFBaseLocations$Base[i],AFBaseLocations$`Major Command`[i],AFBaseLocations$State[i],round(TotalBedsCounty*(1-baseUtlz)), CasesPer100000, CasesPer10000, NewCases,
                         I1/.2,PI1/.2,PID1,SevDayVal/.2,PeakSevDayVal/.2,PeakDateSevDayVal,
                         I2/.2,PI2/.2,PID2,FourteenDayVal/.2,PeakFourteenDayVal/.2,PeakDateFourteenDayVal,
                         I3/.2,PI3/.2,PID3,ThirtyDayVal/.2,PeakThirtyDayVal/.2,PeakDateThirtyDayVal,
                         I4/.2,PI4/.2,PID4,SixtyDayVal/.2,PeakSixtyDayVal/.2,PeakDateSixtyDayVal) 
-    names(NewDFCases) <- c("Installation","MAJCOM","State","Total Beds", "Cases Per 100,000", "Cases Per 10,000","New Cases",
+    names(NewDFCases) <- c("Installation","MAJCOM","State","Available Beds", "Cases Per 100,000", "Cases Per 10,000","New Cases",
                       "7D IHME Forecast","7D IHME Peak","7D IHME Peak Date","7D SEIAR Forecast","7D SEIAR Peak","7D SEIAR Peak Date",
                       "14D IHME Forecast","14D IHME Peak","14D IHME Peak  Date","14D SEIAR Forecast","14D SEIAR Peak","14D SEIAR Peak Date",
                       "30D IHME Forecast","30D IHME Peak","30D IHME Peak Date","30D SEIAR Forecast","30D SEIAR Peak","30D SEIAR Peak Date",
@@ -2692,7 +2701,7 @@ FilterDataTable<-function(dt, ModelType){
 
 ######################## Summary Tab Heat Map
 HeatMapForecast<-merge(AFBaseLocations, ForecastDataTable, by.x = "Base", by.y = "Installation")
-HeatMapForecast<-data.frame(HeatMapForecast$Base, HeatMapForecast$Location, HeatMapForecast$State.x, HeatMapForecast$`Major Command`, HeatMapForecast$Lat, HeatMapForecast$Long,HeatMapForecast$`Total Beds`,HeatMapForecast$`Hopitalization Per 100,000`,HeatMapForecast$`Hopitalization Per 10,000`,HeatMapForecast$`New Hospitalizations`,HeatMapForecast$`New Hospitalizations` ,HeatMapForecast$`7D SEIAR Forecast`, HeatMapForecast$`7D IHME Forecast`,HeatMapForecast$`14D SEIAR Forecast`,  HeatMapForecast$`14D IHME Forecast`,  HeatMapForecast$`30D SEIAR Forecast`, HeatMapForecast$`30D IHME Forecast`, HeatMapForecast$`60D SEIAR Forecast`, HeatMapForecast$`60D IHME Forecast`)
+HeatMapForecast<-data.frame(HeatMapForecast$Base, HeatMapForecast$Location, HeatMapForecast$State.x, HeatMapForecast$`Major Command`, HeatMapForecast$Lat, HeatMapForecast$Long,HeatMapForecast$`Available Beds`,HeatMapForecast$`Hopitalization Per 100,000`,HeatMapForecast$`Hopitalization Per 10,000`,HeatMapForecast$`New Hospitalizations`,HeatMapForecast$`New Hospitalizations` ,HeatMapForecast$`7D SEIAR Forecast`, HeatMapForecast$`7D IHME Forecast`,HeatMapForecast$`14D SEIAR Forecast`,  HeatMapForecast$`14D IHME Forecast`,  HeatMapForecast$`30D SEIAR Forecast`, HeatMapForecast$`30D IHME Forecast`, HeatMapForecast$`60D SEIAR Forecast`, HeatMapForecast$`60D IHME Forecast`)
 colnames(HeatMapForecast)<-c("Base","City","State","MAJCOM","Lat","Long","Beds","Hospitalizations Per 100,000","Hospitalizations Per 10,000","Today.CHIME","Today.IHME", "Seven.IHME","Seven.CHIME","Fourteen.IHME","Fourteen.CHIME", "Thirty.IHME","Thirty.CHIME","Sixty.IHME","Sixty.CHIME")
 HeatMapForecast<-reshape(HeatMapForecast, direction='long', 
                          varying=c('Today.CHIME','Today.IHME','Seven.IHME', 'Seven.CHIME', 'Fourteen.IHME', 'Fourteen.CHIME','Thirty.IHME','Thirty.CHIME', 'Sixty.IHME','Sixty.CHIME'), 
@@ -2700,12 +2709,12 @@ HeatMapForecast<-reshape(HeatMapForecast, direction='long',
                          times=c('Today','Seven', 'Fourteen',"Thirty","Sixty"),
                          v.names=c('CHIME', 'IHME'),
                          idvar=c('Base','City','State','MAJCOM','Lat','Long','Beds',"Hospitalizations Per 100,000","Hospitalizations Per 10,000"))
-HeatMapForecast<-transform(HeatMapForecast,IHMEID=ifelse((Beds*.3)>=IHME,"Under Capacity","Over Capacity"))
-HeatMapForecast<-transform(HeatMapForecast,CHIMEID=ifelse((Beds*.3)>=CHIME,"Under Capacity","Over Capacity"))
+HeatMapForecast<-transform(HeatMapForecast,IHMEID=ifelse((Beds)>=IHME,"Under Capacity","Over Capacity"))
+HeatMapForecast<-transform(HeatMapForecast,CHIMEID=ifelse((Beds)>=CHIME,"Under Capacity","Over Capacity"))
 
 
 HeatMapForecastCases<-merge(AFBaseLocations, ForecastDataTableCases, by.x = "Base", by.y = "Installation")
-HeatMapForecastCases<-data.frame(HeatMapForecastCases$Base, HeatMapForecastCases$Location, HeatMapForecastCases$State.x, HeatMapForecastCases$`Major Command`, HeatMapForecastCases$Lat, HeatMapForecastCases$Long,HeatMapForecastCases$`Total Beds`,HeatMapForecastCases$`Cases Per 100,000`,HeatMapForecastCases$`Cases Per 10,000`,HeatMapForecastCases$`New Cases`,HeatMapForecastCases$`New Cases` ,HeatMapForecastCases$`7D SEIAR Forecast`, HeatMapForecastCases$`7D IHME Forecast`,HeatMapForecastCases$`14D SEIAR Forecast`,  HeatMapForecastCases$`14D IHME Forecast`,  HeatMapForecastCases$`30D SEIAR Forecast`, HeatMapForecastCases$`30D IHME Forecast`, HeatMapForecastCases$`60D SEIAR Forecast`, HeatMapForecastCases$`60D IHME Forecast`)
+HeatMapForecastCases<-data.frame(HeatMapForecastCases$Base, HeatMapForecastCases$Location, HeatMapForecastCases$State.x, HeatMapForecastCases$`Major Command`, HeatMapForecastCases$Lat, HeatMapForecastCases$Long,HeatMapForecastCases$`Available Beds`,HeatMapForecastCases$`Cases Per 100,000`,HeatMapForecastCases$`Cases Per 10,000`,HeatMapForecastCases$`New Cases`,HeatMapForecastCases$`New Cases` ,HeatMapForecastCases$`7D SEIAR Forecast`, HeatMapForecastCases$`7D IHME Forecast`,HeatMapForecastCases$`14D SEIAR Forecast`,  HeatMapForecastCases$`14D IHME Forecast`,  HeatMapForecastCases$`30D SEIAR Forecast`, HeatMapForecastCases$`30D IHME Forecast`, HeatMapForecastCases$`60D SEIAR Forecast`, HeatMapForecastCases$`60D IHME Forecast`)
 colnames(HeatMapForecastCases)<-c("Base","City","State","MAJCOM","Lat","Long","Beds","Cases Per 100,000","Cases_Per_10000","Today.CHIME","Today.IHME", "Seven.IHME","Seven.CHIME","Fourteen.IHME","Fourteen.CHIME", "Thirty.IHME","Thirty.CHIME","Sixty.IHME","Sixty.CHIME")
 HeatMapForecastCases<-reshape(HeatMapForecastCases, direction='long', 
                               varying=c('Today.CHIME','Today.IHME','Seven.IHME', 'Seven.CHIME', 'Fourteen.IHME', 'Fourteen.CHIME','Thirty.IHME','Thirty.CHIME', 'Sixty.IHME','Sixty.CHIME'), 
