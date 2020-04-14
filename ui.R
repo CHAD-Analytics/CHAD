@@ -124,7 +124,7 @@ ui <- tagList(
                                                         c("IHME"="IHME",
                                                           "CHIME"="CHIME")),
                                            radioButtons("SummaryForecast",
-                                                        "Choose Days Forecasted: ",
+                                                        "Projected Days Out on Map): ",
                                                         c('Today'='Today',
                                                           "7 Days"="Seven",
                                                           "14 Days"="Fourteen",
