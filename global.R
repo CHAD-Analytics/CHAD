@@ -47,7 +47,8 @@ library(rvest)
 library(maps)
 library(tm)
 library(plotly)
-
+library(sf)
+library(tigris)
 
 
 
@@ -182,17 +183,11 @@ PlottingCountyData$county <- gsub("^(.*) parish, ..$","\\1", PlottingCountyData$
 #Creating state name in addition to state abb
 PlottingCountyData<-PlottingCountyData %>% 
   mutate(state_name = tolower(state.name[match(State, state.abb)]))
-
+PlottingCountyData<-data.frame(PlottingCountyData[,1],rev(PlottingCountyData)[,3])
+colnames(PlottingCountyData)<-c("GEOID","Cases")
 #Calling in county data to merge and match, that way we have the correct coordinates when creating the map.
-county_df <- map_data("county")
-names(county_df) <- c("long", "lat", "group", "order", "state_name", "county")
-county_df$state <- state.abb[match(county_df$state_name, tolower(state.name))]
-county_df$state_name <- NULL
+county_df<-counties(state = NULL, cb = TRUE, resolution = "5m")
 
-#Calling in state data so we can map it correctly
-state_df <- map_data("state", projection = "albers", parameters = c(39, 45))
-colnames(county_df)[6]<-"State"
-county_df$county<-gsub(" ","",county_df$county)
 
 
 
@@ -1097,8 +1092,8 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals, SocialDis
         geom_hline(aes(yintercept = TotalBeds * (1-baseUtlz),
                        linetype = "Max Available Hospital Beds"),
                        colour = "red") +
-        ggtitle("Projected Hospitalizations")+
-        ylab("Daily Hospitalizations")+
+        ggtitle("Projected Daily Hospital Bed Utilization")+
+        ylab("Daily Beds Needed")+
         theme_bw() + 
         theme(plot.title = element_text(face = "bold", size = 15, family = "sans"),
               axis.title = element_text(face = "bold", size = 11, family = "sans"),
@@ -1356,65 +1351,74 @@ GetLocalDataTable<-function(IncludedCounties){
 
 #Create plot of Covid Cases by County
 PlotLocalChoro<-function(IncludedCounties, ChosenBase, TypofPlot){
+  
+  if (TypofPlot == "County") {
+    choropleth <- st_as_sf(county_df)
+    choropleth <- st_transform(choropleth, crs = 4326)
+    choropleth<-choropleth %>% 
+      mutate(GEOID = as.numeric(GEOID))
+    choropleth<-subset(choropleth, GEOID %in% IncludedCounties$FIPS)
+    BaseStats<-dplyr::filter(AFBaseLocations, Base == ChosenBase)
+    Base_point<-st_point(c(BaseStats$Long, BaseStats$Lat)) #COrdinates for base
+    Base_point<-st_sfc(Base_point, crs=4326)
+    Base_point<-st_sf(BaseStats, geometry = Base_point)
     
-    if (TypofPlot == "County") {
-        BaseStats<-dplyr::filter(AFBaseLocations, Base == ChosenBase)
-        #Creating the choropleth dataset so we have all info in one data set and can plot it together
-        choropleth <- merge(county_df, PlottingCountyData, by = c("county", "State"))
-        colnames(choropleth)[7]<-"CountyFIPS"
-        choropleth <- choropleth[order(choropleth$order), ]
-        choropleth$state_name<-NULL
-        choropleth<-data.frame(choropleth$county, choropleth$State, choropleth$CountyFIPS, choropleth$group, choropleth$lat, choropleth$long, rev(choropleth)[,1])
-        colnames(choropleth)<-c("County","State","CountyFIPS","group","lat","long","Cases")
-        choropleth<-subset(choropleth, CountyFIPS %in% IncludedCounties$FIPS)
-        
-        #Plot the data
-        PlotCovidLocal<-ggplot(choropleth, aes(long, lat, group = group)) +
-            geom_polygon(aes(fill = Cases)) +
-            coord_fixed() +
-            theme_minimal() +
-            ggtitle("COVID-19 Cases by County (County View)") +
-            geom_point(data = BaseStats, aes(x=Long, y=Lat, group = 1),
-                       color = 'red', size = 5)+
-            theme(axis.line = element_blank(), axis.text = element_blank(),
-                  axis.ticks = element_blank(), axis.title = element_blank()) +
-            scale_fill_viridis("Cases")
-        
-        PlotCovidLocal <- ggplotly(PlotCovidLocal)
-        PlotCovidLocal <- PlotCovidLocal %>% config(displayModeBar = FALSE)
-        PlotCovidLocal
-        
-    } else  {
-        BaseStats<-dplyr::filter(AFBaseLocations, Base == ChosenBase)
-        #Creating the choropleth dataset so we have all info in one data set and can plot it together
-        choropleth <- merge(county_df, PlottingCountyData, by = c("county", "State"))
-        colnames(choropleth)[7]<-"CountyFIPS"
-        choropleth <- choropleth[order(choropleth$order), ]
-        choropleth$state_name<-NULL
-        choropleth<-data.frame(choropleth$county, choropleth$State, choropleth$CountyFIPS, choropleth$group, choropleth$lat, choropleth$long, rev(choropleth)[,1])
-        colnames(choropleth)<-c("County","State","CountyFIPS","group","lat","long","Cases")
-        choropleth<-subset(choropleth, State %in% IncludedCounties$State)
-        
-        #Plot the data
-        PlotCovidLocal<-ggplot(choropleth, aes(long, lat, group = group)) +
-            geom_polygon(aes(fill = Cases)) +
-            coord_fixed() +
-            theme_minimal() +
-            ggtitle("COVID-19 Cases by County (State View)") +
-            geom_point(data = BaseStats, aes(x= Long, y= Lat, group = 1),
-                       color = 'red', size = 5)+
-            theme(axis.line = element_blank(), axis.text = element_blank(),
-                  axis.ticks = element_blank(), axis.title = element_blank()) +
-            scale_fill_viridis("Cases")
-        
-        PlotCovidLocal <- ggplotly(PlotCovidLocal)
-        PlotCovidLocal <- PlotCovidLocal %>% config(displayModeBar = FALSE)
-        PlotCovidLocal
-    }
+    ## Join the cases to spatial file by FIPS (GEOID)
+    choropleth<-merge(choropleth, PlottingCountyData, by= "GEOID")
+    
+    #plot it
+    PlotCovidLocal<-ggplot()+
+      geom_sf(data = choropleth,aes(fill=Cases)) +
+      geom_sf(data = Base_point, color = "red", size = 3,show.legend ="Null")+
+      #geom_text(data = Base_point, 
+      #          aes(x = Long, y = Lat, 
+      #              label = Base), hjust = .5) +
+      ggtitle("COVID-19 Cases by County (County View)")+ 
+      coord_sf() +
+      theme_minimal() +
+      theme(axis.line = element_blank(), axis.text = element_blank(),
+            axis.ticks = element_blank(), axis.title = element_blank())+
+      scale_fill_viridis(choropleth$Cases)
+    
+    PlotCovidLocal <- ggplotly(PlotCovidLocal)
+    PlotCovidLocal <- PlotCovidLocal %>% config(displayModeBar = FALSE)
+    PlotCovidLocal
+    
+  } else  {
+    choropleth <- st_as_sf(county_df)
+    choropleth <- st_transform(choropleth, crs = 4326)
+    choropleth<-choropleth %>% 
+      mutate(STATEFP = state.fips$abb[match(as.numeric(STATEFP), as.numeric(state.fips$fips))])
+    choropleth<-choropleth %>% 
+      mutate(GEOID = as.numeric(GEOID))
+    choropleth<-subset(choropleth, STATEFP %in% IncludedCounties$State)
+    choropleth<-merge(choropleth, PlottingCountyData, by= "GEOID")
+    BaseStats<-dplyr::filter(AFBaseLocations, Base == ChosenBase)
+    Base_point<-st_point(c(BaseStats$Long, BaseStats$Lat)) #COrdinates for base
+    Base_point<-st_sfc(Base_point, crs=4326)
+    Base_point<-st_sf(BaseStats, geometry = Base_point)
+    
+    ## Join the cases to spatial file by FIPS (GEOID)
     
     
+    
+    PlotCovidLocal<-ggplot()+
+      geom_sf(data = choropleth,aes(fill=Cases)) +
+      geom_sf(data = Base_point, color = "red", size = 3,show.legend ="Null")+
+      #geom_text(data = Base_point, 
+      #          aes(x = Long, y = Lat, 
+      #              label = Base), hjust = .5) +
+      ggtitle("COVID-19 Cases by County (County View)")+ 
+      coord_sf() +
+      theme_minimal() +
+      theme(axis.line = element_blank(), axis.text = element_blank(),
+            axis.ticks = element_blank(), axis.title = element_blank())+
+      scale_fill_viridis(choropleth$Cases)
+    PlotCovidLocal
+  }
+  
+  
 }
-
 
 
 
@@ -1436,63 +1440,63 @@ GetLocalDataTable<-function(IncludedCounties){
 
 # Create choropleth functions -------------------------------------------------------------------------------------------------------------------------------------------------------
 
-#Create plot of Covid Cases by County
-PlotLocalChoro<-function(IncludedCounties, ChosenBase, TypofPlot){
-    
-    if (TypofPlot == "County") {
-        BaseStats<-dplyr::filter(AFBaseLocations, Base == ChosenBase)
-        #Creating the choropleth dataset so we have all info in one data set and can plot it together
-        choropleth <- merge(county_df, PlottingCountyData, by = c("county", "State"))
-        colnames(choropleth)[7]<-"CountyFIPS"
-        choropleth <- choropleth[order(choropleth$order), ]
-        choropleth$state_name<-NULL
-        choropleth<-data.frame(choropleth$county, choropleth$State, choropleth$CountyFIPS, choropleth$group, choropleth$lat, choropleth$long, rev(choropleth)[,1])
-        colnames(choropleth)<-c("County","State","CountyFIPS","group","lat","long","Cases")
-        choropleth<-subset(choropleth, CountyFIPS %in% IncludedCounties$FIPS)
-        
-        #Plot the data
-        PlotCovidLocal<-ggplot(choropleth, aes(long, lat, group = group)) +
-            geom_polygon(aes(fill = Cases)) +
-            coord_fixed() +
-            theme_minimal() +
-            ggtitle("COVID-19 Cases by County (County View)") +
-            geom_point(data = BaseStats, aes(x=Long, y=Lat, group = 1),
-                       color = 'red', size = 5)+
-            theme(axis.line = element_blank(), axis.text = element_blank(),
-                  axis.ticks = element_blank(), axis.title = element_blank()) +
-            scale_fill_viridis("Cases")
-        
-        ggplotly(PlotCovidLocal)
-        
-    } else  {
-        BaseStats<-dplyr::filter(AFBaseLocations, Base == ChosenBase)
-        #Creating the choropleth dataset so we have all info in one data set and can plot it together
-        choropleth <- merge(county_df, PlottingCountyData, by = c("county", "State"))
-        colnames(choropleth)[7]<-"CountyFIPS"
-        choropleth <- choropleth[order(choropleth$order), ]
-        choropleth$state_name<-NULL
-        choropleth<-data.frame(choropleth$county, choropleth$State, choropleth$CountyFIPS, choropleth$group, choropleth$lat, choropleth$long, rev(choropleth)[,1])
-        colnames(choropleth)<-c("County","State","CountyFIPS","group","lat","long","Cases")
-        choropleth<-subset(choropleth, State %in% IncludedCounties$State)
-        
-        #Plot the data
-        PlotCovidLocal<-ggplot(choropleth, aes(long, lat, group = group)) +
-            geom_polygon(aes(fill = log(Cases))) +
-            coord_fixed() +
-            theme_minimal() +
-            ggtitle("COVID-19 Cases by County (State View)") +
-            geom_point(data = BaseStats, aes(x= Long, y= Lat, group = 1),
-                       color = 'red', size = 5)+
-            theme(axis.line = element_blank(), axis.text = element_blank(),
-                  axis.ticks = element_blank(), axis.title = element_blank()) +
-            scale_fill_viridis("log(Cases)")
-        
-        ggplotly(PlotCovidLocal)
-        
-    }
-    
-    
-}
+# #Create plot of Covid Cases by County
+# PlotLocalChoro<-function(IncludedCounties, ChosenBase, TypofPlot){
+#     
+#     if (TypofPlot == "County") {
+#         BaseStats<-dplyr::filter(AFBaseLocations, Base == ChosenBase)
+#         #Creating the choropleth dataset so we have all info in one data set and can plot it together
+#         choropleth <- merge(county_df, PlottingCountyData, by = c("county", "State"))
+#         colnames(choropleth)[7]<-"CountyFIPS"
+#         choropleth <- choropleth[order(choropleth$order), ]
+#         choropleth$state_name<-NULL
+#         choropleth<-data.frame(choropleth$county, choropleth$State, choropleth$CountyFIPS, choropleth$group, choropleth$lat, choropleth$long, rev(choropleth)[,1])
+#         colnames(choropleth)<-c("County","State","CountyFIPS","group","lat","long","Cases")
+#         choropleth<-subset(choropleth, CountyFIPS %in% IncludedCounties$FIPS)
+#         
+#         #Plot the data
+#         PlotCovidLocal<-ggplot(choropleth, aes(long, lat, group = group)) +
+#             geom_polygon(aes(fill = Cases)) +
+#             coord_fixed() +
+#             theme_minimal() +
+#             ggtitle("COVID-19 Cases by County (County View)") +
+#             geom_point(data = BaseStats, aes(x=Long, y=Lat, group = 1),
+#                        color = 'red', size = 5)+
+#             theme(axis.line = element_blank(), axis.text = element_blank(),
+#                   axis.ticks = element_blank(), axis.title = element_blank()) +
+#             scale_fill_viridis("Cases")
+#         
+#         ggplotly(PlotCovidLocal)
+#         
+#     } else  {
+#         BaseStats<-dplyr::filter(AFBaseLocations, Base == ChosenBase)
+#         #Creating the choropleth dataset so we have all info in one data set and can plot it together
+#         choropleth <- merge(county_df, PlottingCountyData, by = c("county", "State"))
+#         colnames(choropleth)[7]<-"CountyFIPS"
+#         choropleth <- choropleth[order(choropleth$order), ]
+#         choropleth$state_name<-NULL
+#         choropleth<-data.frame(choropleth$county, choropleth$State, choropleth$CountyFIPS, choropleth$group, choropleth$lat, choropleth$long, rev(choropleth)[,1])
+#         colnames(choropleth)<-c("County","State","CountyFIPS","group","lat","long","Cases")
+#         choropleth<-subset(choropleth, State %in% IncludedCounties$State)
+#         
+#         #Plot the data
+#         PlotCovidLocal<-ggplot(choropleth, aes(long, lat, group = group)) +
+#             geom_polygon(aes(fill = log(Cases))) +
+#             coord_fixed() +
+#             theme_minimal() +
+#             ggtitle("COVID-19 Cases by County (State View)") +
+#             geom_point(data = BaseStats, aes(x= Long, y= Lat, group = 1),
+#                        color = 'red', size = 5)+
+#             theme(axis.line = element_blank(), axis.text = element_blank(),
+#                   axis.ticks = element_blank(), axis.title = element_blank()) +
+#             scale_fill_viridis("log(Cases)")
+#         
+#         ggplotly(PlotCovidLocal)
+#         
+#     }
+#     
+#     
+# }
 
 
 NationalOverlayPlot<-function(SocialDistance, DaysForecasted){
@@ -2083,8 +2087,8 @@ CHIMELocalPlot<-function(SocialDistance, ForecastedDays, IncludedCounties, Stati
                         alpha = .2) +
             #scale_colour_manual(values=c("Blue", "Orange", "Red"))+
             xlab('Date') +
-            ylab('Daily Hospitalizations') +
-            ggtitle("CHIME Projected Daily Hospitalizations") +
+            ylab('Daily Beds Needed') +
+            ggtitle("CHIME Projected Daily Hospital Bed Utilization") +
             theme_bw() + 
             theme(plot.title = element_text(face = "bold", size = 15, family = "sans"),
                   axis.title = element_text(face = "bold", size = 11, family = "sans"),
@@ -2352,8 +2356,8 @@ IHMELocalProjections<-function(MyCounties, IncludedHospitals, ChosenBase, Statis
                         alpha = .2) +
             #scale_colour_manual(values=c("Blue", "Orange", "Red"))+
             xlab('Date') +
-            ylab('Daily Hospitalizations') +
-            ggtitle("IHME Projected Daily Hospitalizations") +
+            ylab('Daily Beds Needed') +
+            ggtitle("IHME Projected Daily Hospital Bed Utilization") +
             theme_bw() + 
             theme(plot.title = element_text(face = "bold", size = 15, family = "sans"),
                   axis.title = element_text(face = "bold", size = 11, family = "sans"),
