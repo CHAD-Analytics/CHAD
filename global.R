@@ -24,7 +24,8 @@
 
 
 
-
+library(stringr)
+library(stringi)
 library(markdown)
 library(dplyr)
 library(ggplot2)
