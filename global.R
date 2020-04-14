@@ -462,51 +462,51 @@ HospitalIncreases<-function(IncludedCounties){
     TotalHospital<-sum(rev(CovidCounties)[,1]*CovidCountiesHospRate$HospRate)
     NotHospital<-sum(rev(CovidCounties)[,7]**CovidCountiesHospRate$HospRate)
     StillHospital<-ceiling((TotalHospital-NotHospital))
-    Utilz<- round(((StillHospital)/TotalBeds+baseUtlz)*100,1)
+    Utilz<- round(((StillHospital)/TotalBeds+baseUtlz)*100,0)
     
-   # paste(Utilz," %", sep = "") 
+    paste(Utilz," %", sep = "") 
 }
 
 
-HospitalUtlzChng <- function(IncludedCounties){
-  
-    #Find hospitals in selected region
-    hospCounty <- subset(HospUtlzCounty, fips %in% IncludedCounties$FIPS)
-    
-    #Calculate total beds and weighted average utilization
-    TotalBeds<-sum(hospCounty$num_staffed_beds)
-    hospCounty$bedsUsed <- hospCounty$bed_utilization * hospCounty$num_staffed_beds
-    totalUsedBeds <- sum(hospCounty$bedsUsed)
-    baseUtlz <- totalUsedBeds/TotalBeds
-    
-    #Get COVID cases and county demographic hospitalization rates
-    CovidCounties<-subset(CovidConfirmedCases, CountyFIPS %in% IncludedCounties$FIPS)
-    CovidCountiesHospRate <- subset(CountyHospRate, FIPS %in% IncludedCounties$FIPS)
-    
-
-    #Estimate current hospital utilization
-    TotalHospital<-sum(rev(CovidCounties)[,1]*CovidCountiesHospRate$HospRate)
-    NotHospital<-sum(rev(CovidCounties)[,7]**CovidCountiesHospRate$HospRate)
-    StillHospital<-ceiling((TotalHospital-NotHospital))
-    Utilz<- round(((StillHospital)/TotalBeds+baseUtlz)*100,1)
-    
-    # Yesterday's utilization
-    TotalHospitaly<-sum(rev(CovidCounties)[,2]*CovidCountiesHospRate$HospRate)
-    NotHospitaly<-sum(rev(CovidCounties)[,8]*CovidCountiesHospRate$HospRate)
-    StillHospitaly<-ceiling((TotalHospitaly-NotHospitaly))
-    Utilzy<-(signif(((StillHospitaly)/TotalBeds+baseUtlz)*100,3))
-    
-    # find change
-    chng <- round((Utilz-Utilzy)/2, 1)
-    
-    # if (chng < 0) {
-    #   sign <- ""
-    # } else {
-    #   sign <- "+"
-    # }
-    # 
-    # paste(sign,chng,"%")
-}
+# HospitalUtlzChng <- function(IncludedCounties){
+#   
+#     #Find hospitals in selected region
+#     hospCounty <- subset(HospUtlzCounty, fips %in% IncludedCounties$FIPS)
+#     
+#     #Calculate total beds and weighted average utilization
+#     TotalBeds<-sum(hospCounty$num_staffed_beds)
+#     hospCounty$bedsUsed <- hospCounty$bed_utilization * hospCounty$num_staffed_beds
+#     totalUsedBeds <- sum(hospCounty$bedsUsed)
+#     baseUtlz <- totalUsedBeds/TotalBeds
+#     
+#     #Get COVID cases and county demographic hospitalization rates
+#     CovidCounties<-subset(CovidConfirmedCases, CountyFIPS %in% IncludedCounties$FIPS)
+#     CovidCountiesHospRate <- subset(CountyHospRate, FIPS %in% IncludedCounties$FIPS)
+#     
+# 
+#     #Estimate current hospital utilization
+#     TotalHospital<-sum(rev(CovidCounties)[,1]*CovidCountiesHospRate$HospRate)
+#     NotHospital<-sum(rev(CovidCounties)[,7]**CovidCountiesHospRate$HospRate)
+#     StillHospital<-ceiling((TotalHospital-NotHospital))
+#     Utilz<- round((baseUtlz - (StillHospital)/TotalBedsbaseUtlz)*100,0)
+#     
+#     # # Yesterday's utilization
+#     # TotalHospitaly<-sum(rev(CovidCounties)[,2]*CovidCountiesHospRate$HospRate)
+#     # NotHospitaly<-sum(rev(CovidCounties)[,8]*CovidCountiesHospRate$HospRate)
+#     # StillHospitaly<-ceiling((TotalHospitaly-NotHospitaly))
+#     # Utilzy<-(signif(((StillHospitaly)/TotalBeds+baseUtlz)*100,3))
+#     # 
+#     # # find change
+#     # chng <- round((Utilz-Utilzy)/2, 1)
+#     
+#     # if (chng < 0) {
+#     #   sign <- ""
+#     # } else {
+#     #   sign <- "+"
+#     # }
+#     # 
+#     paste(Utilz,"%")
+# }
 
 
 CalculateCHIMEPeak<-function(IncludedCounties, ChosenBase, ChosenRadius, SocialDistance, ProjectedDays, StatisticType){
@@ -899,220 +899,221 @@ CovidCasesCumChart<-function(IncludedCounties){
 PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals, SocialDistance, DaysProjected, StatisticType){
     if (StatisticType == "Hospitalizations") {
         
-        #Creating the stats and dataframes determined by the base we choose to look at.
-        BaseState<-dplyr::filter(AFBaseLocations, Base == ChosenBase)
-        IHME_State <- dplyr::filter(IHME_Model, State == toString(BaseState$State[1]))
-        TotalBedsCounty <- sum(IncludedHospitals$BEDS)
-        
-        #Get regional and state populations
-        StPopList <- dplyr::filter(CountyInfo, State == toString(BaseState$State[1]))
-        RegPop <- sum(IncludedCounties$Population)
-        StPop <- sum(StPopList$Population)
-        
-        # Use Population ratio to scale IHME
-        PopRatio <- RegPop/StPop
-        
-        # Get total hospital bed number across state
-        IncludedHospitalsST <- dplyr::filter(HospitalInfo, STATE == toString(BaseState$State[1]))
-        TotalBedsState <- sum(IncludedHospitalsST$BEDS)
-        
-        # Calculate bed ratio
-        BedProp <- TotalBedsCounty/TotalBedsState
-        
-        # Apply ratio's to IHME data
-        IHME_Region <- IHME_State
-        IHME_Region$allbed_mean = round(IHME_State$allbed_mean*PopRatio)
-        IHME_Region$allbed_lower = round(IHME_State$allbed_lower*PopRatio)
-        IHME_Region$allbed_upper = round(IHME_State$allbed_upper*PopRatio)
-        IHME_Data<-data.frame(IHME_Region$date,IHME_Region$allbed_mean, IHME_Region$allbed_lower, IHME_Region$allbed_upper)
-        
-        BaseState<-dplyr::filter(AFBaseLocations, Base == ChosenBase)
-        #Get data for counties with covid cases. We want number of cases, the rate of the cases and maybe other data.
-        #We include State, county, population in those counties, cases, fatalities, doubling rate
-        CovidCounties<-subset(CovidConfirmedCases, CountyFIPS %in% IncludedCounties$FIPS)
-        HistoricalData<-colSums(CovidCounties[,5:length(CovidCounties)])
-        HistoricalDates<-seq(as.Date("2020-01-22"), length=length(HistoricalData), by="1 day")
-        HistoricalData<-data.frame(HistoricalDates, HistoricalData*.21, HistoricalData*.15, HistoricalData*.27)
-        colnames(HistoricalData)<-c("ForecastDate", "Expected Hospitalizations", "Lower Estimate","Upper Estimate")
-        
-        DeathCounties<-subset(CovidDeaths, CountyFIPS %in% IncludedCounties$FIPS)
-        CaseRate <- subset(CovidConfirmedCasesRate, CountyFIPS %in% IncludedCounties$FIPS)
-        CountyDataTable<-cbind(IncludedCounties,rev(CovidCounties)[,1],rev(DeathCounties)[,1],rev(CaseRate)[,1])
-        CountyDataTable<-data.frame(CountyDataTable$State,CountyDataTable$County,CountyDataTable$Population, rev(CountyDataTable)[,3], rev(CountyDataTable)[,2],rev(CountyDataTable)[,1])
-        colnames(CountyDataTable)<-c("State","County","Population","Total Confirmed Cases","Total Fatalities", "Case Doubling Rate (days)" )
-        
-        #Cleaning it up to input into the SEIAR model, we include countyFIPS, CountyName, State, State FIPS, number of cases, population, and doubling rate
-        #We take the data and create a dataframe called SIR inputs. It checks out by total cases, total population, and average doubling rate
-        ActiveCases<-rev(CovidCounties)[1:7]
-        ActiveCases<-data.frame(CovidCounties[,1:4],ActiveCases[,1], IncludedCounties$Population, CountyDataTable$`Case Doubling Rate (days)`)
-        colnames(ActiveCases)<-c("CountyFIPS","CountyName","State","StateFIPS","CurrentCases", "Population", "Doubling Rate")
-        SIRinputs<-data.frame(sum(ActiveCases$CurrentCases),sum(ActiveCases$Population), mean(ActiveCases$`Doubling Rate`))
-        colnames(SIRinputs)<-c("cases","pop","doubling")
-        
-        
-        ####################################################################################
-        #Mean Estimate
-        
-        #Next we use the calculated values, along with estimated values from the Estimated Values. 
-        #The only input we want from the user is the social distancing rate. For this example, we just use 0.5
-        cases<-SIRinputs$cases
-        pop<-SIRinputs$pop
-        doubling<-8
-        
-        #Established Variables at the start for every county or populations
-        Ro<-2.5
-        incubationtime<-5
-        latenttime<-2
-        recoverydays<-14
-        socialdistancing<-SocialDistance
-        hospitalizationrate<-5
-        icurate<-6
-        ventilatorrate<-3
-        hospitaltime<-3.5
-        icutime<-4
-        ventilatortime<-7
-        daysforecasted<-DaysProjected
-        
-        
-        #Now we throw the values above into the SEIAR model, and we create dates for the number of days we decided to forecast as well (place holder for now).
-        #With the outputs, we grab the daily hospitalized people and the cumulative hospitalizations. Then we name the columns
-        SEIARProj<-SEIAR_Model_Run(cases, pop, incubationtime, latenttime,doubling,recoverydays,
-                                   socialdistancing,hospitalizationrate, icurate,ventilatorrate,hospitaltime,icutime,
-                                   ventilatortime,daysforecasted,Ro, .5)
-        
-        MyDates<-seq(Sys.Date()-(length(CovidCounties)-80), length=daysforecasted, by="1 day")
-        DailyData<-data.frame(MyDates, SEIARProj$sir$hos_add)
-        TotalData<-data.frame(MyDates, SEIARProj$sir$hos_cum)
-        colnames(DailyData)<-c("ForecastDate", "Expected Daily Cases")
-        colnames(TotalData)<-c("ForecastDate", "Total Daily Cases")
-        
-        
-        ####################################################################################
-        #Lower Estimate
-        
-        #Next we use the calculated values, along with estimated values from the Estimated Values. 
-        #The only input we want from the user is the social distancing rate. For this example, we just use 0.5
-        cases<-SIRinputs$cases
-        pop<-SIRinputs$pop
-        doubling<-10
-        
-        #Established Variables at the start for every county or populations
-        Ro<-2.5
-        incubationtime<-5
-        latenttime<-2
-        recoverydays<-14
-        socialdistancing<-SocialDistance
-        hospitalizationrate<-5
-        icurate<-6
-        ventilatorrate<-3
-        hospitaltime<-3.5
-        icutime<-4
-        ventilatortime<-7
-        daysforecasted<-DaysProjected
-        
-        
-        
-        #Now we throw the values above into the SEIAR model, and we create dates for the number of days we decided to forecast as well (place holder for now).
-        #With the outputs, we grab the daily hospitalized people and the cumulative hospitalizations. Then we name the columns
-        SEIARProj<-SEIAR_Model_Run(cases, pop, incubationtime, latenttime,doubling,recoverydays, 
-                                   socialdistancing,hospitalizationrate, icurate,ventilatorrate,hospitaltime,
-                                   icutime,ventilatortime,daysforecasted,Ro, .5)
-        
-        DailyData<-data.frame(DailyData, SEIARProj$sir$hos_add)
-        TotalData<-data.frame(TotalData, SEIARProj$sir$hos_cum)
-        colnames(DailyData)<-c("ForecastDate", "Expected Daily Cases","Minimum Daily Cases")
-        colnames(TotalData)<-c("ForecastDate", "Total Daily Cases", "Minimum Total Cases")
-        
-        ####################################################################################
-        #Upper Estimate
-        #Next we use the calculated values, along with estimated values from the Estimated Values. 
-        
-        #The only input we want from the user is the social distancing rate. For this example, we just use 0.5
-        cases<-SIRinputs$cases
-        pop<-SIRinputs$pop
-        doubling<-7
-        
-        #Established Variables at the start for every county or populations
-        Ro<-2.5
-        incubationtime<-5
-        latenttime<-2
-        recoverydays<-14
-        socialdistancing<-SocialDistance
-        hospitalizationrate<-5.5
-        icurate<-6
-        ventilatorrate<-3
-        hospitaltime<-3.5
-        icutime<-4
-        ventilatortime<-7
-        daysforecasted<-DaysProjected
-        
-        #Now we throw the values above into the SEIAR model, and we create dates for the number of days we decided to forecast as well (place holder for now).
-        #With the outputs, we grab the daily hospitalized people and the cumulative hospitalizations. Then we name the columns
-        SEIARProj<-SEIAR_Model_Run(cases, pop, incubationtime, latenttime,doubling,recoverydays,
-                                   socialdistancing,hospitalizationrate, icurate,ventilatorrate,hospitaltime,
-                                   icutime,ventilatortime,daysforecasted,Ro, .5)
-        
-        DailyData<-data.frame(DailyData, SEIARProj$sir$hos_add)
-        TotalData<-data.frame(TotalData, SEIARProj$sir$hos_cum)
-        colnames(DailyData)<-c("ForecastDate", "Expected Hospitalizations","Lower Estimate","Upper Estimate")
-        colnames(TotalData)<-c("ForecastDate", "Total Daily Cases", "Lower Estimate","Upper Estimate")
-        
-        DailyData$`Expected Hospitalizations` <- round(DailyData$`Expected Hospitalizations`,0)
-        DailyData$`Lower Estimate` <- round(DailyData$`Lower Estimate`,0)
-        DailyData$`Upper Estimate` <- round(DailyData$`Upper Estimate`,0)
-        DailyData<-DailyData[-1,]
-        colnames(IHME_Data)<-c("ForecastDate", "Expected Hospitalizations", "Lower Estimate","Upper Estimate")
-        DailyData$ID<-rep("CHIME",nrow(DailyData))
-        IHME_Data$ID<-rep("IHME",nrow(IHME_Data))
-        HistoricalData$ID<-rep("Past Data", nrow(HistoricalData))
-        OverlayData<-rbind(DailyData,IHME_Data)
-        OverlayData$ForecastDate<-as.Date(OverlayData$ForecastDate)
-        
-        OverlayData<- dplyr::filter(OverlayData, ForecastDate >= Sys.Date() & ForecastDate <= (Sys.Date() + DaysProjected))
-        
-        OverlayData<-rbind(HistoricalData, OverlayData)
-        
-        
-        
-        hospCounty <- subset(HospUtlzCounty, fips %in% IncludedCounties$FIPS)
-        #Finds number of hospitals in radius
-        TotalBeds<-sum(hospCounty$num_staffed_beds)
-        #get historic utilization
-        hospCounty$bedsUsed <- hospCounty$bed_utilization * hospCounty$num_staffed_beds
-        totalUsedBeds <- sum(hospCounty$bedsUsed)
-        baseUtlz <- totalUsedBeds/TotalBeds
-        
-        
-        
-        projections <-  ggplot(OverlayData, aes(x=ForecastDate, y=`Expected Hospitalizations`, color = ID, fill = ID, linetype = ID)) +
-            geom_line() + 
-            scale_colour_manual(values=c("tan", "blue", "black"))+ #,"red"))+
-            scale_fill_manual(values = c("tan4", "cadetblue", "gray"))+ #, "red"))+
-            scale_linetype_manual(values=c("dashed", "dashed", "solid"))+ #, "solid"))+
-            geom_ribbon(aes(ymin = `Lower Estimate`, ymax = `Upper Estimate`), 
-                        alpha = .2) +
-            # geom_hline(aes(yintercept = TotalBeds * (1-baseUtlz),
-            #                linetype = "Max Hospital Bed Capacity"),
-            #                colour = "red") +
-            ggtitle("Projected Hospitalizations")+
-            ylab("Daily Hospitalizations")+
-            theme_bw() + 
-            theme(plot.title = element_text(face = "bold", size = 15, family = "sans"),
-                  axis.title = element_text(face = "bold", size = 11, family = "sans"),
-                  axis.text.x = element_text(angle = 60, hjust = 1), 
-                  axis.line = element_line(color = "black"),
-                  legend.position = "top",
-                  plot.background = element_blank(),
-                  panel.grid.major = element_blank(),
-                  panel.grid.minor = element_blank(),
-                  panel.border = element_blank()) +
-            scale_x_date(date_breaks = "2 week")+
-            labs(color = "ID")
-        
-        
-        projections <- ggplotly(projections)
-        projections <- projections %>% config(displayModeBar = FALSE)
-        projections
+      #Establish initial inputs such as base, counties, and filter IHME model
+      BaseState<-dplyr::filter(AFBaseLocations, Base == ChosenBase)
+      IHME_State <- dplyr::filter(IHME_Model, State == toString(BaseState$State[1]))
+      hospCounty <- subset(HospUtlzCounty, fips %in% IncludedCounties$FIPS)
+      TTBCounty <- sum(IncludedHospitals$BEDS)
+      
+      #Get covid cases and hospitalization rates for county
+      CovidCounties<-subset(CovidConfirmedCases, CountyFIPS %in% IncludedCounties$FIPS)
+      CovidCountiesHospRate <- subset(CountyHospRate, FIPS %in% IncludedCounties$FIPS)
+      
+      #Get past data in daily hospital use
+      #This will use a 5 day hospital stay as the average
+      HistoricalDataDaily <- CovidCounties[,(5+5):length(CovidCounties)] -
+        CovidCounties[,5:(length(CovidCounties)-5)]
+      HistoricalDataHosp<-colSums(HistoricalDataDaily*CovidCountiesHospRate$HospRate)
+      
+      #Create dataframe to hold daily hospitalizations
+      HistoricalDates<-seq(as.Date("2020-01-27"), length=length(HistoricalDataHosp), by="1 day")
+      HistoricalData<-data.frame(HistoricalDates, HistoricalDataHosp, HistoricalDataHosp*0.75, HistoricalDataHosp*1.25)
+      colnames(HistoricalData)<-c("ForecastDate", "Expected Hospitalizations", "Lower Estimate","Upper Estimate")
+      
+      #Get regional and state populations
+      StPopList <- dplyr::filter(CountyInfo, State == toString(BaseState$State[1]))
+      RegPop <- sum(IncludedCounties$Population)
+      StPop <- sum(StPopList$Population)
+      
+      # Use Population ratio to scale IHME
+      PopRatio <- RegPop/StPop
+      
+      
+      # Apply ratio's to IHME data
+      IHME_Region <- IHME_State
+      IHME_Region$allbed_mean = round(IHME_State$allbed_mean*PopRatio)
+      IHME_Region$allbed_lower = round(IHME_State$allbed_lower*PopRatio)
+      IHME_Region$allbed_upper = round(IHME_State$allbed_upper*PopRatio)
+      IHME_Data<-data.frame(IHME_Region$date,IHME_Region$allbed_mean, IHME_Region$allbed_lower, IHME_Region$allbed_upper)
+      
+      DeathCounties<-subset(CovidDeaths, CountyFIPS %in% IncludedCounties$FIPS)
+      CaseRate <- subset(CovidConfirmedCasesRate, CountyFIPS %in% IncludedCounties$FIPS)
+      CountyDataTable<-cbind(IncludedCounties,rev(CovidCounties)[,1],rev(DeathCounties)[,1],rev(CaseRate)[,1])
+      CountyDataTable<-data.frame(CountyDataTable$State,CountyDataTable$County,CountyDataTable$Population, rev(CountyDataTable)[,3], rev(CountyDataTable)[,2],rev(CountyDataTable)[,1])
+      colnames(CountyDataTable)<-c("State","County","Population","Total Confirmed Cases","Total Fatalities", "Case Doubling Rate (days)" )
+      
+      #Cleaning it up to input into the SEIAR model, we include countyFIPS, CountyName, State, State FIPS, number of cases, population, and doubling rate
+      #We take the data and create a dataframe called SIR inputs. It checks out by total cases, total population, and average doubling rate
+      ActiveCases<-rev(CovidCounties)[1:7]
+      ActiveCases<-data.frame(CovidCounties[,1:4],ActiveCases[,1], IncludedCounties$Population, CountyDataTable$`Case Doubling Rate (days)`)
+      colnames(ActiveCases)<-c("CountyFIPS","CountyName","State","StateFIPS","CurrentCases", "Population", "Doubling Rate")
+      SIRinputs<-data.frame(sum(ActiveCases$CurrentCases),sum(ActiveCases$Population), mean(ActiveCases$`Doubling Rate`))
+      colnames(SIRinputs)<-c("cases","pop","doubling")
+      
+      
+      ####################################################################################
+      #Mean Estimate
+      
+      #Next we use the calculated values, along with estimated values from the Estimated Values. 
+      #The only input we want from the user is the social distancing rate. For this example, we just use 0.5
+      cases<-SIRinputs$cases
+      pop<-SIRinputs$pop
+      doubling<-8
+      
+      #Established Variables at the start for every county or populations
+      Ro<-2.5
+      incubationtime<-5
+      latenttime<-2
+      recoverydays<-14
+      socialdistancing<-SocialDistance
+      hospitalizationrate<-5
+      icurate<-6
+      ventilatorrate<-3
+      hospitaltime<-3.5
+      icutime<-4
+      ventilatortime<-7
+      daysforecasted<-DaysProjected
+      
+      
+      #Now we throw the values above into the SEIAR model, and we create dates for the number of days we decided to forecast as well (place holder for now).
+      #With the outputs, we grab the daily hospitalized people and the cumulative hospitalizations. Then we name the columns
+      SEIARProj<-SEIAR_Model_Run(cases, pop, incubationtime, latenttime,doubling,recoverydays,
+                                 socialdistancing,hospitalizationrate, icurate,ventilatorrate,hospitaltime,icutime,
+                                 ventilatortime,daysforecasted,Ro, .5)
+      
+      MyDates<-seq(Sys.Date()-(length(CovidCounties)-80), length=daysforecasted, by="1 day")
+      DailyData<-data.frame(MyDates, SEIARProj$sir$hos_add)
+      TotalData<-data.frame(MyDates, SEIARProj$sir$hos_cum)
+      colnames(DailyData)<-c("ForecastDate", "Expected Daily Cases")
+      colnames(TotalData)<-c("ForecastDate", "Total Daily Cases")
+      
+      
+      ####################################################################################
+      #Lower Estimate
+      
+      #Next we use the calculated values, along with estimated values from the Estimated Values. 
+      #The only input we want from the user is the social distancing rate. For this example, we just use 0.5
+      cases<-SIRinputs$cases
+      pop<-SIRinputs$pop
+      doubling<-10
+      
+      #Established Variables at the start for every county or populations
+      Ro<-2.5
+      incubationtime<-5
+      latenttime<-2
+      recoverydays<-14
+      socialdistancing<-SocialDistance
+      hospitalizationrate<-5
+      icurate<-6
+      ventilatorrate<-3
+      hospitaltime<-3.5
+      icutime<-4
+      ventilatortime<-7
+      daysforecasted<-DaysProjected
+      
+      
+      
+      #Now we throw the values above into the SEIAR model, and we create dates for the number of days we decided to forecast as well (place holder for now).
+      #With the outputs, we grab the daily hospitalized people and the cumulative hospitalizations. Then we name the columns
+      SEIARProj<-SEIAR_Model_Run(cases, pop, incubationtime, latenttime,doubling,recoverydays, 
+                                 socialdistancing,hospitalizationrate, icurate,ventilatorrate,hospitaltime,
+                                 icutime,ventilatortime,daysforecasted,Ro, .5)
+      
+      DailyData<-data.frame(DailyData, SEIARProj$sir$hos_add)
+      TotalData<-data.frame(TotalData, SEIARProj$sir$hos_cum)
+      colnames(DailyData)<-c("ForecastDate", "Expected Daily Cases","Minimum Daily Cases")
+      colnames(TotalData)<-c("ForecastDate", "Total Daily Cases", "Minimum Total Cases")
+      
+      ####################################################################################
+      #Upper Estimate
+      #Next we use the calculated values, along with estimated values from the Estimated Values. 
+      
+      #The only input we want from the user is the social distancing rate. For this example, we just use 0.5
+      cases<-SIRinputs$cases
+      pop<-SIRinputs$pop
+      doubling<-7
+      
+      #Established Variables at the start for every county or populations
+      Ro<-2.5
+      incubationtime<-5
+      latenttime<-2
+      recoverydays<-14
+      socialdistancing<-SocialDistance
+      hospitalizationrate<-5.5
+      icurate<-6
+      ventilatorrate<-3
+      hospitaltime<-3.5
+      icutime<-4
+      ventilatortime<-7
+      daysforecasted<-DaysProjected
+      
+      #Now we throw the values above into the SEIAR model, and we create dates for the number of days we decided to forecast as well (place holder for now).
+      #With the outputs, we grab the daily hospitalized people and the cumulative hospitalizations. Then we name the columns
+      SEIARProj<-SEIAR_Model_Run(cases, pop, incubationtime, latenttime,doubling,recoverydays,
+                                 socialdistancing,hospitalizationrate, icurate,ventilatorrate,hospitaltime,
+                                 icutime,ventilatortime,daysforecasted,Ro, .5)
+      
+      DailyData<-data.frame(DailyData, SEIARProj$sir$hos_add)
+      TotalData<-data.frame(TotalData, SEIARProj$sir$hos_cum)
+      colnames(DailyData)<-c("ForecastDate", "Expected Hospitalizations","Lower Estimate","Upper Estimate")
+      colnames(TotalData)<-c("ForecastDate", "Total Daily Cases", "Lower Estimate","Upper Estimate")
+      
+      DailyData$`Expected Hospitalizations` <- round(DailyData$`Expected Hospitalizations`,0)
+      DailyData$`Lower Estimate` <- round(DailyData$`Lower Estimate`,0)
+      DailyData$`Upper Estimate` <- round(DailyData$`Upper Estimate`,0)
+      DailyData<-DailyData[-1,]
+      colnames(IHME_Data)<-c("ForecastDate", "Expected Hospitalizations", "Lower Estimate","Upper Estimate")
+      DailyData$ID<-rep("CHIME",nrow(DailyData))
+      IHME_Data$ID<-rep("IHME",nrow(IHME_Data))
+      HistoricalData$ID<-rep("Past Data", nrow(HistoricalData))
+      HistoricalData <- dplyr::filter(HistoricalData, ForecastDate >= as.Date("2020-01-27") + 30)
+      OverlayData<-rbind(DailyData,IHME_Data)
+      OverlayData$ForecastDate<-as.Date(OverlayData$ForecastDate)
+      
+      OverlayData<- dplyr::filter(OverlayData, ForecastDate >= Sys.Date() & ForecastDate <= (Sys.Date() + DaysProjected))
+      
+      OverlayData<-rbind(HistoricalData, OverlayData)
+      
+      
+      
+      hospCounty <- subset(HospUtlzCounty, fips %in% IncludedCounties$FIPS)
+      #Finds number of hospitals in radius
+      TotalBeds<-sum(hospCounty$num_staffed_beds)
+      #get historic utilization
+      hospCounty$bedsUsed <- hospCounty$bed_utilization * hospCounty$num_staffed_beds
+      totalUsedBeds <- sum(hospCounty$bedsUsed)
+      baseUtlz <- totalUsedBeds/TotalBeds
+      
+      
+      projections <-  ggplot(OverlayData, aes(x=ForecastDate, y=`Expected Hospitalizations`, color = ID, fill = ID, linetype = ID)) +
+        geom_line() + 
+        scale_colour_manual(values=c("tan", "blue", "black","red"))+
+        scale_fill_manual(values = c("tan4", "cadetblue", "gray", "red"))+
+        scale_linetype_manual(values=c("dashed", "dashed", "solid", "solid"))+
+        geom_ribbon(aes(ymin = `Lower Estimate`, ymax = `Upper Estimate`), 
+                    alpha = .2) +
+        geom_hline(aes(yintercept = TotalBeds * (1-baseUtlz),
+                       linetype = "Max Available Hospital Beds"),
+                       colour = "red") +
+        ggtitle("Projected Hospitalizations")+
+        ylab("Daily Hospitalizations")+
+        theme_bw() + 
+        theme(plot.title = element_text(face = "bold", size = 15, family = "sans"),
+              axis.title = element_text(face = "bold", size = 11, family = "sans"),
+              axis.text.x = element_text(angle = 60, hjust = 1), 
+              axis.line = element_line(color = "black"),
+              legend.position = "top",
+              plot.background = element_blank(),
+              panel.grid.major = element_blank(),
+              panel.grid.minor = element_blank(),
+              panel.border = element_blank()) +
+        scale_x_date(date_breaks = "2 week")+
+        labs(color = "ID")
+      
+      
+      projections <- ggplotly(projections)
+      projections <- projections %>% config(displayModeBar = FALSE)
+      projections
         
     } else {
         
@@ -1289,6 +1290,7 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals, SocialDis
         DailyData$ID<-rep("CHIME",nrow(DailyData))
         IHME_Data$ID<-rep("IHME",nrow(IHME_Data))
         HistoricalData$ID<-rep("Past Data", nrow(HistoricalData))
+        HistoricalData <- dplyr::filter(HistoricalData, ForecastDate >= as.Date("2020-01-27") + 30)
         OverlayData<-rbind(DailyData,IHME_Data)
         OverlayData$ForecastDate<-as.Date(OverlayData$ForecastDate)
         
@@ -1413,180 +1415,6 @@ PlotLocalChoro<-function(IncludedCounties, ChosenBase, TypofPlot){
 
 
 
-NationalOverlayPlot<-function(SocialDistance, DaysForecasted){
-    #Get IHME Data upper lower and mean combined by date
-    Dataframe1<-IHME_Model %>% 
-        group_by(date) %>% 
-        summarise(allbed_mean = sum(allbed_mean))
-    Dataframe2<-IHME_Model %>% 
-        group_by(date) %>% 
-        summarise(allbed_lower = sum(allbed_lower))
-    Dataframe3<-IHME_Model %>% 
-        group_by(date) %>% 
-        summarise(allbed_upper = sum(allbed_upper))
-    IHMENationalData<-cbind(Dataframe1, Dataframe2$allbed_lower, Dataframe3$allbed_upper)
-    
-    HistoricalData<-colSums(CovidConfirmedCases[,5:length(CovidConfirmedCases)])
-    HistoricalDates<-seq(as.Date("2020-01-22"), length=length(HistoricalData), by="1 day")
-    HistoricalData<-data.frame(HistoricalDates, HistoricalData*.21, HistoricalData*.15, HistoricalData*.27)
-    colnames(HistoricalData)<-c("ForecastDate", "Expected Hospitalizations", "Lower Estimate","Upper Estimate")
-    
-    
-    ####################################################################################
-    #Mean Estimate
-    NationalPop <-  sum(CountyInfo$Population)
-    NationalCases<-sum(rev(CovidConfirmedCases)[1]-rev(CovidConfirmedCases)[8])
-    
-    
-    #Next we use the calculated values, along with estimated values from the Estimated Values. 
-    #The only input we want from the user is the social distancing rate. For this example, we just use 0.5
-    cases<-NationalCases*.05
-    pop<-NationalPop
-    doubling<-8
-    
-    #Established Variables at the start for every county or populations
-    Ro<-2.5
-    incubationtime<-5
-    latenttime<-2
-    recoverydays<-14
-    socialdistancing<-SocialDistance
-    hospitalizationrate<-5
-    icurate<-6
-    ventilatorrate<-3
-    hospitaltime<-3.5
-    icutime<-4
-    ventilatortime<-7
-    daysforecasted<-DaysForecasted
-    
-    #Now we throw the values above into the SEIAR model, and we create dates for the number of days we decided to forecast as well (place holder for now).
-    #With the outputs, we grab the daily hospitalized people and the cumulative hospitalizations. Then we name the columns
-    SEIARProj<-SEIAR_Model_Run(cases, pop, incubationtime, latenttime,doubling,recoverydays,
-                               socialdistancing,hospitalizationrate, icurate,ventilatorrate,hospitaltime,icutime,
-                               ventilatortime,daysforecasted,Ro, .5)
-    
-    MyDates<-seq(Sys.Date()-(length(CovidConfirmedCases)-80), length=daysforecasted, by="1 day")
-    DailyData<-data.frame(MyDates, SEIARProj$sir$hos_add)
-    TotalData<-data.frame(MyDates, SEIARProj$sir$hos_cum)
-    colnames(DailyData)<-c("ForecastDate", "Expected Daily Cases")
-    colnames(TotalData)<-c("ForecastDate", "Total Daily Cases")
-    
-    
-    ####################################################################################
-    #Lower Estimate
-    
-    #Next we use the calculated values, along with estimated values from the Estimated Values. 
-    #The only input we want from the user is the social distancing rate. For this example, we just use 0.5
-    cases<-NationalCases*.05
-    pop<-NationalPop
-    doubling<-10
-    
-    #Established Variables at the start for every county or populations
-    Ro<-2.5
-    incubationtime<-5
-    latenttime<-2
-    recoverydays<-14
-    socialdistancing<-SocialDistance
-    hospitalizationrate<-5
-    icurate<-6
-    ventilatorrate<-3
-    hospitaltime<-3.5
-    icutime<-4
-    ventilatortime<-7
-    daysforecasted<-DaysForecasted
-    
-    
-    
-    #Now we throw the values above into the SEIAR model, and we create dates for the number of days we decided to forecast as well (place holder for now).
-    #With the outputs, we grab the daily hospitalized people and the cumulative hospitalizations. Then we name the columns
-    SEIARProj<-SEIAR_Model_Run(cases, pop, incubationtime, latenttime,doubling,recoverydays, 
-                               socialdistancing,hospitalizationrate, icurate,ventilatorrate,hospitaltime,
-                               icutime,ventilatortime,daysforecasted,Ro, .5)
-    
-    DailyData<-data.frame(DailyData, SEIARProj$sir$hos_add)
-    TotalData<-data.frame(TotalData, SEIARProj$sir$hos_cum)
-    colnames(DailyData)<-c("ForecastDate", "Expected Daily Cases","Minimum Daily Cases")
-    colnames(TotalData)<-c("ForecastDate", "Total Daily Cases", "Minimum Total Cases")
-    
-    ####################################################################################
-    #Upper Estimate
-    #Next we use the calculated values, along with estimated values from the Estimated Values. 
-    
-    #The only input we want from the user is the social distancing rate. For this example, we just use 0.5
-    cases<-NationalCases*.05
-    pop<-NationalPop
-    doubling<-7
-    
-    #Established Variables at the start for every county or populations
-    Ro<-2.5
-    incubationtime<-5
-    latenttime<-2
-    recoverydays<-14
-    socialdistancing<-SocialDistance
-    hospitalizationrate<-5.5
-    icurate<-6
-    ventilatorrate<-3
-    hospitaltime<-3.5
-    icutime<-4
-    ventilatortime<-7
-    daysforecasted<-DaysForecasted
-    
-    #Now we throw the values above into the SEIAR model, and we create dates for the number of days we decided to forecast as well (place holder for now).
-    #With the outputs, we grab the daily hospitalized people and the cumulative hospitalizations. Then we name the columns
-    SEIARProj<-SEIAR_Model_Run(cases, pop, incubationtime, latenttime,doubling,recoverydays,
-                               socialdistancing,hospitalizationrate, icurate,ventilatorrate,hospitaltime,
-                               icutime,ventilatortime,daysforecasted,Ro, .5)
-    
-    DailyData<-data.frame(DailyData, SEIARProj$sir$hos_add)
-    TotalData<-data.frame(TotalData, SEIARProj$sir$hos_cum)
-    colnames(DailyData)<-c("ForecastDate", "Expected Hospitalizations","Lower Estimate","Upper Estimate")
-    colnames(TotalData)<-c("ForecastDate", "Total Daily Cases", "Minimum Total Cases","Maximum Total Cases")
-    
-    DailyData$`Expected Hospitalizations` <- round(DailyData$`Expected Hospitalizations`,0)
-    DailyData$`Lower Bound Hospitalizations` <- round(DailyData$`Lower Bound Hospitalizations`,0)
-    DailyData$`Upper Bound Hospitalizations` <- round(DailyData$`Upper Bound Hospitalizations`,0)
-    DailyData<-DailyData[-1,]
-    colnames(IHMENationalData)<-c("ForecastDate", "Expected Hospitalizations", "Lower Estimate","Upper Estimate")
-    DailyData$ID<-rep("CHIME",nrow(DailyData))
-    IHMENationalData$ID<-rep("IHME",nrow(IHMENationalData))
-    HistoricalData$ID<-rep("Past Data", nrow(HistoricalData))
-    OverlayData<-rbind(DailyData,IHMENationalData)
-    OverlayData$ForecastDate<-as.Date(OverlayData$ForecastDate)
-    OverlayData<-rbind(HistoricalData, OverlayData)    
-    OverlayData<- dplyr::filter(OverlayData, ForecastDate >= Sys.Date() & ForecastDate <= (Sys.Date() + DaysForecasted))
-
-    
-    
-    projections <-  ggplot(OverlayData, aes(x=ForecastDate, y=`Expected Hospitalizations`, color = ID, fill = ID, linetype = ID)) +
-        geom_line() + 
-        scale_colour_manual(values=c("tan", "blue", "black"))+
-        scale_fill_manual(values = c("tan4", "cadetblue", "gray"))+
-        scale_linetype_manual(values = c("dashed", "dashed", "solid"))+
-        geom_ribbon(aes(ymin = `Lower Estimate`, ymax = `Upper Estimate`), 
-                    alpha = .2) +
-        ggtitle("Projected Hospitalizations")+
-        ylab("Daily Hospitalizations")+
-        theme_bw() + 
-        theme(plot.title = element_text(face = "bold", size = 15, family = "sans"),
-              axis.title = element_text(face = "bold", size = 11, family = "sans"),
-              axis.text.x = element_text(angle = 60, hjust = 1), 
-              axis.line = element_line(color = "black"),
-              legend.position = "top",
-              plot.background = element_blank(),
-              panel.grid.major = element_blank(),
-              panel.grid.minor = element_blank(),
-              panel.border = element_blank()) +
-        scale_x_date(date_breaks = "2 week")+
-        labs(color = "ID")+
-      scale_y_continuous(labels = comma)
-    
-    
-    
-    ggplotly(projections)
-    
-}
-
-
-
 
 # Create data tables for analysis ---------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -1668,301 +1496,312 @@ PlotLocalChoro<-function(IncludedCounties, ChosenBase, TypofPlot){
 NationalOverlayPlot<-function(SocialDistance, DaysForecasted){
     
     
-    #Get IHME Data upper lower and mean combined by date
-    Dataframe1<-IHME_Model %>% 
-        group_by(date) %>% 
-        summarise(allbed_mean = sum(allbed_mean))
-    Dataframe2<-IHME_Model %>% 
-        group_by(date) %>% 
-        summarise(allbed_lower = sum(allbed_lower))
-    Dataframe3<-IHME_Model %>% 
-        group_by(date) %>% 
-        summarise(allbed_upper = sum(allbed_upper))
-    IHMENationalData<-cbind(Dataframe1, Dataframe2$allbed_lower, Dataframe3$allbed_upper)
-    
-    HistoricalData<-colSums(CovidConfirmedCases[,5:length(CovidConfirmedCases)])
-    HistoricalDates<-seq(as.Date("2020-01-22"), length=length(HistoricalData), by="1 day")
-    HistoricalData<-data.frame(HistoricalDates, HistoricalData*.21, HistoricalData*.15, HistoricalData*.27)
-    colnames(HistoricalData)<-c("ForecastDate", "Expected Hospitalizations", "Lower Estimate","Upper Estimate")
-    
-    
-    ####################################################################################
-    #Mean Estimate
-    NationalPop <-  sum(CountyInfo$Population)
-    NationalCases<-sum(rev(CovidConfirmedCases)[1]-rev(CovidConfirmedCases)[8])
-    
-    
-    #Next we use the calculated values, along with estimated values from the Estimated Values. 
-    #The only input we want from the user is the social distancing rate. For this example, we just use 0.5
-    cases<-NationalCases*.05
-    pop<-NationalPop
-    doubling<-8
-    
-    #Established Variables at the start for every county or populations
-    Ro<-2.5
-    incubationtime<-5
-    latenttime<-2
-    recoverydays<-14
-    socialdistancing<-SocialDistance
-    hospitalizationrate<-5
-    icurate<-6
-    ventilatorrate<-3
-    hospitaltime<-3.5
-    icutime<-4
-    ventilatortime<-7
-    daysforecasted<-DaysForecasted
-    
-    #Now we throw the values above into the SEIAR model, and we create dates for the number of days we decided to forecast as well (place holder for now).
-    #With the outputs, we grab the daily hospitalized people and the cumulative hospitalizations. Then we name the columns
-    SEIARProj<-SEIAR_Model_Run(cases, pop, incubationtime, latenttime,doubling,recoverydays,
-                               socialdistancing,hospitalizationrate, icurate,ventilatorrate,hospitaltime,icutime,
-                               ventilatortime,daysforecasted,Ro, .5)
-    
-    MyDates<-seq(Sys.Date()-(length(CovidConfirmedCases)-80), length=daysforecasted, by="1 day")
-    DailyData<-data.frame(MyDates, SEIARProj$sir$hos_add)
-    TotalData<-data.frame(MyDates, SEIARProj$sir$hos_cum)
-    colnames(DailyData)<-c("ForecastDate", "Expected Daily Cases")
-    colnames(TotalData)<-c("ForecastDate", "Total Daily Cases")
-    
-    
-    ####################################################################################
-    #Lower Estimate
-    
-    #Next we use the calculated values, along with estimated values from the Estimated Values. 
-    #The only input we want from the user is the social distancing rate. For this example, we just use 0.5
-    cases<-NationalCases*.05
-    pop<-NationalPop
-    doubling<-10
-    
-    #Established Variables at the start for every county or populations
-    Ro<-2.5
-    incubationtime<-5
-    latenttime<-2
-    recoverydays<-14
-    socialdistancing<-SocialDistance
-    hospitalizationrate<-5
-    icurate<-6
-    ventilatorrate<-3
-    hospitaltime<-3.5
-    icutime<-4
-    ventilatortime<-7
-    daysforecasted<-DaysForecasted
-    
-    
-    
-    #Now we throw the values above into the SEIAR model, and we create dates for the number of days we decided to forecast as well (place holder for now).
-    #With the outputs, we grab the daily hospitalized people and the cumulative hospitalizations. Then we name the columns
-    SEIARProj<-SEIAR_Model_Run(cases, pop, incubationtime, latenttime,doubling,recoverydays, 
-                               socialdistancing,hospitalizationrate, icurate,ventilatorrate,hospitaltime,
-                               icutime,ventilatortime,daysforecasted,Ro, .5)
-    
-    DailyData<-data.frame(DailyData, SEIARProj$sir$hos_add)
-    TotalData<-data.frame(TotalData, SEIARProj$sir$hos_cum)
-    colnames(DailyData)<-c("ForecastDate", "Expected Daily Cases","Minimum Daily Cases")
-    colnames(TotalData)<-c("ForecastDate", "Total Daily Cases", "Minimum Total Cases")
-    
-    ####################################################################################
-    #Upper Estimate
-    #Next we use the calculated values, along with estimated values from the Estimated Values. 
-    
-    #The only input we want from the user is the social distancing rate. For this example, we just use 0.5
-    cases<-NationalCases*.05
-    pop<-NationalPop
-    doubling<-7
-    
-    #Established Variables at the start for every county or populations
-    Ro<-2.5
-    incubationtime<-5
-    latenttime<-2
-    recoverydays<-14
-    socialdistancing<-SocialDistance
-    hospitalizationrate<-5.5
-    icurate<-6
-    ventilatorrate<-3
-    hospitaltime<-3.5
-    icutime<-4
-    ventilatortime<-7
-    daysforecasted<-DaysForecasted
-    
-    #Now we throw the values above into the SEIAR model, and we create dates for the number of days we decided to forecast as well (place holder for now).
-    #With the outputs, we grab the daily hospitalized people and the cumulative hospitalizations. Then we name the columns
-    SEIARProj<-SEIAR_Model_Run(cases, pop, incubationtime, latenttime,doubling,recoverydays,
-                               socialdistancing,hospitalizationrate, icurate,ventilatorrate,hospitaltime,
-                               icutime,ventilatortime,daysforecasted,Ro, .5)
-    
-    DailyData<-data.frame(DailyData, SEIARProj$sir$hos_add)
-    TotalData<-data.frame(TotalData, SEIARProj$sir$hos_cum)
-    colnames(DailyData)<-c("ForecastDate", "Expected Hospitalizations","Lower Estimate","Upper Estimate")
-    colnames(TotalData)<-c("ForecastDate", "Total Daily Cases", "Lower Estimate","Upper Estimate")
-    
-    DailyData$`Expected Hospitalizations` <- round(DailyData$`Expected Hospitalizations`,0)
-    DailyData$`Lower Estimate` <- round(DailyData$`Lower Estimate`,0)
-    DailyData$`Upper Estimate` <- round(DailyData$`Upper Estimate`,0)
-    DailyData<-DailyData[-1,]
-    colnames(IHMENationalData)<-c("ForecastDate", "Expected Hospitalizations", "Lower Estimate","Upper Estimate")
-    DailyData$ID<-rep("CHIME",nrow(DailyData))
-    IHMENationalData$ID<-rep("IHME",nrow(IHMENationalData))
-    HistoricalData$ID<-rep("Past Data", nrow(HistoricalData))
-    OverlayData<-rbind(DailyData,IHMENationalData)
-    OverlayData$ForecastDate<-as.Date(OverlayData$ForecastDate)
-    
-    OverlayData<- dplyr::filter(OverlayData, ForecastDate >= Sys.Date() & ForecastDate <= (Sys.Date() + DaysForecasted))
-    
-    OverlayData<-rbind(HistoricalData, OverlayData)
-    
-    
-    projections <-  projections <-  ggplot(OverlayData, aes(x=ForecastDate, y=`Expected Hospitalizations`, color = ID, fill = ID, linetype = ID)) +
-        geom_line() + 
-        scale_colour_manual(values=c("tan", "blue", "black"))+
-        scale_fill_manual(values = c("tan4", "cadetblue", "gray"))+
-        scale_linetype_manual(values = c("dashed", "dashed", "solid"))+
-        geom_ribbon(aes(ymin = `Lower Estimate`, ymax = `Upper Estimate`), 
-                    alpha = .2) +
-        ggtitle("Daily Hospitalizations")+
-        theme_bw() + 
-        theme(plot.title = element_text(face = "bold", size = 15, family = "sans"),
-              axis.title = element_text(face = "bold", size = 11, family = "sans"),
-              axis.text.x = element_text(angle = 60, hjust = 1), 
-              axis.line = element_line(color = "black"),
-              legend.position = "top",
-              plot.background = element_blank(),
-              panel.grid.major = element_blank(),
-              panel.grid.minor = element_blank(),
-              panel.border = element_blank()) +
-        scale_x_date(date_breaks = "2 week")+
-        labs(color = "ID")
-        scale_y_continuous(labels = comma)
-    
-    
-    ggplotly(projections)
-
-    
-    projections <- ggplotly(projections)
-    projections <- projections %>% config(displayModeBar = FALSE)
-    projections
+  #Get IHME Data upper lower and mean combined by date
+  Dataframe1<-IHME_Model %>% 
+    group_by(date) %>% 
+    summarise(allbed_mean = sum(allbed_mean))
+  Dataframe2<-IHME_Model %>% 
+    group_by(date) %>% 
+    summarise(allbed_lower = sum(allbed_lower))
+  Dataframe3<-IHME_Model %>% 
+    group_by(date) %>% 
+    summarise(allbed_upper = sum(allbed_upper))
+  IHMENationalData<-cbind(Dataframe1, Dataframe2$allbed_lower, Dataframe3$allbed_upper)
+  
+  #Get past data in daily hospital use
+  #This will use a 5 day hospital stay as the average
+  HistoricalDataDaily <- CovidConfirmedCases[,(5+5):length(CovidConfirmedCases)] -
+    CovidConfirmedCases[,5:(length(CovidConfirmedCases)-5)]
+  HistoricalDataHosp<-colSums(HistoricalDataDaily*CountyHospRate$HospRate)
+  
+  #Create dataframe to hold daily hospitalizations
+  HistoricalDates<-seq(as.Date("2020-01-27"), length=length(HistoricalDataHosp), by="1 day")
+  HistoricalData<-data.frame(HistoricalDates, HistoricalDataHosp, HistoricalDataHosp*0.75, HistoricalDataHosp*1.25)
+  colnames(HistoricalData)<-c("ForecastDate", "Expected Hospitalizations", "Lower Estimate","Upper Estimate")
+  
+  
+  ####################################################################################
+  #Mean Estimate
+  NationalPop <-  sum(CountyInfo$Population)
+  NationalCases<-sum(rev(CovidConfirmedCases)[1]-rev(CovidConfirmedCases)[8])
+  
+  
+  #Next we use the calculated values, along with estimated values from the Estimated Values. 
+  #The only input we want from the user is the social distancing rate. For this example, we just use 0.5
+  cases<-NationalCases*.05
+  pop<-NationalPop
+  doubling<-8
+  
+  #Established Variables at the start for every county or populations
+  Ro<-2.5
+  incubationtime<-5
+  latenttime<-2
+  recoverydays<-14
+  socialdistancing<-SocialDistance
+  hospitalizationrate<-15
+  icurate<-6
+  ventilatorrate<-3
+  hospitaltime<-7
+  icutime<-5
+  ventilatortime<-7
+  daysforecasted<-DaysForecasted
+  
+  #Now we throw the values above into the SEIAR model, and we create dates for the number of days we decided to forecast as well (place holder for now).
+  #With the outputs, we grab the daily hospitalized people and the cumulative hospitalizations. Then we name the columns
+  SEIARProj<-SEIAR_Model_Run(cases, pop, incubationtime, latenttime,doubling,recoverydays,
+                             socialdistancing,hospitalizationrate, icurate,ventilatorrate,hospitaltime,icutime,
+                             ventilatortime,daysforecasted,Ro, .5)
+  
+  MyDates<-seq(Sys.Date()-(length(CovidConfirmedCases)-80), length=daysforecasted, by="1 day")
+  DailyData<-data.frame(MyDates, SEIARProj$sir$hos_add)
+  TotalData<-data.frame(MyDates, SEIARProj$sir$hos_cum)
+  colnames(DailyData)<-c("ForecastDate", "Expected Daily Cases")
+  colnames(TotalData)<-c("ForecastDate", "Total Daily Cases")
+  
+  
+  ####################################################################################
+  #Lower Estimate
+  
+  #Next we use the calculated values, along with estimated values from the Estimated Values. 
+  #The only input we want from the user is the social distancing rate. For this example, we just use 0.5
+  cases<-NationalCases*.05
+  pop<-NationalPop
+  doubling<-10
+  
+  #Established Variables at the start for every county or populations
+  Ro<-2.5
+  incubationtime<-5
+  latenttime<-2
+  recoverydays<-14
+  socialdistancing<-SocialDistance
+  hospitalizationrate<-10
+  icurate<-6
+  ventilatorrate<-3
+  hospitaltime<-7
+  icutime<-5
+  ventilatortime<-7
+  daysforecasted<-DaysForecasted
+  
+  
+  
+  #Now we throw the values above into the SEIAR model, and we create dates for the number of days we decided to forecast as well (place holder for now).
+  #With the outputs, we grab the daily hospitalized people and the cumulative hospitalizations. Then we name the columns
+  SEIARProj<-SEIAR_Model_Run(cases, pop, incubationtime, latenttime,doubling,recoverydays, 
+                             socialdistancing,hospitalizationrate, icurate,ventilatorrate,hospitaltime,
+                             icutime,ventilatortime,daysforecasted,Ro, .5)
+  
+  DailyData<-data.frame(DailyData, SEIARProj$sir$hos_add)
+  TotalData<-data.frame(TotalData, SEIARProj$sir$hos_cum)
+  colnames(DailyData)<-c("ForecastDate", "Expected Daily Cases","Minimum Daily Cases")
+  colnames(TotalData)<-c("ForecastDate", "Total Daily Cases", "Minimum Total Cases")
+  
+  ####################################################################################
+  #Upper Estimate
+  #Next we use the calculated values, along with estimated values from the Estimated Values. 
+  
+  #The only input we want from the user is the social distancing rate. For this example, we just use 0.5
+  cases<-NationalCases*.05
+  pop<-NationalPop
+  doubling<-7
+  
+  #Established Variables at the start for every county or populations
+  Ro<-2.5
+  incubationtime<-5
+  latenttime<-2
+  recoverydays<-14
+  socialdistancing<-SocialDistance
+  hospitalizationrate<-20
+  icurate<-6
+  ventilatorrate<-3
+  hospitaltime<-7
+  icutime<-5
+  ventilatortime<-7
+  daysforecasted<-DaysForecasted
+  
+  #Now we throw the values above into the SEIAR model, and we create dates for the number of days we decided to forecast as well (place holder for now).
+  #With the outputs, we grab the daily hospitalized people and the cumulative hospitalizations. Then we name the columns
+  SEIARProj<-SEIAR_Model_Run(cases, pop, incubationtime, latenttime,doubling,recoverydays,
+                             socialdistancing,hospitalizationrate, icurate,ventilatorrate,hospitaltime,
+                             icutime,ventilatortime,daysforecasted,Ro, .5)
+  
+  DailyData<-data.frame(DailyData, SEIARProj$sir$hos_add)
+  TotalData<-data.frame(TotalData, SEIARProj$sir$hos_cum)
+  colnames(DailyData)<-c("ForecastDate", "Expected Hospitalizations","Lower Estimate","Upper Estimate")
+  colnames(TotalData)<-c("ForecastDate", "Total Daily Cases", "Minimum Total Cases","Maximum Total Cases")
+  
+  DailyData$`Expected Hospitalizations` <- round(DailyData$`Expected Hospitalizations`,0)
+  DailyData$`Lower Estimate` <- round(DailyData$`Lower Estimate`,0)
+  DailyData$`Upper Estimate` <- round(DailyData$`Upper Estimate`,0)
+  DailyData<-DailyData[-1,]
+  
+  colnames(IHMENationalData)<-c("ForecastDate", "Expected Hospitalizations", "Lower Estimate","Upper Estimate")
+  DailyData$ID<-rep("CHIME",nrow(DailyData))
+  IHMENationalData$ID<-rep("IHME",nrow(IHMENationalData))
+  HistoricalData$ID<-rep("Past Data", nrow(HistoricalData))
+  
+  OverlayData<-rbind(DailyData,IHMENationalData)
+  OverlayData$ForecastDate<-as.Date(OverlayData$ForecastDate)
+  OverlayData<- dplyr::filter(OverlayData, ForecastDate >= Sys.Date() & ForecastDate <= (Sys.Date() + DaysForecasted))
+  OverlayData<-rbind(HistoricalData, OverlayData)    
+  
+  
+  projections <-  ggplot(OverlayData, aes(x=ForecastDate, y=`Expected Hospitalizations`, color = ID, fill = ID, linetype = ID)) +
+    geom_line() + 
+    scale_colour_manual(values=c("tan", "blue", "black"))+
+    scale_fill_manual(values = c("tan4", "cadetblue", "gray"))+
+    scale_linetype_manual(values = c("dashed", "dashed", "solid"))+
+    geom_ribbon(aes(ymin = `Lower Estimate`, ymax = `Upper Estimate`), 
+                alpha = .2) +
+    ggtitle("Projected Daily Hospital Bed Utilization")+
+    ylab("Daily Beds Required")+
+    theme_bw() + 
+    theme(plot.title = element_text(face = "bold", size = 15, family = "sans"),
+          axis.title = element_text(face = "bold", size = 11, family = "sans"),
+          axis.text.x = element_text(angle = 60, hjust = 1), 
+          axis.line = element_line(color = "black"),
+          legend.position = "top",
+          plot.background = element_blank(),
+          panel.grid.major = element_blank(),
+          panel.grid.minor = element_blank(),
+          panel.border = element_blank()) +
+    scale_x_date(date_breaks = "2 week")+
+    labs(color = "ID")+
+    scale_y_continuous(labels = comma)
+  
+  
+  
+  ggplotly(projections)
 }
 
 
 
 CHIMENationalPlot<-function(SocialDistance, DaysForecasted){
     ####################################################################################
-    #Mean Estimate
-    NationalPop <-  sum(CountyInfo$Population)
-    NationalCases<-sum(rev(CovidConfirmedCases)[1]-rev(CovidConfirmedCases)[8])
-    
-    HistoricalData<-colSums(CovidConfirmedCases[,5:length(CovidConfirmedCases)])
-    HistoricalDates<-seq(as.Date("2020-01-22"), length=length(HistoricalData), by="1 day")
-    HistoricalData<-data.frame(HistoricalDates, HistoricalData*.21, HistoricalData*.15, HistoricalData*.27)
-    colnames(HistoricalData)<-c("ForecastDate", "Expected Hospitalizations", "Lower Estimate","Upper Estimate")
-    
-    
-    #Next we use the calculated values, along with estimated values from the Estimated Values. 
-    #The only input we want from the user is the social distancing rate. For this example, we just use 0.5
-    cases<-NationalCases*.05
-    pop<-NationalPop
-    doubling<-8
-    
-    #Established Variables at the start for every county or populations
-    Ro<-2.5
-    incubationtime<-5
-    latenttime<-2
-    recoverydays<-14
-    socialdistancing<-SocialDistance
-    hospitalizationrate<-5
-    icurate<-6
-    ventilatorrate<-3
-    hospitaltime<-3.5
-    icutime<-4
-    ventilatortime<-7
-    daysforecasted<-DaysForecasted
-    
-    #Now we throw the values above into the SEIAR model, and we create dates for the number of days we decided to forecast as well (place holder for now).
-    #With the outputs, we grab the daily hospitalized people and the cumulative hospitalizations. Then we name the columns
-    SEIARProj<-SEIAR_Model_Run(cases, pop, incubationtime, latenttime,doubling,recoverydays,
-                               socialdistancing,hospitalizationrate, icurate,ventilatorrate,hospitaltime,icutime,
-                               ventilatortime,daysforecasted,Ro, .5)
-    
-    MyDates<-seq(Sys.Date()-(length(CovidConfirmedCases)-80), length=daysforecasted, by="1 day")
-    DailyData<-data.frame(MyDates, SEIARProj$sir$hos_add)
-    TotalData<-data.frame(MyDates, SEIARProj$sir$hos_cum)
-    colnames(DailyData)<-c("ForecastDate", "Expected Daily Cases")
-    colnames(TotalData)<-c("ForecastDate", "Total Daily Cases")
-    
-    
-    ####################################################################################
-    #Lower Estimate
-    
-    #Next we use the calculated values, along with estimated values from the Estimated Values. 
-    #The only input we want from the user is the social distancing rate. For this example, we just use 0.5
-    cases<-NationalCases*.05
-    pop<-NationalPop
-    doubling<-10
-    
-    #Established Variables at the start for every county or populations
-    Ro<-2.5
-    incubationtime<-5
-    latenttime<-2
-    recoverydays<-14
-    socialdistancing<-SocialDistance
-    hospitalizationrate<-5
-    icurate<-6
-    ventilatorrate<-3
-    hospitaltime<-3.5
-    icutime<-4
-    ventilatortime<-7
-    daysforecasted<-DaysForecasted
-    
-    
-    
-    #Now we throw the values above into the SEIAR model, and we create dates for the number of days we decided to forecast as well (place holder for now).
-    #With the outputs, we grab the daily hospitalized people and the cumulative hospitalizations. Then we name the columns
-    SEIARProj<-SEIAR_Model_Run(cases, pop, incubationtime, latenttime,doubling,recoverydays, 
-                               socialdistancing,hospitalizationrate, icurate,ventilatorrate,hospitaltime,
-                               icutime,ventilatortime,daysforecasted,Ro, .5)
-    
-    DailyData<-data.frame(DailyData, SEIARProj$sir$hos_add)
-    TotalData<-data.frame(TotalData, SEIARProj$sir$hos_cum)
-    colnames(DailyData)<-c("ForecastDate", "Expected Daily Cases","Minimum Daily Cases")
-    colnames(TotalData)<-c("ForecastDate", "Total Daily Cases", "Minimum Total Cases")
-    
-    ####################################################################################
-    #Upper Estimate
-    #Next we use the calculated values, along with estimated values from the Estimated Values. 
-    
-    #The only input we want from the user is the social distancing rate. For this example, we just use 0.5
-    cases<-NationalCases*.05
-    pop<-NationalPop
-    doubling<-7
-    
-    #Established Variables at the start for every county or populations
-    Ro<-2.5
-    incubationtime<-5
-    latenttime<-2
-    recoverydays<-14
-    socialdistancing<-SocialDistance
-    hospitalizationrate<-5.5
-    icurate<-6
-    ventilatorrate<-3
-    hospitaltime<-3.5
-    icutime<-4
-    ventilatortime<-7
-    daysforecasted<-DaysForecasted
-    
-    #Now we throw the values above into the SEIAR model, and we create dates for the number of days we decided to forecast as well (place holder for now).
-    #With the outputs, we grab the daily hospitalized people and the cumulative hospitalizations. Then we name the columns
-    SEIARProj<-SEIAR_Model_Run(cases, pop, incubationtime, latenttime,doubling,recoverydays,
-                               socialdistancing,hospitalizationrate, icurate,ventilatorrate,hospitaltime,
-                               icutime,ventilatortime,daysforecasted,Ro, .5)
-    
-    DailyData<-data.frame(DailyData, SEIARProj$sir$hos_add)
-    TotalData<-data.frame(TotalData, SEIARProj$sir$hos_cum)
-    colnames(DailyData)<-c("ForecastDate", "Expected Hospitalizations","Lower Estimate","Upper Estimate")
-    colnames(TotalData)<-c("ForecastDate", "Total Daily Cases", "Minimum Total Cases","Maximum Total Cases")
-    
-    DailyData$`Expected Hospitalizations` <- round(DailyData$`Expected Hospitalizations`,0)
-    DailyData$`Lower Estimate` <- round(DailyData$`Lower Estimate`,0)
-    DailyData$`Upper Estimate` <- round(DailyData$`Upper Estimate`,0)
-    DailyData<-DailyData[-1,]
+  #Get past data in daily hospital use
+  #This will use a 5 day hospital stay as the average
+  HistoricalDataDaily <- CovidConfirmedCases[,(5+5):length(CovidConfirmedCases)] -
+    CovidConfirmedCases[,5:(length(CovidConfirmedCases)-5)]
+  HistoricalDataHosp<-colSums(HistoricalDataDaily*CountyHospRate$HospRate)
+  
+  #Create dataframe to hold daily hospitalizations
+  HistoricalDates<-seq(as.Date("2020-01-27"), length=length(HistoricalDataHosp), by="1 day")
+  HistoricalData<-data.frame(HistoricalDates, HistoricalDataHosp, HistoricalDataHosp*0.75, HistoricalDataHosp*1.25)
+  colnames(HistoricalData)<-c("ForecastDate", "Expected Hospitalizations", "Lower Estimate","Upper Estimate")
+  
+  
+  ####################################################################################
+  #Mean Estimate
+  NationalPop <-  sum(CountyInfo$Population)
+  NationalCases<-sum(rev(CovidConfirmedCases)[1]-rev(CovidConfirmedCases)[8])
+  
+  
+  #Next we use the calculated values, along with estimated values from the Estimated Values. 
+  #The only input we want from the user is the social distancing rate. For this example, we just use 0.5
+  cases<-NationalCases*.05
+  pop<-NationalPop
+  doubling<-8
+  
+  #Established Variables at the start for every county or populations
+  Ro<-2.5
+  incubationtime<-5
+  latenttime<-2
+  recoverydays<-14
+  socialdistancing<-SocialDistance
+  hospitalizationrate<-15
+  icurate<-6
+  ventilatorrate<-3
+  hospitaltime<-7
+  icutime<-5
+  ventilatortime<-7
+  daysforecasted<-DaysForecasted
+  
+  #Now we throw the values above into the SEIAR model, and we create dates for the number of days we decided to forecast as well (place holder for now).
+  #With the outputs, we grab the daily hospitalized people and the cumulative hospitalizations. Then we name the columns
+  SEIARProj<-SEIAR_Model_Run(cases, pop, incubationtime, latenttime,doubling,recoverydays,
+                             socialdistancing,hospitalizationrate, icurate,ventilatorrate,hospitaltime,icutime,
+                             ventilatortime,daysforecasted,Ro, .5)
+  
+  MyDates<-seq(Sys.Date()-(length(CovidConfirmedCases)-80), length=daysforecasted, by="1 day")
+  DailyData<-data.frame(MyDates, SEIARProj$sir$hos_add)
+  TotalData<-data.frame(MyDates, SEIARProj$sir$hos_cum)
+  colnames(DailyData)<-c("ForecastDate", "Expected Daily Cases")
+  colnames(TotalData)<-c("ForecastDate", "Total Daily Cases")
+  
+  
+  ####################################################################################
+  #Lower Estimate
+  
+  #Next we use the calculated values, along with estimated values from the Estimated Values. 
+  #The only input we want from the user is the social distancing rate. For this example, we just use 0.5
+  cases<-NationalCases*.05
+  pop<-NationalPop
+  doubling<-10
+  
+  #Established Variables at the start for every county or populations
+  Ro<-2.5
+  incubationtime<-5
+  latenttime<-2
+  recoverydays<-14
+  socialdistancing<-SocialDistance
+  hospitalizationrate<-10
+  icurate<-6
+  ventilatorrate<-3
+  hospitaltime<-7
+  icutime<-5
+  ventilatortime<-7
+  daysforecasted<-DaysForecasted
+  
+  
+  
+  #Now we throw the values above into the SEIAR model, and we create dates for the number of days we decided to forecast as well (place holder for now).
+  #With the outputs, we grab the daily hospitalized people and the cumulative hospitalizations. Then we name the columns
+  SEIARProj<-SEIAR_Model_Run(cases, pop, incubationtime, latenttime,doubling,recoverydays, 
+                             socialdistancing,hospitalizationrate, icurate,ventilatorrate,hospitaltime,
+                             icutime,ventilatortime,daysforecasted,Ro, .5)
+  
+  DailyData<-data.frame(DailyData, SEIARProj$sir$hos_add)
+  TotalData<-data.frame(TotalData, SEIARProj$sir$hos_cum)
+  colnames(DailyData)<-c("ForecastDate", "Expected Daily Cases","Minimum Daily Cases")
+  colnames(TotalData)<-c("ForecastDate", "Total Daily Cases", "Minimum Total Cases")
+  
+  ####################################################################################
+  #Upper Estimate
+  #Next we use the calculated values, along with estimated values from the Estimated Values. 
+  
+  #The only input we want from the user is the social distancing rate. For this example, we just use 0.5
+  cases<-NationalCases*.05
+  pop<-NationalPop
+  doubling<-7
+  
+  #Established Variables at the start for every county or populations
+  Ro<-2.5
+  incubationtime<-5
+  latenttime<-2
+  recoverydays<-14
+  socialdistancing<-SocialDistance
+  hospitalizationrate<-20
+  icurate<-6
+  ventilatorrate<-3
+  hospitaltime<-7
+  icutime<-5
+  ventilatortime<-7
+  daysforecasted<-DaysForecasted
+  
+  #Now we throw the values above into the SEIAR model, and we create dates for the number of days we decided to forecast as well (place holder for now).
+  #With the outputs, we grab the daily hospitalized people and the cumulative hospitalizations. Then we name the columns
+  SEIARProj<-SEIAR_Model_Run(cases, pop, incubationtime, latenttime,doubling,recoverydays,
+                             socialdistancing,hospitalizationrate, icurate,ventilatorrate,hospitaltime,
+                             icutime,ventilatortime,daysforecasted,Ro, .5)
+  
+  DailyData<-data.frame(DailyData, SEIARProj$sir$hos_add)
+  TotalData<-data.frame(TotalData, SEIARProj$sir$hos_cum)
+  colnames(DailyData)<-c("ForecastDate", "Expected Hospitalizations","Lower Estimate","Upper Estimate")
+  colnames(TotalData)<-c("ForecastDate", "Total Daily Cases", "Minimum Total Cases","Maximum Total Cases")
+  
+  DailyData$`Expected Hospitalizations` <- round(DailyData$`Expected Hospitalizations`,0)
+  DailyData$`Lower Estimate` <- round(DailyData$`Lower Estimate`,0)
+  DailyData$`Upper Estimate` <- round(DailyData$`Upper Estimate`,0)
+  DailyData<-DailyData[-1,]
     DailyData$ID<-rep("CHIME", nrow(DailyData))
     HistoricalData$ID<-rep("Past Data", nrow(HistoricalData))
     
@@ -1980,8 +1819,8 @@ CHIMENationalPlot<-function(SocialDistance, DaysForecasted){
                     alpha = .2) +
         #scale_colour_manual(values=c("Blue", "Orange", "Red"))+
         xlab('Date') +
-        ylab('Daily Hospitalizations') +
-        ggtitle("CHIME Projected Daily Hospitalizations") +
+        ylab('Daily Beds Required') +
+        ggtitle("CHIME Projected Daily Hospital Bed Utilization") +
         theme_bw() + 
         theme(plot.title = element_text(face = "bold", size = 15, family = "sans"),
               axis.title = element_text(face = "bold", size = 11, family = "sans"),
@@ -2003,7 +1842,8 @@ CHIMENationalPlot<-function(SocialDistance, DaysForecasted){
 }
 
 IHMENationalProjections<-function(DaysProjected){
-    #Get IHME Data upper lower and mean combined by date
+
+        #Get IHME Data upper lower and mean combined by date
         Dataframe1<-IHME_Model %>% 
             group_by(date) %>% 
             summarise(allbed_mean = sum(allbed_mean))
@@ -2016,9 +1856,15 @@ IHMENationalProjections<-function(DaysProjected){
         IHMENationalData<-cbind(Dataframe1, Dataframe2$allbed_lower, Dataframe3$allbed_upper)
         colnames(IHMENationalData)<-c("ForecastDate", "Expected Hospitalizations", "Lower Estimate","Upper Estimate")
         
-        HistoricalData<-colSums(CovidConfirmedCases[,5:length(CovidConfirmedCases)])
-        HistoricalDates<-seq(as.Date("2020-01-22"), length=length(HistoricalData), by="1 day")
-        HistoricalData<-data.frame(HistoricalDates, HistoricalData*.21, HistoricalData*.15, HistoricalData*.27)
+        #Get past data in daily hospital use
+        #This will use a 5 day hospital stay as the average
+        HistoricalDataDaily <- CovidConfirmedCases[,(5+5):length(CovidConfirmedCases)] -
+          CovidConfirmedCases[,5:(length(CovidConfirmedCases)-5)]
+        HistoricalDataHosp<-colSums(HistoricalDataDaily*CountyHospRate$HospRate)
+        
+        #Create dataframe to hold daily hospitalizations
+        HistoricalDates<-seq(as.Date("2020-01-27"), length=length(HistoricalDataHosp), by="1 day")
+        HistoricalData<-data.frame(HistoricalDates, HistoricalDataHosp, HistoricalDataHosp*0.75, HistoricalDataHosp*1.25)
         colnames(HistoricalData)<-c("ForecastDate", "Expected Hospitalizations", "Lower Estimate","Upper Estimate")
         
         IHMENationalData$ID<-rep("IHME", nrow(IHMENationalData))
@@ -2035,8 +1881,8 @@ IHMENationalProjections<-function(DaysProjected){
                         alpha = .2) +
             #scale_colour_manual(values=c("Blue", "Orange", "Red"))+
             xlab('Date') +
-            ylab('Daily Hospitalizations') +
-            ggtitle("IHME Projected Daily Hospitalizations") +
+            ylab('Daily Beds Required') +
+            ggtitle("IHME Projected Daily Hospital Bed Utilization") +
             theme_bw() + 
             theme(plot.title = element_text(face = "bold", size = 15, family = "sans"),
                   axis.title = element_text(face = "bold", size = 11, family = "sans"),
@@ -2062,12 +1908,19 @@ CHIMELocalPlot<-function(SocialDistance, ForecastedDays, IncludedCounties, Stati
     
     if (StatisticType == "Hospitalizations") {
         
-        #Get data for counties with covid cases. We want number of cases, the rate of the cases and maybe other data.
-        #We include State, county, population in those counties, cases, fatalities, doubling rate
+        #Get covid cases and hospitalization rates for county
         CovidCounties<-subset(CovidConfirmedCases, CountyFIPS %in% IncludedCounties$FIPS)
-        HistoricalData<-colSums(CovidCounties[,5:length(CovidCounties)])
-        HistoricalDates<-seq(as.Date("2020-01-22"), length=length(HistoricalData), by="1 day")
-        HistoricalData<-data.frame(HistoricalDates, HistoricalData*.21, HistoricalData*.15, HistoricalData*.27)
+        CovidCountiesHospRate <- subset(CountyHospRate, FIPS %in% IncludedCounties$FIPS)
+        
+        #Get past data in daily hospital use
+        #This will use a 5 day hospital stay as the average
+        HistoricalDataDaily <- CovidCounties[,(5+5):length(CovidCounties)] -
+          CovidCounties[,5:(length(CovidCounties)-5)]
+        HistoricalDataHosp<-colSums(HistoricalDataDaily*CovidCountiesHospRate$HospRate)
+        
+        #Create dataframe to hold daily hospitalizations
+        HistoricalDates<-seq(as.Date("2020-01-27"), length=length(HistoricalDataHosp), by="1 day")
+        HistoricalData<-data.frame(HistoricalDates, HistoricalDataHosp, HistoricalDataHosp*0.75, HistoricalDataHosp*1.25)
         colnames(HistoricalData)<-c("ForecastDate", "Expected Daily Hospitalizations","Lower Estimate","Upper Estimate")
         
         DeathCounties<-subset(CovidDeaths, CountyFIPS %in% IncludedCounties$FIPS)
@@ -2203,6 +2056,7 @@ CHIMELocalPlot<-function(SocialDistance, ForecastedDays, IncludedCounties, Stati
         DailyData<- dplyr::filter(DailyData, ForecastDate >= Sys.Date())
         DailyData$ID<-rep("CHIME", nrow(DailyData))
         HistoricalData$ID<-rep("Past Data", nrow(HistoricalData))
+        HistoricalData <- dplyr::filter(HistoricalData, ForecastDate >= as.Date("2020-01-27") + 30)
         
         PlottingData<-rbind(HistoricalData, DailyData)
         
@@ -2394,6 +2248,7 @@ CHIMELocalPlot<-function(SocialDistance, ForecastedDays, IncludedCounties, Stati
         DailyData<- dplyr::filter(DailyData, ForecastDate >= Sys.Date())
         DailyData$ID<-rep("CHIME", nrow(DailyData))
         HistoricalData$ID<-rep("Past Data", nrow(HistoricalData))
+        HistoricalData <- dplyr::filter(HistoricalData, ForecastDate >= as.Date("2020-01-27") + 30)
         
         PlottingData<-rbind(HistoricalData, DailyData)
         
@@ -2434,10 +2289,35 @@ CHIMELocalPlot<-function(SocialDistance, ForecastedDays, IncludedCounties, Stati
 
 IHMELocalProjections<-function(MyCounties, IncludedHospitals, ChosenBase, StatisticType, DaysProjected){
     if (StatisticType == "Hospitalizations") {
-        #Creating the stats and dataframes determined by the base we choose to look at.
+      
+        #Establish initial inputs such as base, counties, and filter IHME model
         BaseState<-dplyr::filter(AFBaseLocations, Base == ChosenBase)
         IHME_State <- dplyr::filter(IHME_Model, State == toString(BaseState$State[1]))
         hospCounty <- subset(HospUtlzCounty, fips %in% MyCounties$FIPS)
+        
+        #Get covid cases and hospitalization rates for county
+        CovidCounties<-subset(CovidConfirmedCases, CountyFIPS %in% MyCounties$FIPS)
+        CovidCountiesHospRate <- subset(CountyHospRate, FIPS %in% MyCounties$FIPS)
+        
+        #Get past data in daily hospital use
+        #This will use a 5 day hospital stay as the average
+        HistoricalDataDaily <- CovidCounties[,(5+5):length(CovidCounties)] -
+          CovidCounties[,5:(length(CovidCounties)-5)]
+        HistoricalDataHosp<-colSums(HistoricalDataDaily*CovidCountiesHospRate$HospRate)
+        
+        #Create dataframe to hold daily hospitalizations
+        HistoricalDates<-seq(as.Date("2020-01-27"), length=length(HistoricalDataHosp), by="1 day")
+        HistoricalData<-data.frame(HistoricalDates, HistoricalDataHosp, HistoricalDataHosp*0.75, HistoricalDataHosp*1.25)
+        colnames(HistoricalData)<-c("ForecastDate", "Expected Hospitalizations", "Lower Estimate","Upper Estimate")
+        
+        #Get population information to build scaling ratio
+        StPopList <- dplyr::filter(CountyInfo, State == toString(BaseState$State[1]))
+        RegPop <- sum(MyCounties$Population)
+        StPop <- sum(StPopList$Population)
+        
+        #Use Population ratio to scale IHME
+        PopRatio <- RegPop/StPop
+      
         #Finds number of hospitals in radius
         TotalBeds<-sum(hospCounty$num_staffed_beds)
         #get historic utilization
@@ -2445,21 +2325,6 @@ IHMELocalProjections<-function(MyCounties, IncludedHospitals, ChosenBase, Statis
         totalUsedBeds <- sum(hospCounty$bedsUsed)
         baseUtlz <- totalUsedBeds/TotalBeds
         TT <- sum(IncludedHospitals$BEDS)
-        
-        #Get regional and state populations
-        CovidCounties<-subset(CovidConfirmedCases, CountyFIPS %in% MyCounties$FIPS)
-        HistoricalData<-colSums(CovidCounties[,5:length(CovidCounties)])
-        HistoricalDates<-seq(as.Date("2020-01-22"), length=length(HistoricalData), by="1 day")
-        HistoricalData<-data.frame(HistoricalDates, HistoricalData*.21, HistoricalData*.15, HistoricalData*.27)
-        colnames(HistoricalData)<-c("ForecastDate", "Expected Hospitalizations", "Lower Estimate","Upper Estimate")
-        
-        
-        StPopList <- dplyr::filter(CountyInfo, State == toString(BaseState$State[1]))
-        RegPop <- sum(MyCounties$Population)
-        StPop <- sum(StPopList$Population)
-        
-        # Use Population ratio to scale IHME
-        PopRatio <- RegPop/StPop
         
         # Apply ratio's to IHME data
         IHME_Region <- IHME_State
@@ -2471,6 +2336,7 @@ IHMELocalProjections<-function(MyCounties, IncludedHospitals, ChosenBase, Statis
         IHME_Region<- dplyr::filter(IHME_Region, ForecastDate >= Sys.Date() & ForecastDate <= (Sys.Date() + DaysProjected))
         IHME_Region$ID<-rep("IHME", nrow(IHME_Region))
         HistoricalData$ID<-rep("Past Data", nrow(HistoricalData))
+        HistoricalData <- dplyr::filter(HistoricalData, ForecastDate >= as.Date("2020-01-27") + 30)
         
         IHME_Region<-rbind(HistoricalData,IHME_Region)
         IHME_Region$ForecastDate<-as.Date(IHME_Region$ForecastDate)
@@ -2543,6 +2409,7 @@ IHMELocalProjections<-function(MyCounties, IncludedHospitals, ChosenBase, Statis
         IHME_Region<- dplyr::filter(IHME_Region, ForecastDate >= Sys.Date() & ForecastDate <= (Sys.Date() + DaysProjected))
         IHME_Region$ID<-rep("IHME", nrow(IHME_Region))
         HistoricalData$ID<-rep("Past Data", nrow(HistoricalData))
+        HistoricalData <- dplyr::filter(HistoricalData, ForecastDate >= as.Date("2020-01-27") + 30)
         
         IHME_Region<-rbind(HistoricalData,IHME_Region)
         IHME_Region$ForecastDate<-as.Date(IHME_Region$ForecastDate)

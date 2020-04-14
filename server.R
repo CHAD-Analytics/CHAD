@@ -84,19 +84,19 @@ server <- function(input, output) {
     })
     
     #Finds hospital information within a given 100 mile radius. Calculates number of total hospital beds. Can compare to number of cases
-    # output$HospitalUtilization <- renderValueBox({
-    #     MyCounties<-GetCounties(input$Base,input$Radius)
-    #     valueBox(subtitle = "Estimated Local Hospital Bed Utilization",
-    #              HospitalIncreases(MyCounties),
-    #              icon = icon("hospital"),
-    #              color = "navy")
-    # })
+    output$HospitalUtilization <- renderValueBox({
+        MyCounties<-GetCounties(input$Base,input$Radius)
+        valueBox(subtitle = "Estimated Local Hospital Bed Utilization",
+                 HospitalIncreases(MyCounties),
+                 icon = icon("hospital"),
+                 color = "navy")
+    })
    
     
     # output$HospUtlzChange <- renderValueBox({
     #     MyCounties<-GetCounties(input$Base,input$Radius)
     #     valueBox(HospitalUtlzChng(MyCounties),
-    #              subtitle = "Hospital Utilization Change", 
+    #              subtitle = "Estimated COVID only Utilization",
     #              color = "navy")
     # })
     

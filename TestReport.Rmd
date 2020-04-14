@@ -38,7 +38,7 @@ TotPop = CalculateCounties(Counties)
 CovidCaseChng = sum(rev(CovidCounties)[,1] - rev(CovidCounties)[,2])
 CovidDeathChng <- sum(rev(CovidCounties)[,1] - rev(CovidCounties)[,2])
 HospUltz = HospitalIncreases(Counties)
-HospUltz2 = HospitalUtlzChng(Counties)
+#HospUltz2 = HospitalUtlzChng(Counties)
 
 
 if (is.null(params$socDis) ){social_dist<-1}
@@ -139,7 +139,9 @@ New Fatalities:
 
 **`r paste("+",comma(CovidDeathChng))`**
 
+Estimated Hospital Utilization:
 
+**`r HospUltz`**
 
 
 
