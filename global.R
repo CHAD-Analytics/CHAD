@@ -1388,7 +1388,7 @@ PlotLocalChoro<-function(IncludedCounties, ChosenBase, TypofPlot){
     choropleth <- st_as_sf(county_df)
     choropleth <- st_transform(choropleth, crs = 4326)
     choropleth<-choropleth %>% 
-      mutate(STATEFP = state.fips$abb[match(as.numeric(STATEFP), as.numeric(state.fips$fips))])
+      mutate(STATEFP = fips_codes$state[match(as.numeric(STATEFP), as.numeric(fips_codes$state_code))])
     choropleth<-choropleth %>% 
       mutate(GEOID = as.numeric(GEOID))
     choropleth<-subset(choropleth, STATEFP %in% IncludedCounties$State)
