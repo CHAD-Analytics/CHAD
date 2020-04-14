@@ -268,7 +268,7 @@ ui <- tagList(
                                       title = "MAJCOM Summary",
                                       fluidRow(
                                           box(plotlyOutput("SummaryTabChoro", height = 600, width = 'auto',),height = 600, width = 900)),
-                                      box(title = "Projected Daily Hospitalizations",
+                                      box(title = "Summary Projections",
                                           solidHeader=T, 
                                           align = "left", 
                                           column(width = 12, 
