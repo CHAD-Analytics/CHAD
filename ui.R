@@ -133,7 +133,7 @@ ui <- tagList(
                                                                 "Businesses Telework" = "CBN",
                                                                 "Social Distance" = "SDN"))
                                        ),
-                                      
+
                                        br(),
                                        
                                        div(style="text-align:center", tags$hr(style="border-color: #444;"), "Generate & Download Report:"),
