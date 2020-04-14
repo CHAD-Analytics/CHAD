@@ -1092,8 +1092,8 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals, SocialDis
         geom_hline(aes(yintercept = TotalBeds * (1-baseUtlz),
                        linetype = "Max Available Hospital Beds"),
                        colour = "red") +
-        ggtitle("Projected Hospitalizations")+
-        ylab("Daily Hospitalizations")+
+        ggtitle("Projected Daily Hospital Bed Utilization")+
+        ylab("Daily Beds Needed")+
         theme_bw() + 
         theme(plot.title = element_text(face = "bold", size = 15, family = "sans"),
               axis.title = element_text(face = "bold", size = 11, family = "sans"),
@@ -2087,8 +2087,8 @@ CHIMELocalPlot<-function(SocialDistance, ForecastedDays, IncludedCounties, Stati
                         alpha = .2) +
             #scale_colour_manual(values=c("Blue", "Orange", "Red"))+
             xlab('Date') +
-            ylab('Daily Hospitalizations') +
-            ggtitle("CHIME Projected Daily Hospitalizations") +
+            ylab('Daily Beds Needed') +
+            ggtitle("CHIME Projected Daily Hospital Bed Utilization") +
             theme_bw() + 
             theme(plot.title = element_text(face = "bold", size = 15, family = "sans"),
                   axis.title = element_text(face = "bold", size = 11, family = "sans"),
@@ -2356,8 +2356,8 @@ IHMELocalProjections<-function(MyCounties, IncludedHospitals, ChosenBase, Statis
                         alpha = .2) +
             #scale_colour_manual(values=c("Blue", "Orange", "Red"))+
             xlab('Date') +
-            ylab('Daily Hospitalizations') +
-            ggtitle("IHME Projected Daily Hospitalizations") +
+            ylab('Daily Beds Needed') +
+            ggtitle("IHME Projected Daily Hospital Bed Utilization") +
             theme_bw() + 
             theme(plot.title = element_text(face = "bold", size = 15, family = "sans"),
                   axis.title = element_text(face = "bold", size = 11, family = "sans"),
