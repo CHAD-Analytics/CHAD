@@ -62,7 +62,7 @@ ui <- tagList(
                                        br(),
                                        menuItem(
                                            "Current Local Health Inputs",
-                                           tabName = "dashboard",
+                                           tabName = "localHealthInput",
                                            icon = icon("map-marker-alt"),
                                            div(id = "single", style="display: none;", numericInput("tckt", "Ticket Number : ", 12345,  width = 300)),
                                            radioButtons("TypeLocal", "State or County Plot:",
@@ -72,7 +72,7 @@ ui <- tagList(
                                        br(),
                                        menuItem(
                                            "Local Health Projection Inputs",
-                                           tabName = "dashboard",
+                                           tabName = "localHealthProj",
                                            icon = icon("sliders-h"),
                                            div(id = "single", style="display: none;", numericInput("tckt", "Ticket Number : ", 12345,  width = 300)),
                                            radioButtons("StatisticType", "Choose projected statistic:",
@@ -91,7 +91,7 @@ ui <- tagList(
                                        br(),
                                        menuItem(
                                            "National Health Projection Inputs",
-                                           tabName = "dashboard",
+                                           tabName = "natHealthProj",
                                            icon = icon("sliders-h"),
                                            div(id = "single", style="display: none;", numericInput("tckt", "Ticket Number : ", 12345,  width = 300)),
                                            sliderInput("proj_days_national",
@@ -106,8 +106,8 @@ ui <- tagList(
                                        ),
                                        br(),
                                        menuItem(
-                                           "Summary Tab Inputs",
-                                           tabName = "dashboard",
+                                           "MAJCOM Summary Inputs",
+                                           tabName = "MAJCOMsummary",
                                            icon = icon("sliders-h"),
                                            div(id = "single", style="display: none;", numericInput("tckt", "Ticket Number : ", 12345,  width = 300)),
                                            radioButtons("SummaryStatistic",
@@ -116,7 +116,7 @@ ui <- tagList(
                                                           "Hospitalizations"="Hospitalizations")),
                                            selectInput(
                                                "MAJCOMInput",
-                                               "MAJCOM Summary:", 
+                                               "MAJCOM:", 
                                                list(`MAJCOM` = MAJCOMList ), 
                                                selectize = FALSE),
                                            radioButtons("SummaryModelType",
@@ -265,7 +265,7 @@ ui <- tagList(
                                   ####### BEGIN SUMMARY TAB #########
                                   # Mission Risk ------------------------------------------------------------
                                   tabPanel(
-                                      title = "Summary",
+                                      title = "MAJCOM Summary",
                                       fluidRow(
                                           box(plotlyOutput("SummaryTabChoro", height = 600, width = 'auto',),height = 600, width = 900)),
                                       box(title = "Projected Daily Hospitalizations",

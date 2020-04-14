@@ -84,20 +84,19 @@ server <- function(input, output) {
     })
     
     #Finds hospital information within a given 100 mile radius. Calculates number of total hospital beds. Can compare to number of cases
-    # output$HospitalUtilization <- renderValueBox({
-    #     MyCounties<-GetCounties(input$Base,input$Radius)
-    #     MyHospitals<-GetHospitals(input$Base,input$Radius)
-    #     valueBox(subtitle = "Estimated Local Hospital Bed Utilization",
-    #              HospitalIncreases(MyCounties, MyHospitals),
-    #              icon = icon("hospital"),
-    #              color = "navy")
-    # })
-    
-    
+    output$HospitalUtilization <- renderValueBox({
+        MyCounties<-GetCounties(input$Base,input$Radius)
+        valueBox(subtitle = "Estimated Local Hospital Bed Utilization",
+                 HospitalIncreases(MyCounties),
+                 icon = icon("hospital"),
+                 color = "navy")
+    })
+   
     
     # output$HospUtlzChange <- renderValueBox({
-    #     valueBox(HospitalUtlzChng(input$Base,input$Radius),
-    #              subtitle = "Hospital Utilization Change", 
+    #     MyCounties<-GetCounties(input$Base,input$Radius)
+    #     valueBox(HospitalUtlzChng(MyCounties),
+    #              subtitle = "Estimated COVID only Utilization",
     #              color = "navy")
     # })
     
@@ -180,18 +179,70 @@ server <- function(input, output) {
     # Output line plots for the dashboard ----------------------------------------------------------------------------------------------------------------------------------------------------
     
     
-    #Create first plot of local health population 
+    #Create local health plot for Daily Cases 
     output$LocalHealthPlot1<-renderPlotly({
+        
         MyCounties<-GetCounties(input$Base,input$Radius)
-        MyHospitals<-GetHospitals(input$Base,input$Radius)
-        CovidCasesPerDayChart(input$Base, input$Radius, MyCounties,MyHospitals)
+        DailyChart <- CovidCasesPerDayChart(MyCounties)
+        DailyChart <- dplyr::filter(DailyChart, ForecastDate >= DailyChart$ForecastDate[1] + 35)
+        
+        plotDaily <- ggplot(DailyChart) + 
+            geom_line(aes(x=ForecastDate, y=value, colour = variable), size = 0.5) +
+            scale_colour_manual(values=c("Blue", "Orange", "Red")) +
+            xlab('Date') +
+            ylab('Number of People') +
+            theme_bw() + 
+            theme(plot.title = element_text(face = "bold", size = 15, family = "sans"),
+                  axis.title = element_text(face = "bold", size = 11, family = "sans"),
+                  axis.text.x = element_text(angle = 60, hjust = 1), 
+                  axis.line = element_line(color = "black"),
+                  legend.position = "top",
+                  plot.background = element_blank(),
+                  panel.grid.major = element_blank(),
+                  panel.grid.minor = element_blank(),
+                  panel.border = element_blank()) +
+            scale_x_date(date_breaks = "1 week") +
+            labs(color='')
+        
+        plotDaily <- ggplotly(plotDaily)
+        plotDaily <- plotDaily %>% layout(legend = list(orientation = "h",   # show entries horizontally
+                                          xanchor = "center",  # use center of legend as anchor
+                                          x = 0.5,
+                                          y = 1.2)) %>% config(displayModeBar = FALSE)
+        plotDaily
     })
     
     #Create second plot of local health population 
     output$LocalHealthPlot2<-renderPlotly({
+        
         MyCounties<-GetCounties(input$Base,input$Radius)
-        MyHospitals<-GetHospitals(input$Base,input$Radius)
-        CovidCasesCumChart(input$Base, input$Radius, MyCounties, MyHospitals)
+        CumulChart <- CovidCasesCumChart(MyCounties)
+        CumulChart <- dplyr::filter(CumulChart, ForecastDate >= CumulChart$ForecastDate[1] + 35)
+        
+        #Plot for local area cumulative cases
+        plotTot <- ggplot(CumulChart,height = 250) + 
+            geom_line(aes(x=ForecastDate, y=value, colour = variable), size = 0.5) +
+            scale_colour_manual(values=c("Blue", "Orange", "Red"))+
+            xlab('Date') +
+            ylab('Number of People') +
+            theme_bw() + 
+            theme(plot.title = element_text(face = "bold", size = 15, family = "sans"),
+                  axis.title = element_text(face = "bold", size = 11, family = "sans"),
+                  axis.text.x = element_text(angle = 60, hjust = 1), 
+                  axis.line = element_line(color = "black"),
+                  plot.background = element_blank(),
+                  panel.grid.major = element_blank(),
+                  panel.grid.minor = element_blank(),
+                  panel.border = element_blank(),
+                  legend.position = c(0, 1),) +
+            scale_x_date(date_breaks = "1 week")
+        
+        plotTot <- ggplotly(plotTot)
+        plotTot <- plotTot %>% layout(legend = list(orientation = "h",   # show entries horizontally
+                                          xanchor = "center",  # use center of legend as anchor
+                                          x = 0.5,
+                                          y = 1.2)) %>% config(displayModeBar = FALSE)
+        plotTot
     })
     
     

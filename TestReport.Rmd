@@ -37,8 +37,8 @@ CountyDeaths = CalculateDeaths(Counties)
 TotPop = CalculateCounties(Counties)
 CovidCaseChng = sum(rev(CovidCounties)[,1] - rev(CovidCounties)[,2])
 CovidDeathChng <- sum(rev(CovidCounties)[,1] - rev(CovidCounties)[,2])
-HospUltz = HospitalIncreases(Counties, Hospitals)
-HospUltz2 = HospitalUtlzChng(params$base, params$radius)
+HospUltz = HospitalIncreases(Counties)
+#HospUltz2 = HospitalUtlzChng(Counties)
 
 
 if (is.null(params$socDis) ){social_dist<-1}
@@ -139,13 +139,9 @@ New Fatalities:
 
 **`r paste("+",comma(CovidDeathChng))`**
 
-Estimated Hospital Bed Utilization:
+Estimated Hospital Utilization:
 
 **`r HospUltz`**
-
-Estimated Hospital Bed Utilization Change:
-
-**`r HospUltz2`**
 
 
 
@@ -173,19 +169,71 @@ The charts below display daily values and cumulative values of cases, hospitaliz
 
 <div class = "col-md-6">
 ```{r fig.height = 4, fig.width = 4, echo=FALSE}
-CCDaily = CovidCasesPerDayChart(params$base, params$radius, Counties, Hospitals)
-CCDaily = CCDaily %>% layout(xaxis = list(showgrid = T),
-                             yaxis = list(showgrid = T))
-CCDaily
+DailyChart <- CovidCasesPerDayChart(Counties)
+        DailyChart <- dplyr::filter(DailyChart, ForecastDate >= DailyChart$ForecastDate[1] + 35)
+        
+        plotDaily <- ggplot(DailyChart) + 
+            geom_line(aes(x=ForecastDate, y=value, colour = variable), size = 0.5) +
+            scale_colour_manual(values=c("Blue", "Orange", "Red")) +
+            xlab('Date') +
+            ylab('Number of People') +
+            theme_bw() + 
+            theme(plot.title = element_text(face = "bold", size = 15, family = "sans"),
+                  axis.title = element_text(face = "bold", size = 11, family = "sans"),
+                  axis.text.x = element_text(angle = 60, hjust = 1), 
+                  axis.line = element_line(color = "black"),
+                  legend.position = "top",
+                  plot.background = element_blank(),
+                  panel.grid.major = element_blank(),
+                  panel.grid.minor = element_blank(),
+                  panel.border = element_blank()) +
+            scale_x_date(date_breaks = "1 week") +
+            labs(color='')
+        
+        plotDaily <- ggplotly(plotDaily)
+        plotDaily <- plotDaily %>% layout(legend = list(orientation = "h",   # show entries horizontally
+                                          xanchor = "center",  # use center of legend as anchor
+                                          x = 0.5,
+                                          y = 1.2)) %>% config(displayModeBar = FALSE)
+        
+        plotDaily = plotDaily %>% layout(xaxis = list(showgrid = T),
+                                         yaxis = list(showgrid = T))
+plotDaily
 ```
 </div>
 
 <div class = "col-md-6">
 ```{r fig.height = 4, fig.width = 4, echo=FALSE}
-CCtot = CovidCasesCumChart(params$base, params$radius, Counties, Hospitals)
-CCtot = CCtot %>% layout(xaxis = list(showgrid = T),
-                         yaxis = list(showgrid = T))
-CCtot
+CumulChart <- CovidCasesCumChart(Counties)
+        CumulChart <- dplyr::filter(CumulChart, ForecastDate >= CumulChart$ForecastDate[1] + 35)
+        
+        #Plot for local area cumulative cases
+        plotTot <- ggplot(CumulChart,height = 250) + 
+            geom_line(aes(x=ForecastDate, y=value, colour = variable), size = 0.5) +
+            scale_colour_manual(values=c("Blue", "Orange", "Red"))+
+            xlab('Date') +
+            ylab('Number of People') +
+            theme_bw() + 
+            theme(plot.title = element_text(face = "bold", size = 15, family = "sans"),
+                  axis.title = element_text(face = "bold", size = 11, family = "sans"),
+                  axis.text.x = element_text(angle = 60, hjust = 1), 
+                  axis.line = element_line(color = "black"),
+                  plot.background = element_blank(),
+                  panel.grid.major = element_blank(),
+                  panel.grid.minor = element_blank(),
+                  panel.border = element_blank(),
+                  legend.position = c(0, 1),) +
+            scale_x_date(date_breaks = "1 week")
+        
+        plotTot <- ggplotly(plotTot)
+        plotTot <- plotTot %>% layout(legend = list(orientation = "h",   # show entries horizontally
+                                          xanchor = "center",  # use center of legend as anchor
+                                          x = 0.5,
+                                          y = 1.2)) %>% config(displayModeBar = FALSE)
+        
+        plotTot = plotTot %>% layout(xaxis = list(showgrid = T),
+                                     yaxis = list(showgrid = T))
+plotTot
 ```
 </div>
 
