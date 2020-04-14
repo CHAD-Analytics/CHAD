@@ -229,8 +229,9 @@ server <- function(input, output) {
         PlotLocalChoro(MyCounties, input$Base, input$TypeLocal)
     })
     
+    #Choice between cases heat map or hospitalizations heat map
     output$SummaryTabChoro<-renderPlotly({
-        GetHeatMap(input$MAJCOMInput, input$SummaryModelType, input$SummaryForecast)
+            GetHeatMap(input$MAJCOMInput, input$SummaryModelType, input$SummaryForecast, input$SummaryStatistic)
     })
     
     
@@ -384,14 +385,53 @@ server <- function(input, output) {
     
     output$ForecastDataTable<-DT::renderDataTable({
         if (input$MAJCOMInput == "All") {
-            dt<-DT::datatable(ForecastDataTable, rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))
-            dt
-        } else {
-            dt<-DT::datatable(filter(ForecastDataTable, MAJCOM == input$MAJCOMInput), rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))
-            dt
+            
+            if(input$SummaryStatistic == "Cases") {
+                ForecastDataTableCases<-FilterDataTable(ForecastDataTableCases,input$SummaryModelType)
+                dt<-DT::datatable(ForecastDataTableCases, rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))
+                dt
+            } else {
+                ForecastDataTable<-FilterDataTable(ForecastDataTable,input$SummaryModelType)
+                dt<-DT::datatable(ForecastDataTable, rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))
+                dt
+            }
+        } else if(input$MAJCOMInput=="Active Duty"){
+            if(input$SummaryStatistic == "Cases") {
+                ForecastDataTableCases<-FilterDataTable(ForecastDataTableCases,input$SummaryModelType)
+                dt<-DT::datatable(filter(ForecastDataTableCases, !MAJCOM %in% c("AFRC","ANG")), rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))
+                dt
+            } else {
+                ForecastDataTable<-FilterDataTable(ForecastDataTable,input$SummaryModelType)
+                dt<-DT::datatable(filter(ForecastDataTable, !MAJCOM %in% c("AFRC","ANG")), rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))
+                dt
+            }
+        }
+        else {
+            if(input$SummaryStatistic == "Cases") {
+                ForecastDataTableCases<-FilterDataTable(ForecastDataTableCases,input$SummaryModelType)
+                dt<-DT::datatable(filter(ForecastDataTableCases, MAJCOM == input$MAJCOMInput), rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))
+                dt
+            } else {
+                ForecastDataTable<-FilterDataTable(ForecastDataTable,input$SummaryModelType)
+                dt<-DT::datatable(filter(ForecastDataTable, MAJCOM == input$MAJCOMInput), rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))
+                dt
+            }
         }
         
     })
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     output$downloadData <- downloadHandler(
         filename = function() { 

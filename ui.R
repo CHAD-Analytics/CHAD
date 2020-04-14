@@ -110,6 +110,10 @@ ui <- tagList(
                                            tabName = "dashboard",
                                            icon = icon("sliders-h"),
                                            div(id = "single", style="display: none;", numericInput("tckt", "Ticket Number : ", 12345,  width = 300)),
+                                           radioButtons("SummaryStatistic",
+                                                        "Cases or Hospitalizations: ",
+                                                        c("Cases"="Cases",
+                                                          "Hospitalizations"="Hospitalizations")),
                                            selectInput(
                                                "MAJCOMInput",
                                                "MAJCOM Summary:", 
@@ -121,7 +125,8 @@ ui <- tagList(
                                                           "CHIME"="CHIME")),
                                            radioButtons("SummaryForecast",
                                                         "Choose Days Forecasted: ",
-                                                        c("7 Days"="Seven",
+                                                        c('Today'='Today',
+                                                          "7 Days"="Seven",
                                                           "14 Days"="Fourteen",
                                                           "30 Days"="Thirty",
                                                           "60 Days"="Sixty"))
