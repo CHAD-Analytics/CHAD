@@ -46,9 +46,9 @@ library(rmarkdown)
 library(rvest)
 library(maps)
 library(tm)
-library(plotly)
 library(sf)
 library(tigris)
+library(plotly)
 
 
 

@@ -206,7 +206,7 @@ ui <- tagList(
                                           width =13,
                                           downloadButton('downloadData', 'Download data'))
                                       
-                                  )
+                                  ),
                                   ####### END Mission Risk #######
                                   
                                   # Summary Tab -------------------------------------------------------------
