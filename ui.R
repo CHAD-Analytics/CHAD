@@ -60,6 +60,35 @@ ui <- tagList(
                                                    max = 100,
                                                    value = 50),
                                        br(),
+                                       
+                                       menuItem(
+                                           "MAJCOM Summary Inputs",
+                                           tabName = "MAJCOMsummary",
+                                           icon = icon("sliders-h"),
+                                           div(id = "single", style="display: none;", numericInput("tckt", "Ticket Number : ", 12345,  width = 300)),
+                                           radioButtons("SummaryStatistic",
+                                                        "Cases or Hospitalizations: ",
+                                                        c("Cases"="Cases",
+                                                          "Hospitalizations"="Hospitalizations")),
+                                           selectInput(
+                                               "MAJCOMInput",
+                                               "MAJCOM:", 
+                                               list(`MAJCOM` = MAJCOMList ), 
+                                               selectize = FALSE),
+                                           radioButtons("SummaryModelType",
+                                                        "Summary Plot Model: ",
+                                                        c("IHME"="IHME",
+                                                          "CHIME"="CHIME")),
+                                           radioButtons("SummaryForecast",
+                                                        "Choose Days Forecasted: ",
+                                                        c('Today'='Today',
+                                                          "7 Days"="Seven",
+                                                          "14 Days"="Fourteen",
+                                                          "30 Days"="Thirty",
+                                                          "60 Days"="Sixty"))
+                                           
+                                       ),
+                                       br(),
                                        menuItem(
                                            "Current Local Health Inputs",
                                            tabName = "localHealthInput",
@@ -104,34 +133,7 @@ ui <- tagList(
                                                                 "Businesses Telework" = "CBN",
                                                                 "Social Distance" = "SDN"))
                                        ),
-                                       br(),
-                                       menuItem(
-                                           "MAJCOM Summary Inputs",
-                                           tabName = "MAJCOMsummary",
-                                           icon = icon("sliders-h"),
-                                           div(id = "single", style="display: none;", numericInput("tckt", "Ticket Number : ", 12345,  width = 300)),
-                                           radioButtons("SummaryStatistic",
-                                                        "Cases or Hospitalizations: ",
-                                                        c("Cases"="Cases",
-                                                          "Hospitalizations"="Hospitalizations")),
-                                           selectInput(
-                                               "MAJCOMInput",
-                                               "MAJCOM:", 
-                                               list(`MAJCOM` = MAJCOMList ), 
-                                               selectize = FALSE),
-                                           radioButtons("SummaryModelType",
-                                                        "Summary Plot Model: ",
-                                                        c("IHME"="IHME",
-                                                          "CHIME"="CHIME")),
-                                           radioButtons("SummaryForecast",
-                                                        "Choose Days Forecasted: ",
-                                                        c('Today'='Today',
-                                                          "7 Days"="Seven",
-                                                          "14 Days"="Fourteen",
-                                                          "30 Days"="Thirty",
-                                                          "60 Days"="Sixty"))
 
-                                       ),
                                        br(),
                                        
                                        div(style="text-align:center", tags$hr(style="border-color: #444;"), "Generate & Download Report:"),
@@ -187,6 +189,25 @@ ui <- tagList(
                                    })
                                    ')),
                       tabsetPanel(id = "tabs",
+                                  
+                                  ####### BEGIN SUMMARY TAB #########
+                                  # Mission Risk ------------------------------------------------------------
+                                  tabPanel(
+                                      title = "MAJCOM Summary",
+                                      fluidRow(
+                                          box(plotlyOutput("SummaryTabChoro", height = 600, width = 'auto',),height = 600, width = 900)),
+                                      box(title = "Projected Daily Hospitalizations",
+                                          solidHeader=T, 
+                                          align = "left", 
+                                          column(width = 12, 
+                                                 DT::dataTableOutput("ForecastDataTable"), 
+                                                 style = "height:720px;overflow-y: scroll"), 
+                                          height = 900, 
+                                          width =13,
+                                          downloadButton('downloadData', 'Download data'))
+                                      
+                                  ),
+                                  ####### END Mission Risk #######
                                   
                                   # Summary Tab -------------------------------------------------------------
                                   tabPanel(
@@ -259,29 +280,13 @@ ui <- tagList(
                                           box(plotlyOutput("IHMENationaProj",height = 400)),
                                           box(plotlyOutput("CHIMENationalProj"),height = 400)),
                                           box(plotlyOutput("NationalPlotOverlay"), width =  900)
-                                  ),
+                                  )
                                   ####### END PROJECTION TAB #######
                                   
-                                  ####### BEGIN SUMMARY TAB #########
-                                  # Mission Risk ------------------------------------------------------------
-                                  tabPanel(
-                                      title = "MAJCOM Summary",
-                                      fluidRow(
-                                          box(plotlyOutput("SummaryTabChoro", height = 600, width = 'auto',),height = 600, width = 900)),
-                                      box(title = "Summary Projections",
-                                          solidHeader=T, 
-                                          align = "left", 
-                                          column(width = 12, 
-                                                 DT::dataTableOutput("ForecastDataTable"), 
-                                                 style = "height:720px;overflow-y: scroll"), 
-                                          height = 900, 
-                                          width =13,
-                                          downloadButton('downloadData', 'Download data'))
-                                    
-                                      )
-                                      )
 
-                                  ####### END Mission Risk #######
+                                      ) #close dash body
+
+                                  
                                   
                                   
                       )

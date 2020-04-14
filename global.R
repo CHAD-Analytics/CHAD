@@ -24,7 +24,8 @@
 
 
 
-
+library(stringr)
+library(stringi)
 library(markdown)
 library(dplyr)
 library(ggplot2)
@@ -46,9 +47,9 @@ library(rmarkdown)
 library(rvest)
 library(maps)
 library(tm)
-library(plotly)
 library(sf)
 library(tigris)
+library(plotly)
 
 
 

@@ -33,7 +33,7 @@ server <- function(input, output) {
         MyCounties<-GetCounties(input$Base,input$Radius)
         valueBox(subtitle = "Total Regional Population",
                  comma(CalculateCounties(MyCounties)),
-                 icon = icon("list-ol"),
+                 #icon = icon("list-ol"),
                  color = "light-blue"
         )
         
@@ -44,7 +44,7 @@ server <- function(input, output) {
         MyCounties<-GetCounties(input$Base,input$Radius)
         valueBox(subtitle = "Local Cases",
                  comma(CalculateCovid(MyCounties)),
-                 icon = icon("list-ol"),
+                 #icon = icon("list-ol"),
                  color = "light-blue"
         )
         
@@ -67,7 +67,7 @@ server <- function(input, output) {
         MyCounties<-GetCounties(input$Base,input$Radius)
         valueBox(subtitle = "Local Fatalities",
                  comma(CalculateDeaths(MyCounties)),
-                 icon = icon("skull"),
+                 #icon = icon("skull"),
                  color = "blue"
         )
     })
@@ -88,7 +88,7 @@ server <- function(input, output) {
         MyCounties<-GetCounties(input$Base,input$Radius)
         valueBox(subtitle = "Estimated Local Hospital Bed Utilization",
                  HospitalIncreases(MyCounties),
-                 icon = icon("hospital"),
+                 #icon = icon("hospital"),
                  color = "navy")
     })
    
@@ -128,12 +128,12 @@ server <- function(input, output) {
         if (input$StatisticType == "Hospitalizations") {
             valueBox(subtitle = "CHIME Predicted Peak Hospitalizations",
                      paste(Peak),
-                     icon = icon("hospital"),
+                     #icon = icon("hospital"),
                      color = "blue") 
         } else {
                 valueBox(subtitle = "CHIME Predicted Total Fatalities",
                          paste(Peak),
-                         icon = icon("skull"),
+                         #icon = icon("skull"),
                          color = "blue")}
         
     })
@@ -155,12 +155,12 @@ server <- function(input, output) {
         if (input$StatisticType == "Hospitalizations") {
             valueBox(subtitle = "IHME Predicted Peak Hospitalizations",
                      paste(Peak),
-                     icon = icon("hospital"),
+                     #icon = icon("hospital"),
                      color = "navy")
         } else {
             valueBox(subtitle = "IHME Predicted Total Fatalities",
                      paste(Peak),
-                     icon = icon("hospital"),
+                     #icon = icon("hospital"),
                      color = "navy")
         }
         

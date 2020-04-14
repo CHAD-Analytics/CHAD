@@ -33,19 +33,15 @@ and the data manipulation.*
     total patient days. These metrics are used to estimate an average
     hospital utilization.
 
-4.  **<a href="https://github.com/treypujats/COVID19" class="uri">https://github.com/treypujats/COVID19</a>**
+4.  **<a href="https://github.com/treypujats/CHAD" class="uri">https://github.com/treypujats/CHAD</a>**
     : Loaded on this repository is static data regarding Air Force
     installations, US county data, hospital data, and distance matrices
-    between hospitals and bases as well as counties and bases. The Air
-    Force installation data, and US county data are pulled from Major
-    Adam Messer’s github account and stored locally to ensure no changes
-    are made to the file path or data. Thank you Major Messer for
-    providing data and helping us get started with the analysis.
+    between hospitals and bases as well as counties and bases.
 
 **Data Manipulation**:
 
 1.  **Distance matrices**: Distance matrices were created to limit the
-    local area around an installation. Major Freels (AFIT) helped build
+    local area around an installation. Members of the AFIT team helped build
     these matrices to measure relative mileage distance between base and
     county as well as base and hospital. The distances are calculated
     using geospatial coordinates (latitude, longitude) to measure
