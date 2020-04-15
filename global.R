@@ -2764,14 +2764,23 @@ GetHeatMap<-function(MAJCOMChoice,ModelChoice,ForecastChoice,Stat){
       countrycolor = toRGB("white")
     )
     
-    fig <- plot_geo(HeatMap, locationmode = 'USA-states', sizes = c(20, 300))
+    fig <- plot_geo(HeatMap, locationmode = 'USA-states', sizes = c(50, 400))
     fig <- fig %>% add_markers(
       x = ~Long, y = ~Lat, size = ~IHME, color = ~IHMEID, colors = c("red","#228B22"), hoverinfo = "text",
       text = ~paste(HeatMap$Base, "<br />", HeatMap$IHME)
     )
-    fig <- fig %>% layout(title = Banner , geo = g)
+    fig <- fig %>% layout(title = Banner , geo = g, showlegend=TRUE)
     
+    # legend.sizes = seq(50,400, 50)
+    # ax = list(zeroline = FALSE, showline = FALSE, showticklabels = FALSE, showgrid = FALSE)
+    # mk = list(sizeref=0.1, sizemode="area")
+    # p.legend = plot_ly() %>%
+    #   add_markers(x = 1, y = legend.sizes, size = legend.sizes, showlegend = F, marker = mk) %>%
+    #   layout(xaxis = ax, yaxis = list(showgrid = FALSE))
+    # 
+    # subplot(p.legend, fig, widths = c(0.1, 0.9))
     fig
+    
   } else {
     
     g <- list(
@@ -2790,7 +2799,16 @@ GetHeatMap<-function(MAJCOMChoice,ModelChoice,ForecastChoice,Stat){
       x = ~Long, y = ~Lat, size = ~CHIME, color = ~CHIMEID, colors = c("red","#228B22"), hoverinfo = "text",
       text = ~paste(HeatMap$Base, "<br />", HeatMap$CHIME)
     )
-    fig <- fig %>% layout(title = Banner , geo = g)
+    fig <- fig %>% layout(title = Banner , geo = g,showlegend=TRUE)
+    
+    # legend.sizes = seq(50,300, 50)
+    # ax = list(zeroline = FALSE, showline = FALSE, showticklabels = FALSE, showgrid = FALSE)
+    # mk = list(sizeref=0.1, sizemode="area")
+    # p.legend = plot_ly() %>%
+    #   add_markers(x = 1, y = legend.sizes, size = legend.sizes, showlegend = F, marker = mk) %>%
+    #   layout(xaxis = ax, yaxis = list(showgrid = FALSE))
+    # 
+    # subplot(p.legend, fig, widths = c(0.1, 0.9))
     
     fig
     
