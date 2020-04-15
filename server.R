@@ -476,13 +476,14 @@ server <- function(input, output) {
 
     
     
-    
-    
-    
-    
-    
-    
-    
+    output$HotSpotData <- downloadHandler(
+        filename = function() { 
+            paste("HotspotDataset-", Sys.Date(), ".csv", sep="")
+        },
+        content = function(file) {
+            write.csv(Top15Report, file)
+            
+        })
     
     output$downloadData <- downloadHandler(
         filename = function() { 

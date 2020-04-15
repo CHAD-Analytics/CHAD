@@ -204,7 +204,8 @@ ui <- tagList(
                                                  style = "height:720px;overflow-y: scroll"), 
                                           height = 900, 
                                           width =13,
-                                          downloadButton('downloadData', 'Download data'))
+                                          downloadButton('downloadData', 'Download Full Dataset'),
+                                          downloadButton('HotSpotData', 'Download Hotspot Dataset'))
                                       
                                   ),
                                   ####### END Mission Risk #######

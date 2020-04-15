@@ -2692,6 +2692,26 @@ ForecastDataTable<-ForecastDataTable %>% arrange(ForecastDataTable$Installation)
 ForecastDataTableCases$Installation<-as.character(ForecastDataTableCases$Installation)
 ForecastDataTableCases<-ForecastDataTableCases %>% arrange(ForecastDataTableCases$Installation)
 
+
+#Create Top 15 Bases Report###################################################################################
+TruncatedReport<-ForecastDataTable[order(ForecastDataTable$`Hopitalization Per 100,000`, decreasing = TRUE),]
+TruncatedReport<-TruncatedReport %>% filter(MAJCOM != "ANG")
+TruncatedReport<-TruncatedReport %>% filter(MAJCOM != "AFRC")
+TruncatedReport<-TruncatedReport[,c(1,7,20:25)]
+colnames(TruncatedReport)<-c("Installation","New Hospitalizations", "30 Day IHME (Hosp)","30 Day IHME Peak (Hosp)", "30 Day IHME Date (Hosp)", "30 Day CHIME (Hosp)", "30 Day CHIME Peak (Hosp)", "30 Day CHIME Date (Hosp)")
+
+TruncatedReport2<-ForecastDataTableCases[order(ForecastDataTableCases$`Cases Per 100,000`, decreasing = TRUE),]
+TruncatedReport2<-TruncatedReport2 %>% filter(MAJCOM != "ANG")
+TruncatedReport2<-TruncatedReport2 %>% filter(MAJCOM != "AFRC")
+TruncatedReport2<-TruncatedReport2[c(1:15),c(1,2,3,4,5,6,7,20:25)]
+colnames(TruncatedReport2)<-c("Installation","MAJCOM","State", "Availab Beds", "Cases Per 100,000", "Cases Per 10,000", "Cases Today", "30 Day IHME (Cases)","30 Day IHME Peak (Cases)", "30 Day IHME Date (Cases)", "30 Day CHIME (Cases)", "30 Day CHIME Peak (Cases)", "30 Day CHIME Date (Cases)")
+
+Top15Report<-join(TruncatedReport2, TruncatedReport, by = "Installation")
+Top15Report<-Top15Report[,c(1,2,3,5,6,7,14,4,8,9,10,11,12,13,15,16,17,18,19,20)]
+rm(TruncatedReport)
+rm(TruncatedReport2)
+##############################################################################################################
+
 #This just filters the data table based on IHME or CHIME
 FilterDataTable<-function(dt, ModelType){
   if (ModelType == "IHME") {
@@ -2771,7 +2791,7 @@ GetHeatMap<-function(MAJCOMChoice,ModelChoice,ForecastChoice,Stat){
     )
     fig <- fig %>% layout(title = Banner , geo = g, showlegend=TRUE)
     
-    # legend.sizes = seq(0,max(HeatMap$IHME), round(max(HeatMap$IHME)/8, -1))
+    # legend.sizes = seq(20,max(HeatMap$IHME), round(max(HeatMap$IHME)/8, -1))
     # ax = list(zeroline = FALSE, showline = FALSE, showticklabels = FALSE, showgrid = FALSE)
     # mk = list(sizeref=0.1, sizemode="area")
     # p.legend = plot_ly() %>%
