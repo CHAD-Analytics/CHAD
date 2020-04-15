@@ -2471,7 +2471,7 @@ ForecastDataTableCases <- setNames(data.frame(matrix(ncol = 31, nrow = 0)),c("In
 
 for (i in 2:AFrow){
   #Create Number of current cases and cases per 100,000 in a local area
-  MyCounties<-GetCounties(AFBaseLocations$Base[i],50)
+  MyCounties<-GetCounties(AFBaseLocations$Base[i],60)
   CovidDataCounties<-subset(CovidConfirmedCases, CountyFIPS %in% MyCounties$FIPS)
   NewCases<-sum(rev(CovidDataCounties)[,1]-rev(CovidDataCounties)[,2])
   NewHospitalizations<-round(NewCases*.2)
@@ -2490,7 +2490,7 @@ for (i in 2:AFrow){
   #IncludedHospitals<-GetHospitals() 
   #GetHospitals
   HospitalInfo$DistanceMiles = himd[,as.character(AFBaseLocations$Base[i])]
-  MyHospitals<-dplyr::filter(HospitalInfo, (DistanceMiles <= 50))
+  MyHospitals<-dplyr::filter(HospitalInfo, (DistanceMiles <= 60))
   MyHospitals<-dplyr::filter(MyHospitals, (TYPE=="GENERAL ACUTE CARE") | (TYPE=="CRITICAL ACCESS"))
   
   IHME_State <- dplyr::filter(IHME_Model, State == AFBaseLocations$State[i])
@@ -2509,7 +2509,7 @@ for (i in 2:AFrow){
   #MyCounties <- GetCounties()
   #GetCounties
   CountyInfo$DistanceMiles = cimd[,as.character(AFBaseLocations$Base[i])]
-  MyCounties<-dplyr::filter(CountyInfo, DistanceMiles <= 50)
+  MyCounties<-dplyr::filter(CountyInfo, DistanceMiles <= 60)
   CovidCounties<-subset(CovidConfirmedCases, CountyFIPS %in% MyCounties$FIPS)
   HistoricalData<-colSums(CovidCounties[,5:length(CovidCounties)])
   HistoricalDates<-seq(as.Date("2020-01-22"), length=length(HistoricalData), by="1 day")
