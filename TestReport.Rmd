@@ -527,6 +527,16 @@ kable(CountyDT) %>%
 ```
 
 
+### `r params$base` Restriction ORM
 
+**Cohort Demographics**
 
+Col Header 1 | Col Header 2
+------------ | ------------
+Placeholder  | Pending move to FOUO
 
+**Predicted Hospitilization Rate**
+
+Col Header 1 | Col Header 2
+------------ | ------------
+Placeholder  | Pending move to FOUO
