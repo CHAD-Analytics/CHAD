@@ -1364,16 +1364,16 @@ PlotLocalChoro<-function(IncludedCounties, ChosenBase, TypofPlot){
     Base_point<-st_sfc(Base_point, crs=4326)
     Base_point<-st_sf(BaseStats, geometry = Base_point)
     
-    ## Join the cases to spatial file by FIPS (GEOID)
+    ## Join the cases to spatial file by FIPS (GEOID) & add 360 to long so that we can project acroos date line
     choropleth<-merge(choropleth, PlottingCountyData, by= "GEOID")
-    
-    #plot it
+    choropleth<-st_shift_longitude(choropleth)
+    Base_point<-st_shift_longitude(Base_point)
     PlotCovidLocal<-ggplot()+
       geom_sf(data = choropleth,aes(fill=Cases)) +
       geom_sf(data = Base_point, color = "red", size = 3,show.legend ="Null")+
-      #geom_text(data = Base_point, 
-      #          aes(x = Long, y = Lat, 
-      #              label = Base), hjust = .5) +
+      # geom_text(data = Base_point,
+      #           aes(x = Long+360, y = Lat,
+      #               label = Base), hjust = .5) +
       ggtitle("COVID-19 Cases by County (County View)")+ 
       coord_sf() +
       theme_minimal() +
@@ -1399,22 +1399,24 @@ PlotLocalChoro<-function(IncludedCounties, ChosenBase, TypofPlot){
     Base_point<-st_sfc(Base_point, crs=4326)
     Base_point<-st_sf(BaseStats, geometry = Base_point)
     
-    ## Join the cases to spatial file by FIPS (GEOID)
-    
-    
-    
+    ## Join the cases to spatial file by FIPS (GEOID) & add 360 to long so that we can project acroos date line
+    choropleth<-st_shift_longitude(choropleth)
+    Base_point<-st_shift_longitude(Base_point)
     PlotCovidLocal<-ggplot()+
       geom_sf(data = choropleth,aes(fill=Cases)) +
       geom_sf(data = Base_point, color = "red", size = 3,show.legend ="Null")+
-      #geom_text(data = Base_point, 
-      #          aes(x = Long, y = Lat, 
-      #              label = Base), hjust = .5) +
+      # geom_text(data = Base_point,
+      #           aes(x = Long+360, y = Lat,
+      #               label = Base), hjust = .5) +
       ggtitle("COVID-19 Cases by County (County View)")+ 
       coord_sf() +
       theme_minimal() +
       theme(axis.line = element_blank(), axis.text = element_blank(),
             axis.ticks = element_blank(), axis.title = element_blank())+
       scale_fill_viridis(choropleth$Cases)
+    
+    PlotCovidLocal <- ggplotly(PlotCovidLocal)
+    PlotCovidLocal <- PlotCovidLocal %>% config(displayModeBar = FALSE)
     PlotCovidLocal
   }
   
