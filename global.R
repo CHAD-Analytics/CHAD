@@ -48,7 +48,7 @@ library(rvest)
 library(maps)
 library(tm)
 library(sf)
-library(ggrepel)
+#library(ggrepel)
 library(tigris)
 library(plotly)
 
@@ -2821,7 +2821,7 @@ GetHeatMap<-function(MAJCOMChoice,ModelChoice,ForecastChoice,Stat){
     fig <- fig %>% layout(legend = list(orientation = "h",   # show entries horizontally
                                         xanchor = "center",  # use center of legend as anchor
                                         x = 0.5,
-                                        y = 0.95))
+                                        y = 0.97))
     
     # legend.sizes = seq(0,max(HeatMap$CHIME), round(max(HeatMap$CHIME)/8, -1))
     # ax = list(zeroline = FALSE, showline = FALSE, showticklabels = FALSE, showgrid = FALSE)
