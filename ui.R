@@ -195,7 +195,8 @@ ui <- tagList(
                                   tabPanel(
                                       title = "MAJCOM Summary",
                                       fluidRow(
-                                          box(plotlyOutput("SummaryTabChoro", height = 600, width = 'auto',),height = 600, width = 900)),
+                                          box(plotlyOutput("SummaryTabChoro", height = 500)),
+                                          box(plotOutput("HotSpot", height = 500))),
                                       box(title = "Projected Daily Hospitalizations",
                                           solidHeader=T, 
                                           align = "left", 
@@ -213,9 +214,8 @@ ui <- tagList(
                                   # Summary Tab -------------------------------------------------------------
                                   tabPanel(
                                       title = "National Summary",
-                                      
-                                      box(title = "National Impact Map",solidHeader = T, align = "center", htmlOutput("SummaryPlot"),width = 13),
-                                      
+
+                                      box(title = "National Impact Map",solidHeader = T, align = "left", htmlOutput("SummaryPlot"),width = 12),
                                       box(title = "National Statistics", solidHeader=T, align = "left", column(width = 12, DT::dataTableOutput("NationalDataTable1"), style = "height:240px;overflow-y: scroll;overflow-x:scroll"),width = 13)
                                       
                                   ),

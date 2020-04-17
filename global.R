@@ -2783,6 +2783,10 @@ GetHeatMap<-function(MAJCOMChoice,ModelChoice,ForecastChoice,Stat){
       text = ~paste(HeatMap$Base, "<br />", HeatMap$IHME)
     )
     fig <- fig %>% layout(title = Banner , geo = g, showlegend=TRUE)
+    fig <- fig %>% layout(legend = list(orientation = "h",   # show entries horizontally
+                                                xanchor = "center",  # use center of legend as anchor
+                                                x = 0.5,
+                                                y = 0.95))
     
     # legend.sizes = seq(20,max(HeatMap$IHME), round(max(HeatMap$IHME)/8, -1))
     # ax = list(zeroline = FALSE, showline = FALSE, showticklabels = FALSE, showgrid = FALSE)
@@ -2813,6 +2817,10 @@ GetHeatMap<-function(MAJCOMChoice,ModelChoice,ForecastChoice,Stat){
       text = ~paste(HeatMap$Base, "<br />", HeatMap$CHIME)
     )
     fig <- fig %>% layout(title = Banner , geo = g,showlegend=TRUE)
+    fig <- fig %>% layout(legend = list(orientation = "h",   # show entries horizontally
+                                        xanchor = "center",  # use center of legend as anchor
+                                        x = 0.5,
+                                        y = 0.95))
     
     # legend.sizes = seq(0,max(HeatMap$CHIME), round(max(HeatMap$CHIME)/8, -1))
     # ax = list(zeroline = FALSE, showline = FALSE, showticklabels = FALSE, showgrid = FALSE)
@@ -3444,7 +3452,7 @@ HotspotPlot <- function(CovidConfirmedCases, CovidDeaths){
     # annotate("text", x = 3000, y = 1/9, label = 'Cases Growing', vjust = -.5, color = 'red') +
     # geom_text(aes(label = base), size = 4, colour = "black", alpha = .6, check_overlap = TRUE, vjust = "top") + ##if you want text labels for plotly
     geom_label_repel(aes(new_cases_3_pp, case_growth, label = base),
-                     fontface = 'bold', size = 4, fill = "white", color = "#00308f", box.padding = unit(0.75, "lines")) +
+                     fontface = 'bold', size = 3, fill = "white", color = "#00308f", box.padding = unit(0.75, "lines")) +
     ylab("Growth Rate (# Cases In 3 Days / # Cases in 30 Days)") + #ylim(0,.8) + #geom_line(y = 1/9) +
     xlab("New Cases (per 100,000) in Last 3 Days") + 
     ggtitle("COVID-19 Case Count Growth within 50 Miles of Installation", subtitle = paste0("Current as of ", current_date)) + 
@@ -3454,7 +3462,7 @@ HotspotPlot <- function(CovidConfirmedCases, CovidDeaths){
           axis.title = element_text(face = "bold", size = 11, family = "sans"),
           axis.text.x = element_text(angle = 60, hjust = 1), 
           axis.line = element_line(color = "black"),
-          legend.position = 'top',
+          legend.position = 'right',
           plot.background = element_blank(),
           panel.grid.major = element_blank(),
           panel.grid.minor = element_blank(),
