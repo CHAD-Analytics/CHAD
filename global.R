@@ -64,6 +64,9 @@ library(plotly)
 #CountyInfo is used to measure population of a county and coordinates.
 
 CovidConfirmedCases <- as.data.frame(data.table::fread("https://usafactsstatic.blob.core.windows.net/public/data/covid-19/covid_confirmed_usafacts.csv"))
+
+CovidConfirmedCases<-CovidConfirmedCases[colSums(!is.na(CovidConfirmedCases)) > 0]
+
 CountyInfo <- as.data.frame(data.table::fread("https://github.com/treypujats/CHAD/raw/master/data/countyinfo.rda"))
 HospitalInfo <- as.data.frame(data.table::fread("https://github.com/treypujats/CHAD/blob/master/data/hospitalinfo.rda?raw=true"))
 CovidDeaths<-as.data.frame(data.table::fread("https://usafactsstatic.blob.core.windows.net/public/data/covid-19/covid_deaths_usafacts.csv"))
@@ -170,6 +173,8 @@ CovidConfirmedCasesRate <- cbind(CovidConfirmedCases,v)
 #Input the Included Counties as factors
 PlottingCountyData<- read.csv("https://usafactsstatic.blob.core.windows.net/public/data/covid-19/covid_confirmed_usafacts.csv",
                               header = TRUE, stringsAsFactors = FALSE)
+
+PlottingCountyData <- PlottingCountyData<-PlottingCountyData[colSums(!is.na(PlottingCountyData)) > 0]
 
 # stopwords = "County"     #Your stop words file
 # x  = PlottingCountyData$County.Name        #Company column data
