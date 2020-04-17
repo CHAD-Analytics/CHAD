@@ -203,7 +203,7 @@ ui <- tagList(
                                           column(width = 12, 
                                                  DT::dataTableOutput("ForecastDataTable"), 
                                                  style = "height:720px;overflow-y: scroll"), 
-                                          height = 600, 
+                                          height = 900, 
                                           width =13,
                                           downloadButton('downloadData', 'Download Full Dataset'),
                                           downloadButton('HotSpotData', 'Download Hotspot Dataset'))

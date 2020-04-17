@@ -3435,7 +3435,7 @@ HotspotPlot <- function(CovidConfirmedCases, CovidDeaths){
   current_date = (bases_radius %>% ungroup() %>% filter(deaths_pp > 0) %>% filter(date ==max(date)) %>% select(date))$date[1]
   
   #ggrepel does not work with plotly , also I'm getting an error on the "aes(fill = deaths_pp)" when trying to convert to plotly. Any ideas why? 
-  library(ggrepel)
+
   bases_radius %>% mutate(cases_30_trunc = pmin(new_cases_30_pp, 10000)) %>%  # had to truncate cases at 10000 before since Mcguire was goin nuts 
     filter(new_cases_3_pp > 200, #filtering to show only bases with more than 200 cases per cap in last 3 days. gets cluttered if you include all
            date == current_date, 
