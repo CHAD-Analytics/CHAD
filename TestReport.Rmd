@@ -1,3 +1,4 @@
+
 ---
 title: |
   <center> CHAD Output Summary </center>
@@ -36,7 +37,7 @@ CountyCovid = CalculateCovid(Counties)
 CountyDeaths = CalculateDeaths(Counties)
 TotPop = CalculateCounties(Counties)
 CovidCaseChng = sum(rev(CovidCounties)[,1] - rev(CovidCounties)[,2])
-CovidDeathChng <- sum(rev(CovidCounties)[,1] - rev(CovidCounties)[,2])
+CovidDeathChng <- sum(rev(CovidDeaths)[,1] - rev(CovidDeaths)[,2])
 HospUltz = HospitalIncreases(Counties)
 #HospUltz2 = HospitalUtlzChng(Counties)
 
@@ -527,6 +528,16 @@ kable(CountyDT) %>%
 ```
 
 
+### `r params$base` Restriction ORM
 
+**Cohort Demographics**
 
+Col Header 1 | Col Header 2
+------------ | ------------
+Placeholder  | Pending move to FOUO
 
+**Predicted Hospitilization Rate**
+
+Col Header 1 | Col Header 2
+------------ | ------------
+Placeholder  | Pending move to FOUO

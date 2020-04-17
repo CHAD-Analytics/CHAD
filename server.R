@@ -494,7 +494,10 @@ server <- function(input, output) {
             
         })
     
-    
+    output$HotSpot <- renderPlot({
+            
+        HotspotPlot(CovidConfirmedCases, CovidDeaths)
+    })
     
     # Output Report ------------------------------------------------------------------------------------------------------------------------------------------------------------------
     
