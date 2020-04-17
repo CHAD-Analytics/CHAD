@@ -195,15 +195,15 @@ ui <- tagList(
                                   tabPanel(
                                       title = "MAJCOM Summary",
                                       fluidRow(
-                                          box(plotlyOutput("SummaryTabChoro", height = 500)),
-                                          box(plotOutput("HotSpot", height = 500))),
+                                          box(plotlyOutput("SummaryTabChoro", height = 600)),
+                                          box(plotOutput("HotSpot", height = 600))),
                                       box(title = "Projected Daily Hospitalizations",
                                           solidHeader=T, 
                                           align = "left", 
                                           column(width = 12, 
                                                  DT::dataTableOutput("ForecastDataTable"), 
                                                  style = "height:720px;overflow-y: scroll"), 
-                                          height = 900, 
+                                          height = 600, 
                                           width =13,
                                           downloadButton('downloadData', 'Download Full Dataset'),
                                           downloadButton('HotSpotData', 'Download Hotspot Dataset'))

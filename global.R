@@ -48,6 +48,7 @@ library(rvest)
 library(maps)
 library(tm)
 library(sf)
+library(ggrepel)
 library(tigris)
 library(plotly)
 
@@ -3413,7 +3414,7 @@ HotspotPlot <- function(CovidConfirmedCases, CovidDeaths){
     mutate(CountyFIPS = fix.fips(CountyFIPS))
   
   # Convert cimd dataframe to long format and filter to within 50 miles of base
-  library(tidyverse)
+  
   rownames(cimd) = CountyInfo[,3] 
   cimd_long <- cimd %>% rownames_to_column(var= "FIPS")
   cimd_long <- cimd_long %>% gather(-c(FIPS), key = base, value = DistanceMiles) 
