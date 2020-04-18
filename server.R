@@ -296,14 +296,15 @@ server <- function(input, output) {
         baseUsed = input$Base
         
         # Read the json file and convert it to data.frame
-        myList <- fromJSON("data/shinyjson.json")
-    
+        #myList <- fromJSON("data/shinyjson.json")
         
         json_file <- lapply(myList, function(x) {
             x[sapply(x, is.null)] <- NA
             unlist(x)
         })
         df<-as.data.frame(json_file)
+        
+        names(df) <- gsub("\\.", " ", names(df))
         
         #Renaming the first empty column to date
         df <- cbind(rownames(df), df)
@@ -365,7 +366,8 @@ server <- function(input, output) {
                                           y = -0.5
                                           )) %>% config(displayModeBar = FALSE)
         p2 <- p2 %>% layout(xaxis = list(showgrid = F),
-                            yaxis = list(gridcolor = "lightgray"),margin = list(t = 50), title=input$loc) %>% config(displayModeBar = FALSE)
+                            yaxis = list(gridcolor = "lightgray"),margin = list(t = 50), title=baseUsed) %>% config(displayModeBar = FALSE)
+        p2
         
     })
 
