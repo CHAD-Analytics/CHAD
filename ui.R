@@ -195,8 +195,8 @@ ui <- tagList(
                                   tabPanel(
                                       title = "MAJCOM Summary",
                                       fluidRow(
-                                          box(plotlyOutput("SummaryTabChoro", height = 700, width = 'auto'),width=1200)),
-                                          #box(plotOutput("HotSpot", height = 600))),
+                                          box(plotlyOutput("SummaryTabChoro", height = 600, width = 'auto')),
+                                          box(plotOutput("HotSpot", height = 600))),
                                       box(title = "Base Summary Projections",
                                           solidHeader=T, 
                                           align = "left", 
