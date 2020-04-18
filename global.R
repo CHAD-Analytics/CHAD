@@ -38,17 +38,19 @@ library(googleVis)
 library(usmap)
 library(data.table)
 library(plyr)
+library(jsonlite)
+library(splitstackshape)
 library(DT)
 library(mapproj)
 library(viridis)
-#library(tidyverse)
+library(tidyverse)
 library(zoo) #used for rollsum function 
 library(rmarkdown)
 library(rvest)
 library(maps)
 library(tm)
 library(sf)
-#library(ggrepel)
+library(ggrepel)
 library(tigris)
 library(plotly)
 
@@ -3381,7 +3383,7 @@ PlotOverlay2<-function(ChosenBase, IncludedCounties, IncludedHospitals, SocialDi
 # }
 
 
-HotspotPlot <- function(CovidConfirmedCases, CovidDeaths){
+HotspotPlot <- function(CovidConfirmedCases, CovidDeaths, MAJCOMInput){
   #convert cases and death dataframes to long format. Also add in new_cases in last 1, 3, and 30 days
   tempCases = CovidConfirmedCases %>% select(-State, -stateFIPS) %>%
     reshape2::melt(id.var = c('CountyFIPS','County Name'), variable.name = 'date', value.name = "cumulative_cases") %>%
@@ -3442,38 +3444,151 @@ HotspotPlot <- function(CovidConfirmedCases, CovidDeaths){
   current_date = (bases_radius %>% ungroup() %>% filter(deaths_pp > 0) %>% filter(date ==max(date)) %>% select(date))$date[1]
   
   #ggrepel does not work with plotly , also I'm getting an error on the "aes(fill = deaths_pp)" when trying to convert to plotly. Any ideas why? 
-
-  bases_radius %>% mutate(cases_30_trunc = pmin(new_cases_30_pp, 10000)) %>%  # had to truncate cases at 10000 before since Mcguire was goin nuts 
-    filter(new_cases_3_pp > 200, #filtering to show only bases with more than 200 cases per cap in last 3 days. gets cluttered if you include all
-           date == current_date, 
-           `Major Command` != "ANG" , `Major Command` != "AFRC") %>% # just show AD AF bases
-    ggplot(aes(size = cases_30_trunc, x = new_cases_3_pp, fill = deaths_pp , y = case_growth)) + 
-    geom_point(alpha = 1, shape = 21, stroke = 1) + scale_size(range = c(0, 15), name="Cases (per 100,000) in\nLast 30 Days",
-                                                               breaks=c(2000,4000,6000,8000),
-                                                               labels=c("2000","4000","6000","8000+"),
-                                                               guide="legend") + 
-    scale_alpha(range = c(1, 1)) + #this line might not be needed. didn't want the alpha values to change based off of color/fill
-    scale_fill_distiller(palette = "RdBu", na.value = "#b2182b", "Deaths (per 100,000)") +
-    scale_x_log10() + scale_y_continuous(labels = scales::percent) + expand_limits(y = 0) + 
-    geom_hline(yintercept=1/9, linetype='dashed', col = 'black') + 
-    # annotate("text", x = 3000, y = 1/9, label = 'Cases Shrinking', vjust = 1.5, color = 'blue') +  ##this code broke for some reason
-    # annotate("text", x = 3000, y = 1/9, label = 'Cases Growing', vjust = -.5, color = 'red') +
-    # geom_text(aes(label = base), size = 4, colour = "black", alpha = .6, check_overlap = TRUE, vjust = "top") + ##if you want text labels for plotly
-    geom_label_repel(aes(new_cases_3_pp, case_growth, label = base),
-                     fontface = 'bold', size = 3, fill = "white", color = "#00308f", box.padding = unit(0.75, "lines")) +
-    ylab("Growth Rate (# Cases In 3 Days / # Cases in 30 Days)") + #ylim(0,.8) + #geom_line(y = 1/9) +
-    xlab("New Cases (per 100,000) in Last 3 Days") + 
-    ggtitle("COVID-19 Case Count Growth within 50 Miles of Installation", subtitle = paste0("Current as of ", current_date)) + 
-    theme(plot.title = element_text(hjust = 0.5), plot.subtitle = element_text(hjust = 0.5))+ 
-    theme_bw() +
-    theme(plot.title = element_text(face = "bold", size = 15, family = "sans"),
-          axis.title = element_text(face = "bold", size = 11, family = "sans"),
-          axis.text.x = element_text(angle = 60, hjust = 1), 
-          axis.line = element_line(color = "black"),
-          legend.position = 'right',
-          plot.background = element_blank(),
-          panel.grid.major = element_blank(),
-          panel.grid.minor = element_blank(),
-          panel.border = element_blank())
-  # ggplotly(p)
+  
+  if (MAJCOMInput == "All"){
+    
+    bases_radius %>% mutate(cases_30_trunc = pmin(new_cases_30_pp, 10000)) %>%  # had to truncate cases at 10000 before since Mcguire was goin nuts 
+      filter(new_cases_3_pp > 500, #filtering to show only bases with more than 200 cases per cap in last 3 days. gets cluttered if you include all
+             date == current_date) %>% # just show AD AF bases
+      ggplot(aes(size = cases_30_trunc, x = new_cases_3_pp, fill = deaths_pp , y = case_growth)) + 
+      geom_point(alpha = 1, shape = 21, stroke = 1) + scale_size(range = c(0, 15), name="Cases (per 100,000) in\nLast 30 Days",
+                                                                 breaks=c(2000,4000,6000,8000),
+                                                                 labels=c("2000","4000","6000","8000+"),
+                                                                 guide="legend") + 
+      scale_alpha(range = c(1, 1)) + #this line might not be needed. didn't want the alpha values to change based off of color/fill
+      scale_fill_distiller(palette = "RdBu", na.value = "#b2182b", "Deaths (per 100,000)") +
+      scale_x_log10() + scale_y_continuous(labels = scales::percent) + expand_limits(y = 0) + 
+      geom_hline(yintercept=1/9, linetype='dashed', col = 'black') + 
+      # annotate("text", x = 3000, y = 1/9, label = 'Cases Shrinking', vjust = 1.5, color = 'blue') +  ##this code broke for some reason
+      # annotate("text", x = 3000, y = 1/9, label = 'Cases Growing', vjust = -.5, color = 'red') +
+      # geom_text(aes(label = base), size = 4, colour = "black", alpha = .6, check_overlap = TRUE, vjust = "top") + ##if you want text labels for plotly
+      geom_label_repel(aes(new_cases_3_pp, case_growth, label = base),
+                       fontface = 'bold', size = 3, fill = "white", color = "#00308f", box.padding = unit(0.75, "lines")) +
+      ylab("Growth Rate (# Cases In 3 Days / # Cases in 30 Days)") + #ylim(0,.8) + #geom_line(y = 1/9) +
+      xlab("New Cases (per 100,000) in Last 3 Days") + 
+      ggtitle("COVID-19 Case Count Growth within 50 Miles of Installation", subtitle = paste0("Current as of ", current_date)) + 
+      theme(plot.title = element_text(hjust = 0.5), plot.subtitle = element_text(hjust = 0.5))+ 
+      theme_bw() +
+      theme(plot.title = element_text(face = "bold", size = 15, family = "sans"),
+            axis.title = element_text(face = "bold", size = 11, family = "sans"),
+            axis.text.x = element_text(angle = 60, hjust = 1), 
+            axis.line = element_line(color = "black"),
+            legend.position = 'right',
+            plot.background = element_blank(),
+            panel.grid.major = element_blank(),
+            panel.grid.minor = element_blank(),
+            panel.border = element_blank())
+    # ggplotly(p)
+  }
+  else if (MAJCOMInput == "Active Duty"){
+    
+    bases_radius %>% mutate(cases_30_trunc = pmin(new_cases_30_pp, 10000)) %>%  # had to truncate cases at 10000 before since Mcguire was goin nuts 
+      filter(new_cases_3_pp > 200, #filtering to show only bases with more than 200 cases per cap in last 3 days. gets cluttered if you include all
+             date == current_date, 
+             `Major Command` != "ANG" , `Major Command` != "AFRC") %>% # just show AD AF bases
+      ggplot(aes(size = cases_30_trunc, x = new_cases_3_pp, fill = deaths_pp , y = case_growth)) + 
+      geom_point(alpha = 1, shape = 21, stroke = 1) + scale_size(range = c(0, 15), name="Cases (per 100,000) in\nLast 30 Days",
+                                                                 breaks=c(2000,4000,6000,8000),
+                                                                 labels=c("2000","4000","6000","8000+"),
+                                                                 guide="legend") + 
+      scale_alpha(range = c(1, 1)) + #this line might not be needed. didn't want the alpha values to change based off of color/fill
+      scale_fill_distiller(palette = "RdBu", na.value = "#b2182b", "Deaths (per 100,000)") +
+      scale_x_log10() + scale_y_continuous(labels = scales::percent) + expand_limits(y = 0) + 
+      geom_hline(yintercept=1/9, linetype='dashed', col = 'black') + 
+      # annotate("text", x = 3000, y = 1/9, label = 'Cases Shrinking', vjust = 1.5, color = 'blue') +  ##this code broke for some reason
+      # annotate("text", x = 3000, y = 1/9, label = 'Cases Growing', vjust = -.5, color = 'red') +
+      # geom_text(aes(label = base), size = 4, colour = "black", alpha = .6, check_overlap = TRUE, vjust = "top") + ##if you want text labels for plotly
+      geom_label_repel(aes(new_cases_3_pp, case_growth, label = base),
+                       fontface = 'bold', size = 3, fill = "white", color = "#00308f", box.padding = unit(0.75, "lines")) +
+      ylab("Growth Rate (# Cases In 3 Days / # Cases in 30 Days)") + #ylim(0,.8) + #geom_line(y = 1/9) +
+      xlab("New Cases (per 100,000) in Last 3 Days") + 
+      
+      ggtitle("COVID-19 Case Count Growth within 50 Miles of Installation", subtitle = paste0("Current as of ", current_date)) + 
+      theme(plot.title = element_text(hjust = 0.5), plot.subtitle = element_text(hjust = 0.5))+ 
+      theme_bw() +
+      theme(plot.title = element_text(face = "bold", size = 15, family = "sans"),
+            axis.title = element_text(face = "bold", size = 11, family = "sans"),
+            axis.text.x = element_text(angle = 60, hjust = 1), 
+            axis.line = element_line(color = "black"),
+            legend.position = 'right',
+            plot.background = element_blank(),
+            panel.grid.major = element_blank(),
+            panel.grid.minor = element_blank(),
+            panel.border = element_blank())
+    # ggplotly(p)
+  }
+  else if (MAJCOMInput == "ANG"){
+    bases_radius %>% mutate(cases_30_trunc = pmin(new_cases_30_pp, 10000)) %>%  # had to truncate cases at 10000 before since Mcguire was goin nuts 
+      filter(new_cases_3_pp > 400, #filtering to show only bases with more than 200 cases per cap in last 3 days. gets cluttered if you include all
+             date == current_date, 
+             `Major Command` == MAJCOMInput) %>% # just show AD AF bases
+      ggplot(aes(size = cases_30_trunc, x = new_cases_3_pp, fill = deaths_pp , y = case_growth)) + 
+      geom_point(alpha = 1, shape = 21, stroke = 1) + scale_size(range = c(0, 15), name="Cases (per 100,000) in\nLast 30 Days",
+                                                                 breaks=c(2000,4000,6000,8000),
+                                                                 labels=c("2000","4000","6000","8000+"),
+                                                                 guide="legend") + 
+      scale_alpha(range = c(1, 1)) + #this line might not be needed. didn't want the alpha values to change based off of color/fill
+      scale_fill_distiller(palette = "RdBu", na.value = "#b2182b", "Deaths (per 100,000)") +
+      scale_x_log10() + scale_y_continuous(labels = scales::percent) + expand_limits(y = 0) + 
+      geom_hline(yintercept=1/9, linetype='dashed', col = 'black') + 
+      # annotate("text", x = 3000, y = 1/9, label = 'Cases Shrinking', vjust = 1.5, color = 'blue') +  ##this code broke for some reason
+      # annotate("text", x = 3000, y = 1/9, label = 'Cases Growing', vjust = -.5, color = 'red') +
+      # geom_text(aes(label = base), size = 4, colour = "black", alpha = .6, check_overlap = TRUE, vjust = "top") + ##if you want text labels for plotly
+      geom_label_repel(aes(new_cases_3_pp, case_growth, label = base),
+                       fontface = 'bold', size = 3, fill = "white", color = "#00308f", box.padding = unit(0.75, "lines")) +
+      ylab("Growth Rate (# Cases In 3 Days / # Cases in 30 Days)") + #ylim(0,.8) + #geom_line(y = 1/9) +
+      xlab("New Cases (per 100,000) in Last 3 Days") + 
+      
+      ggtitle("COVID-19 Case Count Growth within 50 Miles of Installation", subtitle = paste0("Current as of ", current_date)) + 
+      theme(plot.title = element_text(hjust = 0.5), plot.subtitle = element_text(hjust = 0.5))+ 
+      theme_bw() +
+      theme(plot.title = element_text(face = "bold", size = 15, family = "sans"),
+            axis.title = element_text(face = "bold", size = 11, family = "sans"),
+            axis.text.x = element_text(angle = 60, hjust = 1), 
+            axis.line = element_line(color = "black"),
+            legend.position = 'right',
+            plot.background = element_blank(),
+            panel.grid.major = element_blank(),
+            panel.grid.minor = element_blank(),
+            panel.border = element_blank())
+    # ggplotly(p)
+  }
+  else{
+    bases_radius %>% mutate(cases_30_trunc = pmin(new_cases_30_pp, 10000)) %>%  # had to truncate cases at 10000 before since Mcguire was goin nuts 
+      filter(new_cases_3_pp > 10, #filtering to show only bases with more than 200 cases per cap in last 3 days. gets cluttered if you include all
+             date == current_date, 
+             `Major Command` == MAJCOMInput) %>% # just show AD AF bases
+      ggplot(aes(size = cases_30_trunc, x = new_cases_3_pp, fill = deaths_pp , y = case_growth)) + 
+      geom_point(alpha = 1, shape = 21, stroke = 1) + scale_size(range = c(0, 15), name="Cases (per 100,000) in\nLast 30 Days",
+                                                                 breaks=c(2000,4000,6000,8000),
+                                                                 labels=c("2000","4000","6000","8000+"),
+                                                                 guide="legend") + 
+      scale_alpha(range = c(1, 1)) + #this line might not be needed. didn't want the alpha values to change based off of color/fill
+      scale_fill_distiller(palette = "RdBu", na.value = "#b2182b", "Deaths (per 100,000)") +
+      scale_x_log10() + scale_y_continuous(labels = scales::percent) + expand_limits(y = 0) + 
+      geom_hline(yintercept=1/9, linetype='dashed', col = 'black') + 
+      # annotate("text", x = 3000, y = 1/9, label = 'Cases Shrinking', vjust = 1.5, color = 'blue') +  ##this code broke for some reason
+      # annotate("text", x = 3000, y = 1/9, label = 'Cases Growing', vjust = -.5, color = 'red') +
+      # geom_text(aes(label = base), size = 4, colour = "black", alpha = .6, check_overlap = TRUE, vjust = "top") + ##if you want text labels for plotly
+      geom_label_repel(aes(new_cases_3_pp, case_growth, label = base),
+                       fontface = 'bold', size = 3, fill = "white", color = "#00308f", box.padding = unit(0.75, "lines")) +
+      ylab("Growth Rate (# Cases In 3 Days / # Cases in 30 Days)") + #ylim(0,.8) + #geom_line(y = 1/9) +
+      xlab("New Cases (per 100,000) in Last 3 Days") + 
+      
+      ggtitle("COVID-19 Case Count Growth within 50 Miles of Installation", subtitle = paste0("Current as of ", current_date)) + 
+      theme(plot.title = element_text(hjust = 0.5), plot.subtitle = element_text(hjust = 0.5))+ 
+      theme_bw() +
+      theme(plot.title = element_text(face = "bold", size = 15, family = "sans"),
+            axis.title = element_text(face = "bold", size = 11, family = "sans"),
+            axis.text.x = element_text(angle = 60, hjust = 1), 
+            axis.line = element_line(color = "black"),
+            legend.position = 'right',
+            plot.background = element_blank(),
+            panel.grid.major = element_blank(),
+            panel.grid.minor = element_blank(),
+            panel.border = element_blank())
+    # ggplotly(p)
+  }
+  
+  
 }

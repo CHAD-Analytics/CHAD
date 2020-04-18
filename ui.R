@@ -195,8 +195,8 @@ ui <- tagList(
                                   tabPanel(
                                       title = "MAJCOM Summary",
                                       fluidRow(
-                                          box(plotlyOutput("SummaryTabChoro", height = 700, width = 'auto'),width=1200)),
-                                          #box(plotOutput("HotSpot", height = 600))),
+                                          box(plotlyOutput("SummaryTabChoro", height = 600, width = 'auto')),
+                                          box(plotOutput("HotSpot", height = 600))),
                                       box(title = "Base Summary Projections",
                                           solidHeader=T, 
                                           align = "left", 
@@ -281,9 +281,22 @@ ui <- tagList(
                                           box(plotlyOutput("IHMENationaProj",height = 400)),
                                           box(plotlyOutput("CHIMENationalProj"),height = 400)),
                                           box(plotlyOutput("NationalPlotOverlay"), width =  900)
-                                  )
+                                  ),
                                   ####### END PROJECTION TAB #######
-                                  
+
+                                  ####### BEGIN Aircrew TAB #########
+                                  # Air Force Community Projections ------------------------------------------------------------
+                                  tabPanel(
+                                      title = "Air Force Community Projections",
+                                      box(title = "Projected Community Epidemic",
+                                          solidHeader=T, 
+                                          align = "left", 
+                                          column(width = 12, 
+                                                 plotlyOutput("ProjectedEpidemicTable"), 
+                                                 style = "height:720px;overflow-y: scroll"), 
+                                          height = 900, 
+                                          width =13
+                                  ))
 
                                       ) #close dash body
 

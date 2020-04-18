@@ -290,7 +290,85 @@ server <- function(input, output) {
     
     # Output Projections  ---------------------------------------------------------------------------------------------------------------------------------------------------------------
     
+    # Output AMC Analysis
+    output$ProjectedEpidemicTable<-renderPlotly({
+        
+        baseUsed = input$Base
+        
+        # Read the json file and convert it to data.frame
+        myList <- fromJSON("data/shinyjson.json")
     
+        
+        json_file <- lapply(myList, function(x) {
+            x[sapply(x, is.null)] <- NA
+            unlist(x)
+        })
+        df<-as.data.frame(json_file)
+        
+        #Renaming the first empty column to date
+        df <- cbind(rownames(df), df)
+        rownames(df) <- NULL
+
+        colnames(df)[1] <- "TypeDate"
+        
+        df <- rev(cSplit(df, "TypeDate", "."))
+        
+        colnames(df)[1] <- "DataDate"
+        colnames(df)[2] <- "DataType"
+        
+        df$DataDate <- as.Date(df$DataDate)
+        
+        df <- select(df, "DataDate", "DataType", baseUsed)
+        
+        colnames(df)[3]  <- "Data"
+        
+        myTibble <- as_tibble(df)
+        
+        cummInf <- myTibble %>% filter(DataType == "Cumulative Infections")
+        currInf <- myTibble %>% filter(DataType == "Current Infections")
+        cummDeath <- myTibble %>% filter(DataType == "Cumulative Deaths")
+        
+        cummDeath <- select(cummDeath, "DataDate","Data")
+        currInf <- select(currInf, "DataDate","Data")
+        cummInf <- select(cummInf, "DataDate", "Data")
+        
+        colnames(cummDeath)[2] <- "Cumulative Deaths"
+        colnames(currInf)[2] <- "Current Infections"
+        colnames(cummInf)[2] <- "Cumulative Infections"
+        
+        df <- merge(cummDeath, currInf, by="DataDate")
+        df <- merge(df, cummInf, by="DataDate")
+        
+        Chart2DataSub <- melt(data.table(df), id=c("DataDate"))
+        
+        #Plotting the Line Graph
+        p <- ggplot(Chart2DataSub) + 
+            geom_line(aes(x=DataDate,  y=value, colour = variable), size = 0.5) +
+            scale_colour_manual(values=c("Blue", "Orange", "Red"))+
+            xlab('Date') +
+            ylab('Number of People') +
+            theme_bw() + 
+           theme(plot.title = element_text(face = "bold", size = 15, family = "sans"),
+                  axis.title = element_text(face = "bold", size = 11, family = "sans"),
+                  axis.text.x = element_text(angle = 60, hjust = 1), 
+                  axis.line = element_line(color = "black"),
+                  plot.background = element_blank(),
+                  panel.grid.major = element_blank(),
+                  panel.grid.minor = element_blank(),
+                  panel.border = element_blank(),) +
+           scale_x_date(date_breaks = "1 week") + scale_y_continuous(labels = function(x) format(x, scientific = FALSE))
+        
+        p2 <- ggplotly(p)
+        p2 <- p2 %>% layout(legend = list(orientation = "h",   # show entries horizontally
+                                          xanchor = "center",
+                                          x = 0.5,
+                                          y = -0.5
+                                          )) %>% config(displayModeBar = FALSE)
+        p2 <- p2 %>% layout(xaxis = list(showgrid = F),
+                            yaxis = list(gridcolor = "lightgray"),margin = list(t = 50), title=input$loc) %>% config(displayModeBar = FALSE)
+        
+    })
+
     #Create IHME plot by State projected hospitalization 
     output$IHME_State_Hosp<-renderPlotly({
 
@@ -496,7 +574,7 @@ server <- function(input, output) {
     
     output$HotSpot <- renderPlot({
             
-        HotspotPlot(CovidConfirmedCases, CovidDeaths)
+        HotspotPlot(CovidConfirmedCases, CovidDeaths,input$MAJCOMInput)
     })
     
     # Output Report ------------------------------------------------------------------------------------------------------------------------------------------------------------------
