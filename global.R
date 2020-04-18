@@ -78,6 +78,11 @@ CountyHospRate <- read.csv("https://github.com/treypujats/CHAD/raw/master/data/C
 #cimd <- as.data.frame(data.table::fread("https://github.com/treypujats/COVID19/blob/master/covid19/data/cimd.rda?raw=true"))
 #AFBaseLocations <- as.data.frame(data.table::fread("https://github.com/treypujats/COVID19/raw/master/covid19/data/baseinfo.rda"))
 
+#####Read in AMC Model Data##############
+# Read the json file and convert it to data.frame
+myList <- fromJSON("data/shinyjson.json")
+###########################################
+
 
 #Updated data frames to read in
 githubURL <- "https://github.com/treypujats/CHAD/blob/master/data/cimd.RData?raw=true"
