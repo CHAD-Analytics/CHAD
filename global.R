@@ -65,23 +65,20 @@ library(plotly)
 #AFBaseLocations provide names and coordinates of base.
 #CountyInfo is used to measure population of a county and coordinates.
 
-CovidConfirmedCases <- as.data.frame(data.table::fread("https://usafactsstatic.blob.core.windows.net/public/data/covid-19/covid_confirmed_usafacts.csv"))
-
+#CovidConfirmedCases <- as.data.frame(data.table::fread("https://usafactsstatic.blob.core.windows.net/public/data/covid-19/covid_confirmed_usafacts.csv"))
+CovidConfirmedCases <- as.data.frame(data.table::fread("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_US.csv"))
+#CovidConfirmedCases<-CovidConfirmedCases[colSums(!is.na(CovidConfirmedCases)) > 0]
 CovidConfirmedCases<-CovidConfirmedCases[colSums(!is.na(CovidConfirmedCases)) > 0]
 
 CountyInfo <- as.data.frame(data.table::fread("https://github.com/treypujats/CHAD/raw/master/data/countyinfo.rda"))
 HospitalInfo <- as.data.frame(data.table::fread("https://github.com/treypujats/CHAD/blob/master/data/hospitalinfo.rda?raw=true"))
 CovidDeaths<-as.data.frame(data.table::fread("https://usafactsstatic.blob.core.windows.net/public/data/covid-19/covid_deaths_usafacts.csv"))
+TESTCovidDeaths<-as.data.frame(data.table::fread("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_US.csv"))
 HospUtlzCounty <- read.csv("https://github.com/treypujats/CHAD/raw/master/data/county_hospitals.csv")
 CountyHospRate <- read.csv("https://github.com/treypujats/CHAD/raw/master/data/CountyHospRateCalc.csv")
 #himd <- as.data.frame(data.table::fread("https://github.com/treypujats/COVID19/blob/master/covid19/data/himd.rda?raw=true"))
 #cimd <- as.data.frame(data.table::fread("https://github.com/treypujats/COVID19/blob/master/covid19/data/cimd.rda?raw=true"))
 #AFBaseLocations <- as.data.frame(data.table::fread("https://github.com/treypujats/COVID19/raw/master/covid19/data/baseinfo.rda"))
-
-#####Read in AMC Model Data##############
-# Read the json file and convert it to data.frame
-myList <- fromJSON("data/shinyjson.json")
-###########################################
 
 
 #Updated data frames to read in
@@ -96,9 +93,30 @@ load(url(githubURL))
 
 
 
-
+######################### ADDED TO MAKE JHU DATA FRAME LOOK LIKE EXISTING DATA FRAMEs#################################
 #Updating data frames to ensure they are filled and match the data we reference later in the scripts
-colnames(CovidConfirmedCases)[1]<-"CountyFIPS"
+#colnames(CovidConfirmedCases)[1]<-"CountyFIPS"
+# Keep county fips code and all cases data 
+CovidConfirmedCases<-CovidConfirmedCases[,c(5, 12:ncol(CovidConfirmedCases))]
+colnames(CovidConfirmedCases)[1]<-"countyFIPS"
+TESTCovidDeaths<-TESTCovidDeaths[,c(5, 12:ncol(TESTCovidDeaths))]
+colnames(TESTCovidDeaths)[1]<-"countyFIPS"
+
+#Get state infomration based on county fips code
+StateInfo<-fips_codes[c(5,1,2,4)]
+#combine state and county codes to get CountyFIPS code
+StateInfo$county_code <- paste(StateInfo$state_code,StateInfo$county_code, sep="")
+#make countyFIPS code a numeric value
+StateInfo[, c(3,4)] <- sapply(StateInfo[, c(3,4)], as.numeric)
+#names for COVID CASEs
+colnames(StateInfo)[1:4]<-c("county Name", "State","StateFIPS","countyFIPS")
+CovidConfirmedCases<-merge(StateInfo,CovidConfirmedCases,by = "countyFIPS")
+#names for COVID CASEs
+colnames(StateInfo)[1:4]<-c("County Name", "State","StateFIPS","countyFIPS")
+TESTCovidDeaths<-merge(StateInfo,TESTCovidDeaths,by = "countyFIPS")
+#################################END JHU DATA PREP############################################
+
+
 colnames(CovidDeaths)[1]<-"CountyFIPS"
 HospitalInfo$BEDS <- ifelse(HospitalInfo$BEDS < 0, 0, HospitalInfo$BEDS)
 CovidConfirmedCases[is.na(CovidConfirmedCases)]<-0
@@ -178,7 +196,7 @@ CovidConfirmedCasesRate <- cbind(CovidConfirmedCases,v)
 # state_df <- map_data("state", projection = "albers", parameters = c(39, 45))
 # colnames(county_df)[6]<-"State"
 #Input the Included Counties as factors
-PlottingCountyData<- read.csv("https://usafactsstatic.blob.core.windows.net/public/data/covid-19/covid_confirmed_usafacts.csv",
+PlottingCountyData<- read.csv("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_US.csv",
                               header = TRUE, stringsAsFactors = FALSE)
 
 PlottingCountyData <- PlottingCountyData<-PlottingCountyData[colSums(!is.na(PlottingCountyData)) > 0]
@@ -186,18 +204,18 @@ PlottingCountyData <- PlottingCountyData<-PlottingCountyData[colSums(!is.na(Plot
 # stopwords = "County"     #Your stop words file
 # x  = PlottingCountyData$County.Name        #Company column data
 # x  =  removeWords(x,stopwords)     #Remove stopwords
-# 
+#
 # df$company_new <- x     #Add the list as new column and check
 
 
-PlottingCountyData$county <- tolower(removeWords(PlottingCountyData$County.Name,"County"))
-PlottingCountyData$county <-gsub(" ", "" ,PlottingCountyData$county)
-PlottingCountyData$county <- gsub("^(.*) parish, ..$","\\1", PlottingCountyData$county)
-
-#Creating state name in addition to state abb
-PlottingCountyData<-PlottingCountyData %>% 
-  mutate(state_name = tolower(state.name[match(State, state.abb)]))
-PlottingCountyData<-data.frame(PlottingCountyData[,1],rev(PlottingCountyData)[,3])
+# PlottingCountyData$county <- tolower(removeWords(PlottingCountyData$County.Name,"County"))
+# PlottingCountyData$county <-gsub(" ", "" ,PlottingCountyData$county)
+# PlottingCountyData$county <- gsub("^(.*) parish, ..$","\\1", PlottingCountyData$county)
+#
+# #Creating state name in addition to state abb
+# PlottingCountyData<-PlottingCountyData %>%
+#   mutate(state_name = tolower(state.name[match(State, state.abb)]))
+PlottingCountyData<-data.frame(PlottingCountyData[,5],rev(PlottingCountyData)[,1])
 colnames(PlottingCountyData)<-c("GEOID","Cases")
 #Calling in county data to merge and match, that way we have the correct coordinates when creating the map.
 county_df<-counties(state = NULL, cb = TRUE, resolution = "5m")
