@@ -281,7 +281,7 @@ ui <- tagList(
                                           box(plotlyOutput("IHMENationaProj",height = 400)),
                                           box(plotlyOutput("CHIMENationalProj"),height = 400)),
                                           box(plotlyOutput("NationalPlotOverlay"), width =  900)
-                                  )
+                                  ),
                                   ####### END PROJECTION TAB #######
 
                                   ####### BEGIN Aircrew TAB #########

@@ -297,7 +297,7 @@ server <- function(input, output) {
         
         # Read the json file and convert it to data.frame
         myList <- fromJSON("data/shinyjson.json")
-        
+    
         
         json_file <- lapply(myList, function(x) {
             x[sapply(x, is.null)] <- NA
