@@ -1400,7 +1400,7 @@ PlotLocalChoro<-function(IncludedCounties, ChosenBase, TypofPlot){
     choropleth<-st_shift_longitude(choropleth)
     Base_point<-st_shift_longitude(Base_point)
     PlotCovidLocal<-ggplot()+
-      geom_sf(data = choropleth,aes(fill=Cases)) +
+      geom_sf(data = choropleth,aes(fill=Cases, color=NAME)) +
       geom_sf(data = Base_point, color = "red", size = 3,show.legend ="Null")+
       # geom_text(data = Base_point,
       #           aes(x = Long+360, y = Lat,
@@ -1412,7 +1412,10 @@ PlotLocalChoro<-function(IncludedCounties, ChosenBase, TypofPlot){
             axis.ticks = element_blank(), axis.title = element_blank())+
       scale_fill_viridis(choropleth$Cases)
     
-    PlotCovidLocal <- ggplotly(PlotCovidLocal)
+    PlotCovidLocal <- ggplotly(PlotCovidLocal)%>% 
+      style(hoveron = "fills" ,
+            line.color = toRGB("gray40"))%>%
+      hide_legend()
     PlotCovidLocal <- PlotCovidLocal %>% config(displayModeBar = FALSE)
     PlotCovidLocal
     
@@ -1434,7 +1437,7 @@ PlotLocalChoro<-function(IncludedCounties, ChosenBase, TypofPlot){
     choropleth<-st_shift_longitude(choropleth)
     Base_point<-st_shift_longitude(Base_point)
     PlotCovidLocal<-ggplot()+
-      geom_sf(data = choropleth,aes(fill=Cases)) +
+      geom_sf(data = choropleth,aes(fill=Cases, color=NAME)) +
       geom_sf(data = Base_point, color = "red", size = 3,show.legend ="Null")+
       # geom_text(data = Base_point,
       #           aes(x = Long+360, y = Lat,
@@ -1446,7 +1449,10 @@ PlotLocalChoro<-function(IncludedCounties, ChosenBase, TypofPlot){
             axis.ticks = element_blank(), axis.title = element_blank())+
       scale_fill_viridis(choropleth$Cases)
     
-    PlotCovidLocal <- ggplotly(PlotCovidLocal)
+    PlotCovidLocal <- ggplotly(PlotCovidLocal)%>% 
+      style(hoveron = "fills",
+            line.color = toRGB("gray40"))%>%
+      hide_legend()
     PlotCovidLocal <- PlotCovidLocal %>% config(displayModeBar = FALSE)
     PlotCovidLocal
   }
