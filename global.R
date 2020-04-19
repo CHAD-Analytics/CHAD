@@ -65,15 +65,15 @@ library(plotly)
 #AFBaseLocations provide names and coordinates of base.
 #CountyInfo is used to measure population of a county and coordinates.
 
-#CovidConfirmedCases <- as.data.frame(data.table::fread("https://usafactsstatic.blob.core.windows.net/public/data/covid-19/covid_confirmed_usafacts.csv"))
-CovidConfirmedCases <- as.data.frame(data.table::fread("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_US.csv"))
-#CovidConfirmedCases<-CovidConfirmedCases[colSums(!is.na(CovidConfirmedCases)) > 0]
+CovidConfirmedCases <- as.data.frame(data.table::fread("https://usafactsstatic.blob.core.windows.net/public/data/covid-19/covid_confirmed_usafacts.csv"))
+#CovidConfirmedCases <- as.data.frame(data.table::fread("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_US.csv"))
 CovidConfirmedCases<-CovidConfirmedCases[colSums(!is.na(CovidConfirmedCases)) > 0]
+#CovidConfirmedCases<-CovidConfirmedCases[colSums(!is.na(CovidConfirmedCases)) > 0]
 
 CountyInfo <- as.data.frame(data.table::fread("https://github.com/treypujats/CHAD/raw/master/data/countyinfo.rda"))
 HospitalInfo <- as.data.frame(data.table::fread("https://github.com/treypujats/CHAD/blob/master/data/hospitalinfo.rda?raw=true"))
 CovidDeaths<-as.data.frame(data.table::fread("https://usafactsstatic.blob.core.windows.net/public/data/covid-19/covid_deaths_usafacts.csv"))
-TESTCovidDeaths<-as.data.frame(data.table::fread("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_US.csv"))
+#CovidDeaths<-as.data.frame(data.table::fread("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_US.csv"))
 HospUtlzCounty <- read.csv("https://github.com/treypujats/CHAD/raw/master/data/county_hospitals.csv")
 CountyHospRate <- read.csv("https://github.com/treypujats/CHAD/raw/master/data/CountyHospRateCalc.csv")
 #himd <- as.data.frame(data.table::fread("https://github.com/treypujats/COVID19/blob/master/covid19/data/himd.rda?raw=true"))
@@ -93,28 +93,28 @@ load(url(githubURL))
 
 
 
-######################### ADDED TO MAKE JHU DATA FRAME LOOK LIKE EXISTING DATA FRAMEs#################################
-#Updating data frames to ensure they are filled and match the data we reference later in the scripts
-#colnames(CovidConfirmedCases)[1]<-"CountyFIPS"
-# Keep county fips code and all cases data 
-CovidConfirmedCases<-CovidConfirmedCases[,c(5, 12:ncol(CovidConfirmedCases))]
-colnames(CovidConfirmedCases)[1]<-"countyFIPS"
-TESTCovidDeaths<-TESTCovidDeaths[,c(5, 12:ncol(TESTCovidDeaths))]
-colnames(TESTCovidDeaths)[1]<-"countyFIPS"
-
-#Get state infomration based on county fips code
-StateInfo<-fips_codes[c(5,1,2,4)]
-#combine state and county codes to get CountyFIPS code
-StateInfo$county_code <- paste(StateInfo$state_code,StateInfo$county_code, sep="")
-#make countyFIPS code a numeric value
-StateInfo[, c(3,4)] <- sapply(StateInfo[, c(3,4)], as.numeric)
-#names for COVID CASEs
-colnames(StateInfo)[1:4]<-c("county Name", "State","StateFIPS","countyFIPS")
-CovidConfirmedCases<-merge(StateInfo,CovidConfirmedCases,by = "countyFIPS")
-#names for COVID CASEs
-colnames(StateInfo)[1:4]<-c("County Name", "State","StateFIPS","countyFIPS")
-TESTCovidDeaths<-merge(StateInfo,TESTCovidDeaths,by = "countyFIPS")
-#################################END JHU DATA PREP############################################
+# ######################### ADDED TO MAKE JHU DATA FRAME LOOK LIKE EXISTING DATA FRAMEs#################################
+# #Updating data frames to ensure they are filled and match the data we reference later in the scripts
+# #colnames(CovidConfirmedCases)[1]<-"CountyFIPS"
+# # Keep county fips code and all cases data 
+# CovidConfirmedCases<-CovidConfirmedCases[,c(5, 12:ncol(CovidConfirmedCases))]
+# colnames(CovidConfirmedCases)[1]<-"countyFIPS"
+# CovidDeaths<-CovidDeaths[,c(5, 12:ncol(CovidDeaths))]
+# colnames(CovidDeaths)[1]<-"countyFIPS"
+# 
+# #Get state infomration based on county fips code
+# StateInfo<-fips_codes[c(5,1,2,4)]
+# #combine state and county codes to get CountyFIPS code
+# StateInfo$county_code <- paste(StateInfo$state_code,StateInfo$county_code, sep="")
+# #make countyFIPS code a numeric value
+# StateInfo[, c(3,4)] <- sapply(StateInfo[, c(3,4)], as.numeric)
+# #names for COVID CASEs
+# colnames(StateInfo)[1:4]<-c("county Name", "State","StateFIPS","countyFIPS")
+# CovidConfirmedCases<-merge(StateInfo,CovidConfirmedCases,by = "countyFIPS")
+# #names for COVID CASEs
+# colnames(StateInfo)[1:4]<-c("County Name", "State","StateFIPS","countyFIPS")
+# CovidDeaths<-merge(StateInfo,CovidDeaths,by = "countyFIPS")
+# #################################END JHU DATA PREP############################################
 
 
 colnames(CovidDeaths)[1]<-"CountyFIPS"
