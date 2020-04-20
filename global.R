@@ -65,23 +65,20 @@ library(plotly)
 #AFBaseLocations provide names and coordinates of base.
 #CountyInfo is used to measure population of a county and coordinates.
 
-CovidConfirmedCases <- as.data.frame(data.table::fread("https://usafactsstatic.blob.core.windows.net/public/data/covid-19/covid_confirmed_usafacts.csv"))
-
+#CovidConfirmedCases <- as.data.frame(data.table::fread("https://usafactsstatic.blob.core.windows.net/public/data/covid-19/covid_confirmed_usafacts.csv"))
+CovidConfirmedCases <- as.data.frame(data.table::fread("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_US.csv"))
+#CovidConfirmedCases<-CovidConfirmedCases[colSums(!is.na(CovidConfirmedCases)) > 0]
 CovidConfirmedCases<-CovidConfirmedCases[colSums(!is.na(CovidConfirmedCases)) > 0]
 
 CountyInfo <- as.data.frame(data.table::fread("https://github.com/treypujats/CHAD/raw/master/data/countyinfo.rda"))
 HospitalInfo <- as.data.frame(data.table::fread("https://github.com/treypujats/CHAD/blob/master/data/hospitalinfo.rda?raw=true"))
-CovidDeaths<-as.data.frame(data.table::fread("https://usafactsstatic.blob.core.windows.net/public/data/covid-19/covid_deaths_usafacts.csv"))
+#CovidDeaths<-as.data.frame(data.table::fread("https://usafactsstatic.blob.core.windows.net/public/data/covid-19/covid_deaths_usafacts.csv"))
+CovidDeaths<-as.data.frame(data.table::fread("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_US.csv"))
 HospUtlzCounty <- read.csv("https://github.com/treypujats/CHAD/raw/master/data/county_hospitals.csv")
 CountyHospRate <- read.csv("https://github.com/treypujats/CHAD/raw/master/data/CountyHospRateCalc.csv")
 #himd <- as.data.frame(data.table::fread("https://github.com/treypujats/COVID19/blob/master/covid19/data/himd.rda?raw=true"))
 #cimd <- as.data.frame(data.table::fread("https://github.com/treypujats/COVID19/blob/master/covid19/data/cimd.rda?raw=true"))
 #AFBaseLocations <- as.data.frame(data.table::fread("https://github.com/treypujats/COVID19/raw/master/covid19/data/baseinfo.rda"))
-
-#####Read in AMC Model Data##############
-# Read the json file and convert it to data.frame
-myList <- fromJSON("data/shinyjson.json")
-###########################################
 
 
 #Updated data frames to read in
@@ -96,9 +93,28 @@ load(url(githubURL))
 
 
 
-
+######################### ADDED TO MAKE JHU DATA FRAME LOOK LIKE EXISTING DATA FRAMEs#################################
 #Updating data frames to ensure they are filled and match the data we reference later in the scripts
+#colnames(CovidConfirmedCases)[1]<-"CountyFIPS"
+# Keep county fips code and all cases data
+CovidConfirmedCases<-CovidConfirmedCases[,c(5, 12:ncol(CovidConfirmedCases))]
 colnames(CovidConfirmedCases)[1]<-"CountyFIPS"
+CovidDeaths<-CovidDeaths[,c(5, 13:ncol(CovidDeaths))]
+colnames(CovidDeaths)[1]<-"CountyFIPS"
+
+#Get state infomration based on county fips code
+StateInfo<-fips_codes[c(5,1,2,4)]
+#combine state and county codes to get CountyFIPS code
+StateInfo$county_code <- paste(StateInfo$state_code,StateInfo$county_code, sep="")
+#make countyFIPS code a numeric value
+StateInfo[, c(3,4)] <- sapply(StateInfo[, c(3,4)], as.numeric)
+#names for headers
+colnames(StateInfo)[1:4]<-c("County Name", "State","stateFIPS","CountyFIPS")
+CovidConfirmedCases<-merge(StateInfo,CovidConfirmedCases,by = "CountyFIPS")
+CovidDeaths<-merge(StateInfo,CovidDeaths,by = "CountyFIPS")
+#################################END JHU DATA PREP############################################
+
+
 colnames(CovidDeaths)[1]<-"CountyFIPS"
 HospitalInfo$BEDS <- ifelse(HospitalInfo$BEDS < 0, 0, HospitalInfo$BEDS)
 CovidConfirmedCases[is.na(CovidConfirmedCases)]<-0
@@ -178,7 +194,7 @@ CovidConfirmedCasesRate <- cbind(CovidConfirmedCases,v)
 # state_df <- map_data("state", projection = "albers", parameters = c(39, 45))
 # colnames(county_df)[6]<-"State"
 #Input the Included Counties as factors
-PlottingCountyData<- read.csv("https://usafactsstatic.blob.core.windows.net/public/data/covid-19/covid_confirmed_usafacts.csv",
+PlottingCountyData<- read.csv("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_US.csv",
                               header = TRUE, stringsAsFactors = FALSE)
 
 PlottingCountyData <- PlottingCountyData<-PlottingCountyData[colSums(!is.na(PlottingCountyData)) > 0]
@@ -186,18 +202,18 @@ PlottingCountyData <- PlottingCountyData<-PlottingCountyData[colSums(!is.na(Plot
 # stopwords = "County"     #Your stop words file
 # x  = PlottingCountyData$County.Name        #Company column data
 # x  =  removeWords(x,stopwords)     #Remove stopwords
-# 
+#
 # df$company_new <- x     #Add the list as new column and check
 
 
-PlottingCountyData$county <- tolower(removeWords(PlottingCountyData$County.Name,"County"))
-PlottingCountyData$county <-gsub(" ", "" ,PlottingCountyData$county)
-PlottingCountyData$county <- gsub("^(.*) parish, ..$","\\1", PlottingCountyData$county)
-
-#Creating state name in addition to state abb
-PlottingCountyData<-PlottingCountyData %>% 
-  mutate(state_name = tolower(state.name[match(State, state.abb)]))
-PlottingCountyData<-data.frame(PlottingCountyData[,1],rev(PlottingCountyData)[,3])
+# PlottingCountyData$county <- tolower(removeWords(PlottingCountyData$County.Name,"County"))
+# PlottingCountyData$county <-gsub(" ", "" ,PlottingCountyData$county)
+# PlottingCountyData$county <- gsub("^(.*) parish, ..$","\\1", PlottingCountyData$county)
+#
+# #Creating state name in addition to state abb
+# PlottingCountyData<-PlottingCountyData %>%
+#   mutate(state_name = tolower(state.name[match(State, state.abb)]))
+PlottingCountyData<-data.frame(PlottingCountyData[,5],rev(PlottingCountyData)[,1])
 colnames(PlottingCountyData)<-c("GEOID","Cases")
 #Calling in county data to merge and match, that way we have the correct coordinates when creating the map.
 county_df<-counties(state = NULL, cb = TRUE, resolution = "5m")
@@ -869,9 +885,11 @@ CovidCasesPerDayChart<-function(IncludedCounties){
     DailyNewDeathsT <- colSums(DailyNewDeaths)
     
     #Clean up the dataset to prepare for plotting
-    ForecastDate<- seq(as.Date("2020-1-23"), length=length(DailyNewCases), by="1 day")
+    #ForecastDate<- seq(as.Date("2020-1-23"), length=length(DailyNewCases), by="1 day")
+    ForecastDate<- seq(as.Date("2020-1-22"), length=length(DailyNewCases), by="1 day")
     Chart1Data<-cbind.data.frame(ForecastDate,DailyNewCasesT,DailyNewDeathsT)
     colnames(Chart1Data)<-c("ForecastDate","New Cases","New Fatalities")
+
     Chart1DataSub <- melt(data.table(Chart1Data), id=c("ForecastDate"))
 }
 
@@ -890,9 +908,11 @@ CovidCasesCumChart<-function(IncludedCounties){
     
     
     #Clean up the dataset to get ready to plot it
-    ForecastDate<- seq(as.Date("2020-1-23"), length=length(CumDailyCovid), by="1 day")
+    #ForecastDate<- seq(as.Date("2020-1-23"), length=length(CumDailyCovid), by="1 day")
+    ForecastDate<- seq(as.Date("2020-1-22"), length=length(CumDailyCovid), by="1 day")
     Chart2Data<-cbind.data.frame(ForecastDate,CumDailyCovid,CumDailyDeaths)
     colnames(Chart2Data)<-c("ForecastDate","Total Cases","Total Fatalities")
+
     Chart2DataSub <- melt(data.table(Chart2Data), id=c("ForecastDate"))
 }
 
@@ -1074,7 +1094,7 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals, SocialDis
       OverlayData<-rbind(DailyData,IHME_Data)
       OverlayData$ForecastDate<-as.Date(OverlayData$ForecastDate)
       
-      OverlayData<- dplyr::filter(OverlayData, ForecastDate >= (Sys.Date()-1) & ForecastDate <= (Sys.Date() + DaysProjected))
+      OverlayData<- dplyr::filter(OverlayData, ForecastDate >= (Sys.Date()) & ForecastDate <= (Sys.Date() + DaysProjected))
       
       OverlayData<-rbind(HistoricalData, OverlayData)
       
@@ -1297,7 +1317,7 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals, SocialDis
         OverlayData<-rbind(DailyData,IHME_Data)
         OverlayData$ForecastDate<-as.Date(OverlayData$ForecastDate)
         
-        OverlayData<- dplyr::filter(OverlayData, ForecastDate >= (Sys.Date()-1) & ForecastDate <= (Sys.Date() + DaysProjected))
+        OverlayData<- dplyr::filter(OverlayData, ForecastDate >= (Sys.Date()) & ForecastDate <= (Sys.Date() + DaysProjected))
         
         OverlayData<-rbind(HistoricalData, OverlayData)
         
@@ -1369,16 +1389,16 @@ PlotLocalChoro<-function(IncludedCounties, ChosenBase, TypofPlot){
     Base_point<-st_sfc(Base_point, crs=4326)
     Base_point<-st_sf(BaseStats, geometry = Base_point)
     
-    ## Join the cases to spatial file by FIPS (GEOID)
+    ## Join the cases to spatial file by FIPS (GEOID) & add 360 to long so that we can project acroos date line
     choropleth<-merge(choropleth, PlottingCountyData, by= "GEOID")
-    
-    #plot it
+    choropleth<-st_shift_longitude(choropleth)
+    Base_point<-st_shift_longitude(Base_point)
     PlotCovidLocal<-ggplot()+
-      geom_sf(data = choropleth,aes(fill=Cases)) +
+      geom_sf(data = choropleth,aes(fill=Cases, color=NAME)) +
       geom_sf(data = Base_point, color = "red", size = 3,show.legend ="Null")+
-      #geom_text(data = Base_point, 
-      #          aes(x = Long, y = Lat, 
-      #              label = Base), hjust = .5) +
+      # geom_text(data = Base_point,
+      #           aes(x = Long+360, y = Lat,
+      #               label = Base), hjust = .5) +
       ggtitle("COVID-19 Cases by County (County View)")+ 
       coord_sf() +
       theme_minimal() +
@@ -1386,7 +1406,9 @@ PlotLocalChoro<-function(IncludedCounties, ChosenBase, TypofPlot){
             axis.ticks = element_blank(), axis.title = element_blank())+
       scale_fill_viridis(choropleth$Cases)
     
-    PlotCovidLocal <- ggplotly(PlotCovidLocal)
+    PlotCovidLocal <- ggplotly(PlotCovidLocal)%>% 
+      style(hoveron = "fills",line.color = toRGB("gray40"))%>%
+      hide_legend()
     PlotCovidLocal <- PlotCovidLocal %>% config(displayModeBar = FALSE)
     PlotCovidLocal
     
@@ -1404,22 +1426,26 @@ PlotLocalChoro<-function(IncludedCounties, ChosenBase, TypofPlot){
     Base_point<-st_sfc(Base_point, crs=4326)
     Base_point<-st_sf(BaseStats, geometry = Base_point)
     
-    ## Join the cases to spatial file by FIPS (GEOID)
-    
-    
-    
+    ## Join the cases to spatial file by FIPS (GEOID) & add 360 to long so that we can project acroos date line
+    choropleth<-st_shift_longitude(choropleth)
+    Base_point<-st_shift_longitude(Base_point)
     PlotCovidLocal<-ggplot()+
-      geom_sf(data = choropleth,aes(fill=Cases)) +
+      geom_sf(data = choropleth,aes(fill=Cases, color=NAME)) +
       geom_sf(data = Base_point, color = "red", size = 3,show.legend ="Null")+
-      #geom_text(data = Base_point, 
-      #          aes(x = Long, y = Lat, 
-      #              label = Base), hjust = .5) +
+      # geom_text(data = Base_point,
+      #           aes(x = Long+360, y = Lat,
+      #               label = Base), hjust = .5) +
       ggtitle("COVID-19 Cases by County (County View)")+ 
       coord_sf() +
       theme_minimal() +
       theme(axis.line = element_blank(), axis.text = element_blank(),
             axis.ticks = element_blank(), axis.title = element_blank())+
       scale_fill_viridis(choropleth$Cases)
+    
+    PlotCovidLocal <- ggplotly(PlotCovidLocal)%>% 
+            style(hoveron = "fills",line.color = toRGB("gray40"))%>%
+      hide_legend()
+    PlotCovidLocal <- PlotCovidLocal %>% config(displayModeBar = FALSE)
     PlotCovidLocal
   }
   
@@ -1653,7 +1679,7 @@ NationalOverlayPlot<-function(SocialDistance, DaysForecasted){
   
   OverlayData<-rbind(DailyData,IHMENationalData)
   OverlayData$ForecastDate<-as.Date(OverlayData$ForecastDate)
-  OverlayData<- dplyr::filter(OverlayData, ForecastDate >= (Sys.Date()-1) & ForecastDate <= (Sys.Date() + DaysForecasted))
+  OverlayData<- dplyr::filter(OverlayData, ForecastDate >= (Sys.Date()) & ForecastDate <= (Sys.Date() + DaysForecasted))
   OverlayData<-rbind(HistoricalData, OverlayData)    
   
   
@@ -1816,7 +1842,7 @@ CHIMENationalPlot<-function(SocialDistance, DaysForecasted){
     HistoricalData$ID<-rep("Past Data", nrow(HistoricalData))
     HistoricalData <- dplyr::filter(HistoricalData, ForecastDate >= as.Date("2020-01-27") + 30)
     
-    DailyData<- dplyr::filter(DailyData, ForecastDate >= (Sys.Date()-1) & ForecastDate <= (Sys.Date() + DaysForecasted))
+    DailyData<- dplyr::filter(DailyData, ForecastDate >= (Sys.Date()) & ForecastDate <= (Sys.Date() + DaysForecasted))
     
     OverlayData<-rbind(HistoricalData, DailyData)
     
@@ -1881,7 +1907,7 @@ IHMENationalProjections<-function(DaysProjected){
         IHMENationalData$ID<-rep("IHME", nrow(IHMENationalData))
         HistoricalData$ID<-rep("Past Data", nrow(HistoricalData))
         HistoricalData <- dplyr::filter(HistoricalData, ForecastDate >= as.Date("2020-01-27") + 30)
-        OverlayData<- dplyr::filter(IHMENationalData, ForecastDate >= (Sys.Date()-1) & ForecastDate <= (Sys.Date() + DaysProjected))
+        OverlayData<- dplyr::filter(IHMENationalData, ForecastDate >= (Sys.Date()) & ForecastDate <= (Sys.Date() + DaysProjected))
         OverlayData<-rbind(HistoricalData, OverlayData)
         
         projections <-  ggplot(OverlayData, aes(x=ForecastDate, y=`Expected Hospitalizations`, color = ID, fill = ID, linetype = ID)) +
@@ -2067,7 +2093,7 @@ CHIMELocalPlot<-function(SocialDistance, ForecastedDays, IncludedCounties, Stati
         DailyData<-DailyData[-1,]
         
         
-        DailyData<- dplyr::filter(DailyData, ForecastDate >= (Sys.Date()-1) & ForecastDate <= (Sys.Date() + ForecastedDays))
+        DailyData<- dplyr::filter(DailyData, ForecastDate >= (Sys.Date()) & ForecastDate <= (Sys.Date() + ForecastedDays))
         DailyData$ID<-rep("CHIME", nrow(DailyData))
         HistoricalData$ID<-rep("Past Data", nrow(HistoricalData))
         HistoricalData <- dplyr::filter(HistoricalData, ForecastDate >= as.Date("2020-01-27") + 30)
@@ -2250,7 +2276,7 @@ CHIMELocalPlot<-function(SocialDistance, ForecastedDays, IncludedCounties, Stati
         DailyData$`Lower Estimate`<-cumsum(DailyData$`Lower Estimate`)
         DailyData$`Upper Estimate`<-cumsum(DailyData$`Upper Estimate`)
         
-        DailyData<- dplyr::filter(DailyData, ForecastDate >= (Sys.Date()-1) & ForecastDate <= (Sys.Date() + ForecastedDays))
+        DailyData<- dplyr::filter(DailyData, ForecastDate >= (Sys.Date()) & ForecastDate <= (Sys.Date() + ForecastedDays))
         DailyData$ID<-rep("CHIME", nrow(DailyData))
         HistoricalData$ID<-rep("Past Data", nrow(HistoricalData))
         HistoricalData <- dplyr::filter(HistoricalData, ForecastDate >= as.Date("2020-01-27") + 30)
@@ -2338,7 +2364,7 @@ IHMELocalProjections<-function(MyCounties, IncludedHospitals, ChosenBase, Statis
         IHME_Region$allbed_upper = round(IHME_State$allbed_upper*PopRatio)
         IHME_Region<-data.frame(IHME_Region$date, IHME_Region$allbed_mean, IHME_Region$allbed_lower, IHME_Region$allbed_upper)
         colnames(IHME_Region)<-c("ForecastDate", "Expected Hospitalizations", "Lower Estimate","Upper Estimate")
-        IHME_Region<- dplyr::filter(IHME_Region, ForecastDate >= (Sys.Date()-1) & ForecastDate <= (Sys.Date() + DaysProjected))
+        IHME_Region<- dplyr::filter(IHME_Region, ForecastDate >= (Sys.Date()) & ForecastDate <= (Sys.Date() + DaysProjected))
         IHME_Region$ID<-rep("IHME", nrow(IHME_Region))
         HistoricalData$ID<-rep("Past Data", nrow(HistoricalData))
         HistoricalData <- dplyr::filter(HistoricalData, ForecastDate >= as.Date("2020-01-27") + 30)
@@ -2411,7 +2437,7 @@ IHMELocalProjections<-function(MyCounties, IncludedHospitals, ChosenBase, Statis
         IHME_Region$deaths_upper = round(IHME_State$totdea_upper*PopRatio)
         IHME_Region<-data.frame(IHME_Region$date, IHME_Region$deaths_mean, IHME_Region$deaths_lower, IHME_Region$deaths_upper)
         colnames(IHME_Region)<-c("ForecastDate", "Expected Fatalities", "Lower Estimate","Upper Estimate")
-        IHME_Region<- dplyr::filter(IHME_Region, ForecastDate >= (Sys.Date()-1) & ForecastDate <= (Sys.Date() + DaysProjected))
+        IHME_Region<- dplyr::filter(IHME_Region, ForecastDate >= (Sys.Date()) & ForecastDate <= (Sys.Date() + DaysProjected))
         IHME_Region$ID<-rep("IHME", nrow(IHME_Region))
         HistoricalData$ID<-rep("Past Data", nrow(HistoricalData))
         HistoricalData <- dplyr::filter(HistoricalData, ForecastDate >= as.Date("2020-01-27") + 30)
