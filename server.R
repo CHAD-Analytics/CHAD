@@ -516,39 +516,37 @@ server <- function(input, output) {
     
     output$ForecastDataTable<-DT::renderDataTable({
         if (input$MAJCOMInput == "All") {
-            
             if(input$SummaryStatistic == "Cases") {
-                ForecastDataTableCases<-FilterDataTable(ForecastDataTableCases,input$SummaryModelType)
-                dt<-DT::datatable(ForecastDataTableCases, rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))
+                ForecastDataTableCases<-FilterDataTable(ForecastDataTableCases,input$SummaryModelType,input$SummaryForecast)
+                dt<-DT::datatable(ForecastDataTableCases, rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))   
                 dt
             } else {
-                ForecastDataTable<-FilterDataTable(ForecastDataTable,input$SummaryModelType)
+                ForecastDataTable<-FilterDataTable(ForecastDataTable,input$SummaryModelType,input$SummaryForecast)
                 dt<-DT::datatable(ForecastDataTable, rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))
                 dt
             }
         } else if(input$MAJCOMInput=="Active Duty"){
             if(input$SummaryStatistic == "Cases") {
-                ForecastDataTableCases<-FilterDataTable(ForecastDataTableCases,input$SummaryModelType)
+                ForecastDataTableCases<-FilterDataTable(ForecastDataTableCases,input$SummaryModelType,input$SummaryForecast)
                 dt<-DT::datatable(filter(ForecastDataTableCases, !MAJCOM %in% c("AFRC","ANG")), rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))
                 dt
             } else {
-                ForecastDataTable<-FilterDataTable(ForecastDataTable,input$SummaryModelType)
+                ForecastDataTable<-FilterDataTable(ForecastDataTable,input$SummaryModelType,input$SummaryForecast)
                 dt<-DT::datatable(filter(ForecastDataTable, !MAJCOM %in% c("AFRC","ANG")), rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))
                 dt
             }
         }
         else {
             if(input$SummaryStatistic == "Cases") {
-                ForecastDataTableCases<-FilterDataTable(ForecastDataTableCases,input$SummaryModelType)
+                ForecastDataTableCases<-FilterDataTable(ForecastDataTableCases,input$SummaryModelType,input$SummaryForecast)
                 dt<-DT::datatable(filter(ForecastDataTableCases, MAJCOM == input$MAJCOMInput), rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))
                 dt
             } else {
-                ForecastDataTable<-FilterDataTable(ForecastDataTable,input$SummaryModelType)
+                ForecastDataTable<-FilterDataTable(ForecastDataTable,input$SummaryModelType,input$SummaryForecast)
                 dt<-DT::datatable(filter(ForecastDataTable, MAJCOM == input$MAJCOMInput), rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))
                 dt
             }
         }
-        
     })
     
     

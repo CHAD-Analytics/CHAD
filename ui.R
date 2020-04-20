@@ -84,8 +84,8 @@ ui <- tagList(
                                                         c('Today'='Today',
                                                           "7 Days"="Seven",
                                                           "14 Days"="Fourteen",
-                                                          "30 Days"="Thirty",
-                                                          "60 Days"="Sixty"))
+                                                          "21 Days"="Twenty-One",
+                                                          "30 Days"="Thirty"))
                                            
                                        ),
                                        br(),
@@ -109,9 +109,9 @@ ui <- tagList(
                                                           "Fatalities"="Fatalities")),
                                            sliderInput("proj_days",
                                                        "Projection days:",
-                                                       min = 14,
-                                                       max = 120,
-                                                       value = 30),
+                                                       min = 7,
+                                                       max = 30,
+                                                       value = 14),
                                            checkboxGroupInput("SocialDistanceValue", "Local Social Distancing Actions: ",
                                                               c("Close Schools" = "CS",
                                                                 "Businesses Telework" = "CB",
@@ -125,9 +125,9 @@ ui <- tagList(
                                            div(id = "single", style="display: none;", numericInput("tckt", "Ticket Number : ", 12345,  width = 300)),
                                            sliderInput("proj_days_national",
                                                        "Projection days:",
-                                                       min = 14,
-                                                       max = 120,
-                                                       value = 30),
+                                                       min = 7,
+                                                       max = 30,
+                                                       value = 14),
                                            checkboxGroupInput("SocialDistanceValueNational", "National Social Distancing Actions: ",
                                                               c("Close Schools" = "CSN",
                                                                 "Businesses Telework" = "CBN",
@@ -281,22 +281,22 @@ ui <- tagList(
                                           box(plotlyOutput("IHMENationaProj",height = 400)),
                                           box(plotlyOutput("CHIMENationalProj"),height = 400)),
                                           box(plotlyOutput("NationalPlotOverlay"), width =  900)
-                                  ),
+                                  )
                                   ####### END PROJECTION TAB #######
 
                                   ####### BEGIN Aircrew TAB #########
                                   # Air Force Community Projections ------------------------------------------------------------
-                                  tabPanel(
-                                      title = "Air Force Community Projections",
-                                      box(title = "Projected Community Epidemic",
-                                          solidHeader=T, 
-                                          align = "left", 
-                                          column(width = 12, 
-                                                 plotlyOutput("ProjectedEpidemicTable"), 
-                                                 style = "height:720px;overflow-y: scroll"), 
-                                          height = 900, 
-                                          width =13
-                                  ))
+                                  # tabPanel(
+                                  #     title = "Air Force Community Projections",
+                                  #     box(title = "Projected Community Epidemic",
+                                  #         solidHeader=T, 
+                                  #         align = "left", 
+                                  #         column(width = 12, 
+                                  #                plotlyOutput("ProjectedEpidemicTable"), 
+                                  #                style = "height:720px;overflow-y: scroll"), 
+                                  #         height = 900, 
+                                  #         width =13
+                                  # ))
 
                                       ) #close dash body
 
