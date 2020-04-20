@@ -188,7 +188,7 @@ server <- function(input, output) {
         
         plotDaily <- ggplot(DailyChart) + 
             geom_line(aes(x=ForecastDate, y=value, colour = variable), size = 0.5) +
-            scale_colour_manual(values=c("Blue", "Orange", "Red")) +
+            scale_colour_manual(values=c("Blue", "Red")) +
             xlab('Date') +
             ylab('Number of People') +
             theme_bw() + 
@@ -222,7 +222,7 @@ server <- function(input, output) {
         #Plot for local area cumulative cases
         plotTot <- ggplot(CumulChart,height = 250) + 
             geom_line(aes(x=ForecastDate, y=value, colour = variable), size = 0.5) +
-            scale_colour_manual(values=c("Blue", "Orange", "Red"))+
+            scale_colour_manual(values=c("Blue", "Red"))+
             xlab('Date') +
             ylab('Number of People') +
             theme_bw() + 

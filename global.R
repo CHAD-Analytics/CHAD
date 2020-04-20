@@ -857,7 +857,6 @@ CovidCasesPerDayChart<-function(IncludedCounties){
     #Get cases and deaths in selected region
     CovidCountiesCases<-subset(CovidConfirmedCases, CountyFIPS %in% IncludedCounties$FIPS)
     CovidCountiesDeath<-subset(CovidDeaths, CountyFIPS %in% IncludedCounties$FIPS)
-    CovidCountiesHospRate <- subset(CountyHospRate, FIPS %in% IncludedCounties$FIPS)
     
     #Find Daily new cases
     DailyNewCases <- CovidCountiesCases[,6:length(CovidCountiesCases)] -
@@ -869,13 +868,10 @@ CovidCasesPerDayChart<-function(IncludedCounties){
       CovidCountiesDeath[,5:(length(CovidCountiesDeath)-1)]
     DailyNewDeathsT <- colSums(DailyNewDeaths)
     
-    #Estimation for new hospitalizations
-    DailyNewHospitalizations<-ceiling(colSums(DailyNewCases*CovidCountiesHospRate$HospRate))
-    
     #Clean up the dataset to prepare for plotting
     ForecastDate<- seq(as.Date("2020-1-23"), length=length(DailyNewCases), by="1 day")
-    Chart1Data<-cbind.data.frame(ForecastDate,DailyNewCasesT,DailyNewHospitalizations,DailyNewDeathsT)
-    colnames(Chart1Data)<-c("ForecastDate","New Cases","New Hospitalizations","New Fatalities")
+    Chart1Data<-cbind.data.frame(ForecastDate,DailyNewCasesT,DailyNewDeathsT)
+    colnames(Chart1Data)<-c("ForecastDate","New Cases","New Fatalities")
     Chart1DataSub <- melt(data.table(Chart1Data), id=c("ForecastDate"))
 }
 
@@ -887,19 +883,16 @@ CovidCasesCumChart<-function(IncludedCounties){
     #Find counties in radius
     CovidCountiesCases<-subset(CovidConfirmedCases, CountyFIPS %in% IncludedCounties$FIPS)
     CovidCountiesDeath<-subset(CovidDeaths, CountyFIPS %in% IncludedCounties$FIPS)
-    CovidCountiesHospRate <- subset(CountyHospRate, FIPS %in% IncludedCounties$FIPS)
     
     #Compute cumlative cases and deaths in selected counties
     CumDailyCovid<-colSums(CovidCountiesCases[,5:length(CovidCountiesCases)])
     CumDailyDeaths<-colSums(CovidCountiesDeath[5:length(CovidCountiesDeath)])
     
-    #Estimation for total hospitalizations
-    CumHospitalizations<-ceiling(colSums(CovidCountiesCases[,5:length(CovidCountiesCases)]*CovidCountiesHospRate$HospRate))
     
     #Clean up the dataset to get ready to plot it
     ForecastDate<- seq(as.Date("2020-1-23"), length=length(CumDailyCovid), by="1 day")
-    Chart2Data<-cbind.data.frame(ForecastDate,CumDailyCovid,CumHospitalizations,CumDailyDeaths)
-    colnames(Chart2Data)<-c("ForecastDate","Total Cases","Total Hospitalizations","Total Fatalities")
+    Chart2Data<-cbind.data.frame(ForecastDate,CumDailyCovid,CumDailyDeaths)
+    colnames(Chart2Data)<-c("ForecastDate","Total Cases","Total Fatalities")
     Chart2DataSub <- melt(data.table(Chart2Data), id=c("ForecastDate"))
 }
 
@@ -1538,6 +1531,7 @@ NationalOverlayPlot<-function(SocialDistance, DaysForecasted){
   HistoricalData<-data.frame(HistoricalDates, HistoricalDataHosp, HistoricalDataHosp*0.75, HistoricalDataHosp*1.25)
   colnames(HistoricalData)<-c("ForecastDate", "Expected Hospitalizations", "Lower Estimate","Upper Estimate")
   
+  currHosp = HistoricalData[nrow(HistoricalData),2]
   
   ####################################################################################
   #Mean Estimate
@@ -1547,7 +1541,7 @@ NationalOverlayPlot<-function(SocialDistance, DaysForecasted){
   
   #Next we use the calculated values, along with estimated values from the Estimated Values. 
   #The only input we want from the user is the social distancing rate. For this example, we just use 0.5
-  cases<-NationalCases*.05
+  cases<-currHosp
   pop<-NationalPop
   doubling<-8
   
@@ -1557,13 +1551,13 @@ NationalOverlayPlot<-function(SocialDistance, DaysForecasted){
   latenttime<-2
   recoverydays<-14
   socialdistancing<-SocialDistance
-  hospitalizationrate<-15
+  hospitalizationrate<-14
   icurate<-6
   ventilatorrate<-3
   hospitaltime<-7
   icutime<-5
   ventilatortime<-7
-  daysforecasted<-DaysForecasted
+  daysforecasted<-120
   
   #Now we throw the values above into the SEIAR model, and we create dates for the number of days we decided to forecast as well (place holder for now).
   #With the outputs, we grab the daily hospitalized people and the cumulative hospitalizations. Then we name the columns
@@ -1583,8 +1577,7 @@ NationalOverlayPlot<-function(SocialDistance, DaysForecasted){
   
   #Next we use the calculated values, along with estimated values from the Estimated Values. 
   #The only input we want from the user is the social distancing rate. For this example, we just use 0.5
-  cases<-NationalCases*.05
-  pop<-NationalPop
+
   doubling<-10
   
   #Established Variables at the start for every county or populations
@@ -1592,14 +1585,14 @@ NationalOverlayPlot<-function(SocialDistance, DaysForecasted){
   incubationtime<-5
   latenttime<-2
   recoverydays<-14
-  socialdistancing<-SocialDistance
+
   hospitalizationrate<-10
   icurate<-6
   ventilatorrate<-3
   hospitaltime<-7
   icutime<-5
   ventilatortime<-7
-  daysforecasted<-DaysForecasted
+
   
   
   
@@ -1619,8 +1612,7 @@ NationalOverlayPlot<-function(SocialDistance, DaysForecasted){
   #Next we use the calculated values, along with estimated values from the Estimated Values. 
   
   #The only input we want from the user is the social distancing rate. For this example, we just use 0.5
-  cases<-NationalCases*.05
-  pop<-NationalPop
+
   doubling<-7
   
   #Established Variables at the start for every county or populations
@@ -1628,14 +1620,14 @@ NationalOverlayPlot<-function(SocialDistance, DaysForecasted){
   incubationtime<-5
   latenttime<-2
   recoverydays<-14
-  socialdistancing<-SocialDistance
+
   hospitalizationrate<-20
   icurate<-6
   ventilatorrate<-3
   hospitaltime<-7
   icutime<-5
   ventilatortime<-7
-  daysforecasted<-DaysForecasted
+
   
   #Now we throw the values above into the SEIAR model, and we create dates for the number of days we decided to forecast as well (place holder for now).
   #With the outputs, we grab the daily hospitalized people and the cumulative hospitalizations. Then we name the columns
@@ -1657,10 +1649,11 @@ NationalOverlayPlot<-function(SocialDistance, DaysForecasted){
   DailyData$ID<-rep("CHIME",nrow(DailyData))
   IHMENationalData$ID<-rep("IHME",nrow(IHMENationalData))
   HistoricalData$ID<-rep("Past Data", nrow(HistoricalData))
+  HistoricalData <- dplyr::filter(HistoricalData, ForecastDate >= as.Date("2020-01-27") + 30)
   
   OverlayData<-rbind(DailyData,IHMENationalData)
   OverlayData$ForecastDate<-as.Date(OverlayData$ForecastDate)
-  OverlayData<- dplyr::filter(OverlayData, ForecastDate >= Sys.Date() & ForecastDate <= (Sys.Date() + DaysForecasted))
+  OverlayData<- dplyr::filter(OverlayData, ForecastDate >= (Sys.Date()-1) & ForecastDate <= (Sys.Date() + DaysForecasted))
   OverlayData<-rbind(HistoricalData, OverlayData)    
   
   
@@ -1707,7 +1700,7 @@ CHIMENationalPlot<-function(SocialDistance, DaysForecasted){
   HistoricalData<-data.frame(HistoricalDates, HistoricalDataHosp, HistoricalDataHosp*0.75, HistoricalDataHosp*1.25)
   colnames(HistoricalData)<-c("ForecastDate", "Expected Hospitalizations", "Lower Estimate","Upper Estimate")
   
-  
+  currHosp = HistoricalData[nrow(HistoricalData),2]
   ####################################################################################
   #Mean Estimate
   NationalPop <-  sum(CountyInfo$Population)
@@ -1716,7 +1709,7 @@ CHIMENationalPlot<-function(SocialDistance, DaysForecasted){
   
   #Next we use the calculated values, along with estimated values from the Estimated Values. 
   #The only input we want from the user is the social distancing rate. For this example, we just use 0.5
-  cases<-NationalCases*.05
+  cases<-currHosp
   pop<-NationalPop
   doubling<-8
   
@@ -1726,13 +1719,13 @@ CHIMENationalPlot<-function(SocialDistance, DaysForecasted){
   latenttime<-2
   recoverydays<-14
   socialdistancing<-SocialDistance
-  hospitalizationrate<-15
+  hospitalizationrate<-14
   icurate<-6
   ventilatorrate<-3
   hospitaltime<-7
   icutime<-5
   ventilatortime<-7
-  daysforecasted<-DaysForecasted
+  daysforecasted<-120
   
   #Now we throw the values above into the SEIAR model, and we create dates for the number of days we decided to forecast as well (place holder for now).
   #With the outputs, we grab the daily hospitalized people and the cumulative hospitalizations. Then we name the columns
@@ -1752,8 +1745,7 @@ CHIMENationalPlot<-function(SocialDistance, DaysForecasted){
   
   #Next we use the calculated values, along with estimated values from the Estimated Values. 
   #The only input we want from the user is the social distancing rate. For this example, we just use 0.5
-  cases<-NationalCases*.05
-  pop<-NationalPop
+  
   doubling<-10
   
   #Established Variables at the start for every county or populations
@@ -1761,14 +1753,14 @@ CHIMENationalPlot<-function(SocialDistance, DaysForecasted){
   incubationtime<-5
   latenttime<-2
   recoverydays<-14
-  socialdistancing<-SocialDistance
+  
   hospitalizationrate<-10
   icurate<-6
   ventilatorrate<-3
   hospitaltime<-7
   icutime<-5
   ventilatortime<-7
-  daysforecasted<-DaysForecasted
+  
   
   
   
@@ -1788,8 +1780,7 @@ CHIMENationalPlot<-function(SocialDistance, DaysForecasted){
   #Next we use the calculated values, along with estimated values from the Estimated Values. 
   
   #The only input we want from the user is the social distancing rate. For this example, we just use 0.5
-  cases<-NationalCases*.05
-  pop<-NationalPop
+  
   doubling<-7
   
   #Established Variables at the start for every county or populations
@@ -1797,14 +1788,14 @@ CHIMENationalPlot<-function(SocialDistance, DaysForecasted){
   incubationtime<-5
   latenttime<-2
   recoverydays<-14
-  socialdistancing<-SocialDistance
+  
   hospitalizationrate<-20
   icurate<-6
   ventilatorrate<-3
   hospitaltime<-7
   icutime<-5
   ventilatortime<-7
-  daysforecasted<-DaysForecasted
+  
   
   #Now we throw the values above into the SEIAR model, and we create dates for the number of days we decided to forecast as well (place holder for now).
   #With the outputs, we grab the daily hospitalized people and the cumulative hospitalizations. Then we name the columns
@@ -1823,10 +1814,11 @@ CHIMENationalPlot<-function(SocialDistance, DaysForecasted){
   DailyData<-DailyData[-1,]
     DailyData$ID<-rep("CHIME", nrow(DailyData))
     HistoricalData$ID<-rep("Past Data", nrow(HistoricalData))
+    HistoricalData <- dplyr::filter(HistoricalData, ForecastDate >= as.Date("2020-01-27") + 30)
     
-    OverlayData<- dplyr::filter(DailyData, ForecastDate >= Sys.Date())
+    DailyData<- dplyr::filter(DailyData, ForecastDate >= (Sys.Date()-1) & ForecastDate <= (Sys.Date() + DaysForecasted))
     
-    OverlayData<-rbind(HistoricalData, OverlayData)
+    OverlayData<-rbind(HistoricalData, DailyData)
     
     
     projections <-  ggplot(OverlayData, aes(x=ForecastDate, y=`Expected Hospitalizations`, color = ID, fill = ID, linetype = ID)) +
@@ -1888,7 +1880,8 @@ IHMENationalProjections<-function(DaysProjected){
         
         IHMENationalData$ID<-rep("IHME", nrow(IHMENationalData))
         HistoricalData$ID<-rep("Past Data", nrow(HistoricalData))
-        OverlayData<- dplyr::filter(IHMENationalData, ForecastDate >= Sys.Date(), ForecastDate <= (Sys.Date() + DaysProjected))
+        HistoricalData <- dplyr::filter(HistoricalData, ForecastDate >= as.Date("2020-01-27") + 30)
+        OverlayData<- dplyr::filter(IHMENationalData, ForecastDate >= (Sys.Date()-1) & ForecastDate <= (Sys.Date() + DaysProjected))
         OverlayData<-rbind(HistoricalData, OverlayData)
         
         projections <-  ggplot(OverlayData, aes(x=ForecastDate, y=`Expected Hospitalizations`, color = ID, fill = ID, linetype = ID)) +
