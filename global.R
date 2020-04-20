@@ -1110,15 +1110,16 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals, SocialDis
       
       
       projections <-  ggplot(OverlayData, aes(x=ForecastDate, y=`Expected Hospitalizations`, color = ID, fill = ID, linetype = ID)) +
-        geom_line() + 
-        scale_colour_manual(values=c("tan", "blue", "black","red"))+
-        scale_fill_manual(values = c("tan4", "cadetblue", "gray", "red"))+
-        scale_linetype_manual(values=c("dashed", "dashed", "solid", "solid"))+
+        geom_line(aes(linetype = ID, color = ID)) + 
         geom_ribbon(aes(ymin = `Lower Estimate`, ymax = `Upper Estimate`), 
                     alpha = .2) +
+        scale_colour_manual(values=c("tan", "blue", "black","red"))+
+        scale_fill_manual(values = c("tan4", "cadetblue", "gray","red"))+
+        scale_linetype_manual(values=c("dashed", "solid", "dashed", "solid"))+
+        
         geom_hline(aes(yintercept = TotalBeds * (1-baseUtlz),
-                       linetype = "Max Available Hospital Beds"),
-                       colour = "red") +
+                       linetype = "Estimated COVID Patient Bed Capacity"),
+                   colour = "red") +
         ggtitle("Projected Daily Hospital Bed Utilization")+
         ylab("Daily Beds Needed")+
         theme_bw() + 
