@@ -1408,7 +1408,7 @@ PlotLocalChoro<-function(IncludedCounties, ChosenBase, TypofPlot){
       scale_fill_viridis(choropleth$Cases)
     
     PlotCovidLocal <- ggplotly(PlotCovidLocal)%>% 
-      style(hoveron = "fills",line.color = toRGB("gray40"))%>%
+      style(hoveron = "fills",line.color = toRGB("gray40"), traces = seq.int(2, nrow(choropleth)+1))%>%
       hide_legend()
     PlotCovidLocal <- PlotCovidLocal %>% config(displayModeBar = FALSE)
     PlotCovidLocal
@@ -1444,7 +1444,7 @@ PlotLocalChoro<-function(IncludedCounties, ChosenBase, TypofPlot){
       scale_fill_viridis(choropleth$Cases)
     
     PlotCovidLocal <- ggplotly(PlotCovidLocal)%>% 
-            style(hoveron = "fills",line.color = toRGB("gray40"))%>%
+            style(hoveron = "fills",line.color = toRGB("gray40"), traces = seq.int(2, nrow(choropleth)+1))%>%
       hide_legend()
     PlotCovidLocal <- PlotCovidLocal %>% config(displayModeBar = FALSE)
     PlotCovidLocal
