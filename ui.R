@@ -119,21 +119,21 @@ ui <- tagList(
                                                                 "Social Distance" = "SD"))
                                        ),
                                        br(),
-                                       menuItem(
-                                           "National Health Projection Inputs",
-                                           tabName = "natHealthProj",
-                                           icon = icon("sliders-h"),
-                                           div(id = "single", style="display: none;", numericInput("tckt", "Ticket Number : ", 12345,  width = 300)),
-                                           sliderInput("proj_days_national",
-                                                       "Projection days:",
-                                                       min = 7,
-                                                       max = 30,
-                                                       value = 14),
-                                           checkboxGroupInput("SocialDistanceValueNational", "National Social Distancing Actions: ",
-                                                              c("Close Schools" = "CSN",
-                                                                "Businesses Telework" = "CBN",
-                                                                "Social Distance" = "SDN"))
-                                       ),
+                                       # menuItem(
+                                       #     "National Health Projection Inputs",
+                                       #     tabName = "natHealthProj",
+                                       #     icon = icon("sliders-h"),
+                                       #     div(id = "single", style="display: none;", numericInput("tckt", "Ticket Number : ", 12345,  width = 300)),
+                                       #     sliderInput("proj_days_national",
+                                       #                 "Projection days:",
+                                       #                 min = 7,
+                                       #                 max = 30,
+                                       #                 value = 14),
+                                       #     checkboxGroupInput("SocialDistanceValueNational", "National Social Distancing Actions: ",
+                                       #                        c("Close Schools" = "CSN",
+                                       #                          "Businesses Telework" = "CBN",
+                                       #                          "Social Distance" = "SDN"))
+                                       # ),
 
                                        br(),
                                        
@@ -266,23 +266,23 @@ ui <- tagList(
                                           box(plotlyOutput("IHME_State_Hosp",height = 400)),
                                           box(plotlyOutput("SEIARProjection"),height = 400)),
                                           box(plotlyOutput("OverlayPlots"), width =  900)
-                                  ),
+                                  )
                                   ####### END PROJECTION TAB #######
                                   
                                   ####### BEGIN National PROJECTION TAB #########
                                   # National Health Projections ------------------------------------------------
-                                  tabPanel(
-                                      title = "National Health Projections",
-                                      # fluidRow(
-                                      #     valueBoxOutput("TotalPopulation_National"),
-                                      #     valueBoxOutput("CHIMEPeakDate_National"),
-                                      #     valueBoxOutput("IHMEPeakDate_National")
-                                      #),
-                                      fluidRow(
-                                          box(plotlyOutput("IHMENationaProj",height = 400)),
-                                          box(plotlyOutput("CHIMENationalProj"),height = 400)),
-                                          box(plotlyOutput("NationalPlotOverlay"), width =  900)
-                                  )
+                                  # tabPanel(
+                                  #     title = "National Health Projections",
+                                  #     # fluidRow(
+                                  #     #     valueBoxOutput("TotalPopulation_National"),
+                                  #     #     valueBoxOutput("CHIMEPeakDate_National"),
+                                  #     #     valueBoxOutput("IHMEPeakDate_National")
+                                  #     #),
+                                  #     fluidRow(
+                                  #         box(plotlyOutput("IHMENationaProj",height = 400)),
+                                  #         box(plotlyOutput("CHIMENationalProj"),height = 400)),
+                                  #         box(plotlyOutput("NationalPlotOverlay"), width =  900)
+                                  # )
                                   ####### END PROJECTION TAB #######
 
                                   ####### BEGIN Aircrew TAB #########
