@@ -146,6 +146,16 @@ MAJCOMList<-c("All",'Active Duty',MAJCOMList)
 CovidConfirmedCases <- dplyr::filter(CovidConfirmedCases, CountyFIPS != 0)
 CovidConfirmedCases <- head(CovidConfirmedCases,-1)
 
+#Get rid of days with incorrect cumulative reporting of zeros after reported cases have been seen
+for (i in 6:(ncol(CovidCountiesCases_new))){
+  
+  CovidConfirmedCases[,i] = ifelse(CovidConfirmedCases[,i] < CovidConfirmedCases[,(i-1)],
+                                   CovidConfirmedCases[,(i-1)],
+                                   CovidConfirmedCases[,i])
+  
+}
+
+
 currCount = 0
 
 v <- rep(0, as.numeric(ncol(CovidConfirmedCases)))
@@ -173,6 +183,8 @@ for (i in 1:nrow(CovidConfirmedCases)){
 }
 
 CovidConfirmedCasesRate <- cbind(CovidConfirmedCases,v)
+
+
 
 
 ######################Data Specific to plotting counties and states as choropleth
