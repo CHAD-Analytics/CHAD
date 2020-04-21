@@ -27,6 +27,7 @@
 library(stringr)
 library(stringi)
 library(markdown)
+library(plyr)
 library(dplyr)
 library(ggplot2)
 library(tidyr)
@@ -37,7 +38,6 @@ library(scales)
 library(googleVis)
 library(usmap)
 library(data.table)
-library(plyr)
 library(jsonlite)
 library(splitstackshape)
 library(DT)
@@ -147,7 +147,7 @@ CovidConfirmedCases <- dplyr::filter(CovidConfirmedCases, CountyFIPS != 0)
 CovidConfirmedCases <- head(CovidConfirmedCases,-1)
 
 #Get rid of days with incorrect cumulative reporting of zeros after reported cases have been seen
-for (i in 6:(ncol(CovidCountiesCases_new))){
+for (i in 6:(ncol(CovidConfirmedCases))){
   
   CovidConfirmedCases[,i] = ifelse(CovidConfirmedCases[,i] < CovidConfirmedCases[,(i-1)],
                                    CovidConfirmedCases[,(i-1)],
