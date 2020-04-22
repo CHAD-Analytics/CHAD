@@ -113,10 +113,25 @@ ui <- tagList(
                                                        min = 7,
                                                        max = 30,
                                                        value = 14),
-                                           checkboxGroupInput("SocialDistanceValue", "Local Social Distancing Actions: ",
-                                                              c("Close Schools" = "CS",
-                                                                "Businesses Telework" = "CB",
-                                                                "Social Distance" = "SD"))
+                                           # checkboxGroupInput("SocialDistanceValue", "Local Social Distancing Actions: ",
+                                           #                     c("Close Schools" = "CS",
+                                           #                       "Businesses Telework" = "CB",
+                                           #                       "Social Distance" = "SD")),
+                                           checkboxGroupInput("ModelSelectionValue","Forecasting Model(s): ",
+                                                              c("IHME"="IHME",
+                                                                "LANL"="LANL",
+                                                                "CHIME SC"="CHIME1",
+                                                                "CHIME NE"="CHIME2",
+                                                                "CHIME SC+NE"="CHIME3",
+                                                                "CHIME SD"="CHIME4",
+                                                                "CHIME SC+SD"="CHIME5",
+                                                                "CHIME NE+SD"="CHIME6",
+                                                                "CHIME SC+NE+SD"="CHIME7",                                                                                                                                
+                                                                "Columbia No Intervetion"="CUNI",
+                                                                "Columbia 20% SC Reduction"="CU20SC",
+                                                                "Columbia 30% SC Reduction"="CU30SC",
+                                                                "Columbia 40% SC Reduction"="CU40SC")),
+                                           actionLink("selectall","Select All")
                                        ),
                                        br(),
                                        # menuItem(
@@ -263,12 +278,11 @@ ui <- tagList(
                                           #valueBoxOutput("TotalPopulation"),
                                           #valueBoxOutput("IHMEMinMax"),
                                           #valueBoxOutput("CHIMEMinMax")
-                                          
                                       ),
-                                      fluidRow(
-                                          box(plotlyOutput("IHME_State_Hosp",height = 400)),
-                                          box(plotlyOutput("SEIARProjection"),height = 400)),
-                                          box(plotlyOutput("OverlayPlots"), width =  900)
+                                      # fluidRow(
+                                      #     box(plotlyOutput("IHME_State_Hosp",height = 400)),
+                                      #     box(plotlyOutput("SEIARProjection"),height = 400)),
+                                      box(plotlyOutput("OverlayPlots",height=700, width=1500))
                                   )
                                   ####### END PROJECTION TAB #######
                                   
@@ -304,9 +318,6 @@ ui <- tagList(
 
                                       ) #close dash body
 
-                                  
-                                  
-                                  
                       )
                   )
     )

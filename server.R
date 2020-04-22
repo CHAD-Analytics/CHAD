@@ -393,46 +393,46 @@ server <- function(input, output) {
         
     })
 
-    #Create IHME plot by State projected hospitalization 
-    output$IHME_State_Hosp<-renderPlotly({
-
-        IncludedHospitals<-GetHospitals(input$Base, input$Radius)
-        MyCounties <- GetCounties(input$Base, input$Radius)
-        IHMELocalProjections(MyCounties, IncludedHospitals, input$Base, input$StatisticType, input$proj_days)
-        
-        
-    })
-    
-    
-    #Output the SEIAR CHIME projections with a max, min, and expected value
-    output$SEIARProjection<-renderPlotly({
-        BaseState<-dplyr::filter(AFBaseLocations, Base == input$Base)
-        IncludedCounties<-GetCounties(input$Base,input$Radius)
-        if (is.null(input$SocialDistanceValue) ){social_dist<-1}
-
-        CS      <- "CS"       %in% input$SocialDistanceValue
-        CB    <- "CB"     %in% input$SocialDistanceValue
-        SD <- "SD"  %in% input$SocialDistanceValue
-
-        if (CS & CB & SD){
-            social_dist <- 27
-        } else if (CS & CB){
-            social_dist <- 12
-        } else if (CS & SD){
-            social_dist <-19
-        } else if (SD & CB){
-            social_dist <-23
-        } else if (CS) {
-            social_dist <- 4
-        }  else if (CB) {
-            social_dist <- 8
-        }  else if (SD) {
-            social_dist <- 15
-        }
-        
-        CHIMELocalPlot(social_dist, input$proj_days, IncludedCounties, input$StatisticType)
-
-    })
+    # #Create IHME plot by State projected hospitalization 
+    # output$IHME_State_Hosp<-renderPlotly({
+    # 
+    #     IncludedHospitals<-GetHospitals(input$Base, input$Radius)
+    #     MyCounties <- GetCounties(input$Base, input$Radius)
+    #     IHMELocalProjections(MyCounties, IncludedHospitals, input$Base, input$StatisticType, input$proj_days)
+    #     
+    #     
+    # })
+    # 
+    # 
+    # #Output the SEIAR CHIME projections with a max, min, and expected value
+    # output$SEIARProjection<-renderPlotly({
+    #     BaseState<-dplyr::filter(AFBaseLocations, Base == input$Base)
+    #     IncludedCounties<-GetCounties(input$Base,input$Radius)
+    #     if (is.null(input$SocialDistanceValue) ){social_dist<-1}
+    # 
+    #     CS      <- "CS"       %in% input$SocialDistanceValue
+    #     CB    <- "CB"     %in% input$SocialDistanceValue
+    #     SD <- "SD"  %in% input$SocialDistanceValue
+    # 
+    #     if (CS & CB & SD){
+    #         social_dist <- 27
+    #     } else if (CS & CB){
+    #         social_dist <- 12
+    #     } else if (CS & SD){
+    #         social_dist <-19
+    #     } else if (SD & CB){
+    #         social_dist <-23
+    #     } else if (CS) {
+    #         social_dist <- 4
+    #     }  else if (CB) {
+    #         social_dist <- 8
+    #     }  else if (SD) {
+    #         social_dist <- 15
+    #     }
+    #     
+    #     CHIMELocalPlot(social_dist, input$proj_days, IncludedCounties, input$StatisticType)
+    # 
+    # })
     
     output$CHIMENationalProj<-renderPlotly({
         
@@ -490,32 +490,71 @@ server <- function(input, output) {
         IHMENationalProjections(input$proj_days_national) 
     })
     
+    observe({
+        if(input$selectall == 0) return(NULL) 
+        else if (input$selectall%%2 == 0)
+        {
+            updateCheckboxGroupInput(session,"ModelSelectionValue","Forecasting Model(s): ",choices=c("IHME"="IHME","LANL"="LANL","CHIME SC"="CHIME1","CHIME NE"="CHIME2","CHIME SC+NE"="CHIME3",
+                                                                                                      "CHIME SD"="CHIME4","CHIME SC+SD"="CHIME5","CHIME NE+SD"="CHIME6","CHIME SC+NE+SD"="CHIME7",                                                                                                                                
+                                                                                                      "Columbia No Intervetion"="CUNI","Columbia 20% SC Reduction"="CU20SC","Columbia 30% SC Reduction"="CU30SC",
+                                                                                                      "Columbia 40% SC Reduction"="CU40SC"))
+        }
+        else
+        {
+            updateCheckboxGroupInput(session,"ModelSelectionValue","Forecasting Model(s):",choices=c("IHME"="IHME","LANL"="LANL","CHIME SC"="CHIME1","CHIME NE"="CHIME2","CHIME SC+NE"="CHIME3",
+                                                                                                     "CHIME SD"="CHIME4","CHIME SC+SD"="CHIME5","CHIME NE+SD"="CHIME6","CHIME SC+NE+SD"="CHIME7",                                                                                                                                
+                                                                                                     "Columbia No Intervetion"="CUNI","Columbia 20% SC Reduction"="CU20SC","Columbia 30% SC Reduction"="CU30SC",
+                                                                                                     "Columbia 40% SC Reduction"="CU40SC"),
+                                     selected=c("IHME"="IHME","LANL"="LANL","CHIME SC"="CHIME1","CHIME NE"="CHIME2","CHIME SC+NE"="CHIME3",
+                                                "CHIME SD"="CHIME4","CHIME SC+SD"="CHIME5","CHIME NE+SD"="CHIME6","CHIME SC+NE+SD"="CHIME7",                                                                                                                                
+                                                "Columbia No Intervetion"="CUNI","Columbia 20% SC Reduction"="CU20SC",
+                                                "Columbia 30% SC Reduction"="CU30SC","Columbia 40% SC Reduction"="CU40SC"))
+        }
+    })
+    
+    
     #Overlay Projected Plots
     output$OverlayPlots<-renderPlotly({
-        if (is.null(input$SocialDistanceValue) ){social_dist<-1}
+        #if (is.null(input$SocialDistanceValue)){social_dist<-1}
+        #(4,8,12,15,19,23,27)
+        ModelID<-"Past Data"
         
-        CS      <- "CS"       %in% input$SocialDistanceValue
-        CB    <- "CB"     %in% input$SocialDistanceValue
-        SD <- "SD"  %in% input$SocialDistanceValue
+        if ("IHME" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"IHME")}
+        if ("LANL" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"LANL")}
+        if ("CHIME1" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CHIME_4%_SD")}
+        if ("CHIME2" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CHIME_8%_SD")}
+        if ("CHIME3" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CHIME_12%_SD")}
+        if ("CHIME4" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CHIME_15%_SD")}
+        if ("CHIME5" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CHIME_19%_SD")}
+        if ("CHIME6" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CHIME_23%_SD")}
+        if ("CHIME7" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CHIME_27%_SD")}                                                                                                                                
+        if ("CUNI" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CU_No Intervention")}
+        if ("CU20SC" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CU_20%_SD")}
+        if ("CU30SC" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CU_30%_SD")}
+        if ("CU40SC" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CU_40%_SD")}
         
-        if (CS & CB & SD){
-            social_dist <- 27
-        } else if (CS & CB){
-            social_dist <- 12
-        } else if (CS & SD){
-            social_dist <-19
-        } else if (SD & CB){
-            social_dist <-23
-        } else if (CS) {
-            social_dist <- 4
-        }  else if (CB) {
-            social_dist <- 8
-        }  else if (SD) {
-            social_dist <- 15
-        }
+        # CS  <- "CS" %in% input$SocialDistanceValue
+        # CB  <- "CB" %in% input$SocialDistanceValue
+        # SD  <- "SD" %in% input$SocialDistanceValue
+        # 
+        # if (CS & CB & SD){
+        #     social_dist <- 27
+        # } else if (CS & CB){
+        #     social_dist <- 12
+        # } else if (CS & SD){
+        #     social_dist <-19
+        # } else if (SD & CB){
+        #     social_dist <-23
+        # } else if (CS) {
+        #     social_dist <- 4
+        # }  else if (CB) {
+        #     social_dist <- 8
+        # }  else if (SD) {
+        #     social_dist <- 15
+        # }
         MyCounties<-GetCounties(input$Base,input$Radius)
         MyHospitals<-GetHospitals(input$Base,input$Radius)
-        PlotOverlay(input$Base, MyCounties, MyHospitals, social_dist, input$proj_days, input$StatisticType)
+        PlotOverlay(input$Base, MyCounties, MyHospitals,social_dist,ModelID,input$proj_days, input$StatisticType)
     })
     
     
