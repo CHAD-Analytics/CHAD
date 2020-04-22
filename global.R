@@ -88,7 +88,7 @@ load(url(githubURL))
 githubURL <- "https://github.com/treypujats/CHAD/blob/master/data/himd.RData?raw=true"
 load(url(githubURL))
 
-githubURL <- "https://github.com/treypujats/CHAD/blob/master/data/baseinfo.RData?raw=true"
+githubURL <- "https://github.com/treypujats/CHAD/blob/master/data/baseinfo_new.RData?raw=true"
 load(url(githubURL))
 
 
@@ -126,7 +126,7 @@ colnames(CovidConfirmedCases)[1]<-"CountyFIPS"
 temp <- tempfile()
 download.file("https://ihmecovid19storage.blob.core.windows.net/latest/ihme-covid19.zip", temp, mode="wb")
 zipdf <- unzip(temp, list = TRUE)
-csv_file <- zipdf$Name[2]
+csv_file <- zipdf$Name[1]
 IHME_Model <- read.table(unz(temp, csv_file), header = T, sep = ",")
 unlink(temp)
 IHME_Model$date <- as.Date(IHME_Model$date, format = "%Y-%m-%d")
@@ -441,9 +441,10 @@ seiar<-function(S,E,A,I,R, beta, sigma, gamma_1, gamma_2, N){
 GetCounties<-function(base,radius){
     
     #Find counties in radius
-    CountyInfo$DistanceMiles = cimd[,as.character(base)]
-    IncludedCounties<-dplyr::filter(CountyInfo, DistanceMiles <= radius)
-    IncludedCounties
+  baseDF = dplyr::filter(AFBaseLocations, Base == base)
+  CountyInfo$DistanceMiles = cimd[,as.character(base)]
+  IncludedCounties<-dplyr::filter(CountyInfo, DistanceMiles <= radius | FIPS == baseDF$FIPS)
+  IncludedCounties
 }
 
 GetHospitals<-function(base,radius){
