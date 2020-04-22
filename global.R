@@ -520,7 +520,11 @@ CalculateCovid1000<-function(IncludedCounties){
   
   #Get total confirmed cases in the selected region
   CovidCounties<-subset(CovidConfirmedCases, CountyFIPS %in% IncludedCounties$FIPS)
+<<<<<<< HEAD
   (sum(rev(CovidCounties)[,1]))/(sum(IncludedCounties$Population))*1000
+=======
+  ceiling((sum(rev(CovidCounties)[,1]))/(sum(IncludedCounties$Population))*1000)
+>>>>>>> 8b35c79f282f7aeef240f33b22273dce0dd9da15
 }
 
 CalculateDeaths<-function(IncludedCounties){
