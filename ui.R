@@ -236,7 +236,7 @@ ui <- tagList(
                                           tags$style(".small-box{border-radius:10px;}"),
                                           valueBoxOutput("CaseChangeLocal", width = 4),
                                           valueBoxOutput("DeathChangeLocal", width = 4),
-                                          valueBoxOutput("HospUtlzChange", width = 4)
+                                          valueBoxOutput("CaseDbRate", width = 4)
                                       ),
                                       fluidRow( 
                                           box(title = "Daily Reports",plotlyOutput("LocalHealthPlot1",height = 300)),

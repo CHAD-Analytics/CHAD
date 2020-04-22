@@ -93,12 +93,12 @@ server <- function(input, output) {
     })
    
     
-    # output$HospUtlzChange <- renderValueBox({
-    #     MyCounties<-GetCounties(input$Base,input$Radius)
-    #     valueBox(HospitalUtlzChng(MyCounties),
-    #              subtitle = "Estimated COVID only Utilization",
-    #              color = "navy")
-    # })
+    output$CaseDbRate <- renderValueBox({
+        MyCounties<-GetCounties(input$Base,input$Radius)
+        valueBox(paste(CaseDblRate(MyCounties),"days"),
+                 subtitle = "Case Doubling Rate",
+                 color = "navy")
+    })
     
     output$CHIMEPeakDate<-renderValueBox({
         MyCounties<-GetCounties(input$Base,input$Radius)
