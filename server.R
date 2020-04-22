@@ -42,10 +42,21 @@ server <- function(input, output) {
     # Finds Covid Cases and statistics on covid per county
     output$CovidCases <- renderValueBox({
         MyCounties<-GetCounties(input$Base,input$Radius)
-        valueBox(subtitle = "Local Cases",
+        valueBox(subtitle = "Total Confirmed Cases",
                  comma(CalculateCovid(MyCounties)),
                  #icon = icon("list-ol"),
                  color = "light-blue"
+        )
+        
+    })
+    
+    # Finds Covid Cases per 1,000
+    output$CasesPer1000 <- renderValueBox({
+        MyCounties<-GetCounties(input$Base,input$Radius)
+        valueBox(subtitle = "Total Confirmed Cases per 1,000",
+                 comma(CalculateCovid1000(MyCounties)),
+                 #icon = icon("list-ol"),
+                 color = "teal"
         )
         
     })
@@ -65,10 +76,10 @@ server <- function(input, output) {
     # Finds Covid deaths and statistics on covid per county
     output$LocalCovidDeaths <- renderValueBox({
         MyCounties<-GetCounties(input$Base,input$Radius)
-        valueBox(subtitle = "Local Fatalities",
+        valueBox(subtitle = "Total Fatalities",
                  comma(CalculateDeaths(MyCounties)),
                  #icon = icon("skull"),
-                 color = "blue"
+                 color = "light-blue"
         )
     })
     
@@ -79,8 +90,8 @@ server <- function(input, output) {
         changeC <- sum(rev(CovidCounties)[,1] - rev(CovidCounties)[,2])
         
         valueBox(paste("+",toString(changeC)),
-                 subtitle = "New Confirmed Fatalities", 
-                 color = "blue")
+                 subtitle = "New Fatalities", 
+                 color = "light-blue")
     })
     
     #Finds hospital information within a given 100 mile radius. Calculates number of total hospital beds. Can compare to number of cases
@@ -97,8 +108,19 @@ server <- function(input, output) {
         MyCounties<-GetCounties(input$Base,input$Radius)
         valueBox(paste(CaseDblRate(MyCounties),"days"),
                  subtitle = "Case Doubling Rate",
+                 color = "teal")
+    })
+    
+    
+    output$Rt_Estimate <- renderValueBox({
+        MyCounties<-GetCounties(input$Base,input$Radius)
+        valueBox(paste(Estimate_Rt(MyCounties)),
+                 subtitle = "Estimated Virus Reproduction Rate",
                  color = "navy")
     })
+    
+    
+###################################################################################################
     
     output$CHIMEPeakDate<-renderValueBox({
         MyCounties<-GetCounties(input$Base,input$Radius)

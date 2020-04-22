@@ -228,15 +228,18 @@ ui <- tagList(
                                       title = "Current Local Health",
                                       fluidRow(
                                           # A static valueBox
-                                          valueBoxOutput("CovidCases"),
-                                          valueBoxOutput("LocalCovidDeaths"),
-                                          valueBoxOutput("HospitalUtilization")
+                                          valueBoxOutput("CovidCases", width = 3),
+                                          valueBoxOutput("CaseChangeLocal", width = 3),
+                                          valueBoxOutput("CasesPer1000", width = 3),
+                                          valueBoxOutput("HospitalUtilization", width = 3)
                                       ),
                                       fluidRow(
                                           tags$style(".small-box{border-radius:10px;}"),
-                                          valueBoxOutput("CaseChangeLocal", width = 4),
-                                          valueBoxOutput("DeathChangeLocal", width = 4),
-                                          valueBoxOutput("CaseDbRate", width = 4)
+                                          valueBoxOutput("LocalCovidDeaths", width = 3),
+                                          valueBoxOutput("DeathChangeLocal", width = 3),
+                                          valueBoxOutput("CaseDbRate", width = 3),
+                                          valueBoxOutput("Rt_Estimate", width = 3),
+                                          
                                       ),
                                       fluidRow( 
                                           box(title = "Daily Reports",plotlyOutput("LocalHealthPlot1",height = 300)),
