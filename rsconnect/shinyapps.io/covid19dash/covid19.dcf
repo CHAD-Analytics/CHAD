@@ -5,9 +5,9 @@ account: covid19dash
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 2075907
-bundleId: 3000694
+bundleId: 3047597
 url: https://covid19dash.shinyapps.io/covid19/
-when: 1586629851.38029
+when: 1587520680.59991
 asMultiple: FALSE
 asStatic: FALSE
 ignoredFiles: acme_support.R

@@ -88,7 +88,7 @@ load(url(githubURL))
 githubURL <- "https://github.com/treypujats/CHAD/blob/master/data/himd.RData?raw=true"
 load(url(githubURL))
 
-githubURL <- "https://github.com/treypujats/CHAD/blob/master/data/baseinfo.RData?raw=true"
+githubURL <- "https://github.com/treypujats/CHAD/blob/master/data/baseinfo_new.RData?raw=true"
 load(url(githubURL))
 
 
@@ -126,7 +126,7 @@ colnames(CovidConfirmedCases)[1]<-"CountyFIPS"
 temp <- tempfile()
 download.file("https://ihmecovid19storage.blob.core.windows.net/latest/ihme-covid19.zip", temp, mode="wb")
 zipdf <- unzip(temp, list = TRUE)
-csv_file <- zipdf$Name[2]
+csv_file <- zipdf$Name[1]
 IHME_Model <- read.table(unz(temp, csv_file), header = T, sep = ",")
 unlink(temp)
 IHME_Model$date <- as.Date(IHME_Model$date, format = "%Y-%m-%d")
@@ -441,9 +441,10 @@ seiar<-function(S,E,A,I,R, beta, sigma, gamma_1, gamma_2, N){
 GetCounties<-function(base,radius){
     
     #Find counties in radius
-    CountyInfo$DistanceMiles = cimd[,as.character(base)]
-    IncludedCounties<-dplyr::filter(CountyInfo, DistanceMiles <= radius)
-    IncludedCounties
+  baseDF = dplyr::filter(AFBaseLocations, Base == base)
+  CountyInfo$DistanceMiles = cimd[,as.character(base)]
+  IncludedCounties<-dplyr::filter(CountyInfo, DistanceMiles <= radius | FIPS == baseDF$FIPS)
+  IncludedCounties
 }
 
 GetHospitals<-function(base,radius){
@@ -473,6 +474,13 @@ CalculateCovid<-function(IncludedCounties){
     #Get total confirmed cases in the selected region
     CovidCounties<-subset(CovidConfirmedCases, CountyFIPS %in% IncludedCounties$FIPS)
     sum(rev(CovidCounties)[,1])
+}
+
+CalculateCovid1000<-function(IncludedCounties){
+  
+  #Get total confirmed cases in the selected region
+  CovidCounties<-subset(CovidConfirmedCases, CountyFIPS %in% IncludedCounties$FIPS)
+  (sum(rev(CovidCounties)[,1]))/(sum(IncludedCounties$Population))*10000
 }
 
 CalculateDeaths<-function(IncludedCounties){
@@ -507,45 +515,63 @@ HospitalIncreases<-function(IncludedCounties){
 }
 
 
-# HospitalUtlzChng <- function(IncludedCounties){
-#   
-#     #Find hospitals in selected region
-#     hospCounty <- subset(HospUtlzCounty, fips %in% IncludedCounties$FIPS)
-#     
-#     #Calculate total beds and weighted average utilization
-#     TotalBeds<-sum(hospCounty$num_staffed_beds)
-#     hospCounty$bedsUsed <- hospCounty$bed_utilization * hospCounty$num_staffed_beds
-#     totalUsedBeds <- sum(hospCounty$bedsUsed)
-#     baseUtlz <- totalUsedBeds/TotalBeds
-#     
-#     #Get COVID cases and county demographic hospitalization rates
-#     CovidCounties<-subset(CovidConfirmedCases, CountyFIPS %in% IncludedCounties$FIPS)
-#     CovidCountiesHospRate <- subset(CountyHospRate, FIPS %in% IncludedCounties$FIPS)
-#     
-# 
-#     #Estimate current hospital utilization
-#     TotalHospital<-sum(rev(CovidCounties)[,1]*CovidCountiesHospRate$HospRate)
-#     NotHospital<-sum(rev(CovidCounties)[,7]**CovidCountiesHospRate$HospRate)
-#     StillHospital<-ceiling((TotalHospital-NotHospital))
-#     Utilz<- round((baseUtlz - (StillHospital)/TotalBedsbaseUtlz)*100,0)
-#     
-#     # # Yesterday's utilization
-#     # TotalHospitaly<-sum(rev(CovidCounties)[,2]*CovidCountiesHospRate$HospRate)
-#     # NotHospitaly<-sum(rev(CovidCounties)[,8]*CovidCountiesHospRate$HospRate)
-#     # StillHospitaly<-ceiling((TotalHospitaly-NotHospitaly))
-#     # Utilzy<-(signif(((StillHospitaly)/TotalBeds+baseUtlz)*100,3))
-#     # 
-#     # # find change
-#     # chng <- round((Utilz-Utilzy)/2, 1)
-#     
-#     # if (chng < 0) {
-#     #   sign <- ""
-#     # } else {
-#     #   sign <- "+"
-#     # }
-#     # 
-#     paste(Utilz,"%")
-# }
+CaseDblRate <- function(IncludedCounties){
+  
+  #Find counties in radius
+  CovidCountiesCases<-subset(CovidConfirmedCases, CountyFIPS %in% IncludedCounties$FIPS)
+  
+  #Compute cumlative cases and deaths in selected counties
+  CumDailyCovid<-colSums(CovidCountiesCases[,5:length(CovidCountiesCases)])
+  
+  j = 0
+  cases = CumDailyCovid[length(CumDailyCovid)]
+  
+  if (cases != 0){
+    
+    while (cases/2 < CumDailyCovid[length(CumDailyCovid)-j])
+    {
+      j = j + 1
+    }
+    
+    days = j
+    
+  }else{
+    
+    days = 0
+  }
+  
+  v <- days
+    
+}
+
+
+Estimate_Rt <- function(IncludedCounties){
+  
+  #Find counties in radius
+  CovidCountiesCases<-subset(CovidConfirmedCases, CountyFIPS %in% IncludedCounties$FIPS)
+  
+  #Compute cumlative cases and deaths in selected counties
+  CumDailyCovid<-colSums(CovidCountiesCases[,5:length(CovidCountiesCases)])
+  
+  #5-day and 14-day averages
+  len = length(CumDailyCovid)
+  cases5day = CumDailyCovid[len] - CumDailyCovid[len-5]
+  cases14day = CumDailyCovid[len] - CumDailyCovid[len-14]
+  
+  avg5 = cases5day/5
+  avg14 = cases14day/14
+  
+  if (avg14 == 0){
+    Rt = "Undefined for Region"
+  } else{
+    Rt = round(avg5/avg14,2)
+  }
+  
+}
+
+
+###############################################################
+###############################################################
 
 
 CalculateCHIMEPeak<-function(IncludedCounties, ChosenBase, ChosenRadius, SocialDistance, ProjectedDays, StatisticType){

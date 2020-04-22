@@ -7,36 +7,45 @@ and the data manipulation.*
 
 1.  Confirmed Cases of COVID-19
 2.  Confirmed deaths from COVID-19
-3.  Air Force base name, MAJCOM, location, and state
+3.  Department of Air Force installation name, MAJCOM, location, and state
 4.  US county FIPS codes, location, state, population, land area
 5.  Hospital FIPS codes, location, state, number of beds, type
-6.  Distance matrices for counties and hospitals related to each CONUS
+6.  Distance matrices for counties and hospitals related to each Department of
     Air Force installation (preemptively created for this analysis)
 
 **Data Sources**:
 
-1.  **<a href="https://usafacts.org/visualizations/coronavirus-covid-19-spread-map/" class="uri">https://usafacts.org/visualizations/coronavirus-covid-19-spread-map/</a>**
-    : This website provides daily updated information every morning of
-    cases and deaths from the coronavirus in every county around the
-    U.S. The data does not include secondary effects such as deaths from
-    lack of treatment due to hospital capacity, rather it only included
-    deaths of individuals with COVID-19.
+1. **John Hopkins University**  
+    JHU provides daily updated information every morning for cumulative
+    cases and deaths from the COVID-19 in every county around the
+    U.S. 
+    
+    <a href="https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_US.csv"             class="uri">https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_US.csv</a>
+    
+    <a href="https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_US.csv"             class="uri">https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_US.csv</a>
 
-2.  **<a href="https://covid19.healthdata.org/projections" class="uri">https://covid19.healthdata.org/projections</a>**
-    : This website houses the data produced by the IHME model.
-    Projections are recorded for every state, and updated daily.
+2.  **Institute for Health Metrics and Evaluation**
+    This website houses the data produced by the IHME model. Fatality and hospitalization
+    projections are recorded for every state, and a large number of countries. 
+    Model updates occur typically 2-3 times a week.
+    
+    <a href="https://covid19.healthdata.org/projections" class="uri">https://covid19.healthdata.org/projections</a>
 
-3.  **<a href="https://www.ahd.com/state_statistics.html" class="uri">https://www.ahd.com/state_statistics.html</a>**
-    : The American Hospital Directory (AHD) contains stats for all
-    non-federal, short term, acute care hospitals in every state. Data
+3.  **The American Hospital Directory**
+    The AHD contains stats for all
+    non-federal, short term, acute care  and critical access hospitals in every state. Data
     includes number of staffed beds along with total discharges and
     total patient days. These metrics are used to estimate an average
     hospital utilization.
+    
+    <a href="https://www.ahd.com/state_statistics.html" class="uri">https://www.ahd.com/state_statistics.html</a>
 
-4.  **<a href="https://github.com/treypujats/CHAD" class="uri">https://github.com/treypujats/CHAD</a>**
-    : Loaded on this repository is static data regarding Air Force
+4.  **CHAD Github Repository**
+    Loaded on this repository is static data regarding Department of Air Force
     installations, US county data, hospital data, and distance matrices
     between hospitals and bases as well as counties and bases.
+    
+    <a href="https://github.com/treypujats/CHAD" class="uri">https://github.com/treypujats/CHAD</a>
 
 **Data Manipulation**:
 
