@@ -14,7 +14,7 @@
 
 
 # Define server logic, within this all ouputs and reactive variables are generated. 
-server <- function(input, output) {
+server <- function(input, output,session) {
     
     # Step One
     ###################################################################################################################################################
