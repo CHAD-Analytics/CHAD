@@ -126,17 +126,12 @@ colnames(CovidConfirmedCases)[1]<-"CountyFIPS"
 temp <- tempfile()
 download.file("https://ihmecovid19storage.blob.core.windows.net/latest/ihme-covid19.zip", temp, mode="wb")
 zipdf <- unzip(temp, list = TRUE)
-# Account for ihme changing location of CSV file
-for (k in c(1, length(zipdf$Name))) {
-  if (grepl("Hospitalization", zipdf$Name[k], fixed = TRUE) & grepl("csv", zipdf$Name[k], fixed = TRUE)) {
-    csv_file <- zipdf$Name[k]
-  }
-}
+csv_file <- zipdf$Name[2]
 IHME_Model <- read.table(unz(temp, csv_file), header = T, sep = ",")
 unlink(temp)
 IHME_Model$date <- as.Date(IHME_Model$date, format = "%Y-%m-%d")
 StateList <- data.frame(state.name, state.abb)
-IHME_Model <- merge(IHME_Model, StateList, by.x = names(IHME_Model)[2], by.y = names(StateList)[1])
+IHME_Model <- merge(IHME_Model, StateList, by.x = names(IHME_Model)[1], by.y = names(StateList)[1])
 names(IHME_Model)[names(IHME_Model)=="state.abb"] <- "State"
 
 #From Columbia U, These files contain 42 day projections which they update on Sunday evenings.
@@ -168,7 +163,7 @@ CU00PSD<-subset(CU00PSD, select=-c(hosp_need_2.5,hosp_need_97.5,ICU_need_2.5,ICU
 Front<-'https://covid-19.bsvgateway.org/forecast/us/files/'
 Middle<-'/confirmed/'
 End<-'_confirmed_quantiles_us.csv'
-Date<-Sys.Date()-3    #Have to adjust the integer value based on the date of the most recent forecast file
+Date<-Sys.Date()-4    #Have to adjust the integer value based on the date of the most recent forecast file
 ReadIn<-paste0(Front,Date,Middle,Date,End)
 LANL_Data<-read.csv(ReadIn)
 LANL_Data<-subset(LANL_Data, select=-c(simple_state,q.01,q.025,q.05,q.10,q.15,q.20,q.30,q.35,q.40,q.45,q.55,q.60,q.65,q.70,q.80,q.85,q.90,q.95,q.975,q.99,truth_confirmed,fcst_date))
