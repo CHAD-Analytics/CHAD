@@ -29,6 +29,8 @@ the assumptions made regarding the data*
 
 3.  **Case Doubling rate**: The case doubling rate is calculated for the current day. It involves counting the days since the confirmed case total was less than half of the current confirmed case total.
 
+4. **Estimated Reproduction rate**: Calculating R_t can be quite difficult since some of the parameters aren't directly captured by data. Consultation with a medical SME yielded a rough way to estimate R_t. This is done by dividing the 5 day case average by the 14 day case average. Values less than 1 indicate the possiblilty of slowing growth.  
+
 ### Predictive Models:
 
 **IHME**: Developed by the University of Washington’s Institute for
