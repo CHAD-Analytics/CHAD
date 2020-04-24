@@ -2,21 +2,21 @@
 
 Contributions are welcome! Whether you're new to github or a git guru, there are ways you can help! Feel free to make your own branch and try some new things. All of the app is done in R right now, but it has the ability to port functions from Python.
 
-If you find any bugs or problems in the code, please open an [issue](https://github.com/treypujats/COVID19/issues). Feature requests or suggestions for new approaches are also welcome in issues.
+If you find any bugs or problems in the code, please open an [issue](https://github.com/CHAD-Analytics/CHAD/issues). Feature requests or suggestions for new approaches are also welcome in issues.
 
 For code contributions, please do your best to adhere to the R Tidyverse [style guide](https://style.tidyverse.org/). 
 
 ## I'm new to github, how can I help?
 
 New to github and not sure how to help? There are a few good starting points for newcomers:
-* Open an [issue](https://github.com/treypujats/COVID19/issues) for a problem you've had
+* Open an [issue](https://github.com/CHAD-Analytics/CHAD/issues) for a problem you've had
   * For example, if you tried to follow the gettting started section of the documentation but got stuck, you can open an issue describing the problem you had.
 * Comment on an issue
   * If you see an issue where you had a similar problem or have advice for the team, you can post a comment
 * Update documentation
   * The project documentation is currently hosted in the README.md. You can edit the readme online without dealing with code or git. 
 * Share this repository with other coders in the analytic community
-  * Starring the [project](https://github.com/treypujats/COVID19) helps other people find the project and know that it's a useful project to you
+  * Starring the [project](https://github.com/CHAD-Analytics/CHAD) helps other people find the project and know that it's a useful project to you
   * Sharing the url and access instructions helps to grow out contributor base (note that this is a private project but we're open to analysts across the AFAC and in partner analytic organizations)
 
 ## Code
