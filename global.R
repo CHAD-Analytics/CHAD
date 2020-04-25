@@ -76,10 +76,10 @@ if (test_date < Sys.Date()) {
   download.file("https://github.com/treypujats/CHAD/blob/master/data/himd.RData?raw=true","data/himd.RData")
   download.file("https://github.com/treypujats/CHAD/blob/master/data/baseinfo_new.RData?raw=true","data/baseinfo_new.RData")
   download.file("https://ihmecovid19storage.blob.core.windows.net/latest/ihme-covid19.zip", "data/ihme-covid19.zip", mode="wb")  
-  download.file("https://raw.githubusercontent.com/shaman-lab/COVID-19Projection/master/Projection_April19/bed_60contact.csv","data/bed_60contact.csv")
-  download.file("https://raw.githubusercontent.com/shaman-lab/COVID-19Projection/master/Projection_April19/bed_70contact.csv","data/bed_70contact.csv")
-  download.file("https://raw.githubusercontent.com/shaman-lab/COVID-19Projection/master/Projection_April19/bed_80contact.csv","data/bed_80contact.csv")
-  download.file("https://raw.githubusercontent.com/shaman-lab/COVID-19Projection/master/Projection_April19/bed_nointerv.csv","data/bed_nointerv.csv")
+  download.file("https://raw.githubusercontent.com/shaman-lab/COVID-19Projection/master/Projection_April23/bed_60contact.csv","data/bed_60contact.csv")
+  download.file("https://raw.githubusercontent.com/shaman-lab/COVID-19Projection/master/Projection_April23/bed_70contact.csv","data/bed_70contact.csv")
+  download.file("https://raw.githubusercontent.com/shaman-lab/COVID-19Projection/master/Projection_April23/bed_80contact.csv","data/bed_80contact.csv")
+  download.file("https://raw.githubusercontent.com/shaman-lab/COVID-19Projection/master/Projection_April23/bed_nointerv.csv","data/bed_nointerv.csv")
   download.file("https://covid-19.bsvgateway.org/forecast/forecast_metadata.json","data/forecast_metadata.json")
   bsv_metadata<-jsonlite::fromJSON("data/forecast_metadata.json")
   Front<-'https://covid-19.bsvgateway.org/forecast/us/files/'
@@ -163,18 +163,11 @@ names(IHME_Model)[names(IHME_Model)=="state.abb"] <- "State"
 #CU20PSD<-read.csv("https://raw.githubusercontent.com/shaman-lab/COVID-19Projection/master/Projection_April19/Projection_80contact.csv")
 #CU00PSD<-read.csv("https://raw.githubusercontent.com/shaman-lab/COVID-19Projection/master/Projection_April19/Projection_nointerv.csv")
 
-<<<<<<< HEAD
-CU40PSD<-read.csv("https://raw.githubusercontent.com/shaman-lab/COVID-19Projection/master/Projection_April23/bed_60contact.csv")
-CU30PSD<-read.csv("https://raw.githubusercontent.com/shaman-lab/COVID-19Projection/master/Projection_April23/bed_70contact.csv")
-CU20PSD<-read.csv("https://raw.githubusercontent.com/shaman-lab/COVID-19Projection/master/Projection_April23/bed_80contact.csv")
-CU00PSD<-read.csv("https://raw.githubusercontent.com/shaman-lab/COVID-19Projection/master/Projection_April23/bed_nointerv.csv")
-=======
 CU40PSD<-read.csv("data/bed_60contact.csv")
 CU30PSD<-read.csv("data/bed_70contact.csv")
 CU20PSD<-read.csv("data/bed_80contact.csv")
 CU00PSD<-read.csv("data/bed_nointerv.csv")
 
->>>>>>> 54f6b97677a30e39cf08a24022c981b532d7aa87
 CU40PSD<-CU40PSD %>% separate(county,c("County","State"))
 CU30PSD<-CU30PSD %>% separate(county,c("County","State"))
 CU20PSD<-CU20PSD %>% separate(county,c("County","State"))
@@ -189,37 +182,11 @@ CU20PSD<-subset(CU20PSD, select=-c(hosp_need_2.5,hosp_need_97.5,ICU_need_2.5,ICU
 CU00PSD<-subset(CU00PSD, select=-c(hosp_need_2.5,hosp_need_97.5,ICU_need_2.5,ICU_need_25,ICU_need_50,ICU_need_75,ICU_need_97.5,
                                    vent_need_2.5,vent_need_25,vent_need_50,vent_need_75,vent_need_97.5,death_2.5,death_97.5))
 
-<<<<<<< HEAD
-Front<-'https://covid-19.bsvgateway.org/forecast/us/files/'
-Middle<-'/confirmed/'
-End<-'_confirmed_quantiles_us.csv'
-# Get most recent date from metadata json
-bsv_metadata<-jsonlite::fromJSON("https://covid-19.bsvgateway.org/forecast/forecast_metadata.json")
-Date<-bsv_metadata$us$most_recent_date
-ReadIn<-paste0(Front,Date,Middle,Date,End)
-LANLC_Data<-read.csv(ReadIn)
-LANLC_Data<-subset(LANLC_Data, select=-c(simple_state,q.01,q.025,q.05,q.10,q.15,q.20,q.30,q.35,q.40,q.45,q.55,q.60,q.65,q.70,q.80,q.85,q.90,q.95,q.975,q.99,truth_confirmed,fcst_date))
-LANLC_Data <- merge(LANLC_Data, StateList, by.x = names(LANLC_Data)[6], by.y = names(StateList)[1])
-names(LANLC_Data)[names(LANLC_Data)=="state.abb"] <- "State"
 
-Front<-'https://covid-19.bsvgateway.org/forecast/us/files/'
-Middle<-'/deaths/'
-End<-'_deaths_quantiles_us.csv'
-# Get most recent date from metadata json
-bsv_metadata<-jsonlite::fromJSON("https://covid-19.bsvgateway.org/forecast/forecast_metadata.json")
-Date<-bsv_metadata$us$most_recent_date
-ReadIn<-paste0(Front,Date,Middle,Date,End)
-LANLD_Data<-read.csv(ReadIn)
-LANLD_Data<-subset(LANLD_Data, select=-c(simple_state,q.01,q.025,q.05,q.10,q.15,q.20,q.30,q.35,q.40,q.45,q.55,q.60,q.65,q.70,q.80,q.85,q.90,q.95,q.975,q.99,truth_deaths,fcst_date))
-LANLD_Data <- merge(LANLD_Data, StateList, by.x = names(LANLD_Data)[6], by.y = names(StateList)[1])
-names(LANLD_Data)[names(LANLD_Data)=="state.abb"] <- "State"
-
-=======
 LANL_Data<-read.csv(LANL_file_name)
 LANL_Data<-subset(LANL_Data, select=-c(simple_state,q.01,q.025,q.05,q.10,q.15,q.20,q.30,q.35,q.40,q.45,q.55,q.60,q.65,q.70,q.80,q.85,q.90,q.95,q.975,q.99,truth_confirmed,fcst_date))
 LANL_Data <- merge(LANL_Data, StateList, by.x = names(LANL_Data)[6], by.y = names(StateList)[1])
 names(LANL_Data)[names(LANL_Data)=="state.abb"] <- "State"
->>>>>>> 54f6b97677a30e39cf08a24022c981b532d7aa87
 
 #Create list of hospitals, bases, and counties.
 BaseList<-sort(AFBaseLocations$Base, decreasing = FALSE)
