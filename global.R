@@ -76,10 +76,18 @@ if (test_date < Sys.Date()) {
   download.file("https://github.com/treypujats/CHAD/blob/master/data/himd.RData?raw=true","data/himd.RData")
   download.file("https://github.com/treypujats/CHAD/blob/master/data/baseinfo_new.RData?raw=true","data/baseinfo_new.RData")
   download.file("https://ihmecovid19storage.blob.core.windows.net/latest/ihme-covid19.zip", "data/ihme-covid19.zip", mode="wb")  
-  download.file("https://raw.githubusercontent.com/shaman-lab/COVID-19Projection/master/Projection_April23/bed_60contact.csv","data/bed_60contact.csv")
-  download.file("https://raw.githubusercontent.com/shaman-lab/COVID-19Projection/master/Projection_April23/bed_70contact.csv","data/bed_70contact.csv")
-  download.file("https://raw.githubusercontent.com/shaman-lab/COVID-19Projection/master/Projection_April23/bed_80contact.csv","data/bed_80contact.csv")
-  download.file("https://raw.githubusercontent.com/shaman-lab/COVID-19Projection/master/Projection_April23/bed_nointerv.csv","data/bed_nointerv.csv")
+  shaman.lab.json = jsonlite::fromJSON("https://api.github.com/repos/shaman-lab/COVID-19Projection/contents?per_page=100")
+  shaman.lab.path = "Projection_April23"
+  for (k in 14:0) {
+    my_shaman_lab_path = paste0("Projection_",lubridate::month(as.Date(Sys.Date()-k),label=TRUE,abbr=FALSE),lubridate::day(as.Date(Sys.Date()-k)))
+    if (max(grepl(my_shaman_lab_path,shaman.lab.json$path,fixed=TRUE))) {
+      shaman.lab.path = my_shaman_lab_path
+    }
+  }
+  download.file(paste0("https://raw.githubusercontent.com/shaman-lab/COVID-19Projection/master/",shaman.lab.path,"/bed_60contact.csv"),"data/bed_60contact.csv")
+  download.file(paste0("https://raw.githubusercontent.com/shaman-lab/COVID-19Projection/master/",shaman.lab.path,"/bed_70contact.csv"),"data/bed_70contact.csv")
+  download.file(paste0("https://raw.githubusercontent.com/shaman-lab/COVID-19Projection/master/",shaman.lab.path,"/bed_80contact.csv"),"data/bed_80contact.csv")
+  download.file(paste0("https://raw.githubusercontent.com/shaman-lab/COVID-19Projection/master/",shaman.lab.path,"/bed_nointerv.csv"),"data/bed_nointerv.csv")
   download.file("https://covid-19.bsvgateway.org/forecast/forecast_metadata.json","data/forecast_metadata.json")
   bsv_metadata<-jsonlite::fromJSON("data/forecast_metadata.json")
   Front<-'https://covid-19.bsvgateway.org/forecast/us/files/'
