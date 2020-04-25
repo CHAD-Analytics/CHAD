@@ -65,31 +65,55 @@ library(plotly)
 #AFBaseLocations provide names and coordinates of base.
 #CountyInfo is used to measure population of a county and coordinates.
 
-#CovidConfirmedCases <- as.data.frame(data.table::fread("https://usafactsstatic.blob.core.windows.net/public/data/covid-19/covid_confirmed_usafacts.csv"))
-CovidConfirmedCases <- as.data.frame(data.table::fread("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_US.csv"))
-#CovidConfirmedCases<-CovidConfirmedCases[colSums(!is.na(CovidConfirmedCases)) > 0]
+try(test_date <- as.Date(file.info("data/forecast_metadata.json")$ctime))
+if (is.na(test_date)){ test_date <- Sys.Date()-2}
+if (test_date < Sys.Date()) {
+  print("data is not current. downloading curent data...")
+  download.file("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_US.csv", "data/time_series_covid19_confirmed_US.csv")
+  download.file("https://github.com/treypujats/CHAD/raw/master/data/countyinfo.rda","data/countyinfo.rda")
+  download.file("https://github.com/treypujats/CHAD/blob/master/data/hospitalinfo.rda?raw=true","data/hospitalinfo.rda")
+  download.file("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_US.csv","data/time_series_covid19_deaths_US.csv")
+  download.file("https://github.com/treypujats/CHAD/raw/master/data/county_hospitals.csv","data/county_hospitals.csv")
+  download.file("https://github.com/treypujats/CHAD/raw/master/data/CountyHospRateCalc.csv","data/CountyHospRateCalc.csv")
+  download.file("https://github.com/treypujats/CHAD/blob/master/data/cimd.RData?raw=true","data/cimd.RData")
+  download.file("https://github.com/treypujats/CHAD/blob/master/data/himd.RData?raw=true","data/himd.RData")
+  download.file("https://github.com/treypujats/CHAD/blob/master/data/baseinfo_new.RData?raw=true","data/baseinfo_new.RData")
+  download.file("https://ihmecovid19storage.blob.core.windows.net/latest/ihme-covid19.zip", "data/ihme-covid19.zip", mode="wb")  
+  download.file("https://raw.githubusercontent.com/shaman-lab/COVID-19Projection/master/Projection_April19/bed_60contact.csv","data/bed_60contact.csv")
+  download.file("https://raw.githubusercontent.com/shaman-lab/COVID-19Projection/master/Projection_April19/bed_70contact.csv","data/bed_70contact.csv")
+  download.file("https://raw.githubusercontent.com/shaman-lab/COVID-19Projection/master/Projection_April19/bed_80contact.csv","data/bed_80contact.csv")
+  download.file("https://raw.githubusercontent.com/shaman-lab/COVID-19Projection/master/Projection_April19/bed_nointerv.csv","data/bed_nointerv.csv")
+  download.file("https://covid-19.bsvgateway.org/forecast/forecast_metadata.json","data/forecast_metadata.json")
+  bsv_metadata<-jsonlite::fromJSON("data/forecast_metadata.json")
+  Front<-'https://covid-19.bsvgateway.org/forecast/us/files/'
+  Middle<-'/confirmed/'
+  End<-'_confirmed_quantiles_us.csv'
+  Date<-bsv_metadata$us$most_recent_date
+  ReadIn<-paste0(Front,Date,Middle,Date,End)
+  LANL_file_name = paste0("data/",Date,End)
+  download.file(ReadIn,LANL_file_name)
+} else {
+  bsv_metadata<-jsonlite::fromJSON("data/forecast_metadata.json")
+  End<-'_confirmed_quantiles_us.csv'
+  Date<-bsv_metadata$us$most_recent_date
+  LANL_file_name = paste0("data/",Date,End)
+  print("data is current")
+}
+
+  
+CovidConfirmedCases <- as.data.frame(data.table::fread("data/time_series_covid19_confirmed_US.csv"))
 CovidConfirmedCases<-CovidConfirmedCases[colSums(!is.na(CovidConfirmedCases)) > 0]
 
-CountyInfo <- as.data.frame(data.table::fread("https://github.com/treypujats/CHAD/raw/master/data/countyinfo.rda"))
-HospitalInfo <- as.data.frame(data.table::fread("https://github.com/treypujats/CHAD/blob/master/data/hospitalinfo.rda?raw=true"))
-#CovidDeaths<-as.data.frame(data.table::fread("https://usafactsstatic.blob.core.windows.net/public/data/covid-19/covid_deaths_usafacts.csv"))
-CovidDeaths<-as.data.frame(data.table::fread("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_US.csv"))
-HospUtlzCounty <- read.csv("https://github.com/treypujats/CHAD/raw/master/data/county_hospitals.csv")
-CountyHospRate <- read.csv("https://github.com/treypujats/CHAD/raw/master/data/CountyHospRateCalc.csv")
-#himd <- as.data.frame(data.table::fread("https://github.com/treypujats/COVID19/blob/master/covid19/data/himd.rda?raw=true"))
-#cimd <- as.data.frame(data.table::fread("https://github.com/treypujats/COVID19/blob/master/covid19/data/cimd.rda?raw=true"))
-#AFBaseLocations <- as.data.frame(data.table::fread("https://github.com/treypujats/COVID19/raw/master/covid19/data/baseinfo.rda"))
-
+CountyInfo <- as.data.frame(data.table::fread("data/countyinfo.rda"))
+HospitalInfo <- as.data.frame(data.table::fread("data/hospitalinfo.rda"))
+CovidDeaths<-as.data.frame(data.table::fread("data/time_series_covid19_deaths_US.csv"))
+HospUtlzCounty <- read.csv("data/county_hospitals.csv")
+CountyHospRate <- read.csv("data/CountyHospRateCalc.csv")
 
 #Updated data frames to read in
-githubURL <- "https://github.com/treypujats/CHAD/blob/master/data/cimd.RData?raw=true"
-load(url(githubURL))
-
-githubURL <- "https://github.com/treypujats/CHAD/blob/master/data/himd.RData?raw=true"
-load(url(githubURL))
-
-githubURL <- "https://github.com/treypujats/CHAD/blob/master/data/baseinfo_new.RData?raw=true"
-load(url(githubURL))
+load("data/cimd.RData")
+load("data/himd.RData")
+load("data/baseinfo_new.RData")
 
 
 
@@ -123,12 +147,9 @@ colnames(CovidConfirmedCases)[1]<-"CountyFIPS"
 
 
 #Read in IHME data for projecting data in the future
-temp <- tempfile()
-download.file("https://ihmecovid19storage.blob.core.windows.net/latest/ihme-covid19.zip", temp, mode="wb")
-zipdf <- unzip(temp, list = TRUE)
+zipdf <- unzip("data/ihme-covid19.zip", list = TRUE)
 csv_file <- zipdf$Name[grep(".csv",zipdf$Name,fixed=TRUE)[1]]
-IHME_Model <- read.table(unz(temp, csv_file), header = T, sep = ",")
-unlink(temp)
+IHME_Model <- read.table(unz("data/ihme-covid19.zip", csv_file), header = T, sep = ",")
 IHME_Model$date <- as.Date(IHME_Model$date, format = "%Y-%m-%d")
 StateList <- data.frame(state.name, state.abb)
 # infer location name variable name from IHME_Model column names
@@ -145,10 +166,11 @@ names(IHME_Model)[names(IHME_Model)=="state.abb"] <- "State"
 #CU20PSD<-read.csv("https://raw.githubusercontent.com/shaman-lab/COVID-19Projection/master/Projection_April19/Projection_80contact.csv")
 #CU00PSD<-read.csv("https://raw.githubusercontent.com/shaman-lab/COVID-19Projection/master/Projection_April19/Projection_nointerv.csv")
 
-CU40PSD<-read.csv("https://raw.githubusercontent.com/shaman-lab/COVID-19Projection/master/Projection_April19/bed_60contact.csv")
-CU30PSD<-read.csv("https://raw.githubusercontent.com/shaman-lab/COVID-19Projection/master/Projection_April19/bed_70contact.csv")
-CU20PSD<-read.csv("https://raw.githubusercontent.com/shaman-lab/COVID-19Projection/master/Projection_April19/bed_80contact.csv")
-CU00PSD<-read.csv("https://raw.githubusercontent.com/shaman-lab/COVID-19Projection/master/Projection_April19/bed_nointerv.csv")
+CU40PSD<-read.csv("data/bed_60contact.csv")
+CU30PSD<-read.csv("data/bed_70contact.csv")
+CU20PSD<-read.csv("data/bed_80contact.csv")
+CU00PSD<-read.csv("data/bed_nointerv.csv")
+
 CU40PSD<-CU40PSD %>% separate(county,c("County","State"))
 CU30PSD<-CU30PSD %>% separate(county,c("County","State"))
 CU20PSD<-CU20PSD %>% separate(county,c("County","State"))
@@ -163,14 +185,7 @@ CU20PSD<-subset(CU20PSD, select=-c(hosp_need_2.5,hosp_need_97.5,ICU_need_2.5,ICU
 CU00PSD<-subset(CU00PSD, select=-c(hosp_need_2.5,hosp_need_97.5,ICU_need_2.5,ICU_need_25,ICU_need_50,ICU_need_75,ICU_need_97.5,
                                    vent_need_2.5,vent_need_25,vent_need_50,vent_need_75,vent_need_97.5,death_2.5,death_97.5))
 
-Front<-'https://covid-19.bsvgateway.org/forecast/us/files/'
-Middle<-'/confirmed/'
-End<-'_confirmed_quantiles_us.csv'
-# Get most recent date from metadata json
-bsv_metadata<-jsonlite::fromJSON("https://covid-19.bsvgateway.org/forecast/forecast_metadata.json")
-Date<-bsv_metadata$us$most_recent_date
-ReadIn<-paste0(Front,Date,Middle,Date,End)
-LANL_Data<-read.csv(ReadIn)
+LANL_Data<-read.csv(LANL_file_name)
 LANL_Data<-subset(LANL_Data, select=-c(simple_state,q.01,q.025,q.05,q.10,q.15,q.20,q.30,q.35,q.40,q.45,q.55,q.60,q.65,q.70,q.80,q.85,q.90,q.95,q.975,q.99,truth_confirmed,fcst_date))
 LANL_Data <- merge(LANL_Data, StateList, by.x = names(LANL_Data)[6], by.y = names(StateList)[1])
 names(LANL_Data)[names(LANL_Data)=="state.abb"] <- "State"
