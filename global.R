@@ -67,14 +67,14 @@ if (is.na(test_date)){ test_date <- Sys.Date()-2}
 if (test_date < Sys.Date()) {
   print("data is not current. downloading curent data...")
   download.file("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_US.csv", "data/time_series_covid19_confirmed_US.csv")
-  download.file("https://github.com/treypujats/CHAD/raw/master/data/countyinfo.rda","data/countyinfo.rda")
-  download.file("https://github.com/treypujats/CHAD/blob/master/data/hospitalinfo.rda?raw=true","data/hospitalinfo.rda")
+  #download.file("https://github.com/treypujats/CHAD/raw/master/data/countyinfo.rda","data/countyinfo.rda")
+  #download.file("https://github.com/treypujats/CHAD/blob/master/data/hospitalinfo.rda?raw=true","data/hospitalinfo.rda")
   download.file("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_US.csv","data/time_series_covid19_deaths_US.csv")
-  download.file("https://github.com/treypujats/CHAD/raw/master/data/county_hospitals.csv","data/county_hospitals.csv")
-  download.file("https://github.com/treypujats/CHAD/raw/master/data/CountyHospRateCalc.csv","data/CountyHospRateCalc.csv")
-  download.file("https://github.com/treypujats/CHAD/blob/master/data/cimd.RData?raw=true","data/cimd.RData")
-  download.file("https://github.com/treypujats/CHAD/blob/master/data/himd.RData?raw=true","data/himd.RData")
-  download.file("https://github.com/treypujats/CHAD/blob/master/data/baseinfo_new.RData?raw=true","data/baseinfo_new.RData")
+  #download.file("https://github.com/treypujats/CHAD/raw/master/data/county_hospitals.csv","data/county_hospitals.csv")
+  #download.file("https://github.com/treypujats/CHAD/raw/master/data/CountyHospRateCalc.csv","data/CountyHospRateCalc.csv")
+  #download.file("https://github.com/treypujats/CHAD/blob/master/data/cimd.RData?raw=true","data/cimd.RData")
+  #download.file("https://github.com/treypujats/CHAD/blob/master/data/himd.RData?raw=true","data/himd.RData")
+  #download.file("https://github.com/treypujats/CHAD/blob/master/data/baseinfo_new.RData?raw=true","data/baseinfo_new.RData")
   download.file("https://ihmecovid19storage.blob.core.windows.net/latest/ihme-covid19.zip", "data/ihme-covid19.zip", mode="wb")  
   shaman.lab.json = jsonlite::fromJSON("https://api.github.com/repos/shaman-lab/COVID-19Projection/contents?per_page=100")
   shaman.lab.path = "Projection_April23"
@@ -123,6 +123,31 @@ CountyHospRate <- read.csv("data/CountyHospRateCalc.csv")
 load("data/cimd.RData")
 load("data/himd.RData")
 load("data/baseinfo_new.RData")
+
+
+# Import AMC model data
+temp_model <- fromJSON("data/shinyjson.json")
+
+json_file <- lapply(temp_model, function(x) {
+  x[sapply(x, is.null)] <- NA
+  unlist(x)
+})
+AMC_model<-as.data.frame(json_file)
+
+names(AMC_model) <- gsub("\\.", " ", names(AMC_model))
+
+#Renaming the first empty column to date
+AMC_model <- cbind(rownames(AMC_model), AMC_model)
+rownames(AMC_model) <- NULL
+
+colnames(AMC_model)[1] <- "TypeDate"
+
+AMC_model <- rev(cSplit(AMC_model, "TypeDate", "."))
+
+colnames(AMC_model)[1] <- "DataDate"
+colnames(AMC_model)[2] <- "DataType"
+
+AMC_model$DataDate <- as.Date(AMC_model$DataDate)
 
 
 
@@ -545,11 +570,8 @@ CalculateCovid1000<-function(IncludedCounties){
   
   #Get total confirmed cases in the selected region
   CovidCounties<-subset(CovidConfirmedCases, CountyFIPS %in% IncludedCounties$FIPS)
-#<<<<<<< HEAD
-  (sum(rev(CovidCounties)[,1]))/(sum(IncludedCounties$Population))*1000
-#=======
   ceiling((sum(rev(CovidCounties)[,1]))/(sum(IncludedCounties$Population))*1000)
-#>>>>>>> 8b35c79f282f7aeef240f33b22273dce0dd9da15
+
 }
 
 CalculateDeaths<-function(IncludedCounties){
@@ -1065,7 +1087,7 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals, SocialDis
   
 
   if (StatisticType == "Hospitalizations") {
-      LANL_State <- dplyr::filter(LANLC_Data, State == toString(BaseState$State[1])) 
+      LANL_State <- dplyr::filter(LANL_Data, State == toString(BaseState$State[1])) 
       #Get covid cases and hospitalization rates for county
       CovidCounties<-subset(CovidConfirmedCases, CountyFIPS %in% IncludedCounties$FIPS)
       CovidCountiesHospRate <- subset(CountyHospRate, FIPS %in% IncludedCounties$FIPS)
@@ -1316,7 +1338,7 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals, SocialDis
     
   } else {
     
-    LANL_State <- dplyr::filter(LANLD_Data, State == toString(BaseState$State[1])) 
+    LANL_State <- dplyr::filter(LANL_Data, State == toString(BaseState$State[1])) 
     #Get data for counties with covid cases. We want number of cases, the rate of the cases and maybe other data.
     #We include State, county, population in those counties, cases, fatalities, doubling rate
     CovidCounties<-subset(CovidConfirmedCases, CountyFIPS %in% IncludedCounties$FIPS)
