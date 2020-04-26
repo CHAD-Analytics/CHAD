@@ -51,7 +51,7 @@ library(ggrepel)
 library(tigris)
 library(plotly)
 library(lubridate)
-
+library(readr)
 
 # Step Two
 ###################################################################################################################################################
@@ -75,7 +75,9 @@ if (test_date < Sys.Date()) {
   #download.file("https://github.com/treypujats/CHAD/blob/master/data/cimd.RData?raw=true","data/cimd.RData")
   #download.file("https://github.com/treypujats/CHAD/blob/master/data/himd.RData?raw=true","data/himd.RData")
   #download.file("https://github.com/treypujats/CHAD/blob/master/data/baseinfo_new.RData?raw=true","data/baseinfo_new.RData")
-  download.file("https://ihmecovid19storage.blob.core.windows.net/latest/ihme-covid19.zip", "data/ihme-covid19.zip", mode="wb")  
+  download.file("https://ihmecovid19storage.blob.core.windows.net/latest/ihme-covid19.zip", "data/ihme-covid19.zip", mode="wb")
+  #download.file("https://github.com/UT-Covid/USmortality/blob/master/forecasts/UT-COVID19-states-forecast-latest.csv", "data/UT-COVID19-states-forecast-latest.csv", mode="wb")
+
   shaman.lab.json = jsonlite::fromJSON("https://api.github.com/repos/shaman-lab/COVID-19Projection/contents?per_page=100")
   shaman.lab.path = "Projection_April23"
   for (k in 14:0) {
@@ -93,20 +95,39 @@ if (test_date < Sys.Date()) {
   download.file(paste0("https://raw.githubusercontent.com/shaman-lab/COVID-19Projection/master/",shaman.lab.path,"/bed_80contact.csv"),"data/bed_80contact.csv")
   download.file(paste0("https://raw.githubusercontent.com/shaman-lab/COVID-19Projection/master/",shaman.lab.path,"/bed_nointerv.csv"),"data/bed_nointerv.csv")
   download.file("https://covid-19.bsvgateway.org/forecast/forecast_metadata.json","data/forecast_metadata.json")
+
   bsv_metadata<-jsonlite::fromJSON("data/forecast_metadata.json")
   Front<-'https://covid-19.bsvgateway.org/forecast/us/files/'
   Middle<-'/confirmed/'
   End<-'_confirmed_quantiles_us.csv'
   Date<-bsv_metadata$us$most_recent_date
   ReadIn<-paste0(Front,Date,Middle,Date,End)
-  LANL_file_name = paste0("data/",Date,End)
-  download.file(ReadIn,LANL_file_name)
+  LANL_file_name1 = paste0("data/",Date,End)
+  download.file(ReadIn,LANL_file_name1)
+  
+  bsv_metadata<-jsonlite::fromJSON("data/forecast_metadata.json")
+  Front<-'https://covid-19.bsvgateway.org/forecast/us/files/'  
+  Middle<-'/deaths/'
+  End<-'_deaths_quantiles_us.csv'
+  Date<-bsv_metadata$us$most_recent_date
+  ReadIn<-paste0(Front,Date,Middle,Date,End)
+  LANL_file_name2 = paste0("data/",Date,End)
+  download.file(ReadIn,LANL_file_name2)  
+  
 } else {
+  Middle<-'/confirmed/'  
   bsv_metadata<-jsonlite::fromJSON("data/forecast_metadata.json")
   End<-'_confirmed_quantiles_us.csv'
   Date<-bsv_metadata$us$most_recent_date
-  LANL_file_name = paste0("data/",Date,End)
+  LANL_file_name1 = paste0("data/",Date,End)
   print("data is current")
+  
+  Middle<-'/deaths/'  
+  bsv_metadata<-jsonlite::fromJSON("data/forecast_metadata.json")
+  End<-'_deaths_quantiles_us.csv'
+  Date<-bsv_metadata$us$most_recent_date
+  LANL_file_name2 = paste0("data/",Date,End)
+  print("data is current")  
 }
 
   
@@ -219,11 +240,20 @@ CU20PSD<-subset(CU20PSD, select=-c(hosp_need_2.5,hosp_need_97.5,ICU_need_2.5,ICU
 CU00PSD<-subset(CU00PSD, select=-c(hosp_need_2.5,hosp_need_97.5,ICU_need_2.5,ICU_need_25,ICU_need_50,ICU_need_75,ICU_need_97.5,
                                    vent_need_2.5,vent_need_25,vent_need_50,vent_need_75,vent_need_97.5,death_2.5,death_97.5))
 
+#UT_Model<-read.csv("data/UT-COVID19-states-forecast-latest.csv")
+UT_Model<-read.csv("https://raw.githubusercontent.com/UT-Covid/USmortality/master/forecasts/UT-COVID19-states-forecast-latest.csv")
+UT_Model <- merge(UT_Model, StateList, by.x = names(UT_Model)[1], by.y = names(StateList)[1])
+names(UT_Model)[names(UT_Model)=="state.abb"] <- "State"
 
-LANL_Data<-read.csv(LANL_file_name)
-LANL_Data<-subset(LANL_Data, select=-c(simple_state,q.01,q.025,q.05,q.10,q.15,q.20,q.30,q.35,q.40,q.45,q.55,q.60,q.65,q.70,q.80,q.85,q.90,q.95,q.975,q.99,truth_confirmed,fcst_date))
-LANL_Data <- merge(LANL_Data, StateList, by.x = names(LANL_Data)[6], by.y = names(StateList)[1])
-names(LANL_Data)[names(LANL_Data)=="state.abb"] <- "State"
+LANLC_Data<-read.csv(LANL_file_name1)
+LANLC_Data<-subset(LANLC_Data, select=-c(simple_state,q.01,q.025,q.05,q.10,q.15,q.20,q.30,q.35,q.40,q.45,q.55,q.60,q.65,q.70,q.80,q.85,q.90,q.95,q.975,q.99,truth_confirmed,fcst_date))
+LANLC_Data <- merge(LANLC_Data, StateList, by.x = names(LANLC_Data)[6], by.y = names(StateList)[1])
+names(LANLC_Data)[names(LANLC_Data)=="state.abb"] <- "State"
+
+LANLD_Data<-read.csv(LANL_file_name2)
+LANLD_Data<-subset(LANLD_Data, select=-c(simple_state,q.01,q.025,q.05,q.10,q.15,q.20,q.30,q.35,q.40,q.45,q.55,q.60,q.65,q.70,q.80,q.85,q.90,q.95,q.975,q.99,truth_deaths,fcst_date))
+LANLD_Data <- merge(LANLD_Data, StateList, by.x = names(LANLD_Data)[6], by.y = names(StateList)[1])
+names(LANLD_Data)[names(LANLD_Data)=="state.abb"] <- "State"
 
 #Create list of hospitals, bases, and counties.
 BaseList<-sort(AFBaseLocations$Base, decreasing = FALSE)
@@ -1067,6 +1097,7 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals, SocialDis
   #Establish initial inputs such as base, counties, and filter IHME model
   BaseState<-dplyr::filter(AFBaseLocations, Base == ChosenBase)
   IHME_State <- dplyr::filter(IHME_Model, State == toString(BaseState$State[1]))
+  UT_State <- dplyr::filter(UT_Model, State == toString(BaseState$State[1]))  
   hospCounty <- subset(HospUtlzCounty, fips %in% IncludedCounties$FIPS)
   TTBCounty <- sum(IncludedHospitals$BEDS)
   
@@ -1087,7 +1118,7 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals, SocialDis
   
 
   if (StatisticType == "Hospitalizations") {
-      LANL_State <- dplyr::filter(LANL_Data, State == toString(BaseState$State[1])) 
+      LANL_State <- dplyr::filter(LANLC_Data, State == toString(BaseState$State[1])) 
       #Get covid cases and hospitalization rates for county
       CovidCounties<-subset(CovidConfirmedCases, CountyFIPS %in% IncludedCounties$FIPS)
       CovidCountiesHospRate <- subset(CountyHospRate, FIPS %in% IncludedCounties$FIPS)
@@ -1112,7 +1143,15 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals, SocialDis
       IHME_Region$allbed_lower = round(IHME_State$allbed_lower*PopRatio)
       IHME_Region$allbed_upper = round(IHME_State$allbed_upper*PopRatio)
       IHME_Data<-data.frame(IHME_Region$date,IHME_Region$allbed_mean, IHME_Region$allbed_lower, IHME_Region$allbed_upper)
-      
+
+      # Apply ratio's to UT data
+      # Multiple by 16 to reflect hospitalizations at 8% from death rate of 0.5%
+      UT_Region <- UT_State
+      UT_Region$daily_deaths_est = round(UT_State$daily_deaths_est*PopRatio*16)
+      UT_Region$daily_deaths_90CI_lower = round(UT_State$daily_deaths_90CI_lower*PopRatio*16)
+      UT_Region$daily_deaths_90CI_upper = round(UT_State$daily_deaths_90CI_upper*PopRatio*16)
+      UT_Data<-data.frame(UT_Region$date,UT_Region$daily_deaths_est, UT_Region$daily_deaths_90CI_lower, UT_Region$daily_deaths_90CI_upper)            
+            
       LANL_Region <- LANL_State
       LANL_Region$q.25 = round(LANL_Region$q.25*PopRatio)
       LANL_Region$q.50 = round(LANL_Region$q.50*PopRatio)
@@ -1179,8 +1218,11 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals, SocialDis
       
       colnames(IHME_Data)<-c("ForecastDate", "Expected Hospitalizations", "Lower Estimate","Upper Estimate")
       IHME_Data$ID<-rep("IHME",nrow(IHME_Data))
+      colnames(UT_Data)<-c("ForecastDate", "Expected Hospitalizations", "Lower Estimate","Upper Estimate")
+      UT_Data$ID<-rep("UT",nrow(UT_Data))
       LANL_Region$ID<-rep("LANL",nrow(LANL_Region))      
       OverlayData<-rbind(IHME_Data,LANL_Region)
+      OverlayData<-rbind(OverlayData,UT_Data)      
       OverlayData<-rbind(OverlayData,CU40_State)
       OverlayData<-rbind(OverlayData,CU30_State)
       OverlayData<-rbind(OverlayData,CU20_State)
@@ -1338,7 +1380,7 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals, SocialDis
     
   } else {
     
-    LANL_State <- dplyr::filter(LANL_Data, State == toString(BaseState$State[1])) 
+    LANL_State <- dplyr::filter(LANLD_Data, State == toString(BaseState$State[1])) 
     #Get data for counties with covid cases. We want number of cases, the rate of the cases and maybe other data.
     #We include State, county, population in those counties, cases, fatalities, doubling rate
     CovidCounties<-subset(CovidConfirmedCases, CountyFIPS %in% IncludedCounties$FIPS)
@@ -1354,8 +1396,14 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals, SocialDis
     IHME_Region$deaths_lower = round(IHME_State$totdea_lower*PopRatio)
     IHME_Region$deaths_upper = round(IHME_State$totdea_upper*PopRatio)
     IHME_Data<-data.frame(IHME_Region$date,IHME_Region$deaths_mean, IHME_Region$deaths_lower, IHME_Region$deaths_upper)
-    colnames(IHME_Data)<-c("ForecastDate", "Expected Fatalities", "Lower Estimate","Upper Estimate")
-    
+
+    # Apply ratio's to UT data
+    UT_Region <- UT_State
+    UT_Region$daily_deaths_est = round(UT_State$daily_deaths_est*PopRatio)
+    UT_Region$daily_deaths_90CI_lower = round(UT_State$daily_deaths_90CI_lower*PopRatio)
+    UT_Region$daily_deaths_90CI_upper = round(UT_State$daily_deaths_90CI_upper*PopRatio)
+    UT_Data<-data.frame(UT_Region$date,UT_Region$daily_deaths_est, UT_Region$daily_deaths_90CI_lower, UT_Region$daily_deaths_90CI_upper)    
+        
     LANL_Region <- LANL_State
     LANL_Region$q.25 = round(LANL_Region$q.25*PopRatio)
     LANL_Region$q.50 = round(LANL_Region$q.50*PopRatio)
@@ -1419,13 +1467,17 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals, SocialDis
     SIRinputs<-data.frame(sum(ActiveCases$CurrentCases),sum(ActiveCases$Population), mean(ActiveCases$`Doubling Rate`))
     colnames(SIRinputs)<-c("cases","pop","doubling")
     
+    colnames(IHME_Data)<-c("ForecastDate", "Expected Fatalities", "Lower Estimate","Upper Estimate")
     IHME_Data$ID<-rep("IHME",nrow(IHME_Data))
+    colnames(UT_Data)<-c("ForecastDate", "Expected Fatalities", "Lower Estimate","Upper Estimate")
+    UT_Data$ID<-rep("UT",nrow(UT_Data))
     LANL_Data$ID<-rep("LANL",nrow(LANL_Data))      
     OverlayData<-rbind(IHME_Data,LANL_Data)
+    OverlayData<-rbind(OverlayData,UT_Data)    
     OverlayData<-rbind(OverlayData,CU40_State)
     OverlayData<-rbind(OverlayData,CU30_State)
     OverlayData<-rbind(OverlayData,CU20_State)
-    OverlayData<-rbind(OverlayData,CU00_State)              
+    OverlayData<-rbind(OverlayData,CU00_State) 
     
     #Next we use the calculated values, along with estimated values from the Estimated Values. 
     #The only input we want from the user is the social distancing rate. For this example, we just use 0.5

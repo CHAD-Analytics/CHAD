@@ -565,18 +565,18 @@ server <- function(input, output,session) {
         if(input$selectall == 0) return(NULL) 
         else if (input$selectall%%2 == 0)
         {
-            updateCheckboxGroupInput(session,"ModelSelectionValue","Forecasting Model(s): ",choices=c("IHME"="IHME","LANL"="LANL","CHIME SC"="CHIME1","CHIME NE"="CHIME2","CHIME SC+NE"="CHIME3",
+            updateCheckboxGroupInput(session,"ModelSelectionValue","Forecasting Model(s): ",choices=c("IHME"="IHME","LANL"="LANL","UT" = "UT","CHIME SC"="CHIME1","CHIME NE"="CHIME2","CHIME SC+NE"="CHIME3",
                                                                                                       "CHIME SD"="CHIME4","CHIME SC+SD"="CHIME5","CHIME NE+SD"="CHIME6","CHIME SC+NE+SD"="CHIME7",                                                                                                                                
                                                                                                       "Columbia No Intervetion"="CUNI","Columbia 20% SC Reduction"="CU20SC","Columbia 30% SC Reduction"="CU30SC",
                                                                                                       "Columbia 40% SC Reduction"="CU40SC"))
         }
         else
         {
-            updateCheckboxGroupInput(session,"ModelSelectionValue","Forecasting Model(s):",choices=c("IHME"="IHME","LANL"="LANL","CHIME SC"="CHIME1","CHIME NE"="CHIME2","CHIME SC+NE"="CHIME3",
+            updateCheckboxGroupInput(session,"ModelSelectionValue","Forecasting Model(s):",choices=c("IHME"="IHME","LANL"="LANL","UT" = "UT","CHIME SC"="CHIME1","CHIME NE"="CHIME2","CHIME SC+NE"="CHIME3",
                                                                                                      "CHIME SD"="CHIME4","CHIME SC+SD"="CHIME5","CHIME NE+SD"="CHIME6","CHIME SC+NE+SD"="CHIME7",                                                                                                                                
                                                                                                      "Columbia No Intervetion"="CUNI","Columbia 20% SC Reduction"="CU20SC","Columbia 30% SC Reduction"="CU30SC",
                                                                                                      "Columbia 40% SC Reduction"="CU40SC"),
-                                     selected=c("IHME"="IHME","LANL"="LANL","CHIME SC"="CHIME1","CHIME NE"="CHIME2","CHIME SC+NE"="CHIME3",
+                                     selected=c("IHME"="IHME","LANL"="LANL","UT" = "UT","CHIME SC"="CHIME1","CHIME NE"="CHIME2","CHIME SC+NE"="CHIME3",
                                                 "CHIME SD"="CHIME4","CHIME SC+SD"="CHIME5","CHIME NE+SD"="CHIME6","CHIME SC+NE+SD"="CHIME7",                                                                                                                                
                                                 "Columbia No Intervetion"="CUNI","Columbia 20% SC Reduction"="CU20SC",
                                                 "Columbia 30% SC Reduction"="CU30SC","Columbia 40% SC Reduction"="CU40SC"))
@@ -592,6 +592,7 @@ server <- function(input, output,session) {
         
         if ("IHME" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"IHME")}
         if ("LANL" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"LANL")}
+        if ("UT" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"UT")}        
         if ("CHIME1" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CHIME_4%_SD")}
         if ("CHIME2" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CHIME_8%_SD")}
         if ("CHIME3" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CHIME_12%_SD")}

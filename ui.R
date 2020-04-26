@@ -120,6 +120,7 @@ ui <- tagList(
                                            checkboxGroupInput("ModelSelectionValue","Forecasting Model(s): ",
                                                               c("IHME"="IHME",
                                                                 "LANL"="LANL",
+                                                                "UT" = "UT",                                                                 
                                                                 "CHIME SC"="CHIME1",
                                                                 "CHIME NE"="CHIME2",
                                                                 "CHIME SC+NE"="CHIME3",
