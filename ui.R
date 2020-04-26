@@ -52,16 +52,16 @@ ui <- tagList(
                                                tags$p(paste0("* Current as of ",format(Sys.Date(),format = "%d %B %Y")," at 0600 EST *")),
                                                conditionalPanel(condition="input.tabselected>=3",
                                                                 selectInput(
-                                           "Base",
-                                           "Choose your base:", 
-                                           list(`Installation` = sort(BaseList) ), 
-                                           selectize = FALSE),
-                                       sliderInput("Radius",
-                                                   "Choose your local radius (miles):",
-                                                   min = 10,
-                                                   max = 100,
-                                                   value = 50)
-                                       ),
+                                                                            "Base",
+                                                                            "Choose your base:", 
+                                                                            list(`Installation` = sort(BaseList)), 
+                                                                            selectize = FALSE),
+                                                                sliderInput("Radius",
+                                                                            "Choose your local radius (miles):",
+                                                                            min = 10,
+                                                                            max = 100,
+                                                                            value = 50)
+                                                                ),
                                        
                                        conditionalPanel(condition="input.tabselected==1",
                                                         "MAJCOM Summary Inputs",
@@ -134,6 +134,7 @@ ui <- tagList(
                                            actionLink("selectall","Select All")
                                        ),
                                        br(),
+                                       
                                        # menuItem(
                                        #     "National Health Projection Inputs",
                                        #     tabName = "natHealthProj",
@@ -158,15 +159,7 @@ ui <- tagList(
                                            align = "center"
                                        )
 
-                                       # fluidRow(
-                                       #     valueBox("LOW RISK", subtitle ="Mission Risk **notional ex.**",color= "green",width = 12)
-                                       # ),
-                                       # fluidRow(h()
-                                       #     valueBox("MEDIUM RISK", subtitle ="Installation Health Risk **notional ex.**",color= "yellow", width = 12)
-                                       # ),
-                                       # fluidRow(
-                                       #     valueBox("HIGH RISK", subtitle ="Local Health Risk **notional ex.**",color= "red",width = 12)
-                                       # )
+                                      
                                    )
                   ),
                   
@@ -220,7 +213,7 @@ ui <- tagList(
                                       title = "National Summary",
 
                                       box(title = "National Impact Map",solidHeader = T, align = "center", htmlOutput("SummaryPlot"),height=700,width=1200),
-                                      box(title = "National Statistics", solidHeader=T, align = "left", column(width = 12, DT::dataTableOutput("NationalDataTable1"), style = "height:240px;overflow-y: scroll;overflow-x:scroll"),width = 13)
+                                      box(title = "National Statistics", solidHeader=T, align = "left", column(width = 12, DT::dataTableOutput("NationalDataTable1"), style = "height:400px;overflow-y: scroll;overflow-x:scroll"),width = 13, height = 500)
                                       
                                   ),
                                   ####### END SUMMARY TAB #######
@@ -238,11 +231,10 @@ ui <- tagList(
                                           valueBoxOutput("HospitalUtilization", width = 3)
                                       ),
                                       fluidRow(
-                                          tags$style(".small-box{border-radius:10px;}"),
                                           valueBoxOutput("LocalCovidDeaths", width = 3),
                                           valueBoxOutput("DeathChangeLocal", width = 3),
                                           valueBoxOutput("CaseDbRate", width = 3),
-                                          valueBoxOutput("Rt_Estimate", width = 3),
+                                          valueBoxOutput("Rt_Estimate", width = 3)
                                           
                                       ),
                                       fluidRow( 
@@ -273,7 +265,7 @@ ui <- tagList(
                                       #     box(plotlyOutput("IHME_State_Hosp",height = 400)),
                                       #     box(plotlyOutput("SEIARProjection"),height = 400)),
                                       box(plotlyOutput("OverlayPlots",height=700, width=1500))
-                                  )
+                                  ),
                                   ####### END PROJECTION TAB #######
                                   
                                   ####### BEGIN National PROJECTION TAB #########
@@ -294,17 +286,30 @@ ui <- tagList(
 
                                   ####### BEGIN Aircrew TAB #########
                                   # Air Force Community Projections ------------------------------------------------------------
-                                  # tabPanel(
-                                  #     title = "Air Force Community Projections",
-                                  #     box(title = "Projected Community Epidemic",
-                                  #         solidHeader=T, 
-                                  #         align = "left", 
-                                  #         column(width = 12, 
-                                  #                plotlyOutput("ProjectedEpidemicTable"), 
-                                  #                style = "height:720px;overflow-y: scroll"), 
-                                  #         height = 900, 
-                                  #         width =13
-                                  # ))
+                                  tabPanel(
+                                      value = 5,
+                                      title = "AMC Infection Model Projections",
+                                      fluidRow(
+                                          valueBoxOutput("ProjPeakInfDate"),
+                                          valueBoxOutput("ProjTotInf"),
+                                          valueBoxOutput("ProjTotDeaths")
+                                      ),
+                                      fluidRow(
+                                          column(4,
+                                                 includeMarkdown("AMC_Desc.md")),
+                                         
+                                              box(title = "Projected Community Epidemic Curve",
+                                                  solidHeader=T,
+                                                  align = "left",
+                                                  column(width = 12,
+                                                         plotlyOutput("ProjectedEpidemicTable"),
+                                                         style = "height:720px;overflow-y: scroll"),
+                                                  height = 500,
+                                                  width =8
+                                              )
+                                          )
+                                  )
+                                  
 
                                       ) #close dash body
 
