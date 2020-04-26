@@ -384,15 +384,22 @@ server <- function(input, output,session) {
 
         df <- AMC_model
         
-        df <- select(df, "DataDate", "DataType", baseUsed)
+        datePeak <- tryCatch({
         
-        colnames(df)[3]  <- "Data"
-        
-        myTibble <- as_tibble(df)
-        
-        currInf <- myTibble %>% filter(DataType == "Current Infections")
-        
-        datePeak = format(currInf$DataDate[which.max(currInf$Data)], format = "%B %d")
+            df <- select(df, "DataDate", "DataType", baseUsed)
+            
+            colnames(df)[3]  <- "Data"
+            
+            myTibble <- as_tibble(df)
+            
+            currInf <- myTibble %>% filter(DataType == "Current Infections")
+            
+            datePeak = format(currInf$DataDate[which.max(currInf$Data)], format = "%B %d")
+            
+            }, error = function(err) {
+                datePeak = "No Model Data Available"
+                return(datePeak)
+            })
 
         valueBox(subtitle = "Projected Peak Infection Date",
                      paste(datePeak),
@@ -405,15 +412,24 @@ server <- function(input, output,session) {
         
         df <- AMC_model
         
-        df <- select(df, "DataDate", "DataType", baseUsed)
+        InfTot <- tryCatch({
+            
+            df <- select(df, "DataDate", "DataType", baseUsed)
+            
+            colnames(df)[3]  <- "Data"
+            
+            myTibble <- as_tibble(df)
+            
+            cummInf <- myTibble %>% filter(DataType == "Cumulative Infections")
+            
+            InfTot = round(max(cummInf$Data))
+            
+            }, error = function(err) {
+                InfTot = "No Model Data Available"
+                return(InfTot)
+        })
         
-        colnames(df)[3]  <- "Data"
-        
-        myTibble <- as_tibble(df)
-        
-        cummInf <- myTibble %>% filter(DataType == "Cumulative Infections")
-        
-        InfTot = round(max(cummInf$Data))
+
         
         valueBox(subtitle = "Projected Total Infections",
                  paste(InfTot),
@@ -426,18 +442,25 @@ server <- function(input, output,session) {
         
         df <- AMC_model
         
-        df <- select(df, "DataDate", "DataType", baseUsed)
+        DeathsTot <- tryCatch({
         
-        colnames(df)[3]  <- "Data"
+            df <- select(df, "DataDate", "DataType", baseUsed)
+            
+            colnames(df)[3]  <- "Data"
+            
+            myTibble <- as_tibble(df)
+            
+            cummDeath <- myTibble %>% filter(DataType == "Cumulative Deaths")
+            
+            DeathsTot = round(max(cummDeath$Data))
         
-        myTibble <- as_tibble(df)
-        
-        cummDeath <- myTibble %>% filter(DataType == "Cumulative Deaths")
-        
-        DeathsTot = max(cummDeath$Data)
+        }, error = function(err) {
+            x = "No Model Data Available"
+            return(x)
+        })
         
         valueBox(subtitle = "Projected Total Fatalities",
-                 paste(round(DeathsTot)),
+                 paste(DeathsTot),
                  color = "navy")
     })
 
