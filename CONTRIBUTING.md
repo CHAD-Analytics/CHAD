@@ -13,15 +13,19 @@ New to github and not sure how to help? There are a few good starting points for
   * For example, if you tried to follow the gettting started section of the documentation but got stuck, you can open an issue describing the problem you had.
 * Comment on an issue
   * If you see an issue where you had a similar problem or have advice for the team, you can post a comment
-* Update documentation
-  * The project documentation is currently hosted in the README.md. You can edit the readme online without dealing with code or git. 
+* Update developer documentation
+  * The developer documentation is currently hosted in the README.md. You can edit the readme online without dealing with code or git. 
+* Update user documentation
+  * The user documentation is hosted in markdown files in the main CHAD directory. You can edit these files online without dealing with code or git. 
 * Share this repository with other coders in the analytic community
   * Starring the [project](https://github.com/CHAD-Analytics/CHAD) helps other people find the project and know that it's a useful project to you
-  * Sharing the url and access instructions helps to grow out contributor base (note that this is a private project but we're open to analysts across the AFAC and in partner analytic organizations)
+  * Sharing the url and access instructions helps to grow out contributor base (we're open to analysts across the AFAC and in partner analytic organizations)
+  
+When you're ready to start contributing code, feel free to make your own branch and experiment!
 
 ## Code
 
-Code contributions are extremely helpful. We want to make it as easy as possible to contribute while also maintaing high quality code. If you want to write new code, please work in an existing feature branch or make a new branch. Once you've pushed your changes to your branch, submit a merge request to the `master` branch and assign to a reveiwer (or reviewers by pinging multiple people in a comment). This ensures that everything on `master` has been reviewed at least once. It's much easier for a reviewer to review code that includes decent coverage by unit tests. 
+Code contributions are extremely helpful. We want to make it as easy as possible to contribute while also maintaing high quality code. If you want to write new code, please work in an existing feature branch or make a new branch. Once you've pushed your changes to your branch, submit a pull request to the `master` branch and assign to a reveiwer (or reviewers by pinging multiple people in a comment). This ensures that everything on `master` has been reviewed at least once. It's much easier for a reviewer to review code that includes decent coverage by unit tests. 
 
 ## Releases and Stability
 
