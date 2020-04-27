@@ -1,0 +1,64 @@
+---
+title: "`r paste0(params$baseName, ' / MTF Report')`"
+output: word_document
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+params:
+  baseName: NA
+  growth_plot: NA
+  daily_plot: NA
+  model_plot: NA
+  model_params: NA
+  stats_table: NA
+  daily_stats_table: NA
+  sir_data_table: NA
+---
+
+```{r echo = FALSE, warning = FALSE, message = FALSE}
+# Some global stuff
+library(ggplot2)
+library(knitr)
+library(kableExtra)
+```
+
+The Army COVID-19 Model for Epidemics (ACME, https://armyanalytics.shinyapps.io/covid_analysis/) is developed through collaboration between Army Futures Command AI Task Force and the Army Public Health Center. The purpose is to assist MTFs in planning for an expected surge in demand for hospital beds, intensive care unit (ICU) beds, and ventilators.
+
+### Model Parameters 
+
+```{r echo = FALSE, results='asis'}
+knitr::kable(params$model_params, "pandoc")
+```
+
+### MTF Census Total Patients
+
+Metrics of Interest 
+
+```{r echo = FALSE, results='asis'}
+knitr::kable(params$stats_table, "pandoc")
+```
+
+```{r fig.width = 8, fig.height = 6, echo = FALSE}
+print(params$growth_plot)
+```
+
+### MTF Daily Admit Plot
+
+Metrics of Interes
+```{r echo = FALSE, results='asis'}
+knitr::kable(params$daily_stats_table, "pandoc")
+```
+
+```{r fig.width = 8, fig.height = 5, echo = FALSE}
+print(params$daily_plot)
+```
+
+### Model Data 
+
+```{r fig.width = 8, fig.height = 5, echo = FALSE}
+print(params$model_plot)
+```
+
+```{r echo = FALSE, results='asis'}
+knitr::kable(params$sir_data_table, "pandoc")
+```
+
+\newline \newline
