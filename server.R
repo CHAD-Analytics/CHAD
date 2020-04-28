@@ -565,21 +565,51 @@ server <- function(input, output,session) {
         if(input$selectall == 0) return(NULL) 
         else if (input$selectall%%2 == 0)
         {
-            updateCheckboxGroupInput(session,"ModelSelectionValue","Forecasting Model(s): ",choices=c("IHME"="IHME","LANL"="LANL","UT" = "UT","CHIME SC"="CHIME1","CHIME NE"="CHIME2","CHIME SC+NE"="CHIME3",
-                                                                                                      "CHIME SD"="CHIME4","CHIME SC+SD"="CHIME5","CHIME NE+SD"="CHIME6","CHIME SC+NE+SD"="CHIME7",                                                                                                                                
-                                                                                                      "Columbia No Intervetion"="CUNI","Columbia 20% SC Reduction"="CU20SC","Columbia 30% SC Reduction"="CU30SC",
-                                                                                                      "Columbia 40% SC Reduction"="CU40SC"))
+            updateCheckboxGroupInput(session,"ModelSelectionValue","Select Projection Models:", choices=c("Institute for Health Metrics and Evaluation"="IHME",
+                                                                                                      "Los Alamos National Lab"="LANL",
+                                                                                                      "University of Texas" = "UT",
+                                                                                                      "CHIME (School Closing)"="CHIME1",
+                                                                                                      "CHIME (Business Closing)"="CHIME2",
+                                                                                                      "CHIME (School and Business Closing)"="CHIME3",
+                                                                                                      "CHIME (Social Distancing)"="CHIME4",
+                                                                                                      "CHIME (School Closing and Social Distancing)"="CHIME5",
+                                                                                                      "CHIME (Business Closing and Social Distancing)"="CHIME6",
+                                                                                                      "CHIME (School Closing, Business Closing, and Social Distancing)"="CHIME7",                                                                                                                                
+                                                                                                      "Columbia University (No Intervetion)"="CUNI",
+                                                                                                      "Columbia University (20% Social Contact Reduction)"="CU20SC",
+                                                                                                      "Columbia University (30% Social Contact Reduction)"="CU30SC",
+                                                                                                      "Columbia University (40% Social Contact Reduction)"="CU40SC"))
         }
         else
         {
-            updateCheckboxGroupInput(session,"ModelSelectionValue","Forecasting Model(s):",choices=c("IHME"="IHME","LANL"="LANL","UT" = "UT","CHIME SC"="CHIME1","CHIME NE"="CHIME2","CHIME SC+NE"="CHIME3",
-                                                                                                     "CHIME SD"="CHIME4","CHIME SC+SD"="CHIME5","CHIME NE+SD"="CHIME6","CHIME SC+NE+SD"="CHIME7",                                                                                                                                
-                                                                                                     "Columbia No Intervetion"="CUNI","Columbia 20% SC Reduction"="CU20SC","Columbia 30% SC Reduction"="CU30SC",
-                                                                                                     "Columbia 40% SC Reduction"="CU40SC"),
-                                     selected=c("IHME"="IHME","LANL"="LANL","UT" = "UT","CHIME SC"="CHIME1","CHIME NE"="CHIME2","CHIME SC+NE"="CHIME3",
-                                                "CHIME SD"="CHIME4","CHIME SC+SD"="CHIME5","CHIME NE+SD"="CHIME6","CHIME SC+NE+SD"="CHIME7",                                                                                                                                
-                                                "Columbia No Intervetion"="CUNI","Columbia 20% SC Reduction"="CU20SC",
-                                                "Columbia 30% SC Reduction"="CU30SC","Columbia 40% SC Reduction"="CU40SC"))
+            updateCheckboxGroupInput(session,"ModelSelectionValue","Select Projection Models:", choices=c("Institute for Health Metrics and Evaluation"="IHME",
+                                                                                                         "Los Alamos National Lab"="LANL",
+                                                                                                         "University of Texas" = "UT",
+                                                                                                         "CHIME (School Closing)"="CHIME1",
+                                                                                                         "CHIME (Business Closing)"="CHIME2",
+                                                                                                         "CHIME (School and Business Closing)"="CHIME3",
+                                                                                                         "CHIME (Social Distancing)"="CHIME4",
+                                                                                                         "CHIME (School Closing and Social Distancing)"="CHIME5",
+                                                                                                         "CHIME (Business Closing and Social Distancing)"="CHIME6",
+                                                                                                         "CHIME (School Closing, Business Closing, and Social Distancing)"="CHIME7",                                                                                                                                
+                                                                                                         "Columbia University (No Intervetion)"="CUNI",
+                                                                                                         "Columbia University (20% Social Contact Reduction)"="CU20SC",
+                                                                                                         "Columbia University (30% Social Contact Reduction)"="CU30SC",
+                                                                                                         "Columbia University (40% Social Contact Reduction)"="CU40SC"),
+                                     selected=c("Institute for Health Metrics and Evaluation"="IHME",
+                                                "Los Alamos National Lab"="LANL",
+                                                "University of Texas" = "UT",
+                                                "CHIME (School Closing)"="CHIME1",
+                                                "CHIME (Business Closing)"="CHIME2",
+                                                "CHIME (School and Business Closing)"="CHIME3",
+                                                "CHIME (Social Distancing)"="CHIME4",
+                                                "CHIME (School Closing and Social Distancing)"="CHIME5",
+                                                "CHIME (Business Closing and Social Distancing)"="CHIME6",
+                                                "CHIME (School Closing, Business Closing, and Social Distancing)"="CHIME7",                                                                                                                                
+                                                "Columbia University (No Intervetion)"="CUNI",
+                                                "Columbia University (20% Social Contact Reduction)"="CU20SC",
+                                                "Columbia University (30% Social Contact Reduction)"="CU30SC",
+                                                "Columbia University (40% Social Contact Reduction)"="CU40SC"))
         }
     })
     

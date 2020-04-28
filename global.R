@@ -1360,6 +1360,7 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals, SocialDis
                        linetype = "Estimated COVID Patient Bed Capacity"),colour = "red") +
         ggtitle("Projected Daily Hospital Bed Utilization")+
         ylab("Daily Beds Needed")+
+        scale_color_discrete(name = "Key", labels = c("A", "B", "C", "D", "E", "F")) +
         theme_bw() + 
         theme(plot.title = element_text(face = "bold", size = 15, family = "sans"),
               axis.title = element_text(face = "bold", size = 11, family = "sans"),
@@ -1953,6 +1954,7 @@ NationalOverlayPlot<-function(SocialDistance, DaysForecasted){
     scale_colour_manual(values=c("tan", "blue", "black"))+
     scale_fill_manual(values = c("tan4", "cadetblue", "gray"))+
     scale_linetype_manual(values = c("dashed", "dashed", "solid"))+
+    scale_color_discrete(name = "Key", labels = c("A", "B", "C", "D", "E", "F")) +
     geom_ribbon(aes(ymin = `Lower Estimate`, ymax = `Upper Estimate`), 
                 alpha = .2) +
     ggtitle("Projected Daily Hospital Bed Utilization")+
