@@ -4,10 +4,10 @@
 #' @source https://github.com/shaman-lab/COVID-19Projection/tree/master/
 #' 
 
-CU40PSD<-vroom::vroom("www/3_load_external_data/data_files/bed_60contact.csv")
-CU30PSD<-vroom::vroom("www/3_load_external_data/data_files/bed_70contact.csv")
-CU20PSD<-vroom::vroom("www/3_load_external_data/data_files/bed_80contact.csv")
-CU00PSD<-vroom::vroom("www/3_load_external_data/data_files/bed_nointerv.csv")
+CU40PSD<-vroom::vroom("www/4_load_external_data/data_files/bed_60contact.csv")
+CU30PSD<-vroom::vroom("www/4_load_external_data/data_files/bed_70contact.csv")
+CU20PSD<-vroom::vroom("www/4_load_external_data/data_files/bed_80contact.csv")
+CU00PSD<-vroom::vroom("www/4_load_external_data/data_files/bed_nointerv.csv")
 
 CU40PSD<-CU40PSD %>% separate(county,c("County","State"), extra = "drop", fill = "right")
 CU30PSD<-CU30PSD %>% separate(county,c("County","State"), extra = "drop", fill = "right")

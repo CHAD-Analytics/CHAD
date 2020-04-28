@@ -1,4 +1,4 @@
-PlottingCountyData = vroom::vroom("www/3_load_external_data/data_files/time_series_covid19_confirmed_US.csv")
+PlottingCountyData = vroom::vroom("www/4_load_external_data/data_files/time_series_covid19_confirmed_US.csv")
 
 PlottingCountyData = PlottingCountyData[colSums(!is.na(PlottingCountyData)) > 0]
 

@@ -1,4 +1,4 @@
-CovidDeaths = vroom::vroom("www/3_load_external_data/data_files/time_series_covid19_deaths_US.csv")
+CovidDeaths = vroom::vroom("www/4_load_external_data/data_files/time_series_covid19_deaths_US.csv")
 
 CovidDeaths = CovidDeaths[,c(5, 13:ncol(CovidDeaths))]
 colnames(CovidDeaths)[1] = "CountyFIPS"
