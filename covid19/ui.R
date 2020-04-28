@@ -183,7 +183,7 @@ ui <- tagList(
                     '))),
                       tags$script(HTML('
                                    $(document).ready(function() {
-                                   $("header").find("nav").append(\'<span class="myClass"> COVID-19 Health Assessment Dashboard Beta v0.8.1</span>\');
+                                   $("header").find("nav").append(\'<span class="myClass"> COVID-19 Health Assessment Dashboard Beta v0.8.2</span>\');
                                    })
                                    ')),
                       tabsetPanel(id = "tabselected",
