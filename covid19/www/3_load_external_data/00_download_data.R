@@ -17,7 +17,7 @@ if(test_date < Sys.Date()) {
                         overwrite = T)  
 
   shaman.lab.json = jsonlite::fromJSON("https://api.github.com/repos/shaman-lab/COVID-19Projection/contents?per_page=100")
-  shaman.lab.path = "Projection_April26"
+  shaman.lab.path = get.shaman.lab.path()
   # for (k in 14:0) {
   #   if (lubridate::day(as.Date(Sys.Date()-k))>9) {
   #     my_shaman_lab_path = paste0("Projection_",lubridate::month(as.Date(Sys.Date()-k),label=TRUE,abbr=FALSE),lubridate::day(as.Date(Sys.Date()-k)))
