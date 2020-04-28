@@ -129,7 +129,7 @@ ui <- tagList(
                                                                 "CHIME: SC"="CHIME7",
                                                                 "Los Alamos National Labs (LANL)"="LANL",
                                                                 "University of Texas"="UT",
-                                                                "Columbia University: No Intervetion"="CUNI",
+                                                                ##"Columbia University: No Intervetion"="CUNI",
                                                                 "Columbia University: 20% SC Reduction"="CU20SC",
                                                                 "Columbia University: 30% SC Reduction"="CU30SC",
                                                                 "Columbia University: 40% SC Reduction"="CU40SC"),

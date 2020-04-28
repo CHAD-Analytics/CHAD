@@ -575,7 +575,7 @@ server <- function(input, output,session) {
                                                                                                       "CHIME: SC"="CHIME7",
                                                                                                       "Los Alamos National Labs (LANL)"="LANL",
                                                                                                       "University of Texas"="UT",
-                                                                                                      "Columbia University: No Intervetion"="CUNI",
+                                                                                                      #"Columbia University: No Intervetion"="CUNI",
                                                                                                       "Columbia University: 20% SC Reduction"="CU20SC",
                                                                                                       "Columbia University: 30% SC Reduction"="CU30SC",
                                                                                                       "Columbia University: 40% SC Reduction"="CU40SC"))
@@ -592,7 +592,7 @@ server <- function(input, output,session) {
                                                                                                      "CHIME: SC"="CHIME7",
                                                                                                      "Los Alamos National Labs (LANL)"="LANL",
                                                                                                      "University of Texas"="UT",
-                                                                                                     "Columbia University: No Intervetion"="CUNI",
+                                                                                                     #"Columbia University: No Intervetion"="CUNI",
                                                                                                      "Columbia University: 20% SC Reduction"="CU20SC",
                                                                                                      "Columbia University: 30% SC Reduction"="CU30SC",
                                                                                                      "Columbia University: 40% SC Reduction"="CU40SC"),
@@ -606,7 +606,7 @@ server <- function(input, output,session) {
                                                 "CHIME: SC"="CHIME7",
                                                 "Los Alamos National Labs (LANL)"="LANL",
                                                 "University of Texas"="UT",
-                                                "Columbia University: No Intervetion"="CUNI",
+                                                #"Columbia University: No Intervetion"="CUNI",
                                                 "Columbia University: 20% SC Reduction"="CU20SC",
                                                 "Columbia University: 30% SC Reduction"="CU30SC",
                                                 "Columbia University: 40% SC Reduction"="CU40SC"))
@@ -630,7 +630,7 @@ server <- function(input, output,session) {
         if ("CHIME3" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CHIME_19%_SD")}
         if ("CHIME2" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CHIME_23%_SD")}
         if ("CHIME1" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CHIME_27%_SD")}                                                                                                                                
-        if ("CUNI" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CU_No Intervention")}
+        #if ("CUNI" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CU_No Intervention")}
         if ("CU20SC" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CU_20%_SD")}
         if ("CU30SC" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CU_30%_SD")}
         if ("CU40SC" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CU_40%_SD")}

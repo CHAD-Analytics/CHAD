@@ -15,21 +15,23 @@ if(test_date < Sys.Date()) {
   R.utils::downloadFile("https://ihmecovid19storage.blob.core.windows.net/latest/ihme-covid19.zip", 
                         filename = "www/3_load_external_data/data_files/ihme-covid19.zip", 
                         overwrite = T)  
+
   shaman.lab.json = jsonlite::fromJSON("https://api.github.com/repos/shaman-lab/COVID-19Projection/contents?per_page=100")
-  shaman.lab.path = "Projection_April23"
-  for(k in 14:0) {
-    
-      my_shaman_lab_path = `if`(lubridate::day(as.Date(Sys.Date()-k))>9,
-                                paste0("Projection_",lubridate::month(as.Date(Sys.Date()-k),label=TRUE,abbr=FALSE),lubridate::day(as.Date(Sys.Date()-k))),
-                                paste0("Projection_",lubridate::month(as.Date(Sys.Date()-k),label=TRUE,abbr=FALSE),"0",lubridate::day(as.Date(Sys.Date()-k))))
-    
-      if(max(grepl(my_shaman_lab_path,shaman.lab.json$path,fixed=TRUE))) {
-      
-         shaman.lab.path = my_shaman_lab_path
-         
-      }
-      
-  }
+  shaman.lab.path = "Projection_April26"
+  # for (k in 14:0) {
+  #   if (lubridate::day(as.Date(Sys.Date()-k))>9) {
+  #     my_shaman_lab_path = paste0("Projection_",lubridate::month(as.Date(Sys.Date()-k),label=TRUE,abbr=FALSE),lubridate::day(as.Date(Sys.Date()-k)))
+  #   } else {
+  #     my_shaman_lab_path = paste0("Projection_",lubridate::month(as.Date(Sys.Date()-k),label=TRUE,abbr=FALSE),"0",lubridate::day(as.Date(Sys.Date()-k)))
+  #   }
+  #   if (max(grepl(my_shaman_lab_path,shaman.lab.json$path,fixed=TRUE))) {
+  #     shaman.lab.path = my_shaman_lab_path
+  #   }
+  # }
+  #download.file(paste0("https://raw.githubusercontent.com/shaman-lab/COVID-19Projection/master/",shaman.lab.path,"/bed_60contact.csv"),"data/bed_60contact.csv")
+  #download.file(paste0("https://raw.githubusercontent.com/shaman-lab/COVID-19Projection/master/",shaman.lab.path,"/bed_70contact.csv"),"data/bed_70contact.csv")
+  #download.file(paste0("https://raw.githubusercontent.com/shaman-lab/COVID-19Projection/master/",shaman.lab.path,"/bed_80contact.csv"),"data/bed_80contact.csv")
+  #download.file(paste0("https://raw.githubusercontent.com/shaman-lab/COVID-19Projection/master/",shaman.lab.path,"/bed_nointerv.csv"),"data/bed_nointerv.csv")
   
   R.utils::downloadFile(paste0("https://raw.githubusercontent.com/shaman-lab/COVID-19Projection/master/",shaman.lab.path,"/bed_60contact.csv"),
                         filename = "www/3_load_external_data/data_files/bed_60contact.csv",
@@ -37,12 +39,14 @@ if(test_date < Sys.Date()) {
   R.utils::downloadFile(paste0("https://raw.githubusercontent.com/shaman-lab/COVID-19Projection/master/",shaman.lab.path,"/bed_70contact.csv"),
                         filename = "www/3_load_external_data/data_files/bed_70contact.csv",
                         overwrite = T)
-  R.utils::downloadFile(paste0("https://raw.githubusercontent.com/shaman-lab/COVID-19Projection/master/",shaman.lab.path,"/bed_80contact.csv"),
-                        filename = "www/3_load_external_data/data_files/bed_80contact.csv",
-                        overwrite = T)
-  R.utils::downloadFile(paste0("https://raw.githubusercontent.com/shaman-lab/COVID-19Projection/master/",shaman.lab.path,"/bed_nointerv.csv"),
-                        filename = "www/3_load_external_data/data_files/bed_nointerv.csv",
-                        overwrite = T)
+  R.utils::downloadFile(paste0("https://raw.githubusercontent.com/shaman-lab/COVID-19Projection/master/",shaman.lab.path,"/bed_80contact.csv"), 
+                        filename = "www/3_load_external_data/data_files/bed_80contact.csv", 
+                        overwrite = T)  
+  R.utils::downloadFile(paste0("https://raw.githubusercontent.com/shaman-lab/COVID-19Projection/master/",shaman.lab.path,"/bed_nointerv.csv"), 
+                        filename = "www/3_load_external_data/data_files/bed_nointerv.csv", 
+                        overwrite = T)    
+  
+  
   R.utils::downloadFile("https://covid-19.bsvgateway.org/forecast/forecast_metadata.json",
                         filename = "www/3_load_external_data/data_files/forecast_metadata.json",
                         overwrite = T)

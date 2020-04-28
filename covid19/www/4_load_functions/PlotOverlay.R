@@ -4,18 +4,19 @@
 #'          need the data.frame from overlay in the report
 PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals, SocialDistance,ModelIDList, DaysProjected, StatisticType){
   
-  # #####Uncomment to test plot function without running the app
-  # i<-80
-  # ChosenBase = AFBaseLocations$Base[i]
-  # SocialDistance = 15
-  # DaysProjected = 30
-  # HospitalInfo$DistanceMiles = himd[,as.character(ChosenBase)]
-  # IncludedHospitals<-dplyr::filter(HospitalInfo, (DistanceMiles <= 50))
-  # IncludedHospitals<-dplyr::filter(IncludedHospitals, (TYPE=="GENERAL ACUTE CARE") | (TYPE=="CRITICAL ACCESS"))
-  # CountyInfo$DistanceMiles = cimd[,as.character(ChosenBase)]
-  # IncludedCounties<-dplyr::filter(CountyInfo, DistanceMiles <= 50)
-  # #####
-  # #####
+  #####Uncomment to test plot function without running the app
+  #i<-80
+  #ChosenBase = AFBaseLocations$Base[i]
+  ChosenBase = "Vandenberg Space Force Base"
+  SocialDistance = 15
+  DaysProjected = 30
+  HospitalInfo$DistanceMiles = himd[,as.character(ChosenBase)]
+  IncludedHospitals<-dplyr::filter(HospitalInfo, (DistanceMiles <= 50))
+  IncludedHospitals<-dplyr::filter(IncludedHospitals, (TYPE=="GENERAL ACUTE CARE") | (TYPE=="CRITICAL ACCESS"))
+  CountyInfo$DistanceMiles = cimd[,as.character(ChosenBase)]
+  IncludedCounties<-dplyr::filter(CountyInfo, DistanceMiles <= 50)
+  #####
+  #####
   
   #Establish initial inputs such as base, counties, and filter IHME model
   BaseState<-dplyr::filter(AFBaseLocations, Base == ChosenBase)
@@ -58,7 +59,8 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals, SocialDis
       colnames(HistoricalData)<-c("ForecastDate", "Expected Hospitalizations", "Lower Estimate","Upper Estimate")
       
       currHosp = HistoricalData[nrow(HistoricalData),2]
-  
+      
+      #Add error handling if no rows to aggregate - Abston National Guard/Beale/buckey/channel islands/space force bases
       # Apply ratio's to IHME data
       IHME_Region <- IHME_State
       IHME_Region$allbed_mean = round(IHME_State$allbed_mean*PopRatio)
@@ -168,7 +170,7 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals, SocialDis
       PeakData<-rbind(PeakData,CU40Peak)
       PeakData<-rbind(PeakData,CU30Peak)
       PeakData<-rbind(PeakData,CU20Peak)
-      PeakData<-rbind(PeakData,CU00Peak)                      
+      #PeakData<-rbind(PeakData,CU00Peak)                      
       
       #Next we use the calculated values, along with estimated values from the Estimated Values. 
       #The only input we want from the user is the social distancing rate. For this example, we just use 0.5
@@ -364,29 +366,29 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals, SocialDis
     CU40_State<-subset(CU40_State, select=-c(hosp_need_25,hosp_need_50,hosp_need_75))
     CU30_State<-subset(CU30_State, select=-c(hosp_need_25,hosp_need_50,hosp_need_75))
     CU20_State<-subset(CU20_State, select=-c(hosp_need_25,hosp_need_50,hosp_need_75))
-    CU00_State<-subset(CU00_State, select=-c(hosp_need_25,hosp_need_50,hosp_need_75))      
+    #CU00_State<-subset(CU00_State, select=-c(hosp_need_25,hosp_need_50,hosp_need_75))      
     
     CU40_State$Date <- as.Date(CU40_State$Date, "%m/%d/%y")
     CU30_State$Date <- as.Date(CU30_State$Date, "%m/%d/%y")
     CU20_State$Date <- as.Date(CU20_State$Date, "%m/%d/%y")
-    CU00_State$Date <- as.Date(CU00_State$Date, "%m/%d/%y")      
+    #CU00_State$Date <- as.Date(CU00_State$Date, "%m/%d/%y")      
     CU40_State<-dplyr::filter(CU40_State,Date >= Sys.Date())
     CU30_State<-dplyr::filter(CU30_State,Date >= Sys.Date())
     CU20_State<-dplyr::filter(CU20_State,Date >= Sys.Date())
-    CU00_State<-dplyr::filter(CU00_State,Date >= Sys.Date())      
+    #CU00_State<-dplyr::filter(CU00_State,Date >= Sys.Date())      
     CU40_State<-aggregate(CU40_State[,sapply(CU40_State,is.numeric)],CU40_State["Date"],sum)
     CU30_State<-aggregate(CU30_State[,sapply(CU30_State,is.numeric)],CU30_State["Date"],sum)
     CU20_State<-aggregate(CU20_State[,sapply(CU20_State,is.numeric)],CU20_State["Date"],sum)
-    CU00_State<-aggregate(CU00_State[,sapply(CU00_State,is.numeric)],CU00_State["Date"],sum)
+    #CU00_State<-aggregate(CU00_State[,sapply(CU00_State,is.numeric)],CU00_State["Date"],sum)
     CU40_State<-CU40_State[1:DaysProjected,]      
     CU30_State<-CU30_State[1:DaysProjected,]
     CU20_State<-CU20_State[1:DaysProjected,]
-    CU00_State<-CU00_State[1:DaysProjected,]
+    #CU00_State<-CU00_State[1:DaysProjected,]
     
     CU40_State <- data.frame(CU40_State$Date,CU40_State$death_50,CU40_State$death_25,CU40_State$death_75)
     CU30_State <- data.frame(CU30_State$Date,CU30_State$death_50,CU30_State$death_25,CU30_State$death_75)
     CU20_State <- data.frame(CU20_State$Date,CU20_State$death_50,CU20_State$death_25,CU20_State$death_75)
-    CU00_State <- data.frame(CU00_State$Date,CU00_State$death_50,CU00_State$death_25,CU00_State$death_75)
+    #CU00_State <- data.frame(CU00_State$Date,CU00_State$death_50,CU00_State$death_25,CU00_State$death_75)
     
     colnames(CU40_State)<-c("ForecastDate","Expected Fatalities","Lower Estimate","Upper Estimate")
     CU40_State$ID<-rep("CU_40%_SD",nrow(CU40_State))
@@ -394,8 +396,8 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals, SocialDis
     CU30_State$ID<-rep("CU_30%_SD",nrow(CU30_State))
     colnames(CU20_State)<-c("ForecastDate","Expected Fatalities","Lower Estimate","Upper Estimate")
     CU20_State$ID<-rep("CU_20%_SD",nrow(CU20_State))
-    colnames(CU00_State)<-c("ForecastDate","Expected Fatalities","Lower Estimate","Upper Estimate")
-    CU00_State$ID<-rep("CU_No Intervention",nrow(CU00_State))              
+    #colnames(CU00_State)<-c("ForecastDate","Expected Fatalities","Lower Estimate","Upper Estimate")
+    #CU00_State$ID<-rep("CU_No Intervention",nrow(CU00_State))              
     
     DeathCounties<-subset(CovidDeaths, CountyFIPS %in% IncludedCounties$FIPS)
     CaseRate <- subset(CovidConfirmedCasesRate, CountyFIPS %in% IncludedCounties$FIPS)
@@ -421,7 +423,7 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals, SocialDis
     OverlayData<-rbind(OverlayData,CU40_State)
     OverlayData<-rbind(OverlayData,CU30_State)
     OverlayData<-rbind(OverlayData,CU20_State)
-    OverlayData<-rbind(OverlayData,CU00_State) 
+    #OverlayData<-rbind(OverlayData,CU00_State) 
     
     #Next we use the calculated values, along with estimated values from the Estimated Values. 
     #The only input we want from the user is the social distancing rate. For this example, we just use 0.5
