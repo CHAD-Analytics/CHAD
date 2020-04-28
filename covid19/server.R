@@ -725,7 +725,16 @@ server <- function(input, output,session) {
             write.csv(Top15Report, file)
             
         })
-    
+
+    output$HotSpotDataOneMile <- downloadHandler(
+        filename = function() { 
+            paste("HotspotDatasetOneMile-", Sys.Date(), ".csv", sep="")
+        },
+        content = function(file) {
+            write.csv(Top15ReportOneMile, file)
+            
+        })    
+        
     output$downloadData <- downloadHandler(
         filename = function() { 
             paste("SummaryDataset-", Sys.Date(), ".csv", sep="")

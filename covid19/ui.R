@@ -205,7 +205,8 @@ ui <- tagList(
                                           height = 900, 
                                           width =13,
                                           downloadButton('downloadData', 'Download Full Dataset'),
-                                          downloadButton('HotSpotData', 'Download Hotspot Dataset'))
+                                          downloadButton('HotSpotData', 'Download Hotspot Dataset: 50 Mile Radius'),
+                                          downloadButton('HotSpotDataOneMile', 'Download Hotspot Dataset: Single County'))
                                       
                                   ),
                                   ####### END Mission Risk #######
