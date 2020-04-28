@@ -27,22 +27,7 @@ ui <- tagList(
                  # Step One - Header
                  ###################################################################################################################################################
                   dashboardHeader(title = div(img(src=base64enc::dataURI(file="www/7_other_resources/AFIT_Emblem_Blue.png", mime="image/png") ,height = '50',width = '110')),
-                                  titleWidth = 300,
-                                  dropdownMenu( 
-                                      icon = tags$div(HTML('<font size = "5" color = "blue" font-weight:"bold" >More Information</font>  <i class="fa fa-info-circle" style = "font-size:18px;"></i> <body style="background-color:powderblue;"></body>')),
-                                      headerText = "Want to know more?",
-                                      badgeStatus = "primary",
-                                      tags$li(actionLink("overviewInfo", label = "Overview", icon = icon("globe")),
-                                              class = "dropdown"),
-                                      tags$li(actionLink("inputInfo", label = "User Inputs", icon = icon("sliders-h")),
-                                              class = "dropdown"),
-                                      tags$li(actionLink("projInfo", label = "Projections", icon = icon("chart-line")),
-                                              class = "dropdown"),
-                                      tags$li(actionLink("calcInfo", label = "Calculations", icon = icon("calculator")),
-                                              class = "dropdown"),
-                                      tags$li(actionLink("sourceInfo", label = "Sources", icon = icon("user-secret")),
-                                              class = "dropdown")
-                                  )
+                                  titleWidth = 300
                   ),
                   
                   # Step Two - Sidebar
@@ -186,11 +171,31 @@ ui <- tagList(
                                    $("header").find("nav").append(\'<span class="myClass"> COVID-19 Health Assessment Dashboard Beta v0.8.2</span>\');
                                    })
                                    ')),
-                      tabsetPanel(id = "tabselected",
+                     
+                                  ####### BEGIN MORE INFORMATION DROPDOWN ############
+                      tabsetPanel(id = "tabselected",           
+                          tabPanel(
+                                title="More Information",
+                                ##icon = tags$div(HTML('<i class="fa fa-info-circle" style = "font-size:18px;"></i> <body style="background-color:powderblue;"></body>'))
+                                  headerText = "Want to know more?",
+                                  badgeStatus = "primary",
+                                  tags$div(actionLink("overviewInfo", label = "Overview", size=5, icon = icon("globe")),
+                                        class = "dropdown"),
+                                  tags$div(actionLink("inputInfo", label = "User Inputs", icon = icon("sliders-h")),
+                                        class = "dropdown"),
+                                  tags$div(actionLink("projInfo", label = "Projections", icon = icon("chart-line")),
+                                        class = "dropdown"),
+                                  tags$div(actionLink("calcInfo", label = "Calculations", icon = icon("calculator")),
+                                        class = "dropdown"),
+                                  tags$div(actionLink("sourceInfo", label = "Sources", icon = icon("user-secret")),
+                                        class = "dropdown")
+                                ),
+
                                   
                                   ####### BEGIN SUMMARY TAB #########
                                   # Mission Risk ------------------------------------------------------------
-                                  tabPanel(
+                      
+                                   tabPanel(
                                       value = 1,
                                       title = "MAJCOM Summary",
                                       fluidRow(
