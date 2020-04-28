@@ -20,6 +20,7 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals, SocialDis
   #Establish initial inputs such as base, counties, and filter IHME model
   BaseState<-dplyr::filter(AFBaseLocations, Base == ChosenBase)
   IHME_State <- dplyr::filter(IHME_Model, State == toString(BaseState$State[1]))
+  UT_State <- dplyr::filter(UT_Model, State == toString(BaseState$State[1]))  
   hospCounty <- subset(HospUtlzCounty, fips %in% IncludedCounties$FIPS)
   TTBCounty <- sum(IncludedHospitals$BEDS)
   
@@ -58,23 +59,28 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals, SocialDis
       
       currHosp = HistoricalData[nrow(HistoricalData),2]
   
-      
       # Apply ratio's to IHME data
       IHME_Region <- IHME_State
       IHME_Region$allbed_mean = round(IHME_State$allbed_mean*PopRatio)
       IHME_Region$allbed_lower = round(IHME_State$allbed_lower*PopRatio)
       IHME_Region$allbed_upper = round(IHME_State$allbed_upper*PopRatio)
       IHME_Data<-data.frame(IHME_Region$date,IHME_Region$allbed_mean, IHME_Region$allbed_lower, IHME_Region$allbed_upper)
-      
+
+      # Apply ratio's to UT data
+      # Multiple by 16 to reflect hospitalizations at 8% from death rate of 0.5%
+      UT_Region <- UT_State
+      UT_Region$daily_deaths_est = round(UT_State$daily_deaths_est*PopRatio*16)
+      UT_Region$daily_deaths_90CI_lower = round(UT_State$daily_deaths_90CI_lower*PopRatio*16)
+      UT_Region$daily_deaths_90CI_upper = round(UT_State$daily_deaths_90CI_upper*PopRatio*16)
+      UT_Data<-data.frame(UT_Region$date,UT_Region$daily_deaths_est, UT_Region$daily_deaths_90CI_lower, UT_Region$daily_deaths_90CI_upper)
+
       LANL_Region <- LANL_State
       LANL_Region$q.25 = round(LANL_Region$q.25*PopRatio)
       LANL_Region$q.50 = round(LANL_Region$q.50*PopRatio)
       LANL_Region$q.75 = round(LANL_Region$q.75*PopRatio)
-      
       LANL_Region<-data.frame(LANL_Region$date,LANL_Region$q.50*.055,LANL_Region$q.25*.055,LANL_Region$q.75*.055)      
       colnames(LANL_Region)<-c("ForecastDate", "Expected Hospitalizations", "Lower Estimate","Upper Estimate")
       LANL_Region$ForecastDate<-as.Date(LANL_Region$ForecastDate)
-      LANL_Region<-dplyr::filter(LANL_Region,ForecastDate >= Sys.Date())
       
       CU40_State<-dplyr::filter(CU40PSD,fips %in% IncludedCounties$FIPS)
       CU30_State<-dplyr::filter(CU30PSD,fips %in% IncludedCounties$FIPS)
@@ -132,12 +138,37 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals, SocialDis
       
       colnames(IHME_Data)<-c("ForecastDate", "Expected Hospitalizations", "Lower Estimate","Upper Estimate")
       IHME_Data$ID<-rep("IHME",nrow(IHME_Data))
+      colnames(UT_Data)<-c("ForecastDate", "Expected Hospitalizations", "Lower Estimate","Upper Estimate")
+      UT_Data$ID<-rep("UT",nrow(UT_Data))
       LANL_Region$ID<-rep("LANL",nrow(LANL_Region))      
       OverlayData<-rbind(IHME_Data,LANL_Region)
+      OverlayData<-rbind(OverlayData,UT_Data)      
       OverlayData<-rbind(OverlayData,CU40_State)
       OverlayData<-rbind(OverlayData,CU30_State)
       OverlayData<-rbind(OverlayData,CU20_State)
       OverlayData<-rbind(OverlayData,CU00_State)              
+      
+      #Calculate IHME Peak date, create data table of peak dates for hospitalizations 
+      PeakDate<-which.max(IHME_Data$IHME_Region.allbed_mean)
+      IHMEPeak<-round(IHME_Data[PeakDate,2])      
+      PeakDate<-which.max(UT_Data$daily_deaths_est)
+      UTPeak<-round(UT_Data[PeakDate,2])      
+      PeakDate<-which.max(LANL_Region$'Expected Hospitalizations')
+      LANLPeak<-round(UT_Data[PeakDate,2])        
+      PeakDate<-which.max(CU40_State$hosp_need_50)
+      CU40Peak<-round(CU40_State[PeakDate,2])      
+      PeakDate<-which.max(CU30_State$hosp_need_50)
+      CU30Peak<-round(CU30_State[PeakDate,2])      
+      PeakDate<-which.max(CU20_State$hosp_need_50)
+      CU20Peak<-round(CU20_State[PeakDate,2])
+      PeakDate<-which.max(CU00_State$hosp_need_50)
+      CU00Peak<-round(CU00_State[PeakDate,2])      
+      PeakData<-rbind(IHMEPeak,LANLPeak)
+      PeakData<-rbind(PeakData,UTPeak)      
+      PeakData<-rbind(PeakData,CU40Peak)
+      PeakData<-rbind(PeakData,CU30Peak)
+      PeakData<-rbind(PeakData,CU20Peak)
+      PeakData<-rbind(PeakData,CU00Peak)                      
       
       #Next we use the calculated values, along with estimated values from the Estimated Values. 
       #The only input we want from the user is the social distancing rate. For this example, we just use 0.5
@@ -145,7 +176,7 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals, SocialDis
       pop<-SIRinputs$pop
       doubling<-8
       
-      SD <- c(4,8,12,15,19,23,27)
+      SD <- c(27,23,19,15,12,8,4)
       sdrow<-length(SD)
       
       for (j in 1:sdrow){
@@ -178,7 +209,9 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals, SocialDis
         colnames(DailyData)<-c("ForecastDate", "Expected Daily Cases")
         colnames(TotalData)<-c("ForecastDate", "Total Daily Cases")
         
-        
+        CHIMEPeak<-which.max(DailyData$`Expected Daily Cases`)
+        CHIMEPeak<-round(DailyData[Peak,2])
+        PeakData<-rbind(PeakData,CHIMEPeak)        
         ####################################################################################
         #Lower Estimate
         #Established Variables at the start for every county or populations
@@ -291,7 +324,7 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals, SocialDis
     
   } else {
     
-    LANL_State <- dplyr::filter(LANL_Data, State == toString(BaseState$State[1])) 
+    LANL_State <- dplyr::filter(LANLD_Data, State == toString(BaseState$State[1])) 
     #Get data for counties with covid cases. We want number of cases, the rate of the cases and maybe other data.
     #We include State, county, population in those counties, cases, fatalities, doubling rate
     CovidCounties<-subset(CovidConfirmedCases, CountyFIPS %in% IncludedCounties$FIPS)
@@ -307,7 +340,13 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals, SocialDis
     IHME_Region$deaths_lower = round(IHME_State$totdea_lower*PopRatio)
     IHME_Region$deaths_upper = round(IHME_State$totdea_upper*PopRatio)
     IHME_Data<-data.frame(IHME_Region$date,IHME_Region$deaths_mean, IHME_Region$deaths_lower, IHME_Region$deaths_upper)
-    colnames(IHME_Data)<-c("ForecastDate", "Expected Fatalities", "Lower Estimate","Upper Estimate")
+    
+    # Apply ratio's to UT data
+    UT_Region <- UT_State
+    UT_Region$daily_deaths_est = round(UT_State$daily_deaths_est*PopRatio)
+    UT_Region$daily_deaths_90CI_lower = round(UT_State$daily_deaths_90CI_lower*PopRatio)
+    UT_Region$daily_deaths_90CI_upper = round(UT_State$daily_deaths_90CI_upper*PopRatio)
+    UT_Data<-data.frame(UT_Region$date,UT_Region$daily_deaths_est, UT_Region$daily_deaths_90CI_lower, UT_Region$daily_deaths_90CI_upper)    
     
     LANL_Region <- LANL_State
     LANL_Region$q.25 = round(LANL_Region$q.25*PopRatio)
@@ -372,13 +411,17 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals, SocialDis
     SIRinputs<-data.frame(sum(ActiveCases$CurrentCases),sum(ActiveCases$Population), mean(ActiveCases$`Doubling Rate`))
     colnames(SIRinputs)<-c("cases","pop","doubling")
     
+    colnames(IHME_Data)<-c("ForecastDate", "Expected Fatalities", "Lower Estimate","Upper Estimate")
     IHME_Data$ID<-rep("IHME",nrow(IHME_Data))
+    colnames(UT_Data)<-c("ForecastDate", "Expected Fatalities", "Lower Estimate","Upper Estimate")
+    UT_Data$ID<-rep("UT",nrow(UT_Data))
     LANL_Data$ID<-rep("LANL",nrow(LANL_Data))      
     OverlayData<-rbind(IHME_Data,LANL_Data)
+    OverlayData<-rbind(OverlayData,UT_Data)    
     OverlayData<-rbind(OverlayData,CU40_State)
     OverlayData<-rbind(OverlayData,CU30_State)
     OverlayData<-rbind(OverlayData,CU20_State)
-    OverlayData<-rbind(OverlayData,CU00_State)              
+    OverlayData<-rbind(OverlayData,CU00_State) 
     
     #Next we use the calculated values, along with estimated values from the Estimated Values. 
     #The only input we want from the user is the social distancing rate. For this example, we just use 0.5
@@ -386,7 +429,7 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals, SocialDis
     pop<-SIRinputs$pop
     doubling<-8
     
-    SD <- c(4,8,12,15,19,23,27)
+    SD <- c(27,23,19,15,12,8,4)
     sdrow<-length(SD)
     for (j in 1:sdrow){
       socialdistancing<-SD[j]
@@ -480,7 +523,6 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals, SocialDis
       DailyData$ID<-rep(chimelabel,nrow(DailyData))
       OverlayData<-rbind(OverlayData,DailyData)
     }
-    
     
     colnames(HistoricalData)<-c("ForecastDate", "Expected Fatalities", "Lower Estimate","Upper Estimate")
     HistoricalData$ID<-rep("Past Data", nrow(HistoricalData))

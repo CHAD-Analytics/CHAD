@@ -565,21 +565,51 @@ server <- function(input, output,session) {
         if(input$selectall == 0) return(NULL) 
         else if (input$selectall%%2 == 0)
         {
-            updateCheckboxGroupInput(session,"ModelSelectionValue","Forecasting Model(s): ",choices=c("IHME"="IHME","LANL"="LANL","CHIME SC"="CHIME1","CHIME NE"="CHIME2","CHIME SC+NE"="CHIME3",
-                                                                                                      "CHIME SD"="CHIME4","CHIME SC+SD"="CHIME5","CHIME NE+SD"="CHIME6","CHIME SC+NE+SD"="CHIME7",                                                                                                                                
-                                                                                                      "Columbia No Intervetion"="CUNI","Columbia 20% SC Reduction"="CU20SC","Columbia 30% SC Reduction"="CU30SC",
-                                                                                                      "Columbia 40% SC Reduction"="CU40SC"))
+            updateCheckboxGroupInput(session,"ModelSelectionValue","Forecasting Model(s): ",choices=c("IHME (University of Washinton)"="IHME",
+                                                                                                      "CHIME (University of Pennsylvania): SC+NE+SD"="CHIME1",
+                                                                                                      "CHIME: NE+SD"="CHIME2",
+                                                                                                      "CHIME: SC+SD"="CHIME3",                                                                
+                                                                                                      "CHIME: SD"="CHIME4", 
+                                                                                                      "CHIME: SC+NE"="CHIME5",
+                                                                                                      "CHIME: NE"="CHIME6",
+                                                                                                      "CHIME: SC"="CHIME7",
+                                                                                                      "Los Alamos National Labs (LANL)"="LANL",
+                                                                                                      "University of Texas"="UT",
+                                                                                                      "Columbia University: No Intervetion"="CUNI",
+                                                                                                      "Columbia University: 20% SC Reduction"="CU20SC",
+                                                                                                      "Columbia University: 30% SC Reduction"="CU30SC",
+                                                                                                      "Columbia University: 40% SC Reduction"="CU40SC"))
         }
         else
         {
-            updateCheckboxGroupInput(session,"ModelSelectionValue","Forecasting Model(s):",choices=c("IHME"="IHME","LANL"="LANL","CHIME SC"="CHIME1","CHIME NE"="CHIME2","CHIME SC+NE"="CHIME3",
-                                                                                                     "CHIME SD"="CHIME4","CHIME SC+SD"="CHIME5","CHIME NE+SD"="CHIME6","CHIME SC+NE+SD"="CHIME7",                                                                                                                                
-                                                                                                     "Columbia No Intervetion"="CUNI","Columbia 20% SC Reduction"="CU20SC","Columbia 30% SC Reduction"="CU30SC",
-                                                                                                     "Columbia 40% SC Reduction"="CU40SC"),
-                                     selected=c("IHME"="IHME","LANL"="LANL","CHIME SC"="CHIME1","CHIME NE"="CHIME2","CHIME SC+NE"="CHIME3",
-                                                "CHIME SD"="CHIME4","CHIME SC+SD"="CHIME5","CHIME NE+SD"="CHIME6","CHIME SC+NE+SD"="CHIME7",                                                                                                                                
-                                                "Columbia No Intervetion"="CUNI","Columbia 20% SC Reduction"="CU20SC",
-                                                "Columbia 30% SC Reduction"="CU30SC","Columbia 40% SC Reduction"="CU40SC"))
+            updateCheckboxGroupInput(session,"ModelSelectionValue","Forecasting Model(s):",choices=c("IHME (University of Washinton)"="IHME",
+                                                                                                     "CHIME (University of Pennsylvania): SC+NE+SD"="CHIME1",
+                                                                                                     "CHIME: NE+SD"="CHIME2",
+                                                                                                     "CHIME: SC+SD"="CHIME3",                                                                
+                                                                                                     "CHIME: SD"="CHIME4", 
+                                                                                                     "CHIME: SC+NE"="CHIME5",
+                                                                                                     "CHIME: NE"="CHIME6",
+                                                                                                     "CHIME: SC"="CHIME7",
+                                                                                                     "Los Alamos National Labs (LANL)"="LANL",
+                                                                                                     "University of Texas"="UT",
+                                                                                                     "Columbia University: No Intervetion"="CUNI",
+                                                                                                     "Columbia University: 20% SC Reduction"="CU20SC",
+                                                                                                     "Columbia University: 30% SC Reduction"="CU30SC",
+                                                                                                     "Columbia University: 40% SC Reduction"="CU40SC"),
+                                     selected=c("IHME (University of Washinton)"="IHME",
+                                                "CHIME (University of Pennsylvania): SC+NE+SD"="CHIME1",
+                                                "CHIME: NE+SD"="CHIME2",
+                                                "CHIME: SC+SD"="CHIME3",                                                                
+                                                "CHIME: SD"="CHIME4", 
+                                                "CHIME: SC+NE"="CHIME5",
+                                                "CHIME: NE"="CHIME6",
+                                                "CHIME: SC"="CHIME7",
+                                                "Los Alamos National Labs (LANL)"="LANL",
+                                                "University of Texas"="UT",
+                                                "Columbia University: No Intervetion"="CUNI",
+                                                "Columbia University: 20% SC Reduction"="CU20SC",
+                                                "Columbia University: 30% SC Reduction"="CU30SC",
+                                                "Columbia University: 40% SC Reduction"="CU40SC"))
         }
     })
     
@@ -592,13 +622,14 @@ server <- function(input, output,session) {
         
         if ("IHME" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"IHME")}
         if ("LANL" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"LANL")}
-        if ("CHIME1" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CHIME_4%_SD")}
-        if ("CHIME2" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CHIME_8%_SD")}
-        if ("CHIME3" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CHIME_12%_SD")}
+        if ("UT" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"UT")}        
+        if ("CHIME7" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CHIME_4%_SD")}
+        if ("CHIME6" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CHIME_8%_SD")}
+        if ("CHIME5" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CHIME_12%_SD")}
         if ("CHIME4" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CHIME_15%_SD")}
-        if ("CHIME5" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CHIME_19%_SD")}
-        if ("CHIME6" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CHIME_23%_SD")}
-        if ("CHIME7" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CHIME_27%_SD")}                                                                                                                                
+        if ("CHIME3" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CHIME_19%_SD")}
+        if ("CHIME2" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CHIME_23%_SD")}
+        if ("CHIME1" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CHIME_27%_SD")}                                                                                                                                
         if ("CUNI" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CU_No Intervention")}
         if ("CU20SC" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CU_20%_SD")}
         if ("CU30SC" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CU_30%_SD")}
