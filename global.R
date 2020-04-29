@@ -99,7 +99,7 @@ if (test_date < Sys.Date()) {
   bsv_metadata<-jsonlite::fromJSON("data/forecast_metadata.json")
   Front<-'https://covid-19.bsvgateway.org/forecast/us/files/'
   Middle<-'/confirmed/'
-  End<-'_confirmed_quantiles_us.csv'
+  End<-'_confirmed_quantiles_us_website.csv'
   Date<-bsv_metadata$us$most_recent_date
   ReadIn<-paste0(Front,Date,Middle,Date,End)
   LANL_file_name1 = paste0("data/",Date,End)
@@ -108,7 +108,7 @@ if (test_date < Sys.Date()) {
   bsv_metadata<-jsonlite::fromJSON("data/forecast_metadata.json")
   Front<-'https://covid-19.bsvgateway.org/forecast/us/files/'  
   Middle<-'/deaths/'
-  End<-'_deaths_quantiles_us.csv'
+  End<-'_deaths_quantiles_us_website.csv'
   Date<-bsv_metadata$us$most_recent_date
   ReadIn<-paste0(Front,Date,Middle,Date,End)
   LANL_file_name2 = paste0("data/",Date,End)
@@ -117,14 +117,14 @@ if (test_date < Sys.Date()) {
 } else {
   Middle<-'/confirmed/'  
   bsv_metadata<-jsonlite::fromJSON("data/forecast_metadata.json")
-  End<-'_confirmed_quantiles_us.csv'
+  End<-'_confirmed_quantiles_us_website.csv'
   Date<-bsv_metadata$us$most_recent_date
   LANL_file_name1 = paste0("data/",Date,End)
   print("data is current")
   
   Middle<-'/deaths/'  
   bsv_metadata<-jsonlite::fromJSON("data/forecast_metadata.json")
-  End<-'_deaths_quantiles_us.csv'
+  End<-'_deaths_quantiles_us_website.csv'
   Date<-bsv_metadata$us$most_recent_date
   LANL_file_name2 = paste0("data/",Date,End)
   print("data is current")  
