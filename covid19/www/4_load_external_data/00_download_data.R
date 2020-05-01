@@ -1,6 +1,6 @@
 try(test_date <- as.Date(file.info("www/7_other_resources/forecast_metadata.json")$ctime))
 
-if (is.na(test_date)) { test_date <- Sys.Date()-2 }
+if (is.na(test_date)) { test_date <- Sys.Date()-1}
 
 if(test_date < Sys.Date()) {
   
