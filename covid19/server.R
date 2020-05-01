@@ -304,10 +304,10 @@ server <- function(input, output,session) {
     
     #Choice between cases heat map or hospitalizations heat map
     output$SummaryTabChoro<-renderPlotly({
-            GetHeatMap(input$MAJCOMInput, input$SummaryModelType, input$SummaryForecast, input$SummaryStatistic)
+            GetHeatMap(input$MAJCOMWing,input$MAJCOMInput,input$WingInput, input$SummaryModelType, input$SummaryForecast, input$SummaryStatistic)
     })
     
-    
+
     
     
     # Output Projections  ---------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -565,7 +565,7 @@ server <- function(input, output,session) {
         if(input$selectall == 0) return(NULL) 
         else if (input$selectall%%2 == 0)
         {
-            updateCheckboxGroupInput(session,"ModelSelectionValue","Forecasting Model(s): ",choices=c("IHME (University of Washinton)"="IHME",
+            updateCheckboxGroupInput(session,"ModelSelectionValue","Forecasting Model(s): ",choices=c("IHME (University of Washington)"="IHME",
                                                                                                       "CHIME (University of Pennsylvania): SC+NE+SD"="CHIME1",
                                                                                                       "CHIME: NE+SD"="CHIME2",
                                                                                                       "CHIME: SC+SD"="CHIME3",                                                                
@@ -575,7 +575,7 @@ server <- function(input, output,session) {
                                                                                                       "CHIME: SC"="CHIME7",
                                                                                                       "Los Alamos National Labs (LANL)"="LANL",
                                                                                                       "University of Texas"="UT",
-                                                                                                      #"Columbia University: No Intervetion"="CUNI",
+                                                                                                      "Columbia University: No Intervetion"="CUNI",
                                                                                                       "Columbia University: 20% SC Reduction"="CU20SC",
                                                                                                       "Columbia University: 30% SC Reduction"="CU30SC",
                                                                                                       "Columbia University: 40% SC Reduction"="CU40SC"))
@@ -592,7 +592,7 @@ server <- function(input, output,session) {
                                                                                                      "CHIME: SC"="CHIME7",
                                                                                                      "Los Alamos National Labs (LANL)"="LANL",
                                                                                                      "University of Texas"="UT",
-                                                                                                     #"Columbia University: No Intervetion"="CUNI",
+                                                                                                     "Columbia University: No Intervetion"="CUNI",
                                                                                                      "Columbia University: 20% SC Reduction"="CU20SC",
                                                                                                      "Columbia University: 30% SC Reduction"="CU30SC",
                                                                                                      "Columbia University: 40% SC Reduction"="CU40SC"),
@@ -606,39 +606,40 @@ server <- function(input, output,session) {
                                                 "CHIME: SC"="CHIME7",
                                                 "Los Alamos National Labs (LANL)"="LANL",
                                                 "University of Texas"="UT",
-                                                #"Columbia University: No Intervetion"="CUNI",
+                                                "Columbia University: No Intervetion"="CUNI",
                                                 "Columbia University: 20% SC Reduction"="CU20SC",
                                                 "Columbia University: 30% SC Reduction"="CU30SC",
                                                 "Columbia University: 40% SC Reduction"="CU40SC"))
         }
     })
     
+
     
     #Overlay Projected Plots
     output$OverlayPlots<-renderPlotly({
         #if (is.null(input$SocialDistanceValue)){social_dist<-1}
         #(4,8,12,15,19,23,27)
         ModelID<-"Past Data"
-        
+
         if ("IHME" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"IHME")}
         if ("LANL" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"LANL")}
-        if ("UT" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"UT")}        
+        if ("UT" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"UT")}
         if ("CHIME7" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CHIME_4%_SD")}
         if ("CHIME6" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CHIME_8%_SD")}
         if ("CHIME5" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CHIME_12%_SD")}
         if ("CHIME4" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CHIME_15%_SD")}
         if ("CHIME3" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CHIME_19%_SD")}
         if ("CHIME2" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CHIME_23%_SD")}
-        if ("CHIME1" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CHIME_27%_SD")}                                                                                                                                
-        #if ("CUNI" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CU_No Intervention")}
+        if ("CHIME1" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CHIME_27%_SD")}
+        if ("CUNI" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CU_No Intervention")}
         if ("CU20SC" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CU_20%_SD")}
         if ("CU30SC" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CU_30%_SD")}
         if ("CU40SC" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CU_40%_SD")}
-        
+
         # CS  <- "CS" %in% input$SocialDistanceValue
         # CB  <- "CB" %in% input$SocialDistanceValue
         # SD  <- "SD" %in% input$SocialDistanceValue
-        # 
+        #
         # if (CS & CB & SD){
         #     social_dist <- 27
         # } else if (CS & CB){
@@ -656,13 +657,13 @@ server <- function(input, output,session) {
         # }
         MyCounties<-GetCounties(input$Base,input$Radius)
         MyHospitals<-GetHospitals(input$Base,input$Radius)
-        PlotOverlay(input$Base, MyCounties, MyHospitals,social_dist,ModelID,input$proj_days, input$StatisticType)
+        PlotOverlay(input$Base, MyCounties, MyHospitals,ModelID,input$proj_days,input$StatisticType)
     })
     
     
     # Output any data tables ------------------------------------------------------------------------------------------------------------------------------------------------------
-    
-    
+
+        
     #Render National Data Table on summary page
     output$NationalDataTable1<-DT::renderDataTable({
         NationalDataTable <- DT::datatable(data.frame(NationalDataTable),rownames = FALSE, options = list(dom = 'ft',ordering = F,"pageLength" = 51))
@@ -677,37 +678,134 @@ server <- function(input, output,session) {
     })
     
     
-    output$ForecastDataTable<-DT::renderDataTable({
-        if (input$MAJCOMInput == "All") {
-            if(input$SummaryStatistic == "Cases") {
-                ForecastDataTableCases<-FilterDataTable(ForecastDataTableCases,input$SummaryModelType,input$SummaryForecast)
-                dt<-DT::datatable(ForecastDataTableCases, rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))   
-                dt
-            } else {
-                ForecastDataTable<-FilterDataTable(ForecastDataTable,input$SummaryModelType,input$SummaryForecast)
-                dt<-DT::datatable(ForecastDataTable, rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))
-                dt
-            }
-        } else if(input$MAJCOMInput=="Active Duty"){
-            if(input$SummaryStatistic == "Cases") {
-                ForecastDataTableCases<-FilterDataTable(ForecastDataTableCases,input$SummaryModelType,input$SummaryForecast)
-                dt<-DT::datatable(filter(ForecastDataTableCases, !MAJCOM %in% c("AFRC","ANG")), rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))
-                dt
-            } else {
-                ForecastDataTable<-FilterDataTable(ForecastDataTable,input$SummaryModelType,input$SummaryForecast)
-                dt<-DT::datatable(filter(ForecastDataTable, !MAJCOM %in% c("AFRC","ANG")), rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))
-                dt
-            }
+    # ##Add in Wing/Group Filter
+    # ##Might need make a separate  funtion that's global
+    # output$GroupList<-DT::renderDataTable({
+
+    GroupList<- reactive({
+        #get(input$WingInput)
+        if (input$WingInput != "All") {
+            GroupList<-dplyr::filter(AFWings,Wing %in% input$WingInput)            
+            GroupList<-sort(unique(GroupList$`Group`), decreasing = FALSE) 
+            GroupList<-c("All",GroupList)
+        }else {
+            GroupList<-sort(unique(AFWings$`Group`), decreasing = FALSE) 
+            GroupList<-c("All",GroupList)
         }
-        else {
-            if(input$SummaryStatistic == "Cases") {
-                ForecastDataTableCases<-FilterDataTable(ForecastDataTableCases,input$SummaryModelType,input$SummaryForecast)
-                dt<-DT::datatable(filter(ForecastDataTableCases, MAJCOM == input$MAJCOMInput), rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))
-                dt
-            } else {
-                ForecastDataTable<-FilterDataTable(ForecastDataTable,input$SummaryModelType,input$SummaryForecast)
-                dt<-DT::datatable(filter(ForecastDataTable, MAJCOM == input$MAJCOMInput), rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))
-                dt
+    })
+    observe({
+        updateSelectInput(session,"GroupInput",choices = GroupList())
+    })
+
+    output$ForecastDataTable<-DT::renderDataTable({
+        
+        if (input$MAJCOMWing == "MAJCOM") {
+            if (input$MAJCOMInput == "All") {
+                if(input$SummaryStatistic == "Cases") {
+                    ForecastDataTableCases<-FilterDataTable(ForecastDataTableCases,input$SummaryModelType,input$SummaryForecast)
+                    dt<-DT::datatable(ForecastDataTableCases, rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))   
+                    dt
+                } else {
+                    ForecastDataTable<-FilterDataTable(ForecastDataTable,input$SummaryModelType,input$SummaryForecast)
+                    dt<-DT::datatable(ForecastDataTable, rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))
+                    dt
+                }
+            } else if(input$MAJCOMInput=="Active Duty"){
+                if(input$SummaryStatistic == "Cases") {
+                    ForecastDataTableCases<-FilterDataTable(ForecastDataTableCases,input$SummaryModelType,input$SummaryForecast)
+                    dt<-DT::datatable(filter(ForecastDataTableCases, !MAJCOM %in% c("AFRC","ANG")), rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))
+                    dt
+                } else {
+                    ForecastDataTable<-FilterDataTable(ForecastDataTable,input$SummaryModelType,input$SummaryForecast)
+                    dt<-DT::datatable(filter(ForecastDataTable, !MAJCOM %in% c("AFRC","ANG")), rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))
+                    dt
+                }
+            }
+            else {
+                if(input$SummaryStatistic == "Cases") {
+                    ForecastDataTableCases<-FilterDataTable(ForecastDataTableCases,input$SummaryModelType,input$SummaryForecast)
+                    dt<-DT::datatable(filter(ForecastDataTableCases, MAJCOM == input$MAJCOMInput), rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))
+                    dt
+                } else {
+                    ForecastDataTable<-FilterDataTable(ForecastDataTable,input$SummaryModelType,input$SummaryForecast)
+                    dt<-DT::datatable(filter(ForecastDataTable, MAJCOM == input$MAJCOMInput), rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))
+                    dt
+                }
+            }
+        } else if (input$MAJCOMWing == "Wing") {
+            
+            if (input$WingInput == "All") {                  #If all wings are selected
+                
+                forecastbaselist<-dplyr::filter(AFWings,Wing %in% WingList)            
+                
+                if (input$GroupInput == "All") {                
+                    GroupList<-sort(unique(AFWings$`Group`), decreasing = FALSE)
+                    forecastbaselist<-dplyr::filter(forecastbaselist,Group %in% GroupList)                        
+                    forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE) 
+                    ForecastDataTableCases<-dplyr::filter(ForecastDataTableCases,Installation %in% forecastbaselist) 
+                    ForecastDataTable<-dplyr::filter(ForecastDataTable,Installation %in% forecastbaselist) 
+                    
+                    if(input$SummaryStatistic == "Cases") {  #if all groups are selected
+                        ForecastDataTableCases<-FilterDataTable(ForecastDataTableCases,input$SummaryModelType,input$SummaryForecast)
+                        dt<-DT::datatable(ForecastDataTableCases, rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))   
+                        dt
+                    } else {                                 #if one group is selected
+                        ForecastDataTable<-FilterDataTable(ForecastDataTable,input$SummaryModelType,input$SummaryForecast)
+                        dt<-DT::datatable(ForecastDataTable, rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))
+                        dt
+                    }
+                } else {                                    
+                    forecastbaselist<-dplyr::filter(forecastbaselist,Group %in% input$GroupInput)                        
+                    forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE) 
+                    ForecastDataTableCases<-dplyr::filter(ForecastDataTableCases,Installation %in% forecastbaselist) 
+                    ForecastDataTable<-dplyr::filter(ForecastDataTable,Installation %in% forecastbaselist)                     
+                    
+                    if(input$SummaryStatistic == "Cases") {
+                        ForecastDataTableCases<-FilterDataTable(ForecastDataTableCases,input$SummaryModelType,input$SummaryForecast)
+                        dt<-DT::datatable(ForecastDataTableCases, rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))   
+                        dt
+                    } else {
+                        ForecastDataTable<-FilterDataTable(ForecastDataTable,input$SummaryModelType,input$SummaryForecast)
+                        dt<-DT::datatable(ForecastDataTable, rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))
+                        dt
+                    }
+                }
+            } else {      #If one wing is selected
+                
+                forecastbaselist<-dplyr::filter(AFWings,Wing %in% input$WingInput)            
+                
+                if (input$GroupInput == "All") {
+                    GroupList<-sort(unique(AFWings$`Group`), decreasing = FALSE)
+                    forecastbaselist<-dplyr::filter(forecastbaselist,Group %in% GroupList)                        
+                    forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE) 
+                    ForecastDataTableCases<-dplyr::filter(ForecastDataTableCases,Installation %in% forecastbaselist) 
+                    ForecastDataTable<-dplyr::filter(ForecastDataTable,Installation %in% forecastbaselist) 
+                    
+                    if(input$SummaryStatistic == "Cases") {  #if all groups are selected
+                        ForecastDataTableCases<-FilterDataTable(ForecastDataTableCases,input$SummaryModelType,input$SummaryForecast)
+                        dt<-DT::datatable(ForecastDataTableCases, rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))   
+                        dt
+                    } else {                                 #if one group is selected
+                        ForecastDataTable<-FilterDataTable(ForecastDataTable,input$SummaryModelType,input$SummaryForecast)
+                        dt<-DT::datatable(ForecastDataTable, rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))
+                        dt
+                    }
+                } else {                                    
+                    forecastbaselist<-dplyr::filter(forecastbaselist,Group %in% input$GroupInput)                        
+                    forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE) 
+                    ForecastDataTableCases<-dplyr::filter(ForecastDataTableCases,Installation %in% forecastbaselist) 
+                    ForecastDataTable<-dplyr::filter(ForecastDataTable,Installation %in% forecastbaselist)                     
+                    
+                    if(input$SummaryStatistic == "Cases") {
+                        ForecastDataTableCases<-FilterDataTable(ForecastDataTableCases,input$SummaryModelType,input$SummaryForecast)
+                        dt<-DT::datatable(ForecastDataTableCases, rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))   
+                        dt
+                    } else {
+                        ForecastDataTable<-FilterDataTable(ForecastDataTable,input$SummaryModelType,input$SummaryForecast)
+                        dt<-DT::datatable(ForecastDataTable, rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))
+                        dt
+                    }
+                }
             }
         }
     })
