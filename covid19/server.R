@@ -274,6 +274,37 @@ server <- function(input, output,session) {
     
     #Create Country Plot on Summary page
     output$SummaryPlot<-renderGvis({
+        
+        USlist = list(region="US",
+                      displayMode = "regions",
+                      resolution = "provinces",
+                      colors="['#D3D3D3', 'red']",
+                      width=1200,
+                      height = 600,
+                      legend = "none") 
+    
+        EUROlist = list(region="150",
+                        displayMode = "regions",
+                        colors="['#D3D3D3', 'red']",
+                        width=1200,
+                        height = 600,
+                        legend = "none")
+    
+        ASIAlist = list(region="142",
+                        displayMode = "regions",
+                        colors="['#D3D3D3', 'red']",
+                        width=1200,
+                        height = 600,
+                        legend = "none")
+        
+        if (input$MapView == "Europe"){
+            MapChoice = EUROlist
+        }else if (input$MapView == "Asia"){
+            MapChoice = ASIAlist
+        }else {
+            MapChoice = USlist
+        }
+        
         DF<-cbind.data.frame(CovidConfirmedCases$State, rev(CovidConfirmedCases)[,1], rev(CovidConfirmedCases)[,1])
         colnames(DF)<-c("state","Value","LogValue")
         ChlorData<-plyr::ddply(DF, "state", numcolwise(sum))
@@ -281,18 +312,16 @@ server <- function(input, output,session) {
         ChlorData <- transform(ChlorData, Value = as.character(format(Value,big.mark=",")))
         ChlorData<-ChlorData %>%
             mutate(state_name = state.name[match(state, state.abb)])
-        ChlorData<-ChlorData[complete.cases(ChlorData$state_name), ]
+        ChlorData$state_name <- ifelse(is.na(ChlorData$state_name), as.character(ChlorData$state), ChlorData$state_name)
+        #ChlorData<-ChlorData[complete.cases(ChlorData$state_name), ]
         ChlorData <- transform(ChlorData, Value =paste(state_name, " Total Cases: ", Value))
         states <- data.frame(ChlorData$state_name, ChlorData$Value, ChlorData$LogValue)
         colnames(states)<-c("state_name","Cases","StateColor")
-        gvisGeoChart(states, "state_name", "StateColor", hovervar = "Cases",
-                     options=list(region="US",
-                                  colors="['#D3D3D3', 'red']",
-                                  displayMode="regions", 
-                                  resolution="provinces",
-                                  width=1200,
-                                  height = 600,
-                                  legend = "none"))
+        states$StateColor = ifelse(is.infinite(states$StateColor), 0, states$StateColor)
+        g = gvisGeoChart(states, locationvar = "state_name", hovervar = "Cases", colorvar = "StateColor", 
+                         options = MapChoice
+        )
+        
     })
     
     
@@ -665,7 +694,7 @@ server <- function(input, output,session) {
     
     #Render National Data Table on summary page
     output$NationalDataTable1<-DT::renderDataTable({
-        NationalDataTable <- DT::datatable(data.frame(NationalDataTable),rownames = FALSE, options = list(dom = 'ft',ordering = F,"pageLength" = 51))
+        NationalDataTable <- DT::datatable(NationalDataTable,rownames = FALSE, options = list(dom = 'ft',ordering = F,"pageLength" = 250))
         NationalDataTable
     })
     
