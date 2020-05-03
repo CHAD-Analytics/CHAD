@@ -92,6 +92,18 @@ ui <- tagList(
                                                         selected = c("Seven"))
                                            
                                        ),
+                                       
+                                       conditionalPanel(condition="input.tabselected==2",
+                                                        "National Summary",
+                                                        icon = icon("sliders-h"),
+                                                        div(id = "single", style="display: none;", numericInput("tckt", "Ticket Number : ", 12345,  width = 300)),
+                                                        radioButtons("MapView",
+                                                                     "Map Selection: ",
+                                                                     c("US"="US",
+                                                                       "Europe"="Europe",
+                                                                       "Asia"="Asia"))
+                                       ),
+                                       
                                        conditionalPanel(condition="input.tabselected==3",
                                                         "Current Local Health Inputs",
                                            tabName = "localHealthInput",
