@@ -1,8 +1,8 @@
 #Read in IHME data for projecting data in the future
-zipdf <- unzip("www/3_load_external_data/data_files/ihme-covid19.zip", list = TRUE)
+zipdf <- unzip("www/4_load_external_data/data_files/ihme-covid19.zip", list = TRUE)
 csv_file <- zipdf$Name[tolower(tools::file_ext(zipdf$Name)) == "csv"]
 
-IHME_Model <- vroom::vroom(unz("www/3_load_external_data/data_files/ihme-covid19.zip", csv_file), 
+IHME_Model <- vroom::vroom(unz("www/4_load_external_data/data_files/ihme-covid19.zip", csv_file), 
                            col_names = T, 
                            delim = ",")
 

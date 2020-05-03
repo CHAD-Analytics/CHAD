@@ -2,21 +2,21 @@
 #' @details EXTRA EXTRA Need to find a better way later to replace this 
 #'          probably have the overlay function return a list with two objects. 
 #'          need the data.frame from overlay in the report
-PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals, SocialDistance,ModelIDList, DaysProjected, StatisticType){
+PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDList, DaysProjected, StatisticType){
   
-  #####Uncomment to test plot function without running the app
-  #i<-80
-  #ChosenBase = AFBaseLocations$Base[i]
-  ChosenBase = "Vandenberg Space Force Base"
-  SocialDistance = 15
-  DaysProjected = 30
-  HospitalInfo$DistanceMiles = himd[,as.character(ChosenBase)]
-  IncludedHospitals<-dplyr::filter(HospitalInfo, (DistanceMiles <= 50))
-  IncludedHospitals<-dplyr::filter(IncludedHospitals, (TYPE=="GENERAL ACUTE CARE") | (TYPE=="CRITICAL ACCESS"))
-  CountyInfo$DistanceMiles = cimd[,as.character(ChosenBase)]
-  IncludedCounties<-dplyr::filter(CountyInfo, DistanceMiles <= 50)
-  #####
-  #####
+  # #####Uncomment to test plot function without running the app
+  # #i<-80
+  # #ChosenBase = AFBaseLocations$Base[i]
+  # ChosenBase = "Vandenberg Space Force Base"
+  # SocialDistance = 15
+  # DaysProjected = 30
+  # HospitalInfo$DistanceMiles = himd[,as.character(ChosenBase)]
+  # IncludedHospitals<-dplyr::filter(HospitalInfo, (DistanceMiles <= 50))
+  # IncludedHospitals<-dplyr::filter(IncludedHospitals, (TYPE=="GENERAL ACUTE CARE") | (TYPE=="CRITICAL ACCESS"))
+  # CountyInfo$DistanceMiles = cimd[,as.character(ChosenBase)]
+  # IncludedCounties<-dplyr::filter(CountyInfo, DistanceMiles <= 50)
+  # #####
+  # #####
   
   #Establish initial inputs such as base, counties, and filter IHME model
   BaseState<-dplyr::filter(AFBaseLocations, Base == ChosenBase)
@@ -42,7 +42,7 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals, SocialDis
   
 
   if (StatisticType == "Hospitalizations") {
-      LANL_State <- dplyr::filter(LANL_Data, State == toString(BaseState$State[1])) 
+      LANL_State <- dplyr::filter(LANLC_Data, State == toString(BaseState$State[1])) 
       #Get covid cases and hospitalization rates for county
       CovidCounties<-subset(CovidConfirmedCases, CountyFIPS %in% IncludedCounties$FIPS)
       CovidCountiesHospRate <- subset(CountyHospRate, FIPS %in% IncludedCounties$FIPS)
@@ -83,6 +83,11 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals, SocialDis
       LANL_Region<-data.frame(LANL_Region$date,LANL_Region$q.50*.055,LANL_Region$q.25*.055,LANL_Region$q.75*.055)      
       colnames(LANL_Region)<-c("ForecastDate", "Expected Hospitalizations", "Lower Estimate","Upper Estimate")
       LANL_Region$ForecastDate<-as.Date(LANL_Region$ForecastDate)
+      
+      LANL_Region<-LANL_Region[order(as.Date(LANL_Region$ForecastDate, format="%Y/%m/%d")),]
+      LANL_Region$'Expected Hospitalizations'<-c(LANL_Region$'Expected Hospitalizations'[1],diff(LANL_Region$'Expected Hospitalizations'))
+      LANL_Region$'Lower Estimate'<-c(LANL_Region$'Lower Estimate'[1],diff(LANL_Region$'Lower Estimate'))
+      LANL_Region$'Upper Estimate'<-c(LANL_Region$'Upper Estimate'[1],diff(LANL_Region$'Upper Estimate'))      
       
       CU40_State<-dplyr::filter(CU40PSD,fips %in% IncludedCounties$FIPS)
       CU30_State<-dplyr::filter(CU30PSD,fips %in% IncludedCounties$FIPS)
@@ -294,6 +299,7 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals, SocialDis
       hospCounty$bedsUsed <- hospCounty$bed_utilization * hospCounty$num_staffed_beds
       totalUsedBeds <- sum(hospCounty$bedsUsed)
       baseUtlz <- totalUsedBeds/TotalBeds
+      bcap = TotalBeds * (1-baseUtlz)
       
       projections <-  ggplot(OverlayData, aes(x=ForecastDate, y=`Expected Hospitalizations`, color = ID, fill = ID, linetype = ID)) +
         geom_line(aes(linetype = ID, color = ID)) + 
@@ -302,7 +308,7 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals, SocialDis
         #scale_fill_manual(values = c("tan4", "cadetblue", "gray","red"))+
         #scale_linetype_manual(values=c("dashed", "solid", "dashed", "solid"))+
         
-        geom_hline(aes(yintercept = TotalBeds * (1-baseUtlz),
+        geom_hline(aes(yintercept = bcap,
                        linetype = "Estimated COVID Patient Bed Capacity"),colour = "red") +
         ggtitle("Projected Daily Hospital Bed Utilization")+
         ylab("Daily Beds Needed")+
@@ -358,7 +364,12 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals, SocialDis
     colnames(LANL_Data)<-c("ForecastDate", "Expected Fatalities", "Lower Estimate","Upper Estimate")
     LANL_Data$ForecastDate <- as.Date(LANL_Data$ForecastDate)
     LANL_Data<-dplyr::filter(LANL_Data,ForecastDate >= Sys.Date())
-    
+
+    LANL_Data<-LANL_Data[order(as.Date(LANL_Data$ForecastDate, format="%Y/%m/%d")),]
+    LANL_Data$'Expected Hospitalizations'<-c(LANL_Data$'Expected Hospitalizations'[1],diff(LANL_Data$'Expected Hospitalizations'))
+    LANL_Data$'Lower Estimate'<-c(LANL_Data$'Lower Estimate'[1],diff(LANL_Data$'Lower Estimate'))
+    LANL_Data$'Upper Estimate'<-c(LANL_Data$'Upper Estimate'[1],diff(LANL_Data$'Upper Estimate'))  
+  
     CU40_State<-dplyr::filter(CU40PSD,fips %in% IncludedCounties$FIPS)
     CU30_State<-dplyr::filter(CU30PSD,fips %in% IncludedCounties$FIPS)
     CU20_State<-dplyr::filter(CU20PSD,fips %in% IncludedCounties$FIPS)

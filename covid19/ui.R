@@ -72,11 +72,33 @@ ui <- tagList(
                                                         "Cases or Hospitalizations: ",
                                                         c("Cases"="Cases",
                                                           "Hospitalizations"="Hospitalizations"),selected = c("Hospitalizations")),
-                                           selectInput(
-                                               "MAJCOMInput",
-                                               "MAJCOM:", 
-                                               list(`MAJCOM` = MAJCOMList ), 
-                                               selectize = FALSE),
+                                           radioButtons("MAJCOMWing",
+                                                        "MAJCOM or Wing Filter: ",
+                                                        c("MAJCOM"="MAJCOM",
+                                                          "Wing"="Wing"),selected = c("MAJCOM")),   
+                                           conditionalPanel(
+                                               condition = "input.MAJCOMWing == 'MAJCOM'",
+                                               selectInput(
+                                                   "MAJCOMInput",
+                                                   "MAJCOM:", 
+                                                   list(`MAJCOM` = MAJCOMList ), 
+                                                   selectize = FALSE)
+                                                   ),
+                                           conditionalPanel(
+                                               condition = "input.MAJCOMWing == 'Wing'",
+                                               selectInput(
+                                                   "WingInput",
+                                                   "Wing:", 
+                                                   list(`Wing` = WingList), 
+                                                   selectize = FALSE),
+                                               selectInput(
+                                                   "GroupInput",
+                                                   "Group:",
+                                                   choices=NULL,
+                                                   selectize = FALSE)
+                                                   #list(`Group` <- AFWings %>% filter(AFWings$Wing %in% Input.WingInput) ),
+                                                   #selectize = FALSE)
+                                                   ),  
                                            radioButtons("SummaryModelType",
                                                         "Summary Plot Model: ",
                                                         c("IHME"="IHME",
@@ -141,7 +163,7 @@ ui <- tagList(
                                                                 "CHIME: SC"="CHIME7",
                                                                 "Los Alamos National Labs (LANL)"="LANL",
                                                                 "University of Texas"="UT",
-                                                                ##"Columbia University: No Intervetion"="CUNI",
+                                                                "Columbia University: No Intervetion"="CUNI",
                                                                 "Columbia University: 20% SC Reduction"="CU20SC",
                                                                 "Columbia University: 30% SC Reduction"="CU30SC",
                                                                 "Columbia University: 40% SC Reduction"="CU40SC"),
@@ -195,7 +217,7 @@ ui <- tagList(
                     '))),
                       tags$script(HTML('
                                    $(document).ready(function() {
-                                   $("header").find("nav").append(\'<span class="myClass"> COVID-19 Health Assessment Dashboard Beta v0.8.2</span>\');
+                                   $("header").find("nav").append(\'<span class="myClass"> COVID-19 Health Assessment Dashboard Beta v0.9</span>\');
                                    })
                                    ')),
                       tabsetPanel(id = "tabselected",

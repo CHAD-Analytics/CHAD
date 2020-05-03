@@ -1,5 +1,5 @@
 # Import AMC model data
-temp_model <- fromJSON("www/3_load_external_data/data_files/shinyjson.json")
+temp_model <- fromJSON("www/4_load_external_data/data_files/shinyjson.json")
 
 json_file <- lapply(temp_model, function(x) {
   x[sapply(x, is.null)] <- NA

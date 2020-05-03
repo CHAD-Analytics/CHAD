@@ -1,6 +1,10 @@
-#Read in UT data for projecting data in the future
+#' @description From University of Texas
+#'              
+#' @source https://raw.githubusercontent.com/UT-Covid/USmortality/master/forecasts/
+#' 
 
-#UT_Model<-read.csv("data/UT-COVID19-states-forecast-latest.csv")
+#UT_Model<-vroom::vroom("www/4_load_external_data/data_files/UT-COVID19-states-forecast-latest.csv")
+
 UT_Model<-vroom::vroom("https://raw.githubusercontent.com/UT-Covid/USmortality/master/forecasts/UT-COVID19-states-forecast-latest.csv")
 UT_Model$date <- as.Date(UT_Model$date, 
                            format = "%Y-%m-%d")

@@ -1,6 +1,7 @@
 #' Filter a data table
 #' @description This just filters the data table based on IHME or CHIME
 FilterDataTable<-function(dt,ModelType,ForecastType){
+  #if (MAJCOMWingType=="MAJCOM"){}
   if (ModelType == "IHME") {
     if (ForecastType == "Today"){
       cols<-c(1:10)
