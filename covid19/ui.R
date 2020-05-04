@@ -89,17 +89,12 @@ ui <- tagList(
                                                selectInput(
                                                    "NAFInput",
                                                    "Numbered Air Forces:", 
-                                                   NAFList,
-                                                   #list(`NAF` = NAFList),
+                                                   choices=NAFList,
                                                    selectize = FALSE),
-                                           #         ),
-                                           # conditionalPanel(
-                                           #     condition = 'input.NAFInput %in% NAFList',
                                                selectInput(
                                                    "WingInput",
                                                    "Wing:", 
-                                                   choices=NULL,
-                                                   #list(`Wing` = WingList), 
+                                                   list(`Wings` = WingList ),
                                                    selectize = FALSE)
                                                ,selectInput(
                                                    "GroupInput",
@@ -122,6 +117,18 @@ ui <- tagList(
                                                         selected = c("Seven"))
                                            
                                        ),
+                                       
+                                       conditionalPanel(condition="input.tabselected==2",
+                                                        "National Summary",
+                                                        icon = icon("sliders-h"),
+                                                        div(id = "single", style="display: none;", numericInput("tckt", "Ticket Number : ", 12345,  width = 300)),
+                                                        radioButtons("MapView",
+                                                                     "Map Selection: ",
+                                                                     c("US"="US",
+                                                                       "Europe"="Europe",
+                                                                       "Asia"="Asia"))
+                                       ),
+                                       
                                        conditionalPanel(condition="input.tabselected==3",
                                                         "Current Local Health Inputs",
                                            tabName = "localHealthInput",
@@ -213,7 +220,7 @@ ui <- tagList(
                     '))),
                       tags$script(HTML('
                                    $(document).ready(function() {
-                                   $("header").find("nav").append(\'<span class="myClass"> COVID-19 Health Assessment Dashboard Beta v0.9</span>\');
+                                   $("header").find("nav").append(\'<span class="myClass"> COVID-19 Health Assessment Dashboard Beta v0.9.2</span>\');
                                    })
                                    ')),
                       tabsetPanel(id = "tabselected",

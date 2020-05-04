@@ -7,6 +7,10 @@
 #'              All objects created in this file can be used 
 #'              throughout the app
 
+rm(list=ls())
+closeAllConnections()
+
+
 # Step 1: load R packages containing functions used throughout the app
 pkg_files <- list.files("www/1_load_pkgs", 
                         pattern = "\\.R$",

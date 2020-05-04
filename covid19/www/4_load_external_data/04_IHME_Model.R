@@ -13,7 +13,7 @@ by.x.name = names(IHME_Model)[grep("loc",names(IHME_Model),fixed=TRUE)[1]]
 
 IHME_Model <- merge(IHME_Model, 
                     StateList,  # defined in 1_StateInfo.R
-                    by.x = names(IHME_Model)[1], 
+                    by.x = names(IHME_Model[c(by.x.name)]), 
                     by.y = names(StateList)[1])
 
 names(IHME_Model)[names(IHME_Model)=="state.abb"] <- "State"

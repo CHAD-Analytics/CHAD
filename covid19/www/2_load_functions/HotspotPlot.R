@@ -30,6 +30,13 @@ HotspotPlot <- function(CovidConfirmedCases, CovidDeaths, MAJCOMInput){
         mutate(Population = ifelse(is.na(Population), 0, Population),
                cumulative_deaths = ifelse(is.na(cumulative_deaths), 0, cumulative_deaths))
     
+    
+    #######
+    Growth = dplyr::filter(Growth, Population != 0)
+    Growth <- Growth %>% mutate_if(is.numeric, function(x) ifelse(is.infinite(x), 0, x))
+    
+    #########
+    
     # Function to fix 4-letter FIPS
     fix.fips <- function(column){
         column <- str_pad(column, width=5, side="left", pad="0")
@@ -43,8 +50,7 @@ HotspotPlot <- function(CovidConfirmedCases, CovidDeaths, MAJCOMInput){
         mutate(CountyFIPS = fix.fips(CountyFIPS))
     
     # Convert cimd dataframe to long format and filter to within 50 miles of base
-    
-    rownames(cimd) = CountyInfo[,3] 
+    rownames(cimd) = CountyInfo$FIPS
     cimd_long <- cimd %>% rownames_to_column(var= "FIPS")
     cimd_long <- cimd_long %>% gather(-c(FIPS), key = base, value = DistanceMiles) 
     Bases50 <- cimd_long %>% filter(DistanceMiles <= 50) %>% mutate(FIPS = fix.fips(FIPS))
@@ -196,4 +202,4 @@ HotspotPlot <- function(CovidConfirmedCases, CovidDeaths, MAJCOMInput){
 #           panel.grid.minor = element_blank(),
 #           panel.border = element_blank(),
 #           legend.title.align = .5)
-# 
+#

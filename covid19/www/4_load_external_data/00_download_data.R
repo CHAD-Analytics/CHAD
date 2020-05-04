@@ -8,14 +8,20 @@ if(test_date < Sys.Date()) {
   
   R.utils::downloadFile("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_US.csv",
                         filename = "www/4_load_external_data/data_files/time_series_covid19_confirmed_US.csv",
+                        skip = F,
                         overwrite = T)
   R.utils::downloadFile("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_US.csv",
                         filename = "www/4_load_external_data/data_files/time_series_covid19_deaths_US.csv",
+                        skip = F,
                         overwrite = T)
   R.utils::downloadFile("https://ihmecovid19storage.blob.core.windows.net/latest/ihme-covid19.zip", 
                         filename = "www/4_load_external_data/data_files/ihme-covid19.zip", 
                         overwrite = T)  
-  
+
+  R.utils::downloadFile("https://open-covid-19.github.io/data/data.csv",
+                        filename = "www/4_load_external_data/data_files/data.csv",
+                        skip = F,
+                        overwrite = T)
 
   shaman.lab.json = jsonlite::fromJSON("https://api.github.com/repos/shaman-lab/COVID-19Projection/contents?per_page=100")
   shaman.lab.path = get.shaman.lab.path()
