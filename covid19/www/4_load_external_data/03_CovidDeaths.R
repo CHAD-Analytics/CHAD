@@ -24,8 +24,8 @@ colnames(CovidDeaths) = c(colnames(CovidDeaths[1:4]),
 
 ##########################################################################################
 
-GlobalData = read.csv("www/3_load_external_data/data_files/data.csv")
-#GlobalData = vroom::vroom("www/3_load_external_data/data_files/data.csv")
+GlobalData = read.csv("www/4_load_external_data/data_files/data.csv")
+#GlobalData = vroom::vroom("www/4_load_external_data/data_files/data.csv")
 GlobalData = replace(GlobalData, GlobalData == "", NA)
 
 
