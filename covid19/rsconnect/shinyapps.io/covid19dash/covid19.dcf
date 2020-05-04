@@ -5,8 +5,8 @@ account: covid19dash
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 2075907
-bundleId: 3078412
+bundleId: 3090355
 url: https://covid19dash.shinyapps.io/covid19/
-when: 1588105579.33967
+when: 1588343630.97963
 asMultiple: FALSE
 asStatic: FALSE

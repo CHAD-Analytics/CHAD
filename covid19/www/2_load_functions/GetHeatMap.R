@@ -1,4 +1,4 @@
-GetHeatMap<-function(MAJWingSelect,MAJCOMChoice,WingChoice,ModelChoice,ForecastChoice,Stat){
+GetHeatMap<-function(MAJNAFSelect,MAJCOMChoice,NAFChoice,WingChoice,ModelChoice,ForecastChoice,Stat){
   if (Stat == "Cases") {
     HeatMap<-HeatMapForecastCases
     Banner<-"Projected Daily New Cases"
@@ -6,7 +6,7 @@ GetHeatMap<-function(MAJWingSelect,MAJCOMChoice,WingChoice,ModelChoice,ForecastC
     HeatMap<-HeatMapForecast
     Banner<-"Projected Daily New Hospitalizations"
   }
-  if (MAJWingSelect=="MAJCOM"){
+  if (MAJNAFSelect=="MAJCOM"){
     if (MAJCOMChoice=="All") {
       HeatMap<- HeatMap %>%
         filter(Days == ForecastChoice)
@@ -18,7 +18,8 @@ GetHeatMap<-function(MAJWingSelect,MAJCOMChoice,WingChoice,ModelChoice,ForecastC
       HeatMap<- HeatMap %>%
         filter(MAJCOM == MAJCOMChoice & Days == ForecastChoice)
     }
-  }else{
+  }else{  # if NAF is 
+    AFWings<-dplyr::filter(AFNAFS,NAF %in% NAFChoice)
     if (WingChoice=="All") {
       forecastbaselist<-dplyr::filter(AFWings,Wing %in% WingList)            
       forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE) 

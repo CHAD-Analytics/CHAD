@@ -14,8 +14,6 @@ currCount = 0
 # Create Charts for plotting lines showing trends among the virus  ------------------------------------------------------------------------------------------------------------------
 
 
-
-
 # Create data tables for analysis ---------------------------------------------------------------------------------------------------------------------------------------------------
 
 AFrow = nrow(AFBaseLocations)
@@ -505,6 +503,7 @@ ForecastDataTableOneMile<-ForecastDataTableOneMile %>% arrange(ForecastDataTable
 
 ForecastDataTableCasesOneMile$Installation<-as.character(ForecastDataTableCasesOneMile$Installation)
 ForecastDataTableCasesOneMile<-ForecastDataTableCasesOneMile %>% arrange(ForecastDataTableCasesOneMile$Installation)
+
 
 #Create Top 15 Bases Report###################################################################################
 TruncatedReport<-ForecastDataTableOneMile[order(ForecastDataTableOneMile$`Hopitalization Per 100,000`, decreasing = TRUE),]

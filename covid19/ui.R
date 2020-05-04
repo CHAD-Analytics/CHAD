@@ -72,12 +72,12 @@ ui <- tagList(
                                                         "Cases or Hospitalizations: ",
                                                         c("Cases"="Cases",
                                                           "Hospitalizations"="Hospitalizations"),selected = c("Hospitalizations")),
-                                           radioButtons("MAJCOMWing",
-                                                        "MAJCOM or Wing Filter: ",
+                                           radioButtons("MAJCOMNAF",
+                                                        "MAJCOM or NAF Filter: ",
                                                         c("MAJCOM"="MAJCOM",
-                                                          "Wing"="Wing"),selected = c("MAJCOM")),   
+                                                          "NAF"="NAF"),selected = c("MAJCOM")),   
                                            conditionalPanel(
-                                               condition = "input.MAJCOMWing == 'MAJCOM'",
+                                               condition = "input.MAJCOMNAF == 'MAJCOM'",
                                                selectInput(
                                                    "MAJCOMInput",
                                                    "MAJCOM:", 
@@ -85,20 +85,28 @@ ui <- tagList(
                                                    selectize = FALSE)
                                                    ),
                                            conditionalPanel(
-                                               condition = "input.MAJCOMWing == 'Wing'",
+                                               condition = "input.MAJCOMNAF == 'NAF'",
+                                               selectInput(
+                                                   "NAFInput",
+                                                   "Numbered Air Forces:", 
+                                                   NAFList,
+                                                   #list(`NAF` = NAFList),
+                                                   selectize = FALSE),
+                                           #         ),
+                                           # conditionalPanel(
+                                           #     condition = 'input.NAFInput %in% NAFList',
                                                selectInput(
                                                    "WingInput",
                                                    "Wing:", 
-                                                   list(`Wing` = WingList), 
-                                                   selectize = FALSE),
-                                               selectInput(
+                                                   choices=NULL,
+                                                   #list(`Wing` = WingList), 
+                                                   selectize = FALSE)
+                                               ,selectInput(
                                                    "GroupInput",
                                                    "Group:",
                                                    choices=NULL,
                                                    selectize = FALSE)
-                                                   #list(`Group` <- AFWings %>% filter(AFWings$Wing %in% Input.WingInput) ),
-                                                   #selectize = FALSE)
-                                                   ),  
+                                                    ),  
                                            radioButtons("SummaryModelType",
                                                         "Summary Plot Model: ",
                                                         c("IHME"="IHME",
@@ -227,6 +235,7 @@ ui <- tagList(
                                           height = 900, 
                                           width =13,
                                           downloadButton('downloadData', 'Download Full Dataset'),
+                                          downloadButton('downloadFilteredData', 'Download Filtered Dataset (Table Above)'),
                                           downloadButton('HotSpotData', 'Download Hotspot Dataset: 50 Mile Radius'),
                                           downloadButton('HotSpotDataOneMile', 'Download Hotspot Dataset: Single County'))
                                       
