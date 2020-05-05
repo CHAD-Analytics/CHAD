@@ -27,22 +27,22 @@ ui <- tagList(
                  # Step One - Header
                  ###################################################################################################################################################
                   dashboardHeader(title = div(img(src=base64enc::dataURI(file="www/7_other_resources/AFIT_Emblem_Blue.png", mime="image/png") ,height = '50',width = '110')),
-                                  titleWidth = 300,
-                                  dropdownMenu( 
-                                      icon = tags$div(HTML('<font size = "5" color = "blue" font-weight:"bold" >More Information</font>  <i class="fa fa-info-circle" style = "font-size:18px;"></i> <body style="background-color:powderblue;"></body>')),
-                                      headerText = "Want to know more?",
-                                      badgeStatus = "primary",
-                                      tags$li(actionLink("overviewInfo", label = "Overview", icon = icon("globe")),
-                                              class = "dropdown"),
-                                      tags$li(actionLink("inputInfo", label = "User Inputs", icon = icon("sliders-h")),
-                                              class = "dropdown"),
-                                      tags$li(actionLink("projInfo", label = "Projections", icon = icon("chart-line")),
-                                              class = "dropdown"),
-                                      tags$li(actionLink("calcInfo", label = "Calculations", icon = icon("calculator")),
-                                              class = "dropdown"),
-                                      tags$li(actionLink("sourceInfo", label = "Sources", icon = icon("user-secret")),
-                                              class = "dropdown")
-                                  )
+                                  titleWidth = 300 #,
+                                  # dropdownMenu( 
+                                  #     icon = tags$div(HTML('<font size = "5" color = "blue" font-weight:"bold" >More Information</font>  <i class="fa fa-info-circle" style = "font-size:18px;"></i> <body style="background-color:powderblue;"></body>')),
+                                  #     headerText = "Want to know more?",
+                                  #     badgeStatus = "primary",
+                                  #     tags$li(actionLink("overviewInfo", label = "Overview", icon = icon("globe")),
+                                  #             class = "dropdown"),
+                                  #     tags$li(actionLink("inputInfo", label = "User Inputs", icon = icon("sliders-h")),
+                                  #             class = "dropdown"),
+                                  #     tags$li(actionLink("projInfo", label = "Projections", icon = icon("chart-line")),
+                                  #             class = "dropdown"),
+                                  #     tags$li(actionLink("calcInfo", label = "Calculations", icon = icon("calculator")),
+                                  #             class = "dropdown"),
+                                  #     tags$li(actionLink("sourceInfo", label = "Sources", icon = icon("user-secret")),
+                                  #             class = "dropdown")
+                                  # )
                   ),
                   
                   # Step Two - Sidebar
@@ -209,7 +209,26 @@ ui <- tagList(
                                    })
                                    ')),
                       tabsetPanel(id = "tabselected",
-                                  
+                                  ####### WELCOME TAB ###############
+                                  tabPanel(title="Welcome", br(), br(),
+                                           
+                                           tags$div(style="text-align:center;font-size: 18px; font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; color: black",
+                                              "Welcome to the Air Force Institute of Technology (AFIT) COVID-19 Health Assessment Dashboard (CHAD)"),
+                                          br(),br(),
+                                          tags$div(style="text-align:center; font-size=16px;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; color: black", 
+                                                   "Want to learn more?  Visit the links below for more information."),  
+                                          br(),br(),
+                                          tags$div(style="text-align: center; font-size: 18px", actionLink("overviewInfo", label = "Overview", icon = icon("globe"))),
+                                          br(),br(),br(),
+                                          tags$div(style="text-align: center; font-size: 18px", actionLink("inputInfo", label = "User Inputs", icon = icon("sliders-h"))),
+                                          br(),br(), br(),
+                                          tags$div(style="text-align: center; font-size: 18px", actionLink("projInfo", label = "Projections", icon = icon("chart-line"))),
+                                          br(),br(),br(),
+                                          tags$div(style="text-align: center; font-size: 18px", actionLink("calcInfo", label = "Calculations", icon = icon("calculator"))),
+                                          br(),br(),br(),
+                                          tags$div(style="text-align: center; font-size: 18px", actionLink("sourceInfo", label = "Sources", icon = icon("user-secret")))
+                                  ),
+                      
                                   ####### BEGIN SUMMARY TAB #########
                                   # Mission Risk ------------------------------------------------------------
                                   tabPanel(
