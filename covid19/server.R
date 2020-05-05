@@ -278,24 +278,24 @@ server <- function(input, output,session) {
     USlist = list(region="US",
                   displayMode = "regions",
                   resolution = "provinces",
-                  colors="['#D3D3D3', 'red']",
+                  colors="['#e6e3e3', '#85050a']",
                   width=1200,
-                  height = 600,
-                  legend = "none") 
+                  height = 600
+                  ) 
     
     EUROlist = list(region="150",
                     displayMode = "regions",
-                    colors="['#D3D3D3', 'red']",
+                    colors="['#e6e3e3', '#85050a']",
                     width=1200,
-                    height = 600,
-                    legend = "none")
+                    height = 600
+                    )
     
     ASIAlist = list(region="142",
                     displayMode = "regions",
-                    colors="['#D3D3D3', 'red']",
+                    colors="['#e6e3e3', '#85050a']",
                     width=1200,
-                    height = 600,
-                    legend = "none")
+                    height = 600
+                    )
     
     if (input$MapView == "Europe"){
       MapChoice = EUROlist
