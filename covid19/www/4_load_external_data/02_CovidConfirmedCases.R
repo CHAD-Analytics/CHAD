@@ -1,4 +1,5 @@
-CovidConfirmedCases = vroom::vroom("www/4_load_external_data/data_files/time_series_covid19_confirmed_US.csv")
+#CovidConfirmedCases = vroom::vroom("www/4_load_external_data/data_files/time_series_covid19_confirmed_US.csv")
+CovidConfirmedCases = as.data.frame(data.table::fread("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_US.csv"))
 
 CovidConfirmedCases = CovidConfirmedCases[colSums(!is.na(CovidConfirmedCases)) > 0]
 
@@ -28,9 +29,9 @@ colnames(CovidConfirmedCases) = c(colnames(CovidConfirmedCases[1:4]),
 
 ##########################################################################################
 
-GlobalData = read.csv("www/4_load_external_data/data_files/data.csv")
-#GlobalData = vroom::vroom("www/4_load_external_data/data_files/data.csv")
-GlobalData = replace(GlobalData, GlobalData == "", NA)
+# GlobalData = read.csv("www/4_load_external_data/data_files/data.csv")
+# #GlobalData = vroom::vroom("www/4_load_external_data/data_files/data.csv")
+# GlobalData = replace(GlobalData, GlobalData == "", NA)
 
 
 

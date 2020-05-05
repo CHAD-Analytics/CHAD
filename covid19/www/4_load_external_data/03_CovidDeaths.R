@@ -1,4 +1,5 @@
-CovidDeaths = vroom::vroom("www/4_load_external_data/data_files/time_series_covid19_deaths_US.csv")
+#CovidDeaths = vroom::vroom("www/4_load_external_data/data_files/time_series_covid19_deaths_US.csv")
+CovidDeaths = as.data.frame(data.table::fread("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_US.csv"))
 
 CovidDeaths = CovidDeaths[,c(5, 13:ncol(CovidDeaths))]
 colnames(CovidDeaths)[1] = "CountyFIPS"
@@ -24,9 +25,9 @@ colnames(CovidDeaths) = c(colnames(CovidDeaths[1:4]),
 
 ##########################################################################################
 
-GlobalData = read.csv("www/4_load_external_data/data_files/data.csv")
-#GlobalData = vroom::vroom("www/4_load_external_data/data_files/data.csv")
-GlobalData = replace(GlobalData, GlobalData == "", NA)
+# GlobalData = read.csv("www/4_load_external_data/data_files/data.csv")
+# #GlobalData = vroom::vroom("www/4_load_external_data/data_files/data.csv")
+# GlobalData = replace(GlobalData, GlobalData == "", NA)
 
 
 # #Split cases and deaths into separate data frames. Then convert from long to wide, then order it by country.

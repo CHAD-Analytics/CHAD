@@ -16,8 +16,7 @@ CovidCasesPerDayChart<-function(IncludedCounties){
     DailyNewDeathsT <- colSums(DailyNewDeaths)
     
     #Clean up the dataset to prepare for plotting
-    #ForecastDate<- seq(as.Date("2020-1-23"), length=length(DailyNewCases), by="1 day")
-    ForecastDate<- seq(as.Date("2020-1-22"), length=length(DailyNewCases), by="1 day")
+    ForecastDate<- seq(as.Date("2020-1-23"), length=length(DailyNewCases), by="1 day")
     Chart1Data<-cbind.data.frame(ForecastDate,DailyNewCasesT,DailyNewDeathsT)
     colnames(Chart1Data)<-c("ForecastDate","New Cases","New Fatalities")
 
