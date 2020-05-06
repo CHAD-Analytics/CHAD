@@ -280,7 +280,15 @@ ui <- tagList(
                                           
                                       ),
                                       fluidRow( 
-                                          box(title = "Daily Reports",plotlyOutput("LocalHealthPlot1",height = 300)),
+                                          tabBox(
+                                              tabPanel("Daily New Cases",
+                                                       plotlyOutput("LocalHealthPlot1",height = 300)
+                                                       ),
+                                              tabPanel("Moving 3-Day Average",
+                                                       plotlyOutput("LocalHealthPlot3day",height = 300)
+                                                       )
+                                          ),
+                                          #box(title = "Daily Reports",plotlyOutput("LocalHealthPlot1",height = 300)),
                                           box(title = "Total Reports",plotlyOutput("LocalHealthPlot2",height = 300))
                                       ),
                                       fluidRow(

@@ -234,6 +234,41 @@ server <- function(input, output,session) {
     plotDaily
   })
   
+  
+  #Create local health plot for Daily Cases 
+  output$LocalHealthPlot3day<-renderPlotly({
+    
+    MyCounties<-GetCounties(input$Base,input$Radius)
+    DailyChart <- CovidCasesPer3DayAverageChart(MyCounties)
+    DailyChart <- dplyr::filter(DailyChart, ForecastDate >= DailyChart$ForecastDate[1] + 35)
+    
+    plotDaily <- ggplot(DailyChart) + 
+      geom_col(aes(x=ForecastDate, y=value, colour = variable), size = 0.5) +
+      scale_colour_manual(values=c("Blue", "Red")) +
+      xlab('Date') +
+      ylab('Number of People') +
+      theme_bw() + 
+      theme(plot.title = element_text(face = "bold", size = 15, family = "sans"),
+            axis.title = element_text(face = "bold", size = 11, family = "sans"),
+            axis.text.x = element_text(angle = 60, hjust = 1), 
+            axis.line = element_line(color = "black"),
+            legend.position = "top",
+            plot.background = element_blank(),
+            panel.grid.major = element_blank(),
+            panel.grid.minor = element_blank(),
+            panel.border = element_blank()) +
+      scale_x_date(date_breaks = "1 week") +
+      labs(color='')
+    
+    plotDaily <- ggplotly(plotDaily)
+    plotDaily <- plotDaily %>% layout(legend = list(orientation = "h",   # show entries horizontally
+                                                    xanchor = "center",  # use center of legend as anchor
+                                                    x = 0.5,
+                                                    y = 1.2)) %>% config(displayModeBar = FALSE)
+    plotDaily
+  })
+  
+  
   #Create second plot of local health population 
   output$LocalHealthPlot2<-renderPlotly({
     
