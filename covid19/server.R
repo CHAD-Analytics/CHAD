@@ -316,21 +316,21 @@ server <- function(input, output,session) {
                   colors="['#e6e3e3', '#85050a']",
                   width=1200,
                   height = 600
-                  ) 
+    ) 
     
     EUROlist = list(region="150",
                     displayMode = "regions",
                     colors="['#e6e3e3', '#85050a']",
                     width=1200,
                     height = 600
-                    )
+    )
     
     ASIAlist = list(region="142",
                     displayMode = "regions",
                     colors="['#e6e3e3', '#85050a']",
                     width=1200,
                     height = 600
-                    )
+    )
     
     if (input$MapView == "Europe"){
       MapChoice = EUROlist
@@ -630,6 +630,7 @@ server <- function(input, output,session) {
     else if (input$selectall%%2 == 0)
     {
       updateCheckboxGroupInput(session,"ModelSelectionValue","Forecasting Model(s): ",choices=c("IHME (University of Washington)"="IHME",
+                                                                                                "Youyang Gu - Independent (YYG) Model"="YYG",
                                                                                                 "CHIME (University of Pennsylvania): SC+NE+SD"="CHIME1",
                                                                                                 "CHIME: NE+SD"="CHIME2",
                                                                                                 "CHIME: SC+SD"="CHIME3",                                                                
@@ -639,7 +640,6 @@ server <- function(input, output,session) {
                                                                                                 "CHIME: SC"="CHIME7",
                                                                                                 "Los Alamos National Labs (LANL)"="LANL",
                                                                                                 "University of Texas"="UT",
-                                                                                                "Columbia University: No Intervetion"="CUNI",
                                                                                                 "Columbia University: 20% SC Reduction"="CU20SC",
                                                                                                 "Columbia University: 30% SC Reduction"="CU30SC",
                                                                                                 "Columbia University: 40% SC Reduction"="CU40SC"))
@@ -647,6 +647,7 @@ server <- function(input, output,session) {
     else
     {
       updateCheckboxGroupInput(session,"ModelSelectionValue","Forecasting Model(s):",choices=c("IHME (University of Washinton)"="IHME",
+                                                                                               "Youyang Gu - Independent (YYG) Model"="YYG",
                                                                                                "CHIME (University of Pennsylvania): SC+NE+SD"="CHIME1",
                                                                                                "CHIME: NE+SD"="CHIME2",
                                                                                                "CHIME: SC+SD"="CHIME3",                                                                
@@ -656,11 +657,11 @@ server <- function(input, output,session) {
                                                                                                "CHIME: SC"="CHIME7",
                                                                                                "Los Alamos National Labs (LANL)"="LANL",
                                                                                                "University of Texas"="UT",
-                                                                                               "Columbia University: No Intervetion"="CUNI",
                                                                                                "Columbia University: 20% SC Reduction"="CU20SC",
                                                                                                "Columbia University: 30% SC Reduction"="CU30SC",
                                                                                                "Columbia University: 40% SC Reduction"="CU40SC"),
                                selected=c("IHME (University of Washinton)"="IHME",
+                                          "Youyang Gu - Independent (YYG) Model"="YYG",
                                           "CHIME (University of Pennsylvania): SC+NE+SD"="CHIME1",
                                           "CHIME: NE+SD"="CHIME2",
                                           "CHIME: SC+SD"="CHIME3",                                                                
@@ -670,7 +671,6 @@ server <- function(input, output,session) {
                                           "CHIME: SC"="CHIME7",
                                           "Los Alamos National Labs (LANL)"="LANL",
                                           "University of Texas"="UT",
-                                          "Columbia University: No Intervetion"="CUNI",
                                           "Columbia University: 20% SC Reduction"="CU20SC",
                                           "Columbia University: 30% SC Reduction"="CU30SC",
                                           "Columbia University: 40% SC Reduction"="CU40SC"))
@@ -686,6 +686,7 @@ server <- function(input, output,session) {
     ModelID<-"Past Data"
     
     if ("IHME" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"IHME")}
+    if ("YYG" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"YYG")}
     if ("LANL" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"LANL")}
     if ("UT" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"UT")}
     if ("CHIME7" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CHIME_4%_SD")}
@@ -695,7 +696,6 @@ server <- function(input, output,session) {
     if ("CHIME3" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CHIME_19%_SD")}
     if ("CHIME2" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CHIME_23%_SD")}
     if ("CHIME1" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CHIME_27%_SD")}
-    if ("CUNI" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CU_No Intervention")}
     if ("CU20SC" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CU_20%_SD")}
     if ("CU30SC" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CU_30%_SD")}
     if ("CU40SC" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CU_40%_SD")}
@@ -740,8 +740,51 @@ server <- function(input, output,session) {
     dt<-DT::datatable(dt, rownames = FALSE, options = list(dom = 't',ordering = F, "pageLength"=100))
     dt
   })
-    
-    
+
+  
+  ###### Filter installations by branch and operational status
+  ###### Filter works for local and projection tabs############
+  OperationalListP<- reactive({
+    #Once select service, select active, guard, reserve
+    OperationalListP <- dplyr::filter(AFBaseLocations,Branch  %in% input$BranchP)
+    OperationalListP <- sort(unique(OperationalListP$Operational), decreasing = FALSE)
+    OperationalListP <- c("All",OperationalListP)
+  })
+  observe(updateSelectInput(session,"OperationalInputP",choices = OperationalList()))  
+  
+  Base<- reactive({
+    #Once select service, select active, guard, reserve
+    Bases <- dplyr::filter(AFBaseLocations,Branch %in% "Air Force")#input$BranchP)
+    Bases <- dplyr::filter(Bases,Operational %in% OperationalListP)    
+    Bases <- sort(unique(Base$Base), decreasing = FALSE)
+    Bases <- c(Bases)
+  })
+  observeEvent(input$OperationalInputP,{updateSelectInput(session,"Base",choices = Base())})
+  ###################################################################
+  
+  ####### Filter MAJCOM Summary Tab###############
+  OperationalList<- reactive({
+    #Once select service, select active, guard, reserve
+    OperationalList <- dplyr::filter(AFBaseLocations,Branch %in% BranchList)
+    OperationalList <- sort(unique(OperationalList$Operational), decreasing = FALSE)
+    OperationalList <- c("All",OperationalList)
+  })
+  observe(updateSelectInput(session,"OperationalInput",choices = OperationalList()))  
+  
+  GroupList <- reactive({
+    if (input$WingInput != "All") {
+      GroupList<-dplyr::filter(AFWings,Wing %in% input$WingInput)
+      GroupList<-sort(unique(GroupList$`Group`), decreasing = FALSE)
+      GroupList<-c("All",GroupList)
+    }else {
+      GroupList<-sort(unique(AFWings$`Group`), decreasing = FALSE)
+      GroupList<-c("All",GroupList)
+    }
+  })
+  # #observe(updateSelectInput(session,"GroupInput",choices = GroupList())) 
+  observeEvent(input$WingInput,{updateSelectInput(session,"GroupInput",choices = GroupList())})  
+  
+
     # ##Add in Wing/Group Filter
     # ##Might need make a separate  funtion that's global
 
@@ -1084,41 +1127,41 @@ server <- function(input, output,session) {
     
     
     output$report <- downloadHandler(
-        # For PDF output, change this to "report.pdf"
-        filename = function(){
-            paste0('CHAD_report(',paste(Sys.Date(),sep = '_'),')','.html')
-        },
-        content = function(file) {
-            
-            # Copy the report file to a temporary directory before processing it, in
-            # case we don't have write permissions to the current working dir (which
-            # can happen when deployed).
-            
-            # tempReport <- file.path(tempdir(), "TestReport.Rmd")
-            # file.copy("TestReport.Rmd", tempReport, overwrite = TRUE)
-            
-            # src <- normalizePath("TestReport2.Rmd")
-            # owd <- setwd(tempdir())
-            # on.exit(setwd(owd))
-            # file.copy(src, "TestReport2.Rmd", overwrite = TRUE)
-            # out <- render("TestReport2.Rmd", html_document())
-            # file.rename(out, file)
-            
-            # # Set up parameters to pass to Rmd document
-            params <- list(radius = input$Radius,
-                           base = input$Base,
-                           pjDays = input$proj_days,
-                           socDis = input$SocialDistanceValue)
-            
-            # Knit the document, passing in the `params` list, and eval it in a
-            # child of the global environment (this isolates the code in the document
-            # from the code in this app).
-            rmarkdown::render("www/7_other_resources/TestReport.Rmd", output_file = file,
-                              params = params,
-                              envir = new.env(parent = globalenv())
-                              )
-            
-        }
+      # For PDF output, change this to "report.pdf"
+      filename = function(){
+        paste0('CHAD_report(',paste(Sys.Date(),sep = '_'),')','.html')
+      },
+      content = function(file) {
+        
+        # Copy the report file to a temporary directory before processing it, in
+        # case we don't have write permissions to the current working dir (which
+        # can happen when deployed).
+        
+        # tempReport <- file.path(tempdir(), "TestReport.Rmd")
+        # file.copy("TestReport.Rmd", tempReport, overwrite = TRUE)
+        
+        # src <- normalizePath("TestReport2.Rmd")
+        # owd <- setwd(tempdir())
+        # on.exit(setwd(owd))
+        # file.copy(src, "TestReport2.Rmd", overwrite = TRUE)
+        # out <- render("TestReport2.Rmd", html_document())
+        # file.rename(out, file)
+        
+        # # Set up parameters to pass to Rmd document
+        params <- list(radius = input$Radius,
+                       base = input$Base,
+                       pjDays = input$proj_days,
+                       socDis = input$SocialDistanceValue)
+        
+        # Knit the document, passing in the `params` list, and eval it in a
+        # child of the global environment (this isolates the code in the document
+        # from the code in this app).
+        rmarkdown::render("www/7_other_resources/TestReport.Rmd", output_file = file,
+                          params = params,
+                          envir = new.env(parent = globalenv())
+        )
+        
+      }
     )
     
     
@@ -1129,50 +1172,50 @@ server <- function(input, output,session) {
     
     #Step three provides input information for annotation of the overall app such as inputs, sources, and calculations.
     observeEvent(input$overviewInfo, {
-        showModal(
-            modalDialog(
-                size = "l",fade = TRUE, easyClose = TRUE, title = "OVERVIEW",
-                OverviewLink)
-        )
+      showModal(
+        modalDialog(
+          size = "l",fade = TRUE, easyClose = TRUE, title = "OVERVIEW",
+          OverviewLink)
+      )
     })
     
     observeEvent(input$inputInfo, {
-        showModal(
-            modalDialog(
-                size = "l",fade = TRUE, easyClose = TRUE, title = "USER INPUTS",
-                InfoLink)
-        )
+      showModal(
+        modalDialog(
+          size = "l",fade = TRUE, easyClose = TRUE, title = "USER INPUTS",
+          InfoLink)
+      )
     })
     observeEvent(input$projInfo, {
-        showModal(
-            modalDialog(
-                size = "l",fade = TRUE, easyClose = TRUE, title = "PROJECTIONS",
-                ProjLink)
-        )
+      showModal(
+        modalDialog(
+          size = "l",fade = TRUE, easyClose = TRUE, title = "PROJECTIONS",
+          ProjLink)
+      )
     })
     
     observeEvent(input$calcInfo, {
-        showModal(
-            modalDialog(
-                size = "l",fade = TRUE, easyClose = TRUE, title = "CALCULATIONS",
-                CalcLink)
-        )
+      showModal(
+        modalDialog(
+          size = "l",fade = TRUE, easyClose = TRUE, title = "CALCULATIONS",
+          CalcLink)
+      )
     })
     
     observeEvent(input$sourceInfo, {
-        showModal(
-            modalDialog(
-                size = "l",fade = TRUE, easyClose = TRUE, title = "SOURCES",
-                SourceLink)
-        )
+      showModal(
+        modalDialog(
+          size = "l",fade = TRUE, easyClose = TRUE, title = "SOURCES",
+          SourceLink)
+      )
     })
     
     
     
-
-
-
-
+    
+    
+    
+    
     
     
 }

@@ -2,10 +2,12 @@
 BaseList <- sort(AFBaseLocations$Base, decreasing = FALSE)
 HospitalList <- HospitalInfo$NAME
 CountyList <- CountyInfo$County
-MAJCOMList <- sort(unique(AFBaseLocations$`Major Command`), decreasing = FALSE)
+
+BranchList <- sort(unique(AFBaseLocations$Branch), decreasing = FALSE)
+AFBases<-dplyr::filter(AFBaseLocations,Branch %in% "Air Force")
+MAJCOMList <- sort(unique(AFBases$'Major Command'), decreasing = FALSE)
 MAJCOMList<-c("All",'Active Duty',MAJCOMList)
-
-
+OperationalListP <- sort(unique(AFBases$Operational), decreasing = FALSE)
 # Is this used anywhere?
 currCount = 0
 
@@ -106,6 +108,24 @@ for (i in 2:AFrow){
   
   DeathCounties<-subset(CovidDeaths, CountyFIPS %in% MyCounties$FIPS)
   CaseRate <- subset(CovidConfirmedCasesRate, CountyFIPS %in% MyCounties$FIPS)
+  if (nrow(CovidCounties)<nrow(MyCounties)){
+    diff1<-setdiff(MyCounties$FIPS, CovidCounties$CountyFIPS) 
+    r<-which(MyCounties$FIPS == diff1)
+    CovidCounties[seq(r+1,nrow(CovidCounties)+1),] <- CovidCounties[seq(r,nrow(CovidCounties)),]
+    CovidCounties[r,] <- 0
+  }
+  if (nrow(DeathCounties)<nrow(MyCounties)){
+    diff2<-setdiff(MyCounties$FIPS, DeathCounties$CountyFIPS)
+    r<-which(MyCounties$FIPS == diff1)
+    DeathCounties[seq(r+1,nrow(DeathCounties)+1),] <- DeathCounties[seq(r,nrow(DeathCounties)),]
+    DeathCounties[r,] <- 0
+  }  
+  if (nrow(CaseRate)<nrow(MyCounties)){
+    diff3<-setdiff(MyCounties$FIPS, CaseRate$CountyFIPS)
+    r<-which(MyCounties$FIPS == diff1)
+    CaseRate[seq(r+1,nrow(CaseRate)+1),] <- CaseRate[seq(r,nrow(CaseRate)),]
+    CaseRate[r,] <- 0
+  }  
   CountyDataTable<-cbind(MyCounties,rev(CovidCounties)[,1],rev(DeathCounties)[,1],rev(CaseRate)[,1])
   CountyDataTable<-data.frame(CountyDataTable$State,CountyDataTable$County,CountyDataTable$Population, rev(CountyDataTable)[,3], rev(CountyDataTable)[,2],rev(CountyDataTable)[,1])
   colnames(CountyDataTable)<-c("State","County","Population","Total Confirmed Cases","Total Fatalities", "Case Doubling Rate (days)" )
@@ -361,6 +381,24 @@ for (i in 2:AFrow){
   
   DeathCounties<-subset(CovidDeaths, CountyFIPS %in% MyCounties$FIPS)
   CaseRate <- subset(CovidConfirmedCasesRate, CountyFIPS %in% MyCounties$FIPS)
+  if (nrow(CovidCounties)<nrow(MyCounties)){
+      diff1<-setdiff(MyCounties$FIPS, CovidCounties$CountyFIPS) 
+      r<-which(MyCounties$FIPS == diff1)
+      CovidCounties[seq(r+1,nrow(CovidCounties)+1),] <- CovidCounties[seq(r,nrow(CovidCounties)),]
+      CovidCounties[r,] <- 0
+  }
+  if (nrow(DeathCounties)<nrow(MyCounties)){
+      diff2<-setdiff(MyCounties$FIPS, DeathCounties$CountyFIPS)
+      r<-which(MyCounties$FIPS == diff1)
+      DeathCounties[seq(r+1,nrow(DeathCounties)+1),] <- DeathCounties[seq(r,nrow(DeathCounties)),]
+      DeathCounties[r,] <- 0
+  }  
+  if (nrow(CaseRate)<nrow(MyCounties)){
+      diff3<-setdiff(MyCounties$FIPS, CaseRate$CountyFIPS)
+      r<-which(MyCounties$FIPS == diff1)
+      CaseRate[seq(r+1,nrow(CaseRate)+1),] <- CaseRate[seq(r,nrow(CaseRate)),]
+      CaseRate[r,] <- 0
+  }
   CountyDataTable<-cbind(MyCounties,rev(CovidCounties)[,1],rev(DeathCounties)[,1],rev(CaseRate)[,1])
   CountyDataTable<-data.frame(CountyDataTable$State,CountyDataTable$County,CountyDataTable$Population, rev(CountyDataTable)[,3], rev(CountyDataTable)[,2],rev(CountyDataTable)[,1])
   colnames(CountyDataTable)<-c("State","County","Population","Total Confirmed Cases","Total Fatalities", "Case Doubling Rate (days)" )
@@ -528,20 +566,21 @@ rm(TruncatedReport2)
 
 ######################## Summary Tab Heat Map
 HeatMapForecast<-merge(AFBaseLocations, ForecastDataTable, by.x = "Base", by.y = "Installation")
-HeatMapForecast<-data.frame(HeatMapForecast$Base, HeatMapForecast$Location, HeatMapForecast$State.x, HeatMapForecast$`Major Command`, HeatMapForecast$Lat, HeatMapForecast$Long,HeatMapForecast$`Available Beds`,HeatMapForecast$`Hopitalization Per 100,000`,HeatMapForecast$`Hopitalization Per 10,000`,HeatMapForecast$`New Hospitalizations`,HeatMapForecast$`New Hospitalizations` ,HeatMapForecast$`7D SEIAR Forecast`, HeatMapForecast$`7D IHME Forecast`,HeatMapForecast$`14D SEIAR Forecast`,  HeatMapForecast$`14D IHME Forecast`,  HeatMapForecast$`21D SEIAR Forecast`, HeatMapForecast$`21D IHME Forecast`, HeatMapForecast$`30D SEIAR Forecast`, HeatMapForecast$`30D IHME Forecast`)
+HeatMapForecast<-data.frame(HeatMapForecast$Base, HeatMapForecast$City, HeatMapForecast$State.x, HeatMapForecast$`Major Command`, HeatMapForecast$Lat, HeatMapForecast$Long,HeatMapForecast$`Available Beds`,HeatMapForecast$`Hopitalization Per 100,000`,HeatMapForecast$`Hopitalization Per 10,000`,HeatMapForecast$`New Hospitalizations`,HeatMapForecast$`New Hospitalizations`,HeatMapForecast$`7D SEIAR Forecast`, HeatMapForecast$`7D IHME Forecast`,HeatMapForecast$`14D SEIAR Forecast`,  HeatMapForecast$`14D IHME Forecast`,  HeatMapForecast$`21D SEIAR Forecast`, HeatMapForecast$`21D IHME Forecast`, HeatMapForecast$`30D SEIAR Forecast`, HeatMapForecast$`30D IHME Forecast`)
 colnames(HeatMapForecast)<-c("Base","City","State","MAJCOM","Lat","Long","Beds","Hospitalizations Per 100,000","Hospitalizations Per 10,000","Today.CHIME","Today.IHME", "Seven.IHME","Seven.CHIME","Fourteen.IHME","Fourteen.CHIME","Twenty-One.IHME","Twenty-One.CHIME", "Thirty.IHME","Thirty.CHIME")
 HeatMapForecast<-reshape(HeatMapForecast, direction='long', 
-                         varying=c('Today.CHIME','Today.IHME','Seven.IHME', 'Seven.CHIME', 'Fourteen.IHME', 'Fourteen.CHIME','Twenty-One.IHME','Twenty-One.CHIME','Thirty.IHME','Thirty.CHIME'), 
+                         varying=c('Today.CHIME','Today.IHME','Seven.IHME','Seven.CHIME','Fourteen.IHME','Fourteen.CHIME','Twenty-One.IHME','Twenty-One.CHIME','Thirty.IHME','Thirty.CHIME'), 
                          timevar='Days',
                          times=c('Today','Seven', 'Fourteen',"Twenty-One","Thirty"),
                          v.names=c('CHIME', 'IHME'),
-                         idvar=c('Base','City','State','MAJCOM','Lat','Long','Beds',"Hospitalizations Per 100,000","Hospitalizations Per 10,000"))
+                         idvar=c("Base","City","State","MAJCOM","Lat","Long","Beds","Hospitalizations Per 100,000","Hospitalizations Per 10,000"))
+#HeatMapForecast<-HeatMapForecast[!duplicated(HeatMapForecast$Base), ]
 HeatMapForecast<-transform(HeatMapForecast,IHMEID=ifelse((Beds)>=IHME,"Under Capacity","Over Capacity"))
 HeatMapForecast<-transform(HeatMapForecast,CHIMEID=ifelse((Beds)>=CHIME,"Under Capacity","Over Capacity"))
 
 
 HeatMapForecastCases<-merge(AFBaseLocations, ForecastDataTableCases, by.x = "Base", by.y = "Installation")
-HeatMapForecastCases<-data.frame(HeatMapForecastCases$Base, HeatMapForecastCases$Location, HeatMapForecastCases$State.x, HeatMapForecastCases$`Major Command`, HeatMapForecastCases$Lat, HeatMapForecastCases$Long,HeatMapForecastCases$`Available Beds`,HeatMapForecastCases$`Cases Per 100,000`,HeatMapForecastCases$`Cases Per 10,000`,HeatMapForecastCases$`New Cases`,HeatMapForecastCases$`New Cases` ,HeatMapForecastCases$`7D SEIAR Forecast`, HeatMapForecastCases$`7D IHME Forecast`,HeatMapForecastCases$`14D SEIAR Forecast`,  HeatMapForecastCases$`14D IHME Forecast`,  HeatMapForecastCases$`21D SEIAR Forecast`, HeatMapForecastCases$`21D IHME Forecast`, HeatMapForecastCases$`30D SEIAR Forecast`, HeatMapForecastCases$`30D IHME Forecast`)
+HeatMapForecastCases<-data.frame(HeatMapForecastCases$Base, HeatMapForecastCases$City, HeatMapForecastCases$State.x, HeatMapForecastCases$`Major Command`, HeatMapForecastCases$Lat, HeatMapForecastCases$Long,HeatMapForecastCases$`Available Beds`,HeatMapForecastCases$`Cases Per 100,000`,HeatMapForecastCases$`Cases Per 10,000`,HeatMapForecastCases$`New Cases`,HeatMapForecastCases$`New Cases` ,HeatMapForecastCases$`7D SEIAR Forecast`, HeatMapForecastCases$`7D IHME Forecast`,HeatMapForecastCases$`14D SEIAR Forecast`,  HeatMapForecastCases$`14D IHME Forecast`,  HeatMapForecastCases$`21D SEIAR Forecast`, HeatMapForecastCases$`21D IHME Forecast`, HeatMapForecastCases$`30D SEIAR Forecast`, HeatMapForecastCases$`30D IHME Forecast`)
 colnames(HeatMapForecastCases)<-c("Base","City","State","MAJCOM","Lat","Long","Beds","Cases Per 100,000","Cases_Per_10000","Today.CHIME","Today.IHME", "Seven.IHME","Seven.CHIME","Fourteen.IHME","Fourteen.CHIME","Twenty-One.IHME","Twenty-One.CHIME","Thirty.IHME","Thirty.CHIME")
 HeatMapForecastCases<-reshape(HeatMapForecastCases, direction='long', 
                               varying=c('Today.CHIME','Today.IHME','Seven.IHME', 'Seven.CHIME', 'Fourteen.IHME', 'Fourteen.CHIME','Twenty-One.IHME','Twenty-One.CHIME','Thirty.IHME','Thirty.CHIME'), 

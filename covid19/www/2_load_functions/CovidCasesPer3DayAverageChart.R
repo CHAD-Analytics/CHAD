@@ -3,7 +3,7 @@ CovidCasesPer3DayAverageChart<-function(IncludedCounties){
   #Get cases and deaths in selected region
   CovidCountiesCases<-subset(CovidConfirmedCases, CountyFIPS %in% IncludedCounties$FIPS)
   CovidCountiesDeath<-subset(CovidDeaths, CountyFIPS %in% IncludedCounties$FIPS)
-
+  
   #Find Daily new cases
   DailyNewCases <- CovidCountiesCases[,6:length(CovidCountiesCases)] -
     CovidCountiesCases[,5:(length(CovidCountiesCases)-1)]
@@ -21,5 +21,5 @@ CovidCasesPer3DayAverageChart<-function(IncludedCounties){
   Chart1Data<-cbind.data.frame(ForecastDateB,DailyNewCasesThreeDay,DailyNewDeathsThreeDay)
   colnames(Chart1Data)<-c("ForecastDate","New Cases","New Fatalities")
   Chart1DataSub <- melt(data.table(Chart1Data), id=c("ForecastDate"))
-
+  
 }

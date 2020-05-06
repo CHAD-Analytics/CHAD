@@ -17,8 +17,8 @@ for(i in 6:(ncol(CovidDeaths))){
 }
 
 colnames(CovidDeaths) = c(colnames(CovidDeaths[1:4]), 
-                                  format.Date(lubridate::mdy(colnames(CovidDeaths[5:ncol(CovidDeaths)])),
-                                              "%m/%d/%y"))
+                          format.Date(lubridate::mdy(colnames(CovidDeaths[5:ncol(CovidDeaths)])),
+                                      "%m/%d/%y"))
 
 
 
@@ -45,12 +45,12 @@ GlobalDeaths[,5][is.na(GlobalDeaths[,5])] <- 0
 GlobalDeaths<- data.frame(t(apply(GlobalDeaths[,], 1, zoo::na.locf)))
 
 colnames(GlobalDeaths) = c(colnames(CovidDeaths[1:4]),
-                          format.Date(sub('.',
-                                          '',
-                                          gsub("\\.",
-                                               "/",
-                                               names(GlobalDeaths[5:ncol(GlobalDeaths)]))),
-                                      "%m/%d/%y"))
+                           format.Date(sub('.',
+                                           '',
+                                           gsub("\\.",
+                                                "/",
+                                                names(GlobalDeaths[5:ncol(GlobalDeaths)]))),
+                                       "%m/%d/%y"))
 
 combNames = c(colnames(GlobalDeaths),colnames(CovidDeaths))
 dupNames = combNames[duplicated(combNames)]
@@ -62,7 +62,3 @@ cols<-names(CovidDeaths[5:length(CovidDeaths)])
 CovidDeaths[,cols]<-lapply(CovidDeaths[cols], as.numeric)
 
 CovidDeaths$CountyFIPS = as.numeric(CovidDeaths$CountyFIPS)
-
-
-
-

@@ -1,0 +1,622 @@
+﻿FID,Base,City,Country,State,Branch,Major Command,Lat,Long,County,FIP,Operational,Joint,State2,Zip
+15,Bonito Lake System Annex,Bent,United States,NM,Air Force,N/A,33.1587,-105.85693,Otero ,,Active,N/A,New Mexico,88314
+16,Brooks Air Force Base,Briggs,United States,TX,Air Force,N/A,30.936006,-97.934579,Burnet ,,Active,N/A,Texas,78608
+18,Camp Bullis Training Annex,Kemp,United States,TX,Air Force,N/A,32.44264,-96.229977,Kaufman ,,Active,Joint Base San Antonio,Texas,75143
+21,Canyon Lake Recreation Annex,Canyon Lake,United States,TX,Air Force,N/A,29.863258,-98.255736,Comal ,,Active,Joint Base San Antonio,Texas,78133
+25,Chanute Air Force Base,Ferris,United States,IL,Air Force,N/A,40.46893,-91.17042,Hancock ,,Active,N/A,Illinois,62336
+26,Joint Base Charleston,Charleston Air Force Base,United States,SC,Air Force,N/A,32.892396,-80.076202,Charleston ,,Active,Joint Base Charleston,South Carolina,29404
+31,Columbus Auxiliary Airfield,Columbus,United States,MS,Air Force,N/A,33.63194,-88.458269,Lowndes ,,Active,N/A,Mississippi,39701
+33,Cusick Survival Training Site,Cusick,United States,WA,Air Force,N/A,48.510409,-117.348383,Pend Oreille ,,Active,N/A,Washington,99119
+34,Dare County Range,Troy,United States,NC,Air Force,N/A,35.393595,-79.907346,Montgomery ,,Active,N/A,North Carolina,27371
+36,DFAS Annex,,United States,ME,Air Force,N/A,45.409279,-68.666598,,,Active,N/A,Maine,
+42,Eglin Air Force Auxiliary Field 6,Felda,United States,FL,Air Force,N/A,26.5398,-81.43563,Hendry ,,Active,N/A,Florida,33930
+44,Eglin Air Force Base Site 2 Santa Rosa Island,Island Grove,United States,FL,Air Force,N/A,29.681312,-82.353862,Alachua ,,Active,N/A,Florida,32654
+48,Ellsworth Air Force Base Site 2,Ellsworth Air Force Base,United States,SD,Air Force,N/A,44.15098,-103.09488,Meade ,,Active,N/A,South Dakota,57706
+50,Fairchild Air Force Base,Airway Heights,United States,WA,Air Force,N/A,47.639552,-117.646438,Spokane ,53063,Active,N/A,Washington,99011
+52,Fort Eustis,Fort Eustis,United States,VA,Air Force,N/A,37.157438,-76.584469,Newport News city,,Active,N/A,Virginia,23604
+54,Fort Richardson,Fort Richardson,United States,AK,Air Force,N/A,61.259092,-149.690318,Anchorage Municipality,,Active,Joint Base Elmendorf - Richardson,Alaska,99505
+60,Haarp Research Station,Gakona ,United States,AK,Air Force,N/A,63.346191,-152.837069,Valdez-Cordova,,Active,Joint Base Elmendorf - Richardson,Alaska,
+75,Kegelman Air Force Auxiliary Field,Felt,United States,OK,Air Force,N/A,36.56753,-102.79353,Cimarron ,,Active,N/A,Oklahoma,73937
+76,Kelly Air Force Base,Kelly,United States,TX,Air Force,N/A,33.362612,-96.618879,Collin ,,Active,Joint Base San Antonio,Texas,75003
+77,Kelly Field Annex,Kelly,United States,TX,Air Force,N/A,33.362612,-96.618879,Collin ,,Active,Joint Base San Antonio,Texas,75003
+78,King Salmon Airport,King Salmon,United States,AK,Air Force,N/A,58.7546,-156.50633,Bristol Bay Borough,,Active,N/A,Alaska,99613
+80,Lackland Air Force Base,Lakeland Heights,United States,TX,Air Force,N/A,32.776671,-97.009389,Dallas ,,Active,Joint Base San Antonio,Texas,75050
+81,Lackland Training Annex,Lakeland Heights,United States,TX,Air Force,N/A,32.776671,-97.009389,Dallas ,,Active,Joint Base San Antonio,Texas,75050
+82,Lakehurst,Lakehurst,United States,NJ,Air Force,N/A,40.010938,-74.303205,Ocean ,,Active,Joint Base McGuire - Dix - Lakehurst,New Jersey,8733
+84,Langley Air Force Base,Langley Forest,United States,VA,Air Force,N/A,38.955944,-77.178313,Fairfax ,,Active,N/A,Virginia,22103
+97,McClellan Air Force Base,McClellan Air Force Base,United States,CA,Air Force,N/A,38.663017,-121.383935,Sacramento ,,Active,N/A,California,95652
+99,McGuire Air Force Base,Trenton,United States,NJ,Air Force,N/A,40.01916667,-74.52277778,Burlington,,Active,Joint Base McGuire - Dix - Lakehurst,New Jersey,
+101,Medical Center Annex,Center,United States,TX,Air Force,N/A,31.780781,-94.235334,Shelby ,,Active,Joint Base San Antonio,Texas,75935
+102,Melrose Air Force Range,Melrose,United States,NM,Air Force,N/A,34.50512,-103.564506,Curry ,,Active,N/A,New Mexico,88124
+113,NGA Arnold Site,Arnold,United States,MO,Air Force,N/A,38.43283,-90.37762,Jefferson ,,Active,N/A,Missouri,63010
+114,North Air Force Auxiliary Field,North,United States,SC,Air Force,N/A,33.61571,-81.10204,Orangeburg ,,Active,Joint Base Charleston,South Carolina,29112
+117,Ozol Defense Fuel Support Point,Peanut,United States,CA,Air Force,N/A,40.467923,-123.168637,Trinity ,,Active,N/A,California,96041
+125,Randolph Air Force Base,Randolph,United States,TX,Air Force,N/A,33.484594,-96.254127,Fannin ,,Active,Joint Base San Antonio,Texas,75475
+131,Seguin Auxiliary Field,Follett,United States,TX,Air Force,N/A,36.433821,-100.139117,Lipscomb ,,Active,Joint Base San Antonio,Texas,79034
+144,Tulelake Radar Site,Tulelake,United States,CA,Air Force,N/A,41.93519,-121.58865,Siskiyou ,,Active,N/A,California,96134
+163,Birmingham Airport,Birmingham,United States,AL,Air Force,ANG,33.643851,-85.879914,Calhoun ,,Guard,N/A,Alabama,35201
+173,Ellington Field,Follett,United States,TX,Air Force,ANG,36.433821,-100.139117,Lipscomb ,,Guard,N/A,Texas,79034
+177,Fort Smith Map,Fort Smith,United States,AR,Air Force,ANG,35.366188,-94.416458,Sebastian ,,Guard,N/A,Arkansas,72901
+184,Hancock Field,Valatie,United States,NY,Air Force,ANG,42.398503,-73.626548,Columbia ,,Guard,N/A,New York,12184
+186,Hulman Field,Heilman,United States,IN,Air Force,ANG,38.157551,-87.090278,Warrick ,,Guard,N/A,Indiana,47523
+187,Jackson International Airport Thompson Field,Smithdale,United States,MS,Air Force,ANG,31.331709,-90.7848,Amite ,,Guard,N/A,Mississippi,39664
+189,Joe Foss Field,Vessey,United States,SD,Air Force,ANG,45.84774,-103.362052,Harding ,,Guard,N/A,South Dakota,57755
+200,Naval Air Stationhville International Airport,Nashville,United States,TN,Air Force,ANG,36.165688,-86.778098,Davidson ,,Guard,N/A,Tennessee,37201
+205,Portland International Airport ANG,Portland,United States,OR,Air Force,ANG,45.507856,-122.690794,Multnomah ,41051,Guard,N/A,Oregon,97201
+221,Truax Air National Guard Base,,United States,WI,Air Force,ANG,44.630907,-89.709392,,,Guard,N/A,Wisconsin,
+11,Beale Air Force Base,Marysville,United States,CA,Air Force,ACC,39.128035,-121.544781,Yuba ,,Active,N/A,California,95901
+32,Creech Air Force Base,Indian Springs,United States,NV,Air Force,ACC,36.58722222,-115.6733333,Clark,32003,Active,N/A,Nevada,32003
+35,Davis Monthan Air Force Base,Tucson,United States,AZ,Air Force,ACC,32.16638889,-110.8830556,Santa Cruz,4023,Active,N/A,Arizona,4023
+64,Holloman Air Force Base,Alamogordo,United States,NM,Air Force,ACC,32.8525,-106.1063889,Otero,35035,Active,N/A,New Mexico,87723
+67,Joint Base Langley Eustis,Hampton,United States,VA,Air Force,ACC,37.08277778,-76.36055556,Hampton [9],51650,Active,,,
+106,Moody Air Force Base,Valdosta,United States,GA,Air Force,ACC,30.96777778,-83.19277778,Lanier,13173,Active,N/A,Georgia,30130
+107,Mountain Home Air Force Base,Mountain Home A F B,United States,ID,Air Force,ACC,43.04361111,-115.8725,Elmore,16039,Active,N/A,Idaho,83648
+108,Nellis Air Force Base,Las Vegas,United States,NV,Air Force,ACC,36.23611111,-115.0341667,Clark,32003,Active,N/A,Nevada,89120
+115,Offut Air Force Base,Bellevue,United States,NE,Air Force,ACC,41.11944444,-95.90861111,Sarpy,31153,Active,N/A,Nebraska,68113
+132,Seymour Johnson Air Force Base,Goldsboro,United States,NC,Air Force,ACC,35.33944444,-77.96055556,Wayne,37191,Active,N/A,North Carolina,28326
+133,Shaw Air Force Base,Sumter,United States,SC,Air Force,ACC,33.97305556,-80.47277778,Sumter,45085,Active,N/A,South Carolina,29152
+70,Tonopah Test Range Airport,Tonopah,United States,NV,Air Force,ACC,37.79472222,-116.7786111,Nye,32023,Active,N/A,Nevada,
+5,Altus Air Force Base,Altus,United States,OK,Air Force,AETC,34.598197,-99.440839,Jackson ,40065,Active,N/A,Oklahoma,73523
+30,Columbus Air Force Base,Columbus,United States,MS,Air Force,AETC,33.63194,-88.458269,Lowndes ,28087,Active,N/A,Mississippi,39701
+57,Goodfellow Air Force Base,San Angelo,United States,TX,Air Force,AETC,31.42944444,-100.3988889,Tom Green,48451,Active,N/A,Texas,76908
+71,Joint Base San Antonio,San Antonio,United States,TX,Air Force,AETC,29.44888889,-98.44888889,Bexar,48029,Active,Joint Base San Antonio,Texas,77001
+74,Keesler Air Force Base,Biloxi,United States,MS,Air Force,AETC,30.41138889,-88.92361111,Harrison,28047,Active,N/A,Mississippi,38863
+85,Laughlin Air Force Base,Del Rio,United States,TX,Air Force,AETC,29.35944444,-100.7780556,Kinney,48271,Active,N/A,Texas,78843
+91,Luke Air Force Base,Glendale,United States,AZ,Air Force,AETC,33.535,-112.3830556,Maricopa,4013,Active,N/A,Arizona,85309
+95,Maxwell Air Force Base,Montgomery,United States,AL,Air Force,AETC,32.37916667,-86.3625,Montgomery,1101,Active,N/A,Alabama,35405
+96,Maxwell Air Force Base Gunter Annex,Montgomery,United States,AL,Air Force,AETC,32.37916667,-86.3625,Montgomery,1101,Active,N/A,Alabama,
+134,Sheppard Air Force Base,Wichita Falls,United States,TX,Air Force,AETC,33.98888889,-98.49194444,Wichita,48485,Active,N/A,Texas,76311
+145,Tyndall Air Force Base,Panama City,United States,FL,Air Force,AETC,30.07861111,-85.57638889,Bay,12005,Active,N/A,Florida,32403
+151,Vance Air Force Base,Enid,United States,OK,Air Force,AETC,36.33944444,-97.91722222,Garfield,40047,Active,N/A,Oklahoma,40047
+80,Joint Base Anacostia-Bolling,Southwest,United States,MD,Air Force,AFDW,38.84277778,-77.01611111,Alexandria,51510,Active,,,
+67,Joint Base Andrews-Naval Air Facility Washington,Camp Springs,United States,MD,Air Force,AFDW,38.81083333,-76.86694444,Prince George's,24033,Active,Joint Base Andrews,Maryland,20762
+10,Barksdale Air Force Base,Bossier City,United States,LA,Air Force,AFGSC,32.513919,-93.654416,Bossier Parish,,Active,N/A,Louisiana,71110
+38,Dyess Air Force Base,Abilene,United States,TX,Air Force,AFGSC,32.4193,-99.83808,Taylor ,48441,Active,N/A,Texas,79607
+47,Ellsworth Air Force Base,Box Elder,United States,SD,Air Force,AFGSC,44.145,-103.1036111,Pennington,46103,Active,N/A,South Dakota,57706
+51,FE Warren Air Force Base,Cheyenne,United States,WY,Air Force,AFGSC,41.13305556,-104.8669444,Laramie,56021,Active,N/A,Wyoming,82005
+94,Malmstrom Air Force Base,Great Falls,United States,MT,Air Force,AFGSC,47.50472222,-111.1872222,Cascade,30013,Active,N/A,Montana,59402
+104,Minot Air Force Base,Minot,United States,ND,Air Force,AFGSC,48.41583333,-101.3580556,Ward,38101,Active,N/A,North Dakota,58704
+155,Whiteman Air Force Base,Knob Noster,United States,MO,Air Force,AFGSC,38.73027778,-93.54805556,Johnson,29101,Active,N/A,Missouri,65305
+1,Air Force Plant 42,Palmdale,United States,CA,Air Force,AFMC,37.289085,-120.317156,Los Angeles ,,Active,N/A,California,93550
+7,Arnold Air Force Base,Tullahoma,United States,TN,Air Force,AFMC,35.392585,-86.231502,Coffee ,,Active,N/A,Tennessee,37388
+40,Edwards Air Force Base,Edwards,United States,CA,Air Force,AFMC,35.005099,-117.809769,Los Angeles,6037,Active,N/A,California,93523
+15,Eglin Air Force Base,Valparaiso,United States,FL,Air Force,AFMC,30.48333333,-86.53333333,Okaloosa,12091,Active,N/A,Florida,32542
+61,Hanscom Air Force Base,Lincoln,United States,MA,Air Force,AFMC,42.47,-71.28916667,Middlesex,25017,Active,N/A,Massachusetts,1731
+63,Hill Air Force Base,Ogden,United States,UT,Air Force,AFMC,41.120219,-111.989813,Weber,49057,Active,N/A,Utah,84056
+79,Kirtland Air Force Base,Albuquerque,United States,NM,Air Force,AFMC,35.04027778,-106.6091667,Bernalillo,35001,Active,N/A,New Mexico,87417
+126,Robins Air Force Base,Warner Robins,United States,GA,Air Force,AFMC,32.64,-83.59166667,Twiggs,13289,Active,N/A,Georgia,13289
+127,Rome Laboratory,Rome,United States,NY,Air Force,AFMC,43.2229,-75.4085,Oneida,13441,Active,N/A,New York,
+140,Tinker Air Force Base,Oklahoma City,United States,OK,Air Force,AFMC,35.41472222,-97.38666667,Oklahoma,40109,Active,N/A,Oklahoma,74542
+156,Wright-Patterson Air Force Base,Dayton,United States,OH,Air Force,AFMC,39.82305556,-84.04944444,Greene,39057,Active,N/A,Ohio,45433
+228,Dobbins Air Reserve Base,Marietta,United States,GA,Air Force,AFRC,33.91527778,-84.51638889,Cobb,13067,Reserve,N/A,Georgia,
+16,Duke Field,Crestview,United States,FL,Air Force,AFRC,30.65027778,-86.52277778,Okaloosa,12091,Reserve,,,
+102,Grissom Joint Air Reserve Base,Kokomo,United States,IN,Air Force,AFRC,40.64805556,-86.15222222,Miami,18103,Reserve,N/A,Indiana,46971
+230,Homestead Air Reserve Base,Homestead,United States,FL,Air Force,AFRC,25.48833333,-80.38361111,Miami-Dade,12086,Reserve,N/A,Florida,33031
+231,March Joint Air Reserve Base,Riverside,United States,CA,Air Force,AFRC,33.88055556,-117.2594444,Orange,6059,Reserve,N/A,California,24510
+143,Minneapolis-Saint Paul International Airport,"Minneapolis – Saint Paul, Minnesota",United States,MN,Air Force,AFRC,44.88166667,-93.23361111,Ramsey,27123,Reserve,N/A,Minnesota,55112
+233,Niagara Falls,Niagara Falls,United States,NY,Air Force,AFRC,43.093362,-79.009784,Niagara ,,Reserve,N/A,New York,14301
+234,Norwalk 2,Norwalk,United States,CA,Air Force,AFRC,33.904087,-118.073183,Los Angeles ,,Reserve,N/A,California,90650
+235,Pittsburgh International Airport (ARS),Pittsburgh,United States,PA,Air Force,AFRC,40.540984,-79.781253,Allegheny ,42003,Reserve,N/A,Pennsylvania,15144
+236,Westover Air Reserve Base,Chicopee,United States,MA,Air Force,AFRC,42.19388889,-72.53472222,Hampden,25013,Reserve,N/A,Massachusetts,1886
+237,Youngstown-Warren Regional Airport,Youngstown,United States,OH,Air Force,AFRC,41.26055556,-80.67888889,Trumbull,39155,Reserve,N/A,Ohio,44501
+32,Naval Air Station Joint Reserve Base Fort Worth,"Westworth Village, Texas",United States,TX,Air Force,AFRC,32.76916667,-97.44166667,Tarrant,48439,Reserve,N/A,Texas,
+134,Niagara Falls International Airport,"Niagara Falls, New York",United States,NY,Air Force,AFRC,43.11333333,-78.9475,Niagara,36063,Reserve,N/A,New York,
+19,Cannon Air Force Base,Clovis,United States,NM,Air Force,AFSOC,34.38472,-103.31652,Curry ,35009,Active,N/A,New Mexico,88103
+20,Cannon Air Force Base Site 2,Clovis,United States,NM,Air Force,AFSOC,34.38472,-103.31652,Curry ,35009,Active,N/A,New Mexico,88103
+65,Hurlburt Field,Mary Esther,United States,FL,Air Force,AFSOC,30.42777778,-86.68944444,Okaloosa,12091,Active,N/A,Florida,32547
+37,Dover Air Force Base,Dover,United States,DE,Air Force,AMC,39.126325,-75.491486,Kent ,10001,Active,N/A,Delaware,19901
+151,Grand Forks Air Force Base,Grand Forks,United States,ND,Air Force,AMC,47.96111111,-97.40111111,Grand Forks,38035,Active,N/A,North Dakota,58204
+59,Grand Forks Defense Fuel Support Point,Grand Forks,United States,ND,Air Force,AMC,47.96111111,-97.40111111,Grand Forks,38035,Active,N/A,North Dakota,58204
+68,Joint Base Charleston Naval Weapons Station,Charleston,United States,SC,Air Force,AMC,32.89861111,-80.04055556,Charleston,45019,Active,Joint Base Charleston,South Carolina,29404
+147,Joint Base Lewis-McChord,Tacoma,United States,WA,Air Force,AMC,47.1475,-122.4794444,Pierce,53053,Active,N/A,Washington,
+97,Joint Base McGuire-Dix-Lakehurst,Trenton,United States,NJ,Air Force,AMC,40.01916667,-74.52277778,Burlington,34005,Active,,,
+87,Little Rock Air Force Base,Little Rock,United States,AR,Air Force,AMC,34.91694444,-92.14638889,Pulaski,5119,Active,N/A,Arkansas,72206
+93,MacDill Air Force Base,Tampa,United States,FL,Air Force,AMC,27.84944444,-82.52111111,Hillsborough,12057,Active,N/A,Florida,12057
+98,McConnell Air Force Base,Wichita,United States,KS,Air Force,AMC,37.62305556,-97.26722222,Sedgwick,20173,Active,N/A,Kansas,67221
+130,Scott Air Force Base,Belleville,United States,IL,Air Force,AMC,38.54527778,-89.83527778,St. Clair,17163,Active,N/A,Illinois,17163
+142,Travis Air Force Base,Fairfield,United States,CA,Air Force,AMC,38.26277778,-121.9275,Solano,6095,Active,N/A,California,94535
+53,Pope Field,Fayetteville,United States,NC,Air Force,AMC,35.17083333,-79.01444444,Cumberland,37051,Active,N/A,North Carolina,
+121,Klamath Falls Airport,"Klamath Falls, Oregon",United States,OR,Air Force,ANG,42.15611111,-121.7330556,Klamath,41035,Active,,,
+96,Abraham Lincoln Capital Airport,Springfield,United States,IL,Air Force,ANG,39.84416667,-89.67805556,Sangamon,17167,Guard,N/A,Illinois,
+26,Abston Air National Guard Station,Montgomery,United States,AL,Air Force,ANG,32.35611111,-86.34666667,Montgomery,1101,Guard,N/A,Alabama,
+160,Atlantic City Air National Guard Base,Atlantic City,United States,NJ,Air Force,ANG,39.612669,-74.825986,Atlantic ,,Guard,N/A,New Jersey,8401
+161,Bangor International Airport,Bangor,United States,ME,Air Force,ANG,44.848256,-68.835091,Penobscot ,,Guard,N/A,Maine,4401
+162,Barnes Municipal Airport,Westfield,United States,MA,Air Force,ANG,42.16555556,-72.72055556,Hampden,,Guard,N/A,Massachusetts,25013
+98,Beightler Armory,"Columbus, Ohio",United States,OH,Air Force,ANG,40.08833333,-83.06694444,Franklin,39049,Guard,,,
+164,Boise Air Terminal,Boise,United States,ID,Air Force,ANG,43.594457,-116.199831,Ada ,,Guard,N/A,Idaho,83706
+165,Bradley International Airport,Windsor Locks,United States,CT,Air Force,ANG,41.93888889,-72.68333333,Hartford,9003,Guard,N/A,Connecticut,9003
+166,Burlington International Airport,Burlington,United States,VT,Air Force,ANG,44.496604,-73.227273,Chittenden ,50007,Guard,N/A,Vermont,5401
+10,Camp Mabry,"Austin, Texas",United States,TX,Air Force,ANG,30.31777778,-97.76055556,Travis,48453,Guard,,,
+45,Channel Islands Air National Guard Station,"Oxnard, California",United States,CA,Air Force,ANG,34.115,-119.1102778,Ventura,6111,Guard,N/A,California,95440
+169,Charlotte Douglas International Airport,Charlotte,United States,NC,Air Force,ANG,35.21611111,-80.93194444,Mecklenburg,37119,Guard,N/A,North Carolina,37119
+170,Cheyenne Regional Airport,Cheyenne,United States,WY,Air Force,ANG,41.16138889,-104.8194444,Laramie,56021,Guard,N/A,Wyoming,56021
+135,Dane County Regional Airport,"Madison, Wisconsin",United States,WI,Air Force,ANG,43.13972222,-89.3375,Dane,55025,Guard,,,
+23,Dannelly Field,"Montgomery, Alabama",United States,AL,Air Force,ANG,32.30444444,-86.40027778,Montgomery,1101,Guard,,,
+171,Des Moines International Airport,Des Moines,United States,IA,Air Force,ANG,41.596212,-93.591022,Polk ,19153,Guard,N/A,Iowa,50316
+172,Duluth International Airport,Duluth,United States,MN,Air Force,ANG,47.005566,-92.001934,Carlton,27017,Guard,N/A,Minnesota,55801
+86,Eastern WV Regional Airport,"Martinsburg, West Virginia",United States,WV,Air Force,ANG,39.40194444,-77.98444444,Berkeley,54003,Guard,,,
+8,Ellington Airport,Houston,United States,TX,Air Force,ANG,29.60722222,-95.15888889,Harris,48201,Guard,,,
+175,Forbes Field ANG,Topeka,United States,KS,Air Force,ANG,38.95111111,-95.66583333,Shawnee,20177,Guard,N/A,Kansas,67337
+55,Fort Smith Regional Airport,Fort Smith,United States,AR,Air Force,ANG,35.33666667,-94.3675,Sebastian,5131,Guard,,,
+108,Fort Wayne International Airport,Fort Wayne,United States,IN,Air Force,ANG,40.97833333,-85.195,Allen,18003,Guard,,,
+178,Francis S. Gabreski Airport,Westhampton Beach,United States,NY,Air Force,ANG,40.83694444,-72.64222222,Suffolk,36103,Guard,N/A,New York,
+179,Fresno Yosemite International ANG,Fresno,United States,CA,Air Force,ANG,36.774075,-119.781538,Fresno ,6019,Guard,N/A,California,93703
+181,General Wayne A Downing Peoria International Airport,Peoria,United States,IL,Air Force,ANG,40.693137,-89.589847,Peoria ,17143,Guard,N/A,Illinois,61601
+35,Goldwater Air National Guard Base,"Phoenix, Arizona",United States,AZ,Air Force,ANG,33.42666667,-112.0119444,Maricopa,4013,Guard,,,
+182,Great Falls International Airport,Great Falls,United States,MT,Air Force,ANG,47.48194444,-111.3705556,Cascade,30013,Guard,N/A,Montana,59401
+136,Griffiss International Airport,"Rome, New York",United States,NY,Air Force,ANG,43.23055556,-75.40944444,Oneida,36065,Guard,,,
+11,Gulfport Combat Readiness Training Center,"Gulfport, Mississippi",United States,MS,Air Force,ANG,30.40722222,-89.07,Harrison,28047,Guard,,,
+99,Harrisburg International Airport,"Middletown, Pennsylvania",United States,PA,Air Force,ANG,40.19361111,-76.76333333,Dauphin,42043,Guard,,,
+185,Hector International Airport,Fargo,United States,ND,Air Force,ANG,46.92055556,-96.81583333,Clay,27027,Guard,N/A,North Dakota,
+31,Hensley Field,"Grand Prairie, Texas",United States,TX,Air Force,ANG,32.74,-96.97,Dallas,48113,Guard,,,
+24,Jackson-Evers International Airport,Jackson,United States,MS,Air Force,ANG,32.31111111,-90.07583333,Rankin,28121,Guard,,,
+188,Jacksonville International Airport,Jacksonville,United States,FL,Air Force,ANG,30.49416667,-81.68777778,Nassau,12089,Guard,N/A,Florida,32099
+191,Lincoln Airport,Lincoln,United States,NE,Air Force,ANG,40.85111111,-96.75916667,Lancaster,31109,Guard,N/A,Nebraska,68506
+192,Louisville International Airport,Louisville,United States,KY,Air Force,ANG,38.17805556,-85.72472222,Jefferson,21111,Guard,N/A,Kentucky,40209
+193,Luis Munoz Marin International Airport,"San Juan, Puerto Rico",Puerto Rico,PR,Air Force,ANG,18.43944444,-66.00194444,Miami-Dade,12086,Guard,N/A,Puerto Rico,
+105,Mansfield Lahm Regional Airport,Mansfield,United States,OH,Air Force,ANG,40.81361111,-82.51666667,Richland,39139,Guard,,,
+194,Martin State Airport,Middle River,United States,MD,Air Force,ANG,39.32555556,-76.41361111,Baltimore,24510,Guard,N/A,Maryland,1101
+195,McEntire Joint National Guard Base,Eastover,United States,SC,Air Force,ANG,33.92083333,-80.80111111,Richland,45079,Guard,N/A,South Carolina,45079
+196,McGhee Tyson Airport,Knoxville,United States,TN,Air Force,ANG,35.81083333,-83.99388889,Blount,47009,Guard,N/A,Tennessee,47009
+73,McLaughlin Air National Guard Base (Yeager Airport),"Charleston, West Virginia",United States,WV,Air Force,ANG,38.37305556,-81.59305556,Kanawha,54039,Guard,,,
+197,Memphis International Airport,Memphis,United States,TN,Air Force,ANG,35.0425,-89.97666667,Shelby,47157,Guard,N/A,Tennessee,37501
+25,Meridian Regional Airport,Meridian,United States,MS,Air Force,ANG,32.3325,-88.75194444,Lauderdale,28075,Guard,,,
+130,Milwaukee Mitchell International Airport,"Milwaukee, Wisconsin",United States,WI,Air Force,ANG,42.94722222,-87.89666667,Waukesha,55133,Guard,,,
+68,Moffett Federal Airfield,"Mountain View, California",United States,CA,Air Force,ANG,37.415,-122.0483333,Alameda,6001,Guard,,,
+61,Nashville International Airport,"Nashville, Tennessee",United States,TN,Air Force,ANG,36.12666667,-86.68194444,Davidson,47037,Guard,,,
+201,New Castle Airport,"New Castle, Delaware",United States,DE,Air Force,ANG,39.68527778,-75.59916667,New Castle,10003,Guard,N/A,Delaware,19720
+202,Otis Air National Guard Base,Mashpee,United States,MA,Air Force,ANG,41.65861111,-70.52138889,Barnstable,25001,Guard,N/A,Massachusetts,1253
+203,Pease Air National Guard Base,"Portsmouth, New Hampshire",United States,NH,Air Force,ANG,43.07805556,-70.82333333,Rockingham,33015,Guard,N/A,New Hampshire,33015
+204,Pittsburgh International Airport (ANG),Pittsburgh,United States,PA,Air Force,ANG,40.540984,-79.781253,Allegheny ,42003,Guard,N/A,Pennsylvania,15144
+206,Quonset State Airport,North Kingstown,United States,RI,Air Force,ANG,41.59722222,-71.41222222,Newport,44005,Guard,N/A,Rhode Island,44005
+207,Reno Tahoe International Airport,Reno,United States,NV,Air Force,ANG,39.49916667,-119.7680556,Storey,32029,Guard,N/A,Nevada,89509
+208,Rickenbacker International Airport,Columbus,United States,OH,Air Force,ANG,39.81361111,-82.94666667,Franklin,39049,Guard,N/A,Ohio,
+209,Rosecrans Memorial Airport,St. Joseph,United States,MO,Air Force,ANG,39.77194444,-94.90944444,Buchanan,29021,Guard,N/A,Missouri,29021
+210,Salt Lake City International Airport,Salt Lake City,United States,UT,Air Force,ANG,40.78833333,-111.9777778,Salt Lake,49035,Guard,N/A,Utah,84101
+211,Savannah/Hilton Head International Airport,Savannah,United States,GA,Air Force,ANG,32.1275,-81.20194444,Chatham,13051,Guard,N/A,Georgia,31723
+212,Schenectady ANG Memorial Airport,Schenectady,United States,NY,Air Force,ANG,42.8525,-73.9225,Schenectady,36093,Guard,N/A,New York,12307
+213,Selfridge Air National Guard Base,Mount Clemens,United States,MI,Air Force,ANG,42.60833333,-82.83555556,Macomb,26099,Guard,N/A,Michigan,26099
+214,Sioux Gateway Airport (ANG),Sioux Falls,United States,IA,Air Force,ANG,42.39833333,-96.37194444,Dakota,31043,Guard,N/A,Iowa,31043
+218,Springfield-Beckley Municipal Airport,Springfield,United States,OH,Air Force,ANG,39.84027778,-83.84027778,Clark,39023,Guard,N/A,Ohio,45501
+219,Stewart International Airport,Newburgh,United States,NY,Air Force,ANG,41.50416667,-74.10472222,Orange,36071,Guard,N/A,New York,11530
+220,Toledo Express Airport,Toledo,United States,OH,Air Force,ANG,41.58666667,-83.80777778,Fulton,39051,Guard,N/A,Ohio,39051
+222,Tucson International Airport,Tucson,United States,AZ,Air Force,ANG,32.11527778,-110.9305556,Pima ,4023,Guard,N/A,Arizona,85701
+223,Tulsa International Airport,Tulsa,United States,OK,Air Force,ANG,36.19833333,-95.88805556,Tulsa,40143,Guard,N/A,Oklahoma,74101
+224,Volk Field Air National Guard Base,New Lisbon,United States,WI,Air Force,ANG,43.93638889,-90.25972222,Juneau,55057,Guard,N/A,Wisconsin,55057
+225,W. K. Kellogg Airport,Battle Creek,United States,MI,Air Force,ANG,42.30722222,-85.25138889,Calhoun,26025,Guard,N/A,Michigan,26025
+226,Will Rogers World Airport Moved to Tinker AFB in 2007[163],Oklahoma City,United States,OK,Air Force,ANG,35.39305556,-97.60083333,Oklahoma,40109,Guard,N/A,Oklahoma,40109
+9,Naval Air Station Joint Reserve Base New Orleans,"Belle Chasse, Louisiana",United States,LA,Air Force,ANG,29.82527778,-90.035,Orleans,22071,Guard,N/A,Louisiana,
+100,Naval Air Station Joint Reserve Base Willow Grove,"Horsham Township, Pennsylvania",United States,PA,Air Force,ANG,40.19972222,-75.14805556,Bucks,42017,Guard,N/A,Pennsylvania,
+75,North Highlands Air National Guard Station,"Sacramento, California",United States,CA,Air Force,ANG,38.64,-121.4025,Sacramento,6067,Guard,N/A,California,
+138,Sioux Falls Regional Airport,"Sioux Falls, South Dakota",United States,SD,Air Force,ANG,43.58194444,-96.74194444,Minnehaha,46099,Guard,N/A,South Dakota,
+37,Sumpter Smith Air National Guard Base,"Birmingham, Alabama",United States,AL,Air Force,ANG,33.56388889,-86.75222222,Jefferson,1073,Guard,N/A,Alabama,
+133,Syracuse Hancock International Airport,"Syracuse, New York",United States,NY,Air Force,ANG,43.11138889,-76.12361111,Onondaga,36067,Guard,N/A,Ndudu,
+88,Terre Haute International Airport,"Terre Haute, Indiana",United States,IN,Air Force,ANG,39.45138889,-87.3075,Vigo,18167,Guard,N/A,Iautd d ,
+238,Aberdeen Proving Ground,Aberdeen Proving Ground,United States,MD,Army,Army,39.487368,-76.139675,Harford ,,Active,N/A,Maryland,21005
+239,Aliamanu Military Reservation,,United States,HI,Army,Army,19.828171,-155.49504,,,Active,N/A,Hawaii,
+241,Anniston Army Depot,Anniston,United States,AL,Army,Army,33.64916,-85.879642,Calhoun ,,Active,N/A,Alabama,36201
+248,Camp Frank D Merrill,Marlow,United States,GA,Army,Army,32.269087,-81.390667,Effingham ,,Active,N/A,Georgia,31312
+250,Carlisle Barracks,Carlisle,United States,PA,Army,Army,40.196251,-77.345217,Cumberland ,,Active,N/A,Pennsylvania,17013
+254,Defense Supply Center Columbus,Columbus,United States,OH,Army,Army,40.100924,-83.013402,Franklin ,,Active,N/A,Ohio,43085
+255,Destin Moreno Point,Destin,United States,FL,Army,Army,30.661155,-86.594479,Okaloosa ,,Active,N/A,Florida,32540
+256,Detroit Arsenal,Detroit,United States,MI,Army,Army,42.401388,-82.92451,Wayne ,,Active,N/A,Michigan,48224
+258,Dugway Proving Ground,Dugway,United States,UT,Army,Army,40.270806,-112.689833,Tooele ,,Active,N/A,Utah,84022
+260,Fort A P Hill,Ford,United States,VA,Army,Army,37.134946,-77.736402,Dinwiddie ,,Active,N/A,Virginia,23850
+261,Fort Belvoir,Fort Belvoir,United States,VA,Army,Army,38.714562,-77.167886,Fairfax ,,Active,N/A,Virginia,22060
+264,Fort Benning GA,Fort Benning,United States,GA,Army,Army,32.392337,-84.931457,Muscogee ,,Active,N/A,Georgia,31905
+265,Fort Bliss,Fort Bliss,United States,TX,Army,Army,31.810651,-106.404743,El Paso ,,Active,N/A,Texas,79906
+266,Fort Bragg,Fort Bragg,United States,NC,Army,Army,35.140193,-78.987942,Cumberland ,,Active,N/A,North Carolina,28307
+267,Fort Campbell KY,Fort Campbell,United States,KY,Army,Army,36.657253,-87.458858,Christian ,,Active,N/A,Kentucky,42223
+269,Fort Carson,Fort Carson,United States,CO,Army,Army,38.737494,-104.788862,El Paso ,,Active,N/A,Colorado,80913
+272,Fort Detrick Forest Glen Annex,Forest Greens,United States,MD,Army,Army,39.457054,-76.228844,Harford ,,Active,N/A,Maryland,21001
+274,Fort Drum,Fort Drum,United States,NY,Army,Army,44.032457,-75.754468,Jefferson ,,Active,N/A,New York,13602
+275,Fort George G Meade,Fort George G Meade,United States,MD,Army,Army,39.114553,-76.765249,Anne Arundel ,,Active,N/A,Maryland,20755
+277,Fort Gordon,Gordon,United States,GA,Army,Army,32.881267,-83.302945,Wilkinson ,,Active,N/A,Georgia,31031
+278,Fort Greely,Fort Greely,United States,AK,Army,Army,63.941202,-145.57398,Southeast Fairbanks Census Area,,Active,N/A,Alaska,98733
+279,Fort Hamilton,Fort Hamilton,United States,NY,Army,Army,40.618715,-74.033196,Kings ,,Active,N/A,New York,11209
+280,Fort Hood,Fort Hood,United States,TX,Army,Army,31.134891,-97.775614,Bell ,,Active,N/A,Texas,76544
+281,Fort Huachuca,Fort Huachuca,United States,AZ,Army,Army,31.559131,-110.318682,Cochise ,,Active,N/A,Arizona,85613
+282,Fort Jackson,Jackson,United States,SC,Army,Army,33.32542,-81.78789,Aiken ,,Active,N/A,South Carolina,29831
+283,Fort Knox,Fort Knox,United States,KY,Army,Army,37.899466,-85.952833,Hardin ,,Active,N/A,Kentucky,40121
+284,Fort Leavenworth,Fort Leavenworth,United States,KS,Army,Army,39.346798,-94.931329,Leavenworth ,,Active,N/A,Kansas,66027
+285,Fort Lee,Fort Lee,United States,VA,Army,Army,37.23503,-77.33279,Dinwiddie ,,Active,N/A,Virginia,23801
+286,Fort Leonard Wood,Fort Leonard Wood,United States,MO,Army,Army,37.767687,-92.111975,Pulaski ,,Active,N/A,Missouri,65473
+289,Fort Monmouth Main Post,Fort Monmouth,United States,NJ,Army,Army,40.314531,-74.041654,Monmouth ,,Active,N/A,New Jersey,7703
+290,Fort Monroe,Fort Monroe,United States,VA,Army,Army,37.018012,-76.304391,Hampton city,,Active,N/A,Virginia,23651
+292,Fort Polk,Pollock,United States,LA,Army,Army,31.56668,-92.396314,Grant Parish,,Active,N/A,Louisiana,71467
+293,Fort Riley,Fort Riley,United States,KS,Army,Army,39.113738,-96.837821,Geary ,,Active,N/A,Kansas,66442
+294,Fort Rucker AL,Fort Rucker,United States,AL,Army,Army,31.327347,-85.737811,Dale ,,Active,N/A,Alabama,36362
+295,Fort Shafter,Fort Shafter,United States,HI,Army,Army,24.859832,-168.021815,Honolulu ,,Active,N/A,Hawaii,96858
+296,Fort Sill,Medicine Park,United States,OK,Army,Army,34.726548,-98.499443,Comanche ,,Active,N/A,Oklahoma,73557
+297,Fort Stewart,Fort Stewart,United States,GA,Army,Army,31.870154,-81.631076,Liberty ,,Active,N/A,Georgia,31314
+298,Fort Wainwright,Fort Wainwright,United States,AK,Army,Army,64.832821,-147.64418,Fairbanks North Star Borough,,Active,N/A,Alaska,99703
+302,Green River Test Complex UT,Green River,United States,UT,Army,Army,38.999487,-110.157599,Emery ,,Active,N/A,Utah,84525
+303,Hawthorne Army Depot,Hawthorne,United States,NV,Army,Army,38.52557,-118.62738,Mineral ,,Active,N/A,Nevada,89415
+305,Highbluff Stagefield AL,Hartford,United States,AL,Army,Army,31.16587,-85.714613,Geneva ,,Active,N/A,Alabama,36344
+306,Holston AAP,Bristol,United States,TN,Army,Army,36.587544,-82.187338,Sullivan ,,Active,N/A,Tennessee,37620
+309,Indiana Army Ammunition Plant,Poland,United States,IN,Army,Army,39.444565,-86.960667,Clay ,,Active,N/A,Indiana,47868
+311,Jefferson Proving Ground,Frankfort,United States,IN,Army,Army,40.284569,-86.517004,Clinton ,,Active,N/A,Indiana,46041
+312,Joliet AAP Elwood,Romeoville,United States,IL,Army,Army,41.684631,-88.050503,Will ,,Active,N/A,Illinois,60446
+313,Kahuku Tng Area,Kahuku,United States,HI,Army,Army,21.68152,-157.94072,Honolulu ,,Active,N/A,Hawaii,96731
+316,Kipapa Ammo Storage Site,,United States,HI,Army,Army,19.828171,-155.49504,,,Active,N/A,Hawaii,
+317,Lake City AAP,Buckner,United States,MO,Army,Army,39.132857,-94.193532,Jackson ,,Active,N/A,Missouri,64016
+318,Lake Of The Ozarks Recreation,Laquey,United States,MO,Army,Army,37.77032,-92.3035,Pulaski ,,Active,N/A,Missouri,65534
+320,Lone Star AAP (BRAC 2005),Lockney,United States,TX,Army,Army,34.120149,-101.432864,Floyd ,,Active,N/A,Texas,79241
+322,Louisville Stagefield AL,Louisville,United States,AL,Army,Army,31.727162,-85.602145,Barbour ,,Active,N/A,Alabama,36048
+324,McAlester AAP,McAlester,United States,OK,Army,Army,34.904585,-95.697624,Pittsburg ,,Active,N/A,Oklahoma,74501
+325,Milan AAP,Milan,United States,TN,Army,Army,35.933935,-88.762546,Gibson ,,Active,N/A,Tennessee,38358
+326,Military Ocean Terminal Concord,Concord,United States,CA,Army,Army,37.953672,-122.022872,Contra Costa ,,Active,N/A,California,94518
+328,NTC and Fort Irwin,Fort Irwin,United States,CA,Army,Army,35.262453,-116.696561,San Bernardino ,,Active,N/A,California,92310
+329,Picatinny Arsenal,Picatinny Arsenal,United States,NJ,Army,Army,40.867331,-74.578269,Morris ,,Active,N/A,New Jersey,7806
+330,Pine Bluff Arsenal,Pine Bluff,United States,AR,Army,Army,34.21805,-92.004485,Jefferson ,,Active,N/A,Arkansas,71601
+331,Pinon Canyon,Pinon,United States,CO,Army,Army,38.433334,-104.607473,Pueblo ,,Active,N/A,Colorado,81008
+332,Pohakuloa Training Area,,United States,HI,Army,Army,19.828171,-155.49504,,,Active,N/A,Hawaii,
+333,Presidio of Monterey,Monterey,United States,CA,Army,Army,36.57485,-121.840727,Monterey ,,Active,N/A,California,93940
+334,Pueblo Chemical Depot,Pueblo,United States,CO,Army,Army,38.293234,-104.536493,Pueblo ,,Active,N/A,Colorado,81001
+335,Pupukea Paalaa Uka Mil Road,Haleiwa,United States,HI,Army,Army,21.645737,-158.045746,Honolulu ,,Active,N/A,Hawaii,96712
+336,Radford AAP,Radford,United States,VA,Army,Army,37.119732,-80.556541,Radford city,,Active,N/A,Virginia,24141
+338,Redstone Arsenal,Redstone Arsenal,United States,AL,Army,Army,34.683875,-86.647643,Madison ,,Active,N/A,Alabama,35809
+339,Rivanna Station,Raphine,United States,VA,Army,Army,37.941296,-79.276332,Rockbridge ,,Active,N/A,Virginia,24472
+340,Riverbank AAP,Riverbank,United States,CA,Army,Army,37.729282,-120.942905,Stanislaus ,,Active,N/A,California,95367
+341,Rock Island Arsenal,Rock Island Arsenal,United States,IL,Army,Army,41.517253,-90.539929,Rock Island ,,Active,N/A,Illinois,61299
+344,Savanna Depot Act,Savanna,United States,IL,Army,Army,42.09447,-90.15679,Carroll ,,Active,N/A,Illinois,61074
+345,Schofield Barracks Military Reservation,Schofield Barracks,United States,HI,Army,Army,21.48676,-158.051525,Honolulu ,,Active,N/A,Hawaii,96857
+346,Scranton AAP,Scranton,United States,PA,Army,Army,41.4118,-75.679932,Lackawanna ,,Active,N/A,Pennsylvania,18504
+347,Seward Recreation Area,Seward,United States,AK,Army,Army,60.25281,-149.402123,Kenai Peninsula Borough,,Active,N/A,Alaska,99664
+350,Skelly Stagefield AL,,United States,AL,Army,Army,32.739632,-86.843459,,,Active,N/A,Alabama,
+351,Stewart Annex,Garden City,United States,NY,Army,Army,40.724595,-73.658024,Nassau ,,Active,N/A,New York,11530
+352,Stinson 5AB Stagefield AL,Muscle Shoals,United States,AL,Army,Army,34.790605,-87.612,Colbert ,,Active,N/A,Alabama,35661
+354,Tac X Stagefield AL,,United States,AL,Army,Army,32.739632,-86.843459,,,Active,N/A,Alabama,
+355,Tobyhanna Army Depot,Tobyhanna,United States,PA,Army,Army,41.185358,-75.427947,Monroe ,,Active,N/A,Pennsylvania,18466
+356,Tooele Army Depot,Tooele,United States,UT,Army,Army,40.530699,-112.326213,Tooele ,,Active,N/A,Utah,84074
+358,Toth Stagefield AL,,United States,AL,Army,Army,32.739632,-86.843459,,,Active,N/A,Alabama,
+361,Umatilla Chemical Depot,Umatilla,United States,OR,Army,Army,45.917965,-119.287426,Umatilla ,,Active,Joint Base Lewis - McChord,Oregon,97882
+364,US Army Joint Sys Mfg CtrLima,,United States,OH,Army,Army,40.41493,-82.711998,,,Active,N/A,Ohio,
+365,US Army Soldier Systems Center Natick,Natick,United States,MA,Army,Army,42.28343,-71.3495,Middlesex ,,Active,N/A,Massachusetts,1760
+366,USA Field Station Kunia,Kunia,United States,HI,Army,Army,21.463,-158.06385,Honolulu ,,Active,N/A,Hawaii,96759
+367,Waianae Kai Military Reservation,Waianae,United States,HI,Army,Army,21.459675,-158.169077,Honolulu ,,Active,N/A,Hawaii,96792
+370,Wheeler Army Airfield,Wheeler Army Airfield,United States,HI,Army,Army,21.475456,-158.03516,Honolulu ,,Active,N/A,Hawaii,96854
+371,White Sands Missile Range NM,White Sands Missile Range,United States,NM,Army,Army,32.383871,-106.493675,Do├▒a Ana ,,Active,N/A,New Mexico,88002
+372,Yakima Training Center,Yakima,United States,WA,Army,Army,46.60453,-120.495552,Yakima ,,Active,Joint Base Lewis - McChord,Washington,98901
+373,Yuma Proving Ground,Yuma,United States,AZ,Army,Army,32.701461,-114.657232,Yuma ,,Active,N/A,Arizona,85364
+375,NG AASF02 Birmingham,Birmingham,United States,AL,Army,Army,33.456412,-86.801904,Jefferson ,,Guard,N/A,Alabama,35201
+378,NG Arden Hills Army Training Site,Hills,United States,MN,Army,Army,43.525185,-96.358365,Rock ,,Guard,N/A,Minnesota,56138
+379,NG Atlanta - Confederate Ave,Atlanta,United States,GA,Army,Army,33.844371,-84.47405,Fulton ,,Guard,N/A,Georgia,30301
+380,NG Auburn Training Site,Auburn,United States,ME,Army,Army,44.087422,-70.243848,Androscoggin ,,Guard,N/A,Maine,4210
+381,NG Ayer,Ayer,United States,MA,Army,Army,42.566573,-71.575135,Middlesex ,,Guard,N/A,Massachusetts,1432
+382,NG Bangor Training Site,Bangor,United States,ME,Army,Army,44.848517,-68.850405,Penobscot ,,Guard,N/A,Maine,4401
+383,NG Baton Rouge AFRC,Baton Rouge,United States,LA,Army,Army,30.44924,-91.185607,East Baton Rouge Parish,,Guard,N/A,Louisiana,70801
+386,NG Bend Cotef,Bend,United States,OR,Army,Army,44.082037,-121.227125,Deschutes ,,Guard,N/A,Oregon,97701
+387,NG Bergstrom - (Abia),,United States,TX,Army,Army,31.434703,-99.281824,,,Guard,N/A,Texas,
+388,NG Bethel ARM FMS,Bethel,United States,AK,Army,Army,60.79222,-161.75583,Bethel Census Area,,Guard,N/A,Alaska,99559
+390,NG Bismarck RJB Complex,Bismarck,United States,ND,Army,Army,46.816035,-100.700296,Burleigh ,,Guard,N/A,North Dakota,58501
+392,NG Bremerton,Bremerton,United States,WA,Army,Army,47.606478,-122.634712,Kitsap ,,Guard,N/A,Washington,98310
+393,NG Buckeye TS,Buckeye,United States,AZ,Army,Army,33.37032,-112.58378,Maricopa ,,Guard,N/A,Arizona,85326
+394,NG Cambridge Springs,Cambridge Springs,United States,PA,Army,Army,41.803393,-80.059383,Crawford ,,Guard,N/A,Pennsylvania,16403
+395,NG Camp Adair Corvallis,Corvallis,United States,OR,Army,Army,44.639931,-123.275969,Benton ,,Guard,N/A,Oregon,97330
+396,NG Camp Ashland,Ashland,United States,NE,Army,Army,41.0375,-96.36085,Saunders ,,Guard,N/A,Nebraska,68003
+399,NG Camp Bowie - Musgrave (Fed),Bowie,United States,TX,Army,Army,33.530011,-97.856849,Montague ,,Guard,N/A,Texas,76230
+400,NG Camp Bowie (State),Bowie,United States,TX,Army,Army,33.530011,-97.856849,Montague ,,Guard,N/A,Texas,76230
+401,NG Camp Dodge Johnston TS,Johnston,United States,IA,Army,Army,41.714435,-93.732559,Polk ,,Guard,N/A,Iowa,50131
+403,NG Camp Grafton,Grafton,United States,ND,Army,Army,48.368876,-97.437265,Walsh ,,Guard,N/A,North Dakota,58237
+404,NG Camp Gruber,Kemp,United States,OK,Army,Army,33.76955,-96.35415,Bryan ,,Guard,N/A,Oklahoma,74747
+406,NG Camp Joseph T Robinson,Robinson,United States,AR,Army,Army,36.169246,-94.358822,Benton ,,Guard,N/A,Arkansas,72761
+407,NG Camp Mabry,Mabry,United States,TX,Army,Army,33.613442,-95.118279,Red River ,,Guard,N/A,Texas,75426
+408,NG Camp Maxey,Maxey,United States,TX,Army,Army,33.703436,-95.751353,Lamar ,,Guard,N/A,Texas,75421
+409,NG Camp Minden Training Site,Minden,United States,LA,Army,Army,32.725217,-93.312837,Webster Parish,,Guard,N/A,Louisiana,71055
+410,NG Camp Murray,Camp Murray,United States,WA,Army,Army,47.11678,-122.56866,Pierce ,,Guard,N/A,Washington,98430
+411,NG Camp Navajo,Navajo,United States,AZ,Army,Army,35.124191,-109.538166,Apache ,,Guard,N/A,Arizona,86509
+412,NG Camp Niantic,Niantic,United States,CT,Army,Army,41.323447,-72.215623,New London ,,Guard,N/A,Connecticut,6357
+414,NG Camp Perry Joint Training Center,Center,United States,OH,Army,Army,40.06396,-81.529009,Guernsey ,,Guard,N/A,Ohio,43725
+416,NG Camp Ravenna Joint Military Training Center,Center,United States,OH,Army,Army,40.06396,-81.529009,Guernsey ,,Guard,N/A,Ohio,43725
+418,NG Camp Sherman Joint Training Center,Center,United States,OH,Army,Army,40.06396,-81.529009,Guernsey ,,Guard,N/A,Ohio,43725
+419,NG Camp Smith Tng Site,Smithtown,United States,NY,Army,Army,40.922326,-72.637078,Suffolk ,,Guard,N/A,New York,11745
+420,NG Camp Swift,Swift,United States,TX,Army,Army,31.62018,-94.483262,Nacogdoches ,,Guard,N/A,Texas,75961
+422,NG Camp Williams Tomah MTA,Tomah,United States,WI,Army,Army,43.983826,-90.473336,Monroe ,,Guard,N/A,Wisconsin,54660
+423,NG Camp Withycombe Clackamas,Clackamas,United States,OR,Army,Army,45.415038,-122.499461,Clackamas ,,Guard,N/A,Oregon,97015
+424,NG Carville Gillis Long Center,Gillis,United States,LA,Army,Army,30.226792,-93.215443,Calcasieu Parish,,Guard,N/A,Louisiana,70601
+425,NG Collegeville FMS 4,Collegeville,United States,PA,Army,Army,40.18566,-75.45157,Montgomery ,,Guard,N/A,Pennsylvania,19426
+427,NG CTC Camp Dawson-Kingwood,Kingwood,United States,WV,Army,Army,39.471673,-79.67596,Preston ,,Guard,N/A,West Virginia,26537
+428,NG CTC Fort Custer Trng Center,Senter,United States,MI,Army,Army,47.100599,-88.483267,Houghton ,,Guard,N/A,Michigan,49922
+429,NG Cumming,Cumming,United States,GA,Army,Army,34.293049,-84.176166,Forsyth ,,Guard,N/A,Georgia,30028
+430,NG Duluth NG Armory,Duluth,United States,MN,Army,Army,47.005566,-92.001934,St. Louis ,,Guard,N/A,Minnesota,55801
+432,NG Elkins AFRC,Elkins,United States,WV,Army,Army,38.92594,-79.84673,Randolph ,,Guard,N/A,West Virginia,26241
+433,NG Esler Field,Violet,United States,LA,Army,Army,29.900262,-89.894926,St. Bernard Parish,,Guard,N/A,Louisiana,70092
+435,NG Florence Military Reservation,Florence,United States,AZ,Army,Army,32.982354,-111.424943,Pinal ,,Guard,N/A,Arizona,85232
+438,NG Fort Indiantown Gap,Fort Indiantown Gap,United States,PA,Army,Army,40.362359,-76.569599,Lebanon ,,Guard,N/A,Pennsylvania,17003
+439,NG Fort McClellan ARNG Tng Center,Center,United States,AL,Army,Army,34.264543,-87.587802,Winston ,,Guard,N/A,Alabama,35565
+442,NG Fort Worth - Shoreview,Fort Worth,United States,TX,Army,Army,32.771419,-97.291484,Tarrant ,,Guard,N/A,Texas,76101
+443,NG Frankfort Boone NG Center,Center,United States,KY,Army,Army,37.11767,-85.703791,Metcalfe ,,Guard,N/A,Kentucky,42214
+446,NG General Lucius D Clay National Guard Center,Center,United States,GA,Army,Army,34.167895,-84.851983,Bartow ,,Guard,N/A,Georgia,30120
+447,NG Grand Island AASF/RC,Grand Island,United States,NE,Army,Army,40.87227,-98.368698,Hall ,,Guard,N/A,Nebraska,68801
+448,NG Grayling Airfield,Grayling,United States,MI,Army,Army,44.691777,-84.612941,Crawford ,,Guard,N/A,Michigan,49738
+450,NG GUARNG Barrigada Complex,Barrigada,Guam,GU,Army,Army,13.444257,144.786297,Guam,,Guard,N/A,Guam,96913
+451,NG Gulfport AVCRAD,Gulfport,United States,MS,Army,Army,30.382966,-89.102426,Harrison ,,Guard,N/A,Mississippi,39501
+452,NG Hammond Airport,Hammond,United States,LA,Army,Army,30.533587,-90.455381,Tangipahoa Parish,,Guard,N/A,Louisiana,70401
+453,NG Havre De Grace Military Res,Havre De Grace,United States,MD,Army,Army,39.560095,-76.15517,Harford ,,Guard,N/A,Maryland,21078
+454,NG Helena Aviation RC- AASF- C12,Helena,United States,MT,Army,Army,46.527398,-112.21037,Lewis and Clark ,,Guard,N/A,Montana,59601
+455,NG HMO3 (Snake Creek TS),Sink Creek,United States,FL,Army,Army,30.848192,-85.231403,Jackson ,,Guard,N/A,Florida,32446
+456,NG Hollidaysburg Readiness Center,Hollidaysburg,United States,PA,Army,Army,40.432059,-78.364965,Blair ,,Guard,N/A,Pennsylvania,16648
+458,NG Indianapolis 38 ID,Indianapolis,United States,IN,Army,Army,39.775092,-86.13216,Marion ,,Guard,N/A,Indiana,46201
+459,NG ITC Camp San Luis Obisbo,San Luis Obispo,United States,CA,Army,Army,35.265573,-120.62122,San Luis Obispo ,,Guard,N/A,California,93401
+460,NG Jackson Airport Armory,Jackson,United States,TN,Army,Army,35.570424,-88.862742,Madison ,,Guard,N/A,Tennessee,38301
+461,NG Jackson Bks,Jackson,United States,LA,Army,Army,30.808675,-91.198736,East Feliciana Parish,,Guard,N/A,Louisiana,70748
+463,NG Johnson City Gray,Gray,United States,TN,Army,Army,36.419826,-82.476535,Washington ,,Guard,N/A,Tennessee,37615
+464,NG Kalaeloa,,United States,HI,Army,Army,19.828171,-155.49504,,,Guard,N/A,Hawaii,
+466,NG Knightstown,Knightstown,United States,IN,Army,Army,39.7956,-85.52636,Henry ,,Guard,N/A,Indiana,46148
+468,NG Lansing Joint Forces Readiness Center,Senter,United States,MI,Army,Army,47.100599,-88.483267,Houghton ,,Guard,N/A,Michigan,49922
+469,NG Las Cruces,Las Cruces,United States,NM,Army,Army,32.290052,-106.753893,Do├▒a Ana ,,Guard,N/A,New Mexico,88001
+470,NG Lawrenceville,Lawrenceville,United States,NJ,Army,Army,40.29733,-74.729605,Mercer ,,Guard,N/A,New Jersey,8648
+471,NG Lexington AASF No 1,Lexington,United States,OK,Army,Army,35.057992,-97.26999,Cleveland ,,Guard,N/A,Oklahoma,73051
+472,NG Lincoln AASF/Readiness Center,Center,United States,NE,Army,Army,42.597304,-97.866951,Knox ,,Guard,N/A,Nebraska,68724
+473,NG Macon Readiness Center,Center,United States,GA,Army,Army,34.167895,-84.851983,Bartow ,,Guard,N/A,Georgia,30120
+474,NG Macon TS,Macon,United States,MO,Army,Army,39.773979,-92.451742,Macon ,,Guard,N/A,Missouri,63552
+475,NG Marseilles (MTA Tng Area),Marseilles,United States,IL,Army,Army,41.33087,-88.70813,LaSalle ,,Guard,N/A,Illinois,61341
+476,NG Martindale - AASF,Martindale,United States,TX,Army,Army,29.839448,-97.850842,Caldwell ,,Guard,N/A,Texas,78655
+477,NG McConnelsville Training Site,Mc Connelsville,United States,OH,Army,Army,39.737292,-81.915415,Morgan ,,Guard,N/A,Ohio,43756
+478,NG McNary Field Salem AASF,Salem,United States,OR,Army,Army,44.94878,-123.003655,Marion ,,Guard,N/A,Oregon,97301
+479,NG Mead TS/FMS 06/Utes 02,Mead,United States,NE,Army,Army,41.22778,-96.4878,Saunders ,,Guard,N/A,Nebraska,68041
+480,NG Mitchell Complex,Mitchell,United States,SD,Army,Army,43.69591,-98.086401,Davison ,,Guard,N/A,South Dakota,57301
+481,NG MTA Camp Butner,Butner,United States,NC,Army,Army,36.13209,-78.75667,Granville ,,Guard,N/A,North Carolina,27509
+482,NG MTA Camp Clark Nevada,Nevada,United States,MO,Army,Army,37.83921,-94.35467,Vernon ,,Guard,N/A,Missouri,64772
+483,NG MTA Camp Crowder Neosho,Neosho,United States,MO,Army,Army,36.904539,-94.372328,Newton ,,Guard,N/A,Missouri,64850
+485,NG MTA Camp Edwards,Camp Edwards,United States,MA,Army,Army,41.657052,-70.543918,Barnstable ,25001,Guard,N/A,Massachusetts,2542
+487,NG MTA Camp Rilea,Riley,United States,OR,Army,Army,43.54154,-119.50384,Harney ,,Guard,N/A,Oregon,97758
+489,NG MTA Camp Shelby,Shelby,United States,MS,Army,Army,33.957757,-90.74504,Bolivar ,,Guard,N/A,Mississippi,38774
+490,NG MTA Clarks Hill Reservation,Clarks Hill,United States,SC,Army,Army,33.623057,-82.132655,McCormick ,,Guard,N/A,South Carolina,29821
+491,NG MTA Ft Wm Henry Harrison,Harrison,United States,MT,Army,Army,45.70355,-111.78548,Madison ,,Guard,N/A,Montana,59735
+492,NG MTA Gunpowder Military Reservation,Gunpowder,United States,MD,Army,Army,39.380158,-76.295468,Harford ,,Guard,N/A,Maryland,21010
+493,NG MTA Limestone Hills,Limestone,United States,MT,Army,Army,45.477717,-109.902402,Stillwater ,,Guard,N/A,Montana,59061
+495,NG MTC-H Camp Grayling,Grayling,United States,MI,Army,Army,44.691777,-84.612941,Crawford ,,Guard,N/A,Michigan,49738
+496,NG MTCH Camp Guernsey,Guernsey,United States,WY,Army,Army,42.256819,-104.786912,Platte ,,Guard,N/A,Wyoming,82214
+498,NG Muscatatuck Urban Training Center,Center,United States,IN,Army,Army,40.531266,-86.169537,Howard ,,Guard,N/A,Indiana,46901
+499,NG Muskogee AFRC,Muskogee,United States,OK,Army,Army,35.70582,-95.50025,Muskogee ,,Guard,N/A,Oklahoma,74401
+500,NG Naval Air Stationhville,Nashville,United States,TN,Army,Army,36.165688,-86.778098,Davidson ,,Guard,N/A,Tennessee,37201
+501,NG New Castle Readiness Center/FMS 9,Century,United States,PA,Army,Army,40.010352,-79.88588,Fayette ,,Guard,N/A,Pennsylvania,15417
+502,NG Norman CSMS,Norman,United States,OK,Army,Army,35.208566,-97.44451,Cleveland ,,Guard,N/A,Oklahoma,73019
+503,NG Oglethorpe Armory,Oglethorpe,United States,GA,Army,Army,32.327479,-84.101472,Macon ,,Guard,N/A,Georgia,31068
+504,NG Oklahoma Military Department,Oklahoma City,United States,OK,Army,Army,35.491608,-97.562817,Oklahoma ,,Guard,N/A,Oklahoma,73101
+506,NG Orchard Mates Boise,Boise,United States,ID,Army,Army,43.603768,-116.272921,Ada ,,Guard,N/A,Idaho,83701
+509,NG Picacho Aviation TS,Picacho,United States,AZ,Army,Army,32.689594,-111.531036,Pinal ,,Guard,N/A,Arizona,85241
+510,NG Raleigh,Raleigh,United States,NC,Army,Army,35.773632,-78.634457,Wake ,,Guard,N/A,North Carolina,27601
+511,NG Rickenbacker (MTA),,United States,OH,Army,Army,40.41493,-82.711998,,,Guard,N/A,Ohio,
+512,NG Rio Rancho TS,Roy,United States,NM,Army,Army,35.93873,-104.195805,Harding ,,Guard,N/A,New Mexico,87743
+514,NG Rochester NGA and OMS 2,Rochester,United States,MN,Army,Army,44.075285,-92.516916,Olmsted ,,Guard,N/A,Minnesota,55901
+515,NG Rosemount NG Armory,Rosemount,United States,MN,Army,Army,44.73941,-93.12577,Dakota ,,Guard,N/A,Minnesota,55068
+516,NG RW Shepherd Hope Hull,Hope Hull,United States,AL,Army,Army,32.206441,-86.380464,Montgomery ,,Guard,N/A,Alabama,36043
+517,NG Saginaw,Saginaw,United States,TX,Army,Army,32.860128,-97.363907,Tarrant ,,Guard,N/A,Texas,76179
+518,NG Saint George/FMS 5B,Saint George,United States,UT,Army,Army,37.185679,-113.609837,Washington ,,Guard,N/A,Utah,84770
+521,NG Sea Girt NJ NGTC,Sea Girt,United States,NJ,Army,Army,40.13206,-74.03458,Monmouth ,,Guard,N/A,New Jersey,8750
+522,NG Shelbyville,Shelbyville,United States,IN,Army,Army,39.511568,-85.791993,Shelby ,,Guard,N/A,Indiana,46176
+523,NG Silver Bell Army Heliport,Silver Bell,United States,AZ,Army,Army,32.383404,-111.500669,Pima ,,Guard,N/A,Arizona,85238
+525,NG SMD,,United States,AL,Army,Army,32.739632,-86.843459,,,Guard,N/A,Alabama,
+526,NG Sparta Armory,Sparta,United States,IL,Army,Army,38.108083,-89.726486,Randolph ,,Guard,N/A,Illinois,62286
+527,NG Spring City Readiness Center,Spring City,United States,PA,Army,Army,40.17677,-75.54769,Chester ,,Guard,N/A,Pennsylvania,19475
+528,NG Springfield (TS Cp Lincoln),Lincoln,United States,IL,Army,Army,40.162779,-89.398361,Logan ,,Guard,N/A,Illinois,62656
+529,NG Springfield AVCRAD (New),Springfield,United States,MO,Army,Army,37.25807,-93.343673,Greene ,,Guard,N/A,Missouri,65801
+530,NG St Cloud AASF,Saint Cloud,United States,MN,Army,Army,45.519196,-94.330619,Stearns ,,Guard,N/A,Minnesota,56301
+531,NG St Cloud NG Armory,Saint Cloud,United States,MN,Army,Army,45.519196,-94.330619,Stearns ,,Guard,N/A,Minnesota,56301
+535,NG TS AFRC Los Alamitos,Los Alamitos,United States,CA,Army,Army,33.795012,-118.062692,Orange ,,Guard,N/A,California,90720
+536,NG TS BBTS,,United States,DE,Army,Army,38.998538,-75.441662,,,Guard,N/A,Delaware,
+537,NG TS Camp Johnson,Johnson,United States,VT,Army,Army,44.642603,-72.735911,Lamoille ,,Guard,N/A,Vermont,5656
+538,NG TS Clark Natl Forest Wapp,Clark,United States,MO,Army,Army,39.295025,-92.374105,Randolph ,,Guard,N/A,Missouri,65243
+540,NG TS Ike Skelton Jefferson City,Jefferson City,United States,MO,Army,Army,38.494029,-92.165194,Cole ,,Guard,N/A,Missouri,65101
+541,NG TS Keaukaha Mil Res,Keaukaha,United States,HI,Army,Army,19.730278,-155.046389,Hawaii ,,Guard,N/A,Hawaii,96720
+544,NG VTS Milan,Milan,United States,TN,Army,Army,35.920312,-88.813982,Gibson ,,Guard,N/A,Tennessee,38358
+545,NG VTS Smyrna,Smyrna,United States,TN,Army,Army,35.959541,-86.53159,Rutherford ,,Guard,N/A,Tennessee,37167
+546,NG West Camp,Wasta,United States,SD,Army,Army,44.0686,-102.44572,Pennington ,,Guard,N/A,South Dakota,57791
+547,NG Westminster Training Site,Westminster,United States,VT,Army,Army,43.082635,-72.474882,Windham ,,Guard,N/A,Vermont,5158
+548,NG WH Ford Regional Tng Ctr,Ford,United States,KY,Army,Army,37.968496,-84.157766,Clark ,,Guard,N/A,Kentucky,40320
+549,NG Williamstown,Williamstown,United States,WV,Army,Army,39.367796,-81.455899,Wood ,,Guard,N/A,West Virginia,26187
+551,Devens Reserve Forces Tng Area,Devens,United States,MA,Army,Army,42.54364,-71.61479,Worcester ,,Reserve,N/A,Massachusetts,1434
+553,Fort Hunter Liggett,Leggett,United States,CA,Army,Army,39.873214,-123.721407,Mendocino ,,Reserve,N/A,California,95585
+555,Grand Prairie Reserve Complex,Grand Prairie,United States,TX,Army,Army,32.742326,-96.993574,Dallas ,,Reserve,N/A,Texas,75051
+556,Joliet USARC/JTA,Joliet,United States,IL,Army,Army,41.530628,-88.084496,Will ,,Reserve,N/A,Illinois,60432
+823,Mark Center,Alexandria,United States,VA,WHS,HQ,38.8303,-77.1163,Fairfax,,WHS,N/A,Virginia,22553
+154,Pentagon,DC,United States,VA,WHS,HQ,38.8719,-77.0563,Arlington,51013,WHS,N/A,Virginia,51013
+561,Bridgeport,Mariposa,United States,CA,Marine Corps,Marine Corps,37.437457,-119.999035,Mariposa ,,Active,N/A,California,95338
+562,Choc Mt Air Gnry Rng,Monterey,United States,CA,Marine Corps,Marine Corps,36.57485,-121.840727,Monterey ,,Active,N/A,California,93940
+564,Marine Corps Museum,Marion,United States,VA,Marine Corps,Marine Corps,36.840198,-81.527656,Smyth ,,Active,N/A,Virginia,24354
+566,MCAS Beaufort,Beaufort,United States,SC,Marine Corps,Marine Corps,32.424353,-80.565343,Beaufort ,,Active,N/A,South Carolina,29901
+567,MCAS Cherry Point,Cherry Point,United States,NC,Marine Corps,Marine Corps,34.903793,-76.899976,Craven ,,Active,N/A,North Carolina,28533
+568,MCAS Miramar,Miramar,United States,CA,Marine Corps,Marine Corps,37.492996,-122.456643,San Mateo ,,Active,N/A,California,94018
+569,MCAS Yuma,Yuma,United States,AZ,Marine Corps,Marine Corps,32.701461,-114.657232,Yuma ,,Active,N/A,Arizona,85364
+570,MCB Camp Lejeune (East Site),East Side Park,United States,NC,Marine Corps,Marine Corps,34.95682,-79.750056,Richmond ,,Active,N/A,North Carolina,28379
+572,MCB Camp Pendleton,Camp Pendleton,United States,CA,Marine Corps,Marine Corps,33.387723,-117.444758,San Diego ,,Active,N/A,California,92055
+574,MCB Hawaii (Kaneohe Bay),Kaneohe,United States,HI,Marine Corps,Marine Corps,21.40877,-157.7899,Honolulu ,,Active,N/A,Hawaii,96744
+575,MCB Quantico,Quantico,United States,VA,Marine Corps,Marine Corps,38.52602,-77.322803,Prince William ,,Active,N/A,Virginia,22134
+576,MCLB Albany,Albany,United States,GA,Marine Corps,Marine Corps,31.560674,-84.176751,Dougherty ,,Active,N/A,Georgia,31701
+577,MCLB Barstow,Barstow,United States,CA,Marine Corps,Marine Corps,34.980295,-116.964449,San Bernardino ,,Active,N/A,California,92311
+578,MCRD Beaufort,Beaufort,United States,SC,Marine Corps,Marine Corps,32.424353,-80.565343,Beaufort ,,Active,N/A,South Carolina,29901
+579,MCRD San Diego,San Diego,United States,CA,Marine Corps,Marine Corps,32.724103,-117.170912,San Diego ,,Active,N/A,California,92101
+580,MCSF Blount Island (FL),Island Grove,United States,FL,Marine Corps,Marine Corps,29.681312,-82.353862,Alachua ,,Active,N/A,Florida,32654
+581,Oak Grove,Durham,United States,NC,Marine Corps,Marine Corps,35.982967,-78.806001,Durham ,,Active,N/A,North Carolina,27703
+582,OLF Atlantic,Atlantic,United States,NC,Marine Corps,Marine Corps,34.88489,-76.34047,Carteret ,,Active,N/A,North Carolina,28511
+583,Pearl City Annex,Pearl City,United States,HI,Marine Corps,Marine Corps,21.40094,-157.96653,Honolulu ,,Active,N/A,Hawaii,96782
+585,Puuloa-Oahu,Paauilo,United States,HI,Marine Corps,Marine Corps,20.035356,-155.377961,Hawaii ,,Active,N/A,Hawaii,96776
+586,TBR Main,,United States,GA,Marine Corps,Marine Corps,32.629579,-83.423511,,,Active,N/A,Georgia,
+587,Twentynine Palms,Twentynine Palms,United States,CA,Marine Corps,Marine Corps,34.135797,-116.052428,San Bernardino ,,Active,N/A,California,92277
+588,Yermo Area,Yermo,United States,CA,Marine Corps,Marine Corps,34.901697,-116.844762,San Bernardino ,,Active,N/A,California,92398
+589,Brooklyn NY,New York,United States,NY,Marine Corps,Marine Corps,40.711271,-74.003483,New York ,,Reserve,N/A,New York,10004
+590,Jacksonville FL Maint,Jacksonville,United States,FL,Marine Corps,Marine Corps,30.337538,-81.768622,Duval ,,Reserve,N/A,Florida,32099
+591,Syracuse MCRC,Syracuse,United States,NY,Marine Corps,Marine Corps,43.047934,-76.17792,Onondaga ,,Reserve,N/A,New York,13204
+592,Agana,,Guam,GU,Navy,Navy,13.438296,144.77295,,,Active,Joint Region Marianas,Guam,
+593,Aiea,Aiea,United States,HI,Navy,Navy,21.39065,-157.927829,Honolulu ,,Active,Joint Base Pearl Harbor - Hickam,Hawaii,96701
+595,ALF Fentress Chesapke,Chesapeake,United States,VA,Navy,Navy,36.749991,-76.218759,Chesapeake city,,Active,N/A,Virginia,23320
+596,ALF Orange,Orange,United States,TX,Navy,Navy,30.071743,-93.864976,Orange ,,Active,N/A,Texas,77630
+599,Amphib Base Coronado East,Coronado,United States,CA,Navy,Navy,32.699235,-117.209642,San Diego ,,Active,N/A,California,92118
+600,Amphib Base Coronado West,Coronado,United States,CA,Navy,Navy,32.699235,-117.209642,San Diego ,,Active,N/A,California,92118
+602,Apra Heights,,Guam,GU,Navy,Navy,13.438296,144.77295,,,Active,Joint Region Marianas,Guam,
+603,Arlington Service Ctr,Arlington,United States,VA,Navy,Navy,38.840403,-77.0888,Arlington ,,Active,N/A,Virginia,22206
+604,Balboa Hospital,,United States,CA,Navy,Navy,37.155177,-119.543418,,,Active,N/A,California,
+605,Bangor WA,Bunker,United States,WA,Navy,Navy,46.644269,-123.116525,Lewis ,,Active,N/A,Washington,98532
+606,Barin Field,Floyd,United States,AL,Navy,Navy,32.671798,-86.025021,Elmore ,,Active,N/A,Alabama,36024
+608,Barrigada,Barrigada,Guam,GU,Navy,Navy,13.444257,144.786297,Guam,,Active,Joint Region Marianas,Guam,96913
+609,Bayview Idaho,Bayview,United States,ID,Navy,Navy,48.008329,-116.622426,Bonner ,,Active,N/A,Idaho,83803
+614,Camp Morena,Moreno,United States,CA,Navy,Navy,33.917517,-117.157813,Riverside ,,Active,N/A,California,92360
+615,CBC Gulfport MS,Gulfport,United States,MS,Navy,Navy,30.382966,-89.102426,Harrison ,,Active,N/A,Mississippi,39501
+616,Cheatham Annex,Chatham,United States,VA,Navy,Navy,36.830785,-79.412735,Pittsylvania ,,Active,N/A,Virginia,24531
+618,CNI NAVMAG Indian Island,Island View,United States,WA,Navy,Navy,46.21405,-119.175728,Benton ,,Active,N/A,Washington,99336
+624,CSO Naval Air Station Alameda,Alameda,United States,CA,Navy,Navy,37.770563,-122.264779,Alameda ,,Active,N/A,California,94501
+625,CSO Naval Air Station South Weymouth,Weymouth,United States,MA,Navy,Navy,42.20794,-70.95514,Norfolk ,,Active,N/A,Massachusetts,2188
+627,CSO NSY Long Beach Ca,Long Beach,United States,CA,Navy,Navy,33.804309,-118.200957,Los Angeles ,,Active,N/A,California,90801
+628,CSO NSY Mare Island,Island Mountain,United States,CA,Navy,Navy,40.026261,-123.490301,Trinity ,,Active,N/A,California,95440
+630,Dandan,,Guam,GU,Navy,Navy,13.438296,144.77295,,,Active,Joint Region Marianas,Guam,
+631,Dania Beach (Lauderdale),Dania,United States,FL,Navy,Navy,26.052876,-80.132929,Broward ,,Active,N/A,Florida,33004
+632,Det Concord (BRAC),Concord,United States,CA,Navy,Navy,37.953672,-122.022872,Contra Costa ,,Active,N/A,California,94518
+633,Det Phil Pny Annex,,United States,PA,Navy,Navy,40.902496,-77.833451,,,Active,N/A,Pennsylvania,
+634,Det Philadelphia PA,Philadelphia,United States,PA,Navy,Navy,40.001811,-75.11787,Philadelphia ,,Active,N/A,Pennsylvania,19019
+635,Dixie Target Range,Runge,United States,TX,Navy,Navy,28.88331,-97.71305,Karnes ,,Active,N/A,Texas,78151
+637,Dryside,California City,United States,CA,Navy,Navy,35.187133,-117.885359,Kern ,,Active,N/A,California,93504
+638,Elizabeth Rvr Channel,Elizabeth River Shores,United States,VA,Navy,Navy,36.837313,-76.150514,Virginia Beach city,,Active,N/A,Virginia,23462
+639,EWA,Hawi,United States,HI,Navy,Navy,20.24232,-155.83323,Hawaii ,,Active,Joint Base Pearl Harbor - Hickam,Hawaii,96719
+640,Fallbrook California,Fallbrook,United States,CA,Navy,Navy,33.376864,-117.259523,San Diego ,,Active,N/A,California,92028
+641,Finegayan,,Guam,GU,Navy,Navy,13.438296,144.77295,,,Active,Joint Region Marianas,Guam,
+649,Fort Sheridan,Fort Sheridan,United States,IL,Navy,Navy,42.255073,-87.818268,Lake ,,Active,N/A,Illinois,60037
+650,Gambrills,Gambrills,United States,MD,Navy,Navy,39.069831,-76.679254,Anne Arundel ,,Active,N/A,Maryland,21054
+651,GL Camp JPJ,Kemp,United States,IL,Navy,Navy,39.695589,-88.185321,Douglas ,,Active,N/A,Illinois,61910
+652,Glenview,Glenview,United States,IL,Navy,Navy,42.072974,-87.804334,Cook ,,Active,N/A,Illinois,60025
+657,Holtville Carrier LS,Holtville,United States,CA,Navy,Navy,32.781362,-115.383857,Imperial ,,Active,N/A,California,92250
+658,Honolulu,Honolulu,United States,HI,Navy,Navy,24.859832,-168.021815,Honolulu ,,Active,Joint Base Pearl Harbor - Hickam,Hawaii,96801
+659,Imperial Beach NOLF,Imperial Beach,United States,CA,Navy,Navy,32.576415,-117.116514,San Diego ,,Active,N/A,California,91932
+661,JBPHH Pearl HAir Reserve Baseor HI,Pearl Harbor,United States,HI,Navy,Navy,21.349028,-157.93508,Honolulu ,,Active,Joint Base Pearl Harbor - Hickam,Hawaii,96860
+663,JEBLCFS Wallops Island VA,Wallops Island,United States,VA,Navy,Navy,37.918556,-75.490518,Accomack ,,Active,Joint Expeditionary Base Little Creek - Fort Story,Virginia,23337
+664,Jim Creek,,United States,WA,Navy,Navy,47.407324,-120.5758,,,Active,N/A,Washington,
+666,Kalaeloa,Hawi,United States,HI,Navy,Navy,20.24232,-155.83323,Hawaii ,,Active,Joint Base Pearl Harbor - Hickam,Hawaii,96719
+668,Keyport NUWC,Keyport,United States,WA,Navy,Navy,47.698025,-122.625529,Kitsap ,,Active,N/A,Washington,98345
+669,Lafayette Rvr Complex,Elliston,United States,VA,Navy,Navy,37.235923,-80.212038,Montgomery ,,Active,N/A,Virginia,24087
+670,Long Beach Fuel Complex,Long Beach,United States,CA,Navy,Navy,33.810783,-118.18955,Los Angeles ,,Active,N/A,California,90806
+673,Makaha Ridge,Waianae,United States,HI,Navy,Navy,21.464925,-158.20213,Honolulu ,,Active,N/A,Hawaii,96792
+674,Manchester,Manchester,United States,WA,Navy,Navy,47.53864,-122.492613,Kitsap ,,Active,N/A,Washington,98353
+675,Marysville WA,Marysville,United States,WA,Navy,Navy,48.049576,-122.161951,Snohomish ,,Active,N/A,Washington,98270
+678,NAF El Centro,El Centro,United States,CA,Navy,Navy,32.770275,-115.598602,Imperial ,,Active,N/A,California,92243
+679,NALF Goliad,Goliad,United States,TX,Navy,Navy,28.664092,-97.460854,Goliad ,,Active,N/A,Texas,77963
+680,NARL Barrow Camp Tr1,Barrow,United States,AK,Navy,Navy,71.324132,-156.683095,North Slope Borough,,Active,N/A,Alaska,99723
+681,National City,National City,United States,CA,Navy,Navy,32.661115,-117.101359,San Diego ,,Active,N/A,California,91950
+682,NAVACAD North Severn,Severn,United States,MD,Navy,Navy,39.1328,-76.69253,Anne Arundel ,,Active,N/A,Maryland,21144
+683,Naval Air Station Brunswick ME,Brunswick,United States,ME,Navy,Navy,43.91172,-69.9405,Cumberland ,,Active,N/A,Maine,4011
+684,Naval Air Station Corpus Christi TX,Corpus Christi,United States,TX,Navy,Navy,27.674946,-97.278473,Nueces ,,Active,N/A,Texas,78418
+685,Naval Air Station Fallon NV,Fallon,United States,NV,Navy,Navy,39.479393,-118.296879,Churchill ,,Active,N/A,Nevada,89406
+686,Naval Air Station Fort Worth JRB TX,Fort Worth,United States,TX,Navy,Navy,32.767064,-97.304038,Tarrant ,,Active,N/A,Texas,76111
+687,Naval Air Station Jacksonville FL,Jacksonville,United States,FL,Navy,Navy,30.337538,-81.768622,Duval ,,Active,N/A,Florida,32099
+689,Naval Air Station JRB Willow Grove,Willow Grove,United States,PA,Navy,Navy,40.157452,-75.124753,Montgomery ,,Active,N/A,Pennsylvania,19090
+690,Naval Air Station Key West FL,Key West,United States,FL,Navy,Navy,24.557053,-81.780989,Monroe ,,Active,N/A,Florida,33040
+691,Naval Air Station Kingsville TX,Kingsville,United States,TX,Navy,Navy,27.422876,-97.84068,Kleberg ,,Active,N/A,Texas,78363
+692,Naval Air Station Lemoore CA,Lemoore,United States,CA,Navy,Navy,36.268194,-119.817274,Kings ,,Active,N/A,California,93245
+693,Naval Air Station Meridian MS,Meridian,United States,MS,Navy,Navy,32.381605,-88.663489,Lauderdale ,,Active,N/A,Mississippi,39301
+694,Naval Air Station Oceana VA,Ozeana,United States,VA,Navy,Navy,37.825138,-76.80135,Essex ,,Active,N/A,Virginia,22454
+695,Naval Air Station Patuxent River,Patuxent River,United States,MD,Navy,Navy,38.285279,-76.415708,St. Mary's ,,Active,N/A,Maryland,20670
+696,Naval Air Station Pensacola FL,Pensacola,United States,FL,Navy,Navy,30.404006,-87.241287,Escambia ,,Active,N/A,Florida,32501
+697,Naval Air Station Whidbey Island WA,Island View,United States,WA,Navy,Navy,46.21405,-119.175728,Benton ,,Active,N/A,Washington,99336
+698,Naval Air Station Whiting Field Milton FL,Milton,United States,FL,Navy,Navy,30.792885,-86.985834,Santa Rosa ,,Active,N/A,Florida,32570
+699,Naval Base Kitsap Bremerton WA,Bremerton,United States,WA,Navy,Navy,47.569525,-122.646451,Kitsap ,,Active,N/A,Washington,98312
+700,Naval Hospital U.S.,,United States,FL,Navy,Navy,28.45743,-82.409148,,,Active,N/A,Florida,
+701,Naval Hospital Guam,,Guam,GU,Navy,Navy,13.438296,144.77295,,,Active,Joint Region Marianas,Guam,
+703,Naval Observatory,,United States,DC,Navy,Navy,38.904103,-77.017229,,,Active,N/A,District of Columbia,
+704,Naval Research Lab,,United States,DC,Navy,Navy,38.904103,-77.017229,,,Active,N/A,District of Columbia,
+705,Naval Station Great Lakes IL,Great Lakes,United States,IL,Navy,Navy,42.309272,-87.85427,Lake ,,Active,N/A,Illinois,60088
+706,Naval Station Newport RI,Newport,United States,RI,Navy,Navy,41.487552,-71.327084,Newport ,,Active,N/A,Rhode Island,2840
+707,Naval Support Activity Crane,Crane,United States,IN,Navy,Navy,38.894879,-86.900174,Martin ,,Active,N/A,Indiana,47522
+708,Naval Support Activity Orlando,Orlando,United States,FL,Navy,Navy,28.545179,-81.373291,Orange ,,Active,N/A,Florida,32801
+709,Naval Support Activity Panama City,Panama City,United States,FL,Navy,Navy,30.159737,-85.660922,Bay ,,Active,N/A,Florida,32401
+711,Naval Weapons Station Earle,Erial,United States,NJ,Navy,Navy,39.773448,-75.006278,Camden ,,Active,N/A,New Jersey,8081
+712,Naval Weapons Station Yorktown,Yorktown,United States,VA,Navy,Navy,37.230251,-76.524359,York ,,Active,N/A,Virginia,23690
+713,NAVBASE Coronado,Coronado,United States,CA,Navy,Navy,32.699235,-117.209642,San Diego ,,Active,N/A,California,92118
+714,NAVBASE Guam,,Guam,GU,Navy,Navy,13.438296,144.77295,,,Active,Joint Region Marianas,Guam,
+716,NAVBASE Point Loma,Lomo,United States,CA,Navy,Navy,39.220724,-121.641635,Sutter ,,Active,N/A,California,95953
+717,NAVBASE San Diego CA,San Diego,United States,CA,Navy,Navy,32.724103,-117.170912,San Diego ,,Active,N/A,California,92101
+718,NAVBASE Ventura Cty Point Mugu CA,Point Mugu Nawc,United States,CA,Navy,Navy,33.247969,-119.506102,Ventura ,,Active,N/A,California,93042
+719,NAVMEDCEN Portsmouth VA,Portsmouth,United States,VA,Navy,Navy,36.811498,-76.367715,Portsmouth city,,Active,N/A,Virginia,23701
+720,NAVOBSSTA Flagstaff AZ,Flagstaff,United States,AZ,Navy,Navy,35.287661,-111.639303,Coconino ,,Active,N/A,Arizona,86001
+721,NAVPMOSSP Magna Utah,Magna,United States,UT,Navy,Navy,40.699401,-112.088875,Salt Lake ,,Active,N/A,Utah,84044
+723,NAVSTA Everett WA,Everett,United States,WA,Navy,Navy,47.988661,-122.199795,Snohomish ,,Active,N/A,Washington,98201
+724,NAVSTA Mayport FL,Mayport,United States,FL,Navy,Navy,30.389189,-81.404408,Duval ,,Active,N/A,Florida,32227
+726,NAVSUBASE New London CT,New London,United States,CT,Navy,Navy,41.35565,-72.09952,New London ,,Active,N/A,Connecticut,6320
+727,NAVSUPPACT Annapolis,Annapolis,United States,MD,Navy,Navy,38.98775,-76.5528,Anne Arundel ,,Active,N/A,Maryland,21401
+728,NAVSUPPACT Bethesda MD,Bethesda,United States,MD,Navy,Navy,39.143979,-77.207617,Montgomery ,,Active,N/A,Maryland,20813
+729,NAVSUPPACT Hampton Roads VA,Readus,United States,VA,Navy,Navy,38.855946,-78.590846,Shenandoah ,,Active,N/A,Virginia,22824
+730,NAVSUPPACT Mechanicsburg PA,Mechanicsburg,United States,PA,Navy,Navy,40.182917,-77.004599,Cumberland ,,Active,N/A,Pennsylvania,17055
+731,NAVSUPPACT Midsouth Memphis TN,Memphis,United States,TN,Navy,Navy,35.169255,-89.990415,Shelby ,,Active,N/A,Tennessee,37501
+732,NAVSUPPACT Monterey CA,Monterey,United States,CA,Navy,Navy,36.57485,-121.840727,Monterey ,,Active,N/A,California,93940
+733,NAVSUPPACT Norfolk NSY,Norfolk,United States,VA,Navy,Navy,36.895911,-76.208521,Norfolk city,,Active,N/A,Virginia,23501
+734,NAVSUPPFAC Beaufort SC,Beaufort,United States,SC,Navy,Navy,32.424353,-80.565343,Beaufort ,,Active,N/A,South Carolina,29901
+735,NAVWPNSTA Seal Beach,Seal Beach,United States,CA,Navy,Navy,33.74141,-118.10479,Orange ,,Active,N/A,California,90740
+736,NAVWPNSYSTRAFAC Boardman,Boardman,United States,OR,Navy,Navy,45.83986,-119.70058,Morrow ,,Active,N/A,Oregon,97818
+737,Navy Annex,Nuevo,United States,CA,Navy,Navy,33.801279,-117.139061,Riverside ,,Active,N/A,California,92567
+738,NAWS China Lake,Locke,United States,CA,Navy,Navy,38.25047,-121.509397,Sacramento ,,Active,N/A,California,95690
+739,NCTS Cutler VLF Area,Cutler,United States,ME,Navy,Navy,44.65758,-67.20387,Washington ,,Active,N/A,Maine,4626
+741,NMIC Suitland,Suitland,United States,MD,Navy,Navy,38.834912,-76.912745,Prince George's ,,Active,N/A,Maryland,20746
+744,NOLF Brewton,Brewton,United States,AL,Navy,Navy,31.129427,-87.096126,Escambia ,,Active,N/A,Alabama,36426
+745,NOLF Choctaw,Choctaw,United States,FL,Navy,Navy,30.367422,-86.106051,Walton ,,Active,N/A,Florida,32454
+746,NOLF Evergreen,Evergreen,United States,AL,Navy,Navy,31.489241,-87.052004,Conecuh ,,Active,N/A,Alabama,36401
+747,NOLF Holley,Holley,United States,FL,Navy,Navy,30.347061,-87.113185,Santa Rosa ,,Active,N/A,Florida,32561
+748,NOLF Santa Rosa,Sanderson,United States,FL,Navy,Navy,30.25218,-82.27289,Baker ,,Active,N/A,Florida,32087
+749,NOLF Silverhill,Silverhill,United States,AL,Navy,Navy,30.527068,-87.735,Baldwin ,,Active,N/A,Alabama,36576
+751,NOLF Summerdale,Summerdale,United States,AL,Navy,Navy,30.4877,-87.69971,Baldwin ,,Active,N/A,Alabama,36580
+753,Norco,Norco,United States,CA,Navy,Navy,33.936248,-117.570053,Riverside ,,Active,N/A,California,92860
+755,Northwest Chesapeake VA,Chesapeake,United States,VA,Navy,Navy,36.6434,-76.24201,Chesapeake city,,Active,N/A,Virginia,23322
+756,Norwalk Fuel Complex,Norwalk,United States,CA,Navy,Navy,33.904087,-118.073183,Los Angeles ,,Active,N/A,California,90650
+757,NOTU Cape Canaveral,Cape Canaveral,United States,FL,Navy,Navy,28.394642,-80.614323,Brevard ,,Active,N/A,Florida,32920
+758,NSA Andersen,Andersen Air Force Base,Guam,GU,Navy,Navy,13.562134,144.926373,Guam,,Active,Joint Region Marianas,Guam,96910
+759,NSA Saratoga Springs NY,New York,United States,NY,Navy,Navy,40.68863,-74.018244,New York ,,Active,N/A,New York,10004
+761,NSF Indian Head,Indian Head,United States,MD,Navy,Navy,38.60512,-77.17554,Charles ,,Active,N/A,Maryland,20640
+763,NSWC Carderock,,United States,MD,Navy,Navy,38.946658,-76.674494,,,Active,N/A,Maryland,
+766,NWIRP Bedford MA,Bedford,United States,MA,Navy,Navy,42.49065,-71.27617,Middlesex ,,Active,N/A,Massachusetts,1730
+769,OLF Bronson,Bronson,United States,FL,Navy,Navy,29.44774,-82.64233,Levy ,,Active,N/A,Florida,32621
+770,OLF Coupeville,Coupeville,United States,WA,Navy,Navy,48.1894,-122.66765,Island ,,Active,N/A,Washington,98239
+771,OLF Whitehouse,Whitehouse,United States,FL,Navy,Navy,30.31635,-81.846215,Duval ,,Active,N/A,Florida,32220
+772,Pearl City,Pearl City,United States,HI,Navy,Navy,21.40094,-157.96653,Honolulu ,,Active,Joint Base Pearl Harbor - Hickam,Hawaii,96782
+775,Port Hueneme,Port Hueneme,United States,CA,Navy,Navy,34.147368,-119.199754,Ventura ,,Active,N/A,California,93041
+777,Pumpkin Neck,Pumpkin Center,United States,VA,Navy,Navy,37.227619,-81.008418,Bland ,,Active,N/A,Virginia,24315
+778,Randsburg Wash Area,Randsburg,United States,CA,Navy,Navy,35.559842,-117.063871,San Bernardino ,,Active,N/A,California,93554
+780,San Clemente IS NALF,Irvine,United States,CA,Navy,Navy,33.729641,-117.772954,Orange ,,Active,N/A,California,92602
+781,San Nicolas Island,Island Mountain,United States,CA,Navy,Navy,40.026261,-123.490301,Trinity ,,Active,N/A,California,95440
+782,San Pedro Fuel Depot,San Pedro,United States,CA,Navy,Navy,33.753088,-118.253053,Los Angeles ,,Active,N/A,California,90731
+783,Santa Cruz Island,Santa Cruz,United States,CA,Navy,Navy,36.958936,-122.031549,Santa Cruz ,,Active,N/A,California,95060
+786,Saufley Field,Felda,United States,FL,Navy,Navy,26.5398,-81.43563,Hendry ,,Active,N/A,Florida,33930
+788,Sea Plane Base,Plain,United States,WA,Navy,Navy,47.762622,-120.657315,Chelan ,,Active,N/A,Washington,98826
+789,Sewage Evaporation Pond,Peanut,United States,CA,Navy,Navy,40.467923,-123.168637,Trinity ,,Active,N/A,California,96041
+791,Silver Strand South,Silver Strand,United States,CA,Navy,Navy,34.152783,-119.218442,Ventura ,,Active,N/A,California,93035
+792,Site 3 NS Long Beach,Long Beach,United States,CA,Navy,Navy,33.804309,-118.200957,Los Angeles ,,Active,N/A,California,90801
+793,Solomons Island MD,Solomons,United States,MD,Navy,Navy,38.332035,-76.46564,Calvert ,,Active,N/A,Maryland,20688
+796,Stump Neck Area,,United States,MD,Navy,Navy,38.946658,-76.674494,,,Active,N/A,Maryland,
+797,Subase Kings Bay GA,Kings Bay,United States,GA,Navy,Navy,30.790547,-81.559737,Camden ,,Active,N/A,Georgia,31547
+798,Talofofo,Talofofo,Guam,GU,Navy,Navy,13.444257,144.786297,Guam,,Active,Joint Region Marianas,Guam,96930
+801,Target B-16,,United States,NV,Navy,Navy,39.331093,-116.615147,,,Active,N/A,Nevada,
+802,Target B-17,,United States,NV,Navy,Navy,39.331093,-116.615147,,,Active,N/A,Nevada,
+803,Target B-19,,United States,NV,Navy,Navy,39.331093,-116.615147,,,Active,N/A,Nevada,
+804,Target B-20,,United States,NV,Navy,Navy,39.331093,-116.615147,,,Active,N/A,Nevada,
+806,Tiyan,,Guam,GU,Navy,Navy,13.438296,144.77295,,,Active,Joint Region Marianas,Guam,
+811,Upper Yard Annapolis,Annapolis,United States,MD,Navy,Navy,38.98775,-76.5528,Anne Arundel ,,Active,N/A,Maryland,21401
+813,Wahiawa,Wahiawa,United States,HI,Navy,Navy,21.5324,-158.047735,Honolulu ,,Active,Joint Base Pearl Harbor - Hickam,Hawaii,96786
+814,Waikele,Waikoloa,United States,HI,Navy,Navy,19.873144,-155.79636,Hawaii ,,Active,Joint Base Pearl Harbor - Hickam,Hawaii,96738
+815,Waipahu,Waipahu,United States,HI,Navy,Navy,21.395273,-157.996553,Honolulu ,,Active,Joint Base Pearl Harbor - Hickam,Hawaii,96797
+816,Warner Springs Rts,Warner Springs,United States,CA,Navy,Navy,33.28226,-116.63363,San Diego ,,Active,N/A,California,92086
+817,Waterfront,Waterford Works,United States,NJ,Navy,Navy,39.723037,-74.836939,Camden ,,Active,N/A,New Jersey,8089
+820,Woolmarket (De Soto),Biloxi,United States,MS,Navy,Navy,30.471039,-88.971253,Harrison ,,Active,N/A,Mississippi,39532
+821,Yankee Target Range,Runge,United States,TX,Navy,Navy,28.88331,-97.71305,Karnes ,,Active,N/A,Texas,78151
+6,Andersen Air Force Base,Guam,Guam,GU,Air Force,PACAF,13.5882,144.9202,Guam,,Active,N/A,Guam,250
+157,Eielson Air Force Base,Fairbanks,United States,AK,Air Force,PACAF,64.6431,-147.0638,Fairbanks North Star,2090,Active,N/A,Alaska,2090
+49,Elmendorf Air Force Base,Anchorage,United States,AK,Air Force,PACAF,61.2536,-149.8113,Anchorage,2020,Active,Joint Base Elmendorf - Richardson,Alaska,2020
+62,Joint Base Pearl Harbor-Hickam,Honolulu,United States,HI,Air Force,PACAF,21.3487,-157.944,Honolulu,15003,Active,Joint Base Pearl Harbor-Hickam,Honolulu,15003
+73,Kadena Air Force Base,Okinawa,Japan,Okinawa,Air Force,PACAF,26.3557,127.7679,Okinawa,359,Active,N/A,Japan,359
+105,Misawa Air Force Base,Aomori,Japan,Aomori,Air Force,PACAF,40.6965,141.3878,Aomori,389,Active,N/A,Japan,389
+116,Osan Air Force Base,Gyeonggi,South Korea,KR,Air Force,PACAF,37.0885,127.0338,Gyeonggi,651,Active,N/A,South Korea,651
+157,Yokota Air Force Base,Tokyo,Japan,JP,Air Force,PACAF,35.7332,139.3418,Tokyo,350,Active,N/A,Japan,350
+146,USAF Academy,USAF Academy,United States,CO,Air Force,USAFA,38.994252,-104.86375,El Paso ,8119,Active,N/A,Colorado,80840
+8,Aviano Air Force Base,Italy,Italy,Friuli Venezia Giulia,Air Force,USAFE,46.036,12.6145,Friuli Venezia Giulia,,Active,N/A,Italy,330
+83,Lakenheath Royal Air Force,Suffolk,United Kingdom,England,Air Force,USAFE,52.4139,0.05221,England,750,Active,N/A,United Kingdom,750
+161,Mildenhall Royal Air Force,Suufolk,United Kingdom,England,Air Force,USAFE,52.3476,0.05156,England,750,Active,N/A,United Kingdom,750
+124,Ramstein Air Force Base,Rhineland-Palatinate,Germany,Rhineland-Palatinate,Air Force,USAFE,49.4397,7.5971,Rhineland-Palatinate,236,Active,N/A,Germany,236
+135,Spangdahlem Air Force base,Germany,Germany,Rhineland-Palatinate,Air Force,USAFE,49.9857,6.6843,Rhineland-Palatinate,236,Active,N/A,Germany,236
+17,Buckley Space Force Base,Aurora,United States,CO,Air Force,USSF,39.70166667,-104.7516667,Denver,8031,Active,N/A,Colorado,8031
+22,Cape Canaveral Air Force Station,Cocoa Beach,United States,FL,Air Force,USSF,28.48888889,-80.57777778,Brevard,12009,Active,N/A,Florida,12009
+23,Cape Cod Air Force Station,Bourne,United States,MA,Air Force,USSF,41.75333333,-70.53861111,Barnstable,25001,Active,N/A,Massachusetts,25001
+24,Cavalier Air Force Station,Mountain,United States,ND,Air Force,USSF,48.79388,-97.62231,Pembina ,58220,Active,N/A,North Dakota,58220
+88,Los Angeles Space Force Annex No4,Sugarloaf,United States,CA,Air Force,USSF,34.241389,-116.832701,San Bernardino ,,Active,N/A,California,
+41,Los Angeles Space Force Base,El Segundo,United States,CA,Air Force,USSF,33.91888889,-118.3805556,Los Angeles,6037,Active,N/A,California,
+111,New Boston Air Station,Manchester,United States,NH,Air Force,USSF,42.94222222,-71.63583333,Hillsborough,33011,Active,N/A,New Hampshire,3070
+118,Patrick Space Force Base,Patrick Space Force Base,United States,FL,Air Force,USSF,28.235,-80.61,Brevard,12009,Active,N/A,Florida,32925
+119,Peterson Space Force Base,Colorado Springs,United States,CO,Air Force,USSF,38.82361111,-104.695,El Paso,8041,Active,N/A,Colorado,8041
+129,Schriever Space Force Base,Colorado Springs,United States,CO,Air Force,USSF,38.80333333,-104.5255556,El Paso,8041,Active,N/A,Colorado,8041
+152,Vandenberg Space Force Base,Lompoc,United States,CA,Air Force,USSF,34.7325,-120.5680556,Santa Barbara,6083,Active,N/A,California,6083
