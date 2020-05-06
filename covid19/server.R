@@ -15,695 +15,1066 @@
 
 # Define server logic, within this all ouputs and reactive variables are generated. 
 server <- function(input, output,session) {
+  
+  # Step One
+  ###################################################################################################################################################
+  
+  
+  
+  
+  # Step Two
+  ###################################################################################################################################################
+  
+  
+  # Output common statistics -------------------------------------------------------------------------------------------------------------------------------------------
+  
+  #Finds which counties in given radius. Also Give county statistics
+  output$TotalPopulation <- renderValueBox({
+    MyCounties<-GetCounties(input$Base,input$Radius)
+    valueBox(subtitle = "Total Regional Population",
+             comma(CalculateCounties(MyCounties)),
+             #icon = icon("list-ol"),
+             color = "light-blue"
+    )
     
-    # Step One
-    ###################################################################################################################################################
+  })
+  
+  # Finds Covid Cases and statistics on covid per county
+  output$CovidCases <- renderValueBox({
+    MyCounties<-GetCounties(input$Base,input$Radius)
+    valueBox(subtitle = "Total Confirmed Cases",
+             comma(CalculateCovid(MyCounties)),
+             #icon = icon("list-ol"),
+             color = "light-blue"
+    )
     
+  })
+  
+  # Finds Covid Cases per 1,000
+  output$CasesPer1000 <- renderValueBox({
+    MyCounties<-GetCounties(input$Base,input$Radius)
+    valueBox(subtitle = "Total Confirmed Cases per 1,000",
+             comma(CalculateCovid1000(MyCounties)),
+             #icon = icon("list-ol"),
+             color = "teal"
+    )
     
+  })
+  
+  #Outputs change in covid cases per day
+  output$CaseChangeLocal <- renderValueBox({
+    MyCounties<-GetCounties(input$Base,input$Radius)
+    CovidCounties<-subset(CovidConfirmedCases, CountyFIPS %in% MyCounties$FIPS)
+    changeC <- sum(rev(CovidCounties)[,1] - rev(CovidCounties)[,2])
     
+    valueBox(paste("+",toString(changeC)),
+             subtitle = "New Confirmed Cases", 
+             color = "light-blue")
+  })
+  
+  
+  # Finds Covid deaths and statistics on covid per county
+  output$LocalCovidDeaths <- renderValueBox({
+    MyCounties<-GetCounties(input$Base,input$Radius)
+    valueBox(subtitle = "Total Fatalities",
+             comma(CalculateDeaths(MyCounties)),
+             #icon = icon("skull"),
+             color = "light-blue"
+    )
+  })
+  
+  #Outputs change in deaths per day   
+  output$DeathChangeLocal <- renderValueBox({
+    MyCounties<-GetCounties(input$Base,input$Radius)
+    CovidCounties<-subset(CovidDeaths, CountyFIPS %in% MyCounties$FIPS)
+    changeC <- sum(rev(CovidCounties)[,1] - rev(CovidCounties)[,2])
     
-    # Step Two
-    ###################################################################################################################################################
+    valueBox(paste("+",toString(changeC)),
+             subtitle = "New Fatalities", 
+             color = "light-blue")
+  })
+  
+  #Finds hospital information within a given 100 mile radius. Calculates number of total hospital beds. Can compare to number of cases
+  output$HospitalUtilization <- renderValueBox({
+    MyCounties<-GetCounties(input$Base,input$Radius)
+    valueBox(subtitle = "Estimated Local Hospital Bed Utilization",
+             HospitalIncreases(MyCounties),
+             #icon = icon("hospital"),
+             color = "navy")
+  })
+  
+  
+  output$CaseDbRate <- renderValueBox({
+    MyCounties<-GetCounties(input$Base,input$Radius)
+    valueBox(paste(CaseDblRate(MyCounties),"days"),
+             subtitle = "Case Doubling Rate",
+             color = "teal")
+  })
+  
+  
+  output$Rt_Estimate <- renderValueBox({
+    MyCounties<-GetCounties(input$Base,input$Radius)
+    valueBox(paste(Estimate_Rt(MyCounties)),
+             subtitle = "Estimated Virus Reproduction Rate",
+             color = "navy")
+  })
+  
+  
+  ###################################################################################################
+  
+  output$CHIMEPeakDate<-renderValueBox({
+    MyCounties<-GetCounties(input$Base,input$Radius)
+    if (is.null(input$SocialDistanceValue) ){social_dist<-1}
     
+    CS      <- "CS"       %in% input$SocialDistanceValue
+    CB    <- "CB"     %in% input$SocialDistanceValue
+    SD <- "SD"  %in% input$SocialDistanceValue
     
-    # Output common statistics -------------------------------------------------------------------------------------------------------------------------------------------
+    if (CS & CB & SD){
+      social_dist <- 27
+    } else if (CS & CB){
+      social_dist <- 12
+    } else if (CS & SD){
+      social_dist <-19
+    } else if (SD & CB){
+      social_dist <-23
+    } else if (CS) {
+      social_dist <- 4
+    }  else if (CB) {
+      social_dist <- 8
+    }  else if (SD) {
+      social_dist <- 15
+    }
+    Peak<-CalculateCHIMEPeak(MyCounties, input$Base, input$Radius, social_dist, input$proj_days, input$StatisticType)
+    Peak<-format(Peak)
+    if (input$StatisticType == "Hospitalizations") {
+      valueBox(subtitle = "CHIME Predicted Peak Hospitalizations",
+               paste(Peak),
+               #icon = icon("hospital"),
+               color = "blue") 
+    } else {
+      valueBox(subtitle = "CHIME Predicted Total Fatalities",
+               paste(Peak),
+               #icon = icon("skull"),
+               color = "blue")}
     
-    #Finds which counties in given radius. Also Give county statistics
-    output$TotalPopulation <- renderValueBox({
-        MyCounties<-GetCounties(input$Base,input$Radius)
-        valueBox(subtitle = "Total Regional Population",
-                 comma(CalculateCounties(MyCounties)),
-                 #icon = icon("list-ol"),
-                 color = "light-blue"
-        )
-        
+  })
+  
+  # output$CHIMEMinMax<-renderValueBox({
+  #     MyCounties<-GetCounties()
+  #     Peak<-CalculateCHIMEMinMax(MyCounties, input$Base, input$Radius, input$social_dist, input$proj_days)
+  #     Peak<-format(Peak)
+  #     valueBox(subtitle = "CHIME Predicted Peak Hospitalizations",
+  #              paste(Peak),
+  #              icon = icon("hospital"),
+  #              color = "blue")
+  # })
+  
+  output$IHMEPeakDate<-renderValueBox({
+    MyHospitals<-GetHospitals(input$Base,input$Radius)
+    Peak<-CalculateIHMEPeak(input$Base, MyHospitals, input$Radius, input$StatisticType)
+    Peak<-format(Peak)
+    if (input$StatisticType == "Hospitalizations") {
+      valueBox(subtitle = "IHME Predicted Peak Hospitalizations",
+               paste(Peak),
+               #icon = icon("hospital"),
+               color = "navy")
+    } else {
+      valueBox(subtitle = "IHME Predicted Total Fatalities",
+               paste(Peak),
+               #icon = icon("hospital"),
+               color = "navy")
+    }
+    
+  })
+  
+  
+  # output$IHMEMinMax<-renderValueBox({
+  #     MyHospitals<-GetHospitals()
+  #     Peak<-CalculateIHMEMinMax(input$Base, MyHospitals, input$Radius)
+  #     valueBox(subtitle = "IHME Predicted Min/Max Hospitalizations",
+  #              paste(Peak),
+  #              icon = icon("hospital"),
+  #              color = "navy")
+  # })
+  
+  # Output line plots for the dashboard ----------------------------------------------------------------------------------------------------------------------------------------------------
+  
+  
+  #Create local health plot for Daily Cases 
+  output$LocalHealthPlot1<-renderPlotly({
+    
+    MyCounties<-GetCounties(input$Base,input$Radius)
+    DailyChart <- CovidCasesPerDayChart(MyCounties)
+    DailyChart <- dplyr::filter(DailyChart, ForecastDate >= DailyChart$ForecastDate[1] + 35)
+    
+    plotDaily <- ggplot(DailyChart) + 
+      geom_line(aes(x=ForecastDate, y=value, colour = variable), size = 0.5) +
+      scale_colour_manual(values=c("Blue", "Red")) +
+      xlab('Date') +
+      ylab('Number of People') +
+      theme_bw() + 
+      theme(plot.title = element_text(face = "bold", size = 15, family = "sans"),
+            axis.title = element_text(face = "bold", size = 11, family = "sans"),
+            axis.text.x = element_text(angle = 60, hjust = 1), 
+            axis.line = element_line(color = "black"),
+            legend.position = "top",
+            plot.background = element_blank(),
+            panel.grid.major = element_blank(),
+            panel.grid.minor = element_blank(),
+            panel.border = element_blank()) +
+      scale_x_date(date_breaks = "1 week") +
+      labs(color='')
+    
+    plotDaily <- ggplotly(plotDaily)
+    plotDaily <- plotDaily %>% layout(legend = list(orientation = "h",   # show entries horizontally
+                                                    xanchor = "center",  # use center of legend as anchor
+                                                    x = 0.5,
+                                                    y = 1.2)) %>% config(displayModeBar = FALSE)
+    plotDaily
+  })
+  
+  
+  #Create local health plot for Daily Cases 
+  output$LocalHealthPlot3day<-renderPlotly({
+    
+    MyCounties<-GetCounties(input$Base,input$Radius)
+    DailyChart <- CovidCasesPer3DayAverageChart(MyCounties)
+    DailyChart <- dplyr::filter(DailyChart, ForecastDate >= DailyChart$ForecastDate[1] + 35)
+    
+    plotDaily <- ggplot(DailyChart) + 
+      geom_col(aes(x=ForecastDate, y=value, colour = variable), size = 0.5) +
+      scale_colour_manual(values=c("Blue", "Red")) +
+      xlab('Date') +
+      ylab('Number of People') +
+      theme_bw() + 
+      theme(plot.title = element_text(face = "bold", size = 15, family = "sans"),
+            axis.title = element_text(face = "bold", size = 11, family = "sans"),
+            axis.text.x = element_text(angle = 60, hjust = 1), 
+            axis.line = element_line(color = "black"),
+            legend.position = "top",
+            plot.background = element_blank(),
+            panel.grid.major = element_blank(),
+            panel.grid.minor = element_blank(),
+            panel.border = element_blank()) +
+      scale_x_date(date_breaks = "1 week") +
+      labs(color='')
+    
+    plotDaily <- ggplotly(plotDaily)
+    plotDaily <- plotDaily %>% layout(legend = list(orientation = "h",   # show entries horizontally
+                                                    xanchor = "center",  # use center of legend as anchor
+                                                    x = 0.5,
+                                                    y = 1.2)) %>% config(displayModeBar = FALSE)
+    plotDaily
+  })
+  
+  
+  #Create second plot of local health population 
+  output$LocalHealthPlot2<-renderPlotly({
+    
+    MyCounties<-GetCounties(input$Base,input$Radius)
+    CumulChart <- CovidCasesCumChart(MyCounties)
+    CumulChart <- dplyr::filter(CumulChart, ForecastDate >= CumulChart$ForecastDate[1] + 35)
+    
+    #Plot for local area cumulative cases
+    plotTot <- ggplot(CumulChart,height = 250) + 
+      geom_line(aes(x=ForecastDate, y=value, colour = variable), size = 0.5) +
+      scale_colour_manual(values=c("Blue", "Red"))+
+      xlab('Date') +
+      ylab('Number of People') +
+      theme_bw() + 
+      theme(plot.title = element_text(face = "bold", size = 15, family = "sans"),
+            axis.title = element_text(face = "bold", size = 11, family = "sans"),
+            axis.text.x = element_text(angle = 60, hjust = 1), 
+            axis.line = element_line(color = "black"),
+            plot.background = element_blank(),
+            panel.grid.major = element_blank(),
+            panel.grid.minor = element_blank(),
+            panel.border = element_blank(),
+            legend.position = c(0, 1),) +
+      scale_x_date(date_breaks = "1 week")
+    
+    plotTot <- ggplotly(plotTot)
+    plotTot <- plotTot %>% layout(legend = list(orientation = "h",   # show entries horizontally
+                                                xanchor = "center",  # use center of legend as anchor
+                                                x = 0.5,
+                                                y = 1.2)) %>% config(displayModeBar = FALSE)
+    plotTot
+  })
+  
+  
+  
+  # Output Choropleth Charts ----------------------------------------------------------------------------------------------------------------------------------------------------------
+  
+  
+  #Create Country Plot on Summary page
+  output$SummaryPlot<-renderGvis({
+    
+    USlist = list(region="US",
+                  displayMode = "regions",
+                  resolution = "provinces",
+                  colors="['#e6e3e3', '#85050a']",
+                  width=1200,
+                  height = 600
+                  ) 
+    
+    EUROlist = list(region="150",
+                    displayMode = "regions",
+                    colors="['#e6e3e3', '#85050a']",
+                    width=1200,
+                    height = 600
+                    )
+    
+    ASIAlist = list(region="142",
+                    displayMode = "regions",
+                    colors="['#e6e3e3', '#85050a']",
+                    width=1200,
+                    height = 600
+                    )
+    
+    if (input$MapView == "Europe"){
+      MapChoice = EUROlist
+    }else if (input$MapView == "Asia"){
+      MapChoice = ASIAlist
+    }else {
+      MapChoice = USlist
+    }
+    
+    DF<-cbind.data.frame(CovidConfirmedCases$State, rev(CovidConfirmedCases)[,1], rev(CovidConfirmedCases)[,1])
+    colnames(DF)<-c("state","Value","LogValue")
+    ChlorData<-plyr::ddply(DF, "state", numcolwise(sum))
+    ChlorData<-transform(ChlorData, LogValue = round(log(LogValue, base=10),digits = 1))
+    ChlorData <- transform(ChlorData, Value = as.character(format(Value,big.mark=",")))
+    ChlorData<-ChlorData %>%
+      mutate(state_name = state.name[match(state, state.abb)])
+    ChlorData$state_name <- ifelse(is.na(ChlorData$state_name), as.character(ChlorData$state), ChlorData$state_name)
+    #ChlorData<-ChlorData[complete.cases(ChlorData$state_name), ]
+    ChlorData <- transform(ChlorData, Value =paste(state_name, " Total Cases: ", Value))
+    states <- data.frame(ChlorData$state_name, ChlorData$Value, ChlorData$LogValue)
+    colnames(states)<-c("state_name","Cases","StateColor")
+    states$StateColor = ifelse(is.infinite(states$StateColor), 0, states$StateColor)
+    g = gvisGeoChart(states, locationvar = "state_name", hovervar = "Cases", colorvar = "StateColor", 
+                     options = MapChoice
+    )
+    
+  })
+  
+  
+  #Creates the local choropleth charts that change based on which base and radius.
+  output$LocalChoroPlot<-renderPlotly({
+    MyCounties<-GetCounties(input$Base,input$Radius)
+    PlotLocalChoro(MyCounties, input$Base, input$TypeLocal)
+  })
+  
+  #Choice between cases heat map or hospitalizations heat map
+  output$SummaryTabChoro<-renderPlotly({
+    GetHeatMap(input$MAJCOMNAF,input$MAJCOMInput,input$NAFInput,input$WingInput, input$SummaryModelType, input$SummaryForecast, input$SummaryStatistic)
+  })
+  
+  
+  
+  
+  # Output Projections  ---------------------------------------------------------------------------------------------------------------------------------------------------------------
+  
+  # Output AMC Analysis
+  output$ProjectedEpidemicTable<-renderPlotly({
+    
+    baseUsed = input$Base
+    
+    # Read the json file and convert it to data.frame
+    #myList <- fromJSON("data/shinyjson.json")
+    
+    df <- AMC_model
+    
+    df <- select(df, "DataDate", "DataType", baseUsed)
+    
+    colnames(df)[3]  <- "Data"
+    
+    myTibble <- as_tibble(df)
+    
+    cummInf <- myTibble %>% filter(DataType == "Cumulative Infections")
+    currInf <- myTibble %>% filter(DataType == "Current Infections")
+    cummDeath <- myTibble %>% filter(DataType == "Cumulative Deaths")
+    
+    cummDeath <- select(cummDeath, "DataDate","Data")
+    currInf <- select(currInf, "DataDate","Data")
+    cummInf <- select(cummInf, "DataDate", "Data")
+    
+    colnames(cummDeath)[2] <- "Projected Cumulative Deaths"
+    colnames(currInf)[2] <- "Projected Daily Infections"
+    colnames(cummInf)[2] <- "Projected Cumulative Infections"
+    
+    df <- merge(cummDeath, currInf, by="DataDate")
+    df <- merge(df, cummInf, by="DataDate")
+    
+    Chart2DataSub <- melt(data.table(df), id=c("DataDate"))
+    
+    #Plotting the Line Graph
+    p <- ggplot(Chart2DataSub) + 
+      geom_line(aes(x=DataDate,  y=value, colour = variable, linetype = variable), 
+                size = 0.5) +
+      scale_colour_manual(values=c("Blue", "Orange", "Red", "Black"))+
+      scale_linetype_manual(values=c("dashed", "solid", "solid", "solid"))+
+      geom_vline(aes(xintercept = as.numeric(lubridate::ymd(Sys.Date())), linetype = "Current Day"), color = "Black") +
+      xlab('Date') +
+      ylab('Number of People') +
+      theme_bw() + 
+      theme(plot.title = element_text(face = "bold", size = 15, family = "sans"),
+            axis.title = element_text(face = "bold", size = 11, family = "sans"),
+            axis.text.x = element_text(angle = 60, hjust = 1), 
+            axis.line = element_line(color = "black"),
+            plot.background = element_blank(),
+            panel.grid.major = element_blank(),
+            panel.grid.minor = element_blank(),
+            panel.border = element_blank(),) +
+      scale_x_date(date_breaks = "1 week") + scale_y_continuous(labels = function(x) format(x, scientific = FALSE))
+    
+    p2 <- ggplotly(p)
+    p2 <- p2 %>% layout(legend = list(orientation = "h",   # show entries horizontally
+                                      xanchor = "center",
+                                      x = 0.5,
+                                      y = -0.5
+    )) %>% config(displayModeBar = FALSE)
+    p2 <- p2 %>% layout(xaxis = list(showgrid = F),
+                        yaxis = list(gridcolor = "lightgray"),margin = list(t = 50), title=baseUsed) %>% config(displayModeBar = FALSE)
+    p2
+    
+  })
+  
+  
+  output$ProjPeakInfDate<-renderValueBox({
+    
+    baseUsed = input$Base
+    
+    df <- AMC_model
+    
+    datePeak <- tryCatch({
+      
+      df <- select(df, "DataDate", "DataType", baseUsed)
+      
+      colnames(df)[3]  <- "Data"
+      
+      myTibble <- as_tibble(df)
+      
+      currInf <- myTibble %>% filter(DataType == "Current Infections")
+      
+      datePeak = format(currInf$DataDate[which.max(currInf$Data)], format = "%B %d")
+      
+    }, error = function(err) {
+      datePeak = "No Model Data Available"
+      return(datePeak)
     })
     
-    # Finds Covid Cases and statistics on covid per county
-    output$CovidCases <- renderValueBox({
-        MyCounties<-GetCounties(input$Base,input$Radius)
-        valueBox(subtitle = "Total Confirmed Cases",
-                 comma(CalculateCovid(MyCounties)),
-                 #icon = icon("list-ol"),
-                 color = "light-blue"
-        )
-        
-    })
+    valueBox(subtitle = "Projected Peak Infection Date",
+             paste(datePeak),
+             color = "light-blue")
+  })
+  
+  output$ProjTotInf<-renderValueBox({
     
-    # Finds Covid Cases per 1,000
-    output$CasesPer1000 <- renderValueBox({
-        MyCounties<-GetCounties(input$Base,input$Radius)
-        valueBox(subtitle = "Total Confirmed Cases per 1,000",
-                 comma(CalculateCovid1000(MyCounties)),
-                 #icon = icon("list-ol"),
-                 color = "teal"
-        )
-        
-    })
+    baseUsed = input$Base
     
-    #Outputs change in covid cases per day
-    output$CaseChangeLocal <- renderValueBox({
-        MyCounties<-GetCounties(input$Base,input$Radius)
-        CovidCounties<-subset(CovidConfirmedCases, CountyFIPS %in% MyCounties$FIPS)
-        changeC <- sum(rev(CovidCounties)[,1] - rev(CovidCounties)[,2])
-        
-        valueBox(paste("+",toString(changeC)),
-                 subtitle = "New Confirmed Cases", 
-                 color = "light-blue")
-    })
+    df <- AMC_model
     
-    
-    # Finds Covid deaths and statistics on covid per county
-    output$LocalCovidDeaths <- renderValueBox({
-        MyCounties<-GetCounties(input$Base,input$Radius)
-        valueBox(subtitle = "Total Fatalities",
-                 comma(CalculateDeaths(MyCounties)),
-                 #icon = icon("skull"),
-                 color = "light-blue"
-        )
-    })
-    
-    #Outputs change in deaths per day   
-    output$DeathChangeLocal <- renderValueBox({
-        MyCounties<-GetCounties(input$Base,input$Radius)
-        CovidCounties<-subset(CovidDeaths, CountyFIPS %in% MyCounties$FIPS)
-        changeC <- sum(rev(CovidCounties)[,1] - rev(CovidCounties)[,2])
-        
-        valueBox(paste("+",toString(changeC)),
-                 subtitle = "New Fatalities", 
-                 color = "light-blue")
-    })
-    
-    #Finds hospital information within a given 100 mile radius. Calculates number of total hospital beds. Can compare to number of cases
-    output$HospitalUtilization <- renderValueBox({
-        MyCounties<-GetCounties(input$Base,input$Radius)
-        valueBox(subtitle = "Estimated Local Hospital Bed Utilization",
-                 HospitalIncreases(MyCounties),
-                 #icon = icon("hospital"),
-                 color = "navy")
-    })
-   
-    
-    output$CaseDbRate <- renderValueBox({
-        MyCounties<-GetCounties(input$Base,input$Radius)
-        valueBox(paste(CaseDblRate(MyCounties),"days"),
-                 subtitle = "Case Doubling Rate",
-                 color = "teal")
-    })
-    
-    
-    output$Rt_Estimate <- renderValueBox({
-        MyCounties<-GetCounties(input$Base,input$Radius)
-        valueBox(paste(Estimate_Rt(MyCounties)),
-                 subtitle = "Estimated Virus Reproduction Rate",
-                 color = "navy")
-    })
-    
-    
-###################################################################################################
-    
-    output$CHIMEPeakDate<-renderValueBox({
-        MyCounties<-GetCounties(input$Base,input$Radius)
-        if (is.null(input$SocialDistanceValue) ){social_dist<-1}
-        
-        CS      <- "CS"       %in% input$SocialDistanceValue
-        CB    <- "CB"     %in% input$SocialDistanceValue
-        SD <- "SD"  %in% input$SocialDistanceValue
-        
-        if (CS & CB & SD){
-            social_dist <- 27
-        } else if (CS & CB){
-            social_dist <- 12
-        } else if (CS & SD){
-            social_dist <-19
-        } else if (SD & CB){
-            social_dist <-23
-        } else if (CS) {
-            social_dist <- 4
-        }  else if (CB) {
-            social_dist <- 8
-        }  else if (SD) {
-            social_dist <- 15
-        }
-        Peak<-CalculateCHIMEPeak(MyCounties, input$Base, input$Radius, social_dist, input$proj_days, input$StatisticType)
-        Peak<-format(Peak)
-        if (input$StatisticType == "Hospitalizations") {
-            valueBox(subtitle = "CHIME Predicted Peak Hospitalizations",
-                     paste(Peak),
-                     #icon = icon("hospital"),
-                     color = "blue") 
-        } else {
-                valueBox(subtitle = "CHIME Predicted Total Fatalities",
-                         paste(Peak),
-                         #icon = icon("skull"),
-                         color = "blue")}
-        
-    })
-    
-    # output$CHIMEMinMax<-renderValueBox({
-    #     MyCounties<-GetCounties()
-    #     Peak<-CalculateCHIMEMinMax(MyCounties, input$Base, input$Radius, input$social_dist, input$proj_days)
-    #     Peak<-format(Peak)
-    #     valueBox(subtitle = "CHIME Predicted Peak Hospitalizations",
-    #              paste(Peak),
-    #              icon = icon("hospital"),
-    #              color = "blue")
-    # })
-    
-    output$IHMEPeakDate<-renderValueBox({
-        MyHospitals<-GetHospitals(input$Base,input$Radius)
-        Peak<-CalculateIHMEPeak(input$Base, MyHospitals, input$Radius, input$StatisticType)
-        Peak<-format(Peak)
-        if (input$StatisticType == "Hospitalizations") {
-            valueBox(subtitle = "IHME Predicted Peak Hospitalizations",
-                     paste(Peak),
-                     #icon = icon("hospital"),
-                     color = "navy")
-        } else {
-            valueBox(subtitle = "IHME Predicted Total Fatalities",
-                     paste(Peak),
-                     #icon = icon("hospital"),
-                     color = "navy")
-        }
-        
-    })
-    
-    
-    # output$IHMEMinMax<-renderValueBox({
-    #     MyHospitals<-GetHospitals()
-    #     Peak<-CalculateIHMEMinMax(input$Base, MyHospitals, input$Radius)
-    #     valueBox(subtitle = "IHME Predicted Min/Max Hospitalizations",
-    #              paste(Peak),
-    #              icon = icon("hospital"),
-    #              color = "navy")
-    # })
-    
-    # Output line plots for the dashboard ----------------------------------------------------------------------------------------------------------------------------------------------------
-    
-    
-    #Create local health plot for Daily Cases 
-    output$LocalHealthPlot1<-renderPlotly({
-        
-        MyCounties<-GetCounties(input$Base,input$Radius)
-        DailyChart <- CovidCasesPerDayChart(MyCounties)
-        DailyChart <- dplyr::filter(DailyChart, ForecastDate >= DailyChart$ForecastDate[1] + 35)
-        
-        plotDaily <- ggplot(DailyChart) + 
-            geom_line(aes(x=ForecastDate, y=value, colour = variable), size = 0.5) +
-            scale_colour_manual(values=c("Blue", "Red")) +
-            xlab('Date') +
-            ylab('Number of People') +
-            theme_bw() + 
-            theme(plot.title = element_text(face = "bold", size = 15, family = "sans"),
-                  axis.title = element_text(face = "bold", size = 11, family = "sans"),
-                  axis.text.x = element_text(angle = 60, hjust = 1), 
-                  axis.line = element_line(color = "black"),
-                  legend.position = "top",
-                  plot.background = element_blank(),
-                  panel.grid.major = element_blank(),
-                  panel.grid.minor = element_blank(),
-                  panel.border = element_blank()) +
-            scale_x_date(date_breaks = "1 week") +
-            labs(color='')
-        
-        plotDaily <- ggplotly(plotDaily)
-        plotDaily <- plotDaily %>% layout(legend = list(orientation = "h",   # show entries horizontally
-                                          xanchor = "center",  # use center of legend as anchor
-                                          x = 0.5,
-                                          y = 1.2)) %>% config(displayModeBar = FALSE)
-        plotDaily
-    })
-    
-    #Create second plot of local health population 
-    output$LocalHealthPlot2<-renderPlotly({
-        
-        MyCounties<-GetCounties(input$Base,input$Radius)
-        CumulChart <- CovidCasesCumChart(MyCounties)
-        CumulChart <- dplyr::filter(CumulChart, ForecastDate >= CumulChart$ForecastDate[1] + 35)
-        
-        #Plot for local area cumulative cases
-        plotTot <- ggplot(CumulChart,height = 250) + 
-            geom_line(aes(x=ForecastDate, y=value, colour = variable), size = 0.5) +
-            scale_colour_manual(values=c("Blue", "Red"))+
-            xlab('Date') +
-            ylab('Number of People') +
-            theme_bw() + 
-            theme(plot.title = element_text(face = "bold", size = 15, family = "sans"),
-                  axis.title = element_text(face = "bold", size = 11, family = "sans"),
-                  axis.text.x = element_text(angle = 60, hjust = 1), 
-                  axis.line = element_line(color = "black"),
-                  plot.background = element_blank(),
-                  panel.grid.major = element_blank(),
-                  panel.grid.minor = element_blank(),
-                  panel.border = element_blank(),
-                  legend.position = c(0, 1),) +
-            scale_x_date(date_breaks = "1 week")
-        
-        plotTot <- ggplotly(plotTot)
-        plotTot <- plotTot %>% layout(legend = list(orientation = "h",   # show entries horizontally
-                                          xanchor = "center",  # use center of legend as anchor
-                                          x = 0.5,
-                                          y = 1.2)) %>% config(displayModeBar = FALSE)
-        plotTot
+    InfTot <- tryCatch({
+      
+      df <- select(df, "DataDate", "DataType", baseUsed)
+      
+      colnames(df)[3]  <- "Data"
+      
+      myTibble <- as_tibble(df)
+      
+      cummInf <- myTibble %>% filter(DataType == "Cumulative Infections")
+      
+      InfTot = round(max(cummInf$Data))
+      
+    }, error = function(err) {
+      InfTot = "No Model Data Available"
+      return(InfTot)
     })
     
     
     
-    # Output Choropleth Charts ----------------------------------------------------------------------------------------------------------------------------------------------------------
+    valueBox(subtitle = "Projected Total Infections",
+             paste(InfTot),
+             color = "blue")
+  })
+  
+  output$ProjTotDeaths<-renderValueBox({
     
+    baseUsed = input$Base
     
-    #Create Country Plot on Summary page
-    output$SummaryPlot<-renderGvis({
-        DF<-cbind.data.frame(CovidConfirmedCases$State, rev(CovidConfirmedCases)[,1], rev(CovidConfirmedCases)[,1])
-        colnames(DF)<-c("state","Value","LogValue")
-        ChlorData<-plyr::ddply(DF, "state", numcolwise(sum))
-        ChlorData<-transform(ChlorData, LogValue = round(log(LogValue, base=10),digits = 1))
-        ChlorData <- transform(ChlorData, Value = as.character(format(Value,big.mark=",")))
-        ChlorData<-ChlorData %>%
-            mutate(state_name = state.name[match(state, state.abb)])
-        ChlorData<-ChlorData[complete.cases(ChlorData$state_name), ]
-        ChlorData <- transform(ChlorData, Value =paste(state_name, " Total Cases: ", Value))
-        states <- data.frame(ChlorData$state_name, ChlorData$Value, ChlorData$LogValue)
-        colnames(states)<-c("state_name","Cases","StateColor")
-        gvisGeoChart(states, "state_name", "StateColor", hovervar = "Cases",
-                     options=list(region="US",
-                                  colors="['#D3D3D3', 'red']",
-                                  displayMode="regions", 
-                                  resolution="provinces",
-                                  width=1200,
-                                  height = 600,
-                                  legend = "none"))
+    df <- AMC_model
+    
+    DeathsTot <- tryCatch({
+      
+      df <- select(df, "DataDate", "DataType", baseUsed)
+      
+      colnames(df)[3]  <- "Data"
+      
+      myTibble <- as_tibble(df)
+      
+      cummDeath <- myTibble %>% filter(DataType == "Cumulative Deaths")
+      
+      DeathsTot = round(max(cummDeath$Data))
+      
+    }, error = function(err) {
+      x = "No Model Data Available"
+      return(x)
     })
     
+    valueBox(subtitle = "Projected Total Fatalities",
+             paste(DeathsTot),
+             color = "navy")
+  })
+  
+  # #Create IHME plot by State projected hospitalization 
+  # output$IHME_State_Hosp<-renderPlotly({
+  # 
+  #     IncludedHospitals<-GetHospitals(input$Base, input$Radius)
+  #     MyCounties <- GetCounties(input$Base, input$Radius)
+  #     IHMELocalProjections(MyCounties, IncludedHospitals, input$Base, input$StatisticType, input$proj_days)
+  #     
+  #     
+  # })
+  # 
+  # 
+  # #Output the SEIAR CHIME projections with a max, min, and expected value
+  # output$SEIARProjection<-renderPlotly({
+  #     BaseState<-dplyr::filter(AFBaseLocations, Base == input$Base)
+  #     IncludedCounties<-GetCounties(input$Base,input$Radius)
+  #     if (is.null(input$SocialDistanceValue) ){social_dist<-1}
+  # 
+  #     CS      <- "CS"       %in% input$SocialDistanceValue
+  #     CB    <- "CB"     %in% input$SocialDistanceValue
+  #     SD <- "SD"  %in% input$SocialDistanceValue
+  # 
+  #     if (CS & CB & SD){
+  #         social_dist <- 27
+  #     } else if (CS & CB){
+  #         social_dist <- 12
+  #     } else if (CS & SD){
+  #         social_dist <-19
+  #     } else if (SD & CB){
+  #         social_dist <-23
+  #     } else if (CS) {
+  #         social_dist <- 4
+  #     }  else if (CB) {
+  #         social_dist <- 8
+  #     }  else if (SD) {
+  #         social_dist <- 15
+  #     }
+  #     
+  #     CHIMELocalPlot(social_dist, input$proj_days, IncludedCounties, input$StatisticType)
+  # 
+  # })
+  
+  output$CHIMENationalProj<-renderPlotly({
     
-    #Creates the local choropleth charts that change based on which base and radius.
-    output$LocalChoroPlot<-renderPlotly({
-        MyCounties<-GetCounties(input$Base,input$Radius)
-        PlotLocalChoro(MyCounties, input$Base, input$TypeLocal)
-    })
+    if (is.null(input$SocialDistanceValueNational) ){social_dist_national<-1}
     
-    #Choice between cases heat map or hospitalizations heat map
-    output$SummaryTabChoro<-renderPlotly({
-            GetHeatMap(input$MAJCOMInput, input$SummaryModelType, input$SummaryForecast, input$SummaryStatistic)
-    })
+    CSN      <- "CSN"       %in% input$SocialDistanceValueNational
+    CBN    <- "CBN"     %in% input$SocialDistanceValueNational
+    SDN <- "SDN"  %in% input$SocialDistanceValueNational
+    
+    if (CSN & CBN & SDN){
+      social_dist_national <- 27
+    } else if (CSN & CBN){
+      social_dist_national <- 12
+    } else if (CSN & SDN){
+      social_dist_national <-19
+    } else if (SDN & CBN){
+      social_dist_national <-23
+    } else if (CSN) {
+      social_dist_national <- 4
+    }  else if (CBN) {
+      social_dist_national <- 8
+    }  else if (SDN) {
+      social_dist_national <- 15
+    }
+    CHIMENationalPlot(social_dist_national, input$proj_days_national)
+  })
+  
+  output$NationalPlotOverlay<-renderPlotly({
+    if (is.null(input$SocialDistanceValueNational) ){social_dist_national<-1}
+    
+    CSN      <- "CSN"       %in% input$SocialDistanceValueNational
+    CBN    <- "CBN"     %in% input$SocialDistanceValueNational
+    SDN <- "SDN"  %in% input$SocialDistanceValueNational
+    
+    if (CSN & CBN & SDN){
+      social_dist_national <- 27
+    } else if (CSN & CBN){
+      social_dist_national <- 12
+    } else if (CSN & SDN){
+      social_dist_national <-19
+    } else if (SDN & CBN){
+      social_dist_national <-23
+    } else if (CSN) {
+      social_dist_national <- 4
+    }  else if (CBN) {
+      social_dist_national <- 8
+    }  else if (SDN) {
+      social_dist_national <- 15
+    }
+    NationalOverlayPlot(social_dist_national, input$proj_days_national)
+  })
+  
+  output$IHMENationaProj<-renderPlotly({
+    
+    IHMENationalProjections(input$proj_days_national) 
+  })
+  
+  observe({
+    if(input$selectall == 0) return(NULL) 
+    else if (input$selectall%%2 == 0)
+    {
+      updateCheckboxGroupInput(session,"ModelSelectionValue","Forecasting Model(s): ",choices=c("IHME (University of Washington)"="IHME",
+                                                                                                "CHIME (University of Pennsylvania): SC+NE+SD"="CHIME1",
+                                                                                                "CHIME: NE+SD"="CHIME2",
+                                                                                                "CHIME: SC+SD"="CHIME3",                                                                
+                                                                                                "CHIME: SD"="CHIME4", 
+                                                                                                "CHIME: SC+NE"="CHIME5",
+                                                                                                "CHIME: NE"="CHIME6",
+                                                                                                "CHIME: SC"="CHIME7",
+                                                                                                "Los Alamos National Labs (LANL)"="LANL",
+                                                                                                "University of Texas"="UT",
+                                                                                                "Columbia University: No Intervetion"="CUNI",
+                                                                                                "Columbia University: 20% SC Reduction"="CU20SC",
+                                                                                                "Columbia University: 30% SC Reduction"="CU30SC",
+                                                                                                "Columbia University: 40% SC Reduction"="CU40SC"))
+    }
+    else
+    {
+      updateCheckboxGroupInput(session,"ModelSelectionValue","Forecasting Model(s):",choices=c("IHME (University of Washinton)"="IHME",
+                                                                                               "CHIME (University of Pennsylvania): SC+NE+SD"="CHIME1",
+                                                                                               "CHIME: NE+SD"="CHIME2",
+                                                                                               "CHIME: SC+SD"="CHIME3",                                                                
+                                                                                               "CHIME: SD"="CHIME4", 
+                                                                                               "CHIME: SC+NE"="CHIME5",
+                                                                                               "CHIME: NE"="CHIME6",
+                                                                                               "CHIME: SC"="CHIME7",
+                                                                                               "Los Alamos National Labs (LANL)"="LANL",
+                                                                                               "University of Texas"="UT",
+                                                                                               "Columbia University: No Intervetion"="CUNI",
+                                                                                               "Columbia University: 20% SC Reduction"="CU20SC",
+                                                                                               "Columbia University: 30% SC Reduction"="CU30SC",
+                                                                                               "Columbia University: 40% SC Reduction"="CU40SC"),
+                               selected=c("IHME (University of Washinton)"="IHME",
+                                          "CHIME (University of Pennsylvania): SC+NE+SD"="CHIME1",
+                                          "CHIME: NE+SD"="CHIME2",
+                                          "CHIME: SC+SD"="CHIME3",                                                                
+                                          "CHIME: SD"="CHIME4", 
+                                          "CHIME: SC+NE"="CHIME5",
+                                          "CHIME: NE"="CHIME6",
+                                          "CHIME: SC"="CHIME7",
+                                          "Los Alamos National Labs (LANL)"="LANL",
+                                          "University of Texas"="UT",
+                                          "Columbia University: No Intervetion"="CUNI",
+                                          "Columbia University: 20% SC Reduction"="CU20SC",
+                                          "Columbia University: 30% SC Reduction"="CU30SC",
+                                          "Columbia University: 40% SC Reduction"="CU40SC"))
+    }
+  })
+  
+  
+  
+  #Overlay Projected Plots
+  output$OverlayPlots<-renderPlotly({
+    #if (is.null(input$SocialDistanceValue)){social_dist<-1}
+    #(4,8,12,15,19,23,27)
+    ModelID<-"Past Data"
+    
+    if ("IHME" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"IHME")}
+    if ("LANL" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"LANL")}
+    if ("UT" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"UT")}
+    if ("CHIME7" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CHIME_4%_SD")}
+    if ("CHIME6" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CHIME_8%_SD")}
+    if ("CHIME5" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CHIME_12%_SD")}
+    if ("CHIME4" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CHIME_15%_SD")}
+    if ("CHIME3" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CHIME_19%_SD")}
+    if ("CHIME2" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CHIME_23%_SD")}
+    if ("CHIME1" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CHIME_27%_SD")}
+    if ("CUNI" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CU_No Intervention")}
+    if ("CU20SC" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CU_20%_SD")}
+    if ("CU30SC" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CU_30%_SD")}
+    if ("CU40SC" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CU_40%_SD")}
+    
+    # CS  <- "CS" %in% input$SocialDistanceValue
+    # CB  <- "CB" %in% input$SocialDistanceValue
+    # SD  <- "SD" %in% input$SocialDistanceValue
+    #
+    # if (CS & CB & SD){
+    #     social_dist <- 27
+    # } else if (CS & CB){
+    #     social_dist <- 12
+    # } else if (CS & SD){
+    #     social_dist <-19
+    # } else if (SD & CB){
+    #     social_dist <-23
+    # } else if (CS) {
+    #     social_dist <- 4
+    # }  else if (CB) {
+    #     social_dist <- 8
+    # }  else if (SD) {
+    #     social_dist <- 15
+    # }
+    MyCounties<-GetCounties(input$Base,input$Radius)
+    MyHospitals<-GetHospitals(input$Base,input$Radius)
+    PlotOverlay(input$Base, MyCounties, MyHospitals,ModelID,input$proj_days,input$StatisticType)
+  })
+  
+  
+  # Output any data tables ------------------------------------------------------------------------------------------------------------------------------------------------------
+  
+  
+  #Render National Data Table on summary page
+  output$NationalDataTable1<-DT::renderDataTable({
+    NationalDataTable <- DT::datatable(NationalDataTable,rownames = FALSE, options = list(dom = 'ft',ordering = F,"pageLength" = 250))
+    NationalDataTable
+  })
+  
+  output$CountyDataTable1<-DT::renderDataTable({
+    MyCounties<-GetCounties(input$Base,input$Radius)
+    dt<-GetLocalDataTable(MyCounties)
+    dt<-DT::datatable(dt, rownames = FALSE, options = list(dom = 't',ordering = F, "pageLength"=100))
+    dt
+  })
     
     
-    
-    
-    # Output Projections  ---------------------------------------------------------------------------------------------------------------------------------------------------------------
-    
-    # Output AMC Analysis
-    output$ProjectedEpidemicTable<-renderPlotly({
-        
-        baseUsed = input$Base
-        
-        # Read the json file and convert it to data.frame
-        #myList <- fromJSON("data/shinyjson.json")
-        
-        df <- AMC_model
-        
-        df <- select(df, "DataDate", "DataType", baseUsed)
-        
-        colnames(df)[3]  <- "Data"
-        
-        myTibble <- as_tibble(df)
-        
-        cummInf <- myTibble %>% filter(DataType == "Cumulative Infections")
-        currInf <- myTibble %>% filter(DataType == "Current Infections")
-        cummDeath <- myTibble %>% filter(DataType == "Cumulative Deaths")
-        
-        cummDeath <- select(cummDeath, "DataDate","Data")
-        currInf <- select(currInf, "DataDate","Data")
-        cummInf <- select(cummInf, "DataDate", "Data")
-        
-        colnames(cummDeath)[2] <- "Projected Cumulative Deaths"
-        colnames(currInf)[2] <- "Projected Daily Infections"
-        colnames(cummInf)[2] <- "Projected Cumulative Infections"
-        
-        df <- merge(cummDeath, currInf, by="DataDate")
-        df <- merge(df, cummInf, by="DataDate")
-        
-        Chart2DataSub <- melt(data.table(df), id=c("DataDate"))
-        
-        #Plotting the Line Graph
-        p <- ggplot(Chart2DataSub) + 
-            geom_line(aes(x=DataDate,  y=value, colour = variable, linetype = variable), 
-                      size = 0.5) +
-            scale_colour_manual(values=c("Blue", "Orange", "Red", "Black"))+
-            scale_linetype_manual(values=c("dashed", "solid", "solid", "solid"))+
-            geom_vline(aes(xintercept = as.numeric(lubridate::ymd(Sys.Date())), linetype = "Current Day"), color = "Black") +
-            xlab('Date') +
-            ylab('Number of People') +
-            theme_bw() + 
-           theme(plot.title = element_text(face = "bold", size = 15, family = "sans"),
-                  axis.title = element_text(face = "bold", size = 11, family = "sans"),
-                  axis.text.x = element_text(angle = 60, hjust = 1), 
-                  axis.line = element_line(color = "black"),
-                  plot.background = element_blank(),
-                  panel.grid.major = element_blank(),
-                  panel.grid.minor = element_blank(),
-                  panel.border = element_blank(),) +
-           scale_x_date(date_breaks = "1 week") + scale_y_continuous(labels = function(x) format(x, scientific = FALSE))
-        
-        p2 <- ggplotly(p)
-        p2 <- p2 %>% layout(legend = list(orientation = "h",   # show entries horizontally
-                                          xanchor = "center",
-                                          x = 0.5,
-                                          y = -0.5
-                                          )) %>% config(displayModeBar = FALSE)
-        p2 <- p2 %>% layout(xaxis = list(showgrid = F),
-                            yaxis = list(gridcolor = "lightgray"),margin = list(t = 50), title=baseUsed) %>% config(displayModeBar = FALSE)
-        p2
-        
-    })
-    
-    
-    output$ProjPeakInfDate<-renderValueBox({
-        
-        baseUsed = input$Base
+    # ##Add in Wing/Group Filter
+    # ##Might need make a separate  funtion that's global
 
-        df <- AMC_model
-        
-        datePeak <- tryCatch({
-        
-            df <- select(df, "DataDate", "DataType", baseUsed)
-            
-            colnames(df)[3]  <- "Data"
-            
-            myTibble <- as_tibble(df)
-            
-            currInf <- myTibble %>% filter(DataType == "Current Infections")
-            
-            datePeak = format(currInf$DataDate[which.max(currInf$Data)], format = "%B %d")
-            
-            }, error = function(err) {
-                datePeak = "No Model Data Available"
-                return(datePeak)
-            })
+    WingList<- reactive({
+        #Once add additional NAFS, change NAFList to input$NAFInput
+        AFWings<-dplyr::filter(AFNAFS,NAF %in% NAFList)
+        WingList <- sort(unique(AFWings$Wing), decreasing = FALSE)
+        WingList <- c("All",WingList)
+    })
+    observe(updateSelectInput(session,"WingInput",choices = WingList()))
+    
+    GroupList <- reactive({
+        if (input$WingInput != "All") {
+            GroupList<-dplyr::filter(AFWings,Wing %in% input$WingInput)
+            GroupList<-sort(unique(GroupList$`Group`), decreasing = FALSE)
+            GroupList<-c("All",GroupList)
+        }else {
+            GroupList<-sort(unique(AFWings$`Group`), decreasing = FALSE)
+            GroupList<-c("All",GroupList)
+        }
+    })
+    # #observe(updateSelectInput(session,"GroupInput",choices = GroupList())) 
+    observeEvent(input$WingInput,{updateSelectInput(session,"GroupInput",choices = GroupList())})
 
-        valueBox(subtitle = "Projected Peak Infection Date",
-                     paste(datePeak),
-                     color = "light-blue")
-    })
-    
-    output$ProjTotInf<-renderValueBox({
-        
-        baseUsed = input$Base
-        
-        df <- AMC_model
-        
-        InfTot <- tryCatch({
-            
-            df <- select(df, "DataDate", "DataType", baseUsed)
-            
-            colnames(df)[3]  <- "Data"
-            
-            myTibble <- as_tibble(df)
-            
-            cummInf <- myTibble %>% filter(DataType == "Cumulative Infections")
-            
-            InfTot = round(max(cummInf$Data))
-            
-            }, error = function(err) {
-                InfTot = "No Model Data Available"
-                return(InfTot)
-        })
-        
-
-        
-        valueBox(subtitle = "Projected Total Infections",
-                 paste(InfTot),
-                 color = "blue")
-    })
-    
-    output$ProjTotDeaths<-renderValueBox({
-        
-        baseUsed = input$Base
-        
-        df <- AMC_model
-        
-        DeathsTot <- tryCatch({
-        
-            df <- select(df, "DataDate", "DataType", baseUsed)
-            
-            colnames(df)[3]  <- "Data"
-            
-            myTibble <- as_tibble(df)
-            
-            cummDeath <- myTibble %>% filter(DataType == "Cumulative Deaths")
-            
-            DeathsTot = round(max(cummDeath$Data))
-        
-        }, error = function(err) {
-            x = "No Model Data Available"
-            return(x)
-        })
-        
-        valueBox(subtitle = "Projected Total Fatalities",
-                 paste(DeathsTot),
-                 color = "navy")
-    })
-
-    # #Create IHME plot by State projected hospitalization 
-    # output$IHME_State_Hosp<-renderPlotly({
-    # 
-    #     IncludedHospitals<-GetHospitals(input$Base, input$Radius)
-    #     MyCounties <- GetCounties(input$Base, input$Radius)
-    #     IHMELocalProjections(MyCounties, IncludedHospitals, input$Base, input$StatisticType, input$proj_days)
-    #     
-    #     
-    # })
-    # 
-    # 
-    # #Output the SEIAR CHIME projections with a max, min, and expected value
-    # output$SEIARProjection<-renderPlotly({
-    #     BaseState<-dplyr::filter(AFBaseLocations, Base == input$Base)
-    #     IncludedCounties<-GetCounties(input$Base,input$Radius)
-    #     if (is.null(input$SocialDistanceValue) ){social_dist<-1}
-    # 
-    #     CS      <- "CS"       %in% input$SocialDistanceValue
-    #     CB    <- "CB"     %in% input$SocialDistanceValue
-    #     SD <- "SD"  %in% input$SocialDistanceValue
-    # 
-    #     if (CS & CB & SD){
-    #         social_dist <- 27
-    #     } else if (CS & CB){
-    #         social_dist <- 12
-    #     } else if (CS & SD){
-    #         social_dist <-19
-    #     } else if (SD & CB){
-    #         social_dist <-23
-    #     } else if (CS) {
-    #         social_dist <- 4
-    #     }  else if (CB) {
-    #         social_dist <- 8
-    #     }  else if (SD) {
-    #         social_dist <- 15
-    #     }
-    #     
-    #     CHIMELocalPlot(social_dist, input$proj_days, IncludedCounties, input$StatisticType)
-    # 
-    # })
-    
-    output$CHIMENationalProj<-renderPlotly({
-        
-        if (is.null(input$SocialDistanceValueNational) ){social_dist_national<-1}
-        
-        CSN      <- "CSN"       %in% input$SocialDistanceValueNational
-        CBN    <- "CBN"     %in% input$SocialDistanceValueNational
-        SDN <- "SDN"  %in% input$SocialDistanceValueNational
-        
-        if (CSN & CBN & SDN){
-            social_dist_national <- 27
-        } else if (CSN & CBN){
-            social_dist_national <- 12
-        } else if (CSN & SDN){
-            social_dist_national <-19
-        } else if (SDN & CBN){
-            social_dist_national <-23
-        } else if (CSN) {
-            social_dist_national <- 4
-        }  else if (CBN) {
-            social_dist_national <- 8
-        }  else if (SDN) {
-            social_dist_national <- 15
-        }
-        CHIMENationalPlot(social_dist_national, input$proj_days_national)
-    })
-    
-    output$NationalPlotOverlay<-renderPlotly({
-        if (is.null(input$SocialDistanceValueNational) ){social_dist_national<-1}
-        
-        CSN      <- "CSN"       %in% input$SocialDistanceValueNational
-        CBN    <- "CBN"     %in% input$SocialDistanceValueNational
-        SDN <- "SDN"  %in% input$SocialDistanceValueNational
-        
-        if (CSN & CBN & SDN){
-            social_dist_national <- 27
-        } else if (CSN & CBN){
-            social_dist_national <- 12
-        } else if (CSN & SDN){
-            social_dist_national <-19
-        } else if (SDN & CBN){
-            social_dist_national <-23
-        } else if (CSN) {
-            social_dist_national <- 4
-        }  else if (CBN) {
-            social_dist_national <- 8
-        }  else if (SDN) {
-            social_dist_national <- 15
-        }
-        NationalOverlayPlot(social_dist_national, input$proj_days_national)
-    })
-    
-    output$IHMENationaProj<-renderPlotly({
-        
-        IHMENationalProjections(input$proj_days_national) 
-    })
-    
-    observe({
-        if(input$selectall == 0) return(NULL) 
-        else if (input$selectall%%2 == 0)
-        {
-            updateCheckboxGroupInput(session,"ModelSelectionValue","Forecasting Model(s): ",choices=c("IHME"="IHME","LANL"="LANL","CHIME SC"="CHIME1","CHIME NE"="CHIME2","CHIME SC+NE"="CHIME3",
-                                                                                                      "CHIME SD"="CHIME4","CHIME SC+SD"="CHIME5","CHIME NE+SD"="CHIME6","CHIME SC+NE+SD"="CHIME7",                                                                                                                                
-                                                                                                      "Columbia No Intervetion"="CUNI","Columbia 20% SC Reduction"="CU20SC","Columbia 30% SC Reduction"="CU30SC",
-                                                                                                      "Columbia 40% SC Reduction"="CU40SC"))
-        }
-        else
-        {
-            updateCheckboxGroupInput(session,"ModelSelectionValue","Forecasting Model(s):",choices=c("IHME"="IHME","LANL"="LANL","CHIME SC"="CHIME1","CHIME NE"="CHIME2","CHIME SC+NE"="CHIME3",
-                                                                                                     "CHIME SD"="CHIME4","CHIME SC+SD"="CHIME5","CHIME NE+SD"="CHIME6","CHIME SC+NE+SD"="CHIME7",                                                                                                                                
-                                                                                                     "Columbia No Intervetion"="CUNI","Columbia 20% SC Reduction"="CU20SC","Columbia 30% SC Reduction"="CU30SC",
-                                                                                                     "Columbia 40% SC Reduction"="CU40SC"),
-                                     selected=c("IHME"="IHME","LANL"="LANL","CHIME SC"="CHIME1","CHIME NE"="CHIME2","CHIME SC+NE"="CHIME3",
-                                                "CHIME SD"="CHIME4","CHIME SC+SD"="CHIME5","CHIME NE+SD"="CHIME6","CHIME SC+NE+SD"="CHIME7",                                                                                                                                
-                                                "Columbia No Intervetion"="CUNI","Columbia 20% SC Reduction"="CU20SC",
-                                                "Columbia 30% SC Reduction"="CU30SC","Columbia 40% SC Reduction"="CU40SC"))
-        }
-    })
-    
-    
-    #Overlay Projected Plots
-    output$OverlayPlots<-renderPlotly({
-        #if (is.null(input$SocialDistanceValue)){social_dist<-1}
-        #(4,8,12,15,19,23,27)
-        ModelID<-"Past Data"
-        
-        if ("IHME" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"IHME")}
-        if ("LANL" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"LANL")}
-        if ("CHIME1" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CHIME_4%_SD")}
-        if ("CHIME2" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CHIME_8%_SD")}
-        if ("CHIME3" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CHIME_12%_SD")}
-        if ("CHIME4" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CHIME_15%_SD")}
-        if ("CHIME5" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CHIME_19%_SD")}
-        if ("CHIME6" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CHIME_23%_SD")}
-        if ("CHIME7" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CHIME_27%_SD")}                                                                                                                                
-        if ("CUNI" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CU_No Intervention")}
-        if ("CU20SC" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CU_20%_SD")}
-        if ("CU30SC" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CU_30%_SD")}
-        if ("CU40SC" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CU_40%_SD")}
-        
-        # CS  <- "CS" %in% input$SocialDistanceValue
-        # CB  <- "CB" %in% input$SocialDistanceValue
-        # SD  <- "SD" %in% input$SocialDistanceValue
-        # 
-        # if (CS & CB & SD){
-        #     social_dist <- 27
-        # } else if (CS & CB){
-        #     social_dist <- 12
-        # } else if (CS & SD){
-        #     social_dist <-19
-        # } else if (SD & CB){
-        #     social_dist <-23
-        # } else if (CS) {
-        #     social_dist <- 4
-        # }  else if (CB) {
-        #     social_dist <- 8
-        # }  else if (SD) {
-        #     social_dist <- 15
-        # }
-        MyCounties<-GetCounties(input$Base,input$Radius)
-        MyHospitals<-GetHospitals(input$Base,input$Radius)
-        PlotOverlay(input$Base, MyCounties, MyHospitals,social_dist,ModelID,input$proj_days, input$StatisticType)
-    })
-    
-    
-    # Output any data tables ------------------------------------------------------------------------------------------------------------------------------------------------------
-    
-    
-    #Render National Data Table on summary page
-    output$NationalDataTable1<-DT::renderDataTable({
-        NationalDataTable <- DT::datatable(data.frame(NationalDataTable),rownames = FALSE, options = list(dom = 'ft',ordering = F,"pageLength" = 51))
-        NationalDataTable
-    })
-    
-    output$CountyDataTable1<-DT::renderDataTable({
-        MyCounties<-GetCounties(input$Base,input$Radius)
-        dt<-GetLocalDataTable(MyCounties)
-        dt<-DT::datatable(dt, rownames = FALSE, options = list(dom = 't',ordering = F, "pageLength"=100))
-        dt
-    })
-    
-    
+  
     output$ForecastDataTable<-DT::renderDataTable({
-        if (input$MAJCOMInput == "All") {
-            if(input$SummaryStatistic == "Cases") {
-                ForecastDataTableCases<-FilterDataTable(ForecastDataTableCases,input$SummaryModelType,input$SummaryForecast)
-                dt<-DT::datatable(ForecastDataTableCases, rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))   
-                dt
-            } else {
-                ForecastDataTable<-FilterDataTable(ForecastDataTable,input$SummaryModelType,input$SummaryForecast)
-                dt<-DT::datatable(ForecastDataTable, rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))
-                dt
+        
+        if (input$MAJCOMNAF == "MAJCOM") {
+            if (input$MAJCOMInput == "All") {
+                if(input$SummaryStatistic == "Cases") {
+                    ForecastDataTableCases<-FilterDataTable(ForecastDataTableCases,input$SummaryModelType,input$SummaryForecast)
+                    FTPrint<-ForecastDataTableCases
+                    dt<-DT::datatable(ForecastDataTableCases, rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))   
+                    dt
+                } else {
+                    ForecastDataTable<-FilterDataTable(ForecastDataTable,input$SummaryModelType,input$SummaryForecast)
+                    FTPrint<-ForecastDataTableCases
+                    dt<-DT::datatable(ForecastDataTable, rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))
+                    dt
+                }
+            } else if(input$MAJCOMInput=="Active Duty"){
+                if(input$SummaryStatistic == "Cases") {
+                    ForecastDataTableCases<-FilterDataTable(ForecastDataTableCases,input$SummaryModelType,input$SummaryForecast)
+                    FTPrint<-ForecastDataTableCases
+                    dt<-DT::datatable(filter(ForecastDataTableCases, !MAJCOM %in% c("AFRC","ANG")), rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))
+                    dt
+                } else {
+                    ForecastDataTable<-FilterDataTable(ForecastDataTable,input$SummaryModelType,input$SummaryForecast)
+                    FTPrint<-ForecastDataTable
+                    dt<-DT::datatable(filter(ForecastDataTable, !MAJCOM %in% c("AFRC","ANG")), rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))
+                    dt
+                }
             }
-        } else if(input$MAJCOMInput=="Active Duty"){
-            if(input$SummaryStatistic == "Cases") {
-                ForecastDataTableCases<-FilterDataTable(ForecastDataTableCases,input$SummaryModelType,input$SummaryForecast)
-                dt<-DT::datatable(filter(ForecastDataTableCases, !MAJCOM %in% c("AFRC","ANG")), rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))
-                dt
-            } else {
-                ForecastDataTable<-FilterDataTable(ForecastDataTable,input$SummaryModelType,input$SummaryForecast)
-                dt<-DT::datatable(filter(ForecastDataTable, !MAJCOM %in% c("AFRC","ANG")), rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))
-                dt
+            else {
+                if(input$SummaryStatistic == "Cases") {
+                    ForecastDataTableCases<-FilterDataTable(ForecastDataTableCases,input$SummaryModelType,input$SummaryForecast)
+                    FTPrint<-ForecastDataTableCases
+                    dt<-DT::datatable(filter(ForecastDataTableCases, MAJCOM == input$MAJCOMInput), rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))
+                    dt
+                } else {
+                    ForecastDataTable<-FilterDataTable(ForecastDataTable,input$SummaryModelType,input$SummaryForecast)
+                    FTPrint<-ForecastDataTable                    
+                    dt<-DT::datatable(filter(ForecastDataTable, MAJCOM == input$MAJCOMInput), rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))
+                    dt
+                }
             }
-        }
-        else {
-            if(input$SummaryStatistic == "Cases") {
-                ForecastDataTableCases<-FilterDataTable(ForecastDataTableCases,input$SummaryModelType,input$SummaryForecast)
-                dt<-DT::datatable(filter(ForecastDataTableCases, MAJCOM == input$MAJCOMInput), rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))
-                dt
-            } else {
-                ForecastDataTable<-FilterDataTable(ForecastDataTable,input$SummaryModelType,input$SummaryForecast)
-                dt<-DT::datatable(filter(ForecastDataTable, MAJCOM == input$MAJCOMInput), rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))
-                dt
+        } else if (input$MAJCOMNAF == "NAF") {
+            
+            AFWings<-dplyr::filter(AFNAFS,NAF %in% NAFList)  # We do not allow for all NAFs to be selected, too many units                     
+            colset<-c(1,3,2,14,15,16,4,6,7,8,9,10)
+            
+            if (input$WingInput == "All") {                  # If all wings are selected
+                #AFWings<-dplyr::filter(AFWings,Wing %in% WingList)            
+                
+                if (input$GroupInput == "All") {                
+                    GroupList<-sort(unique(AFWings$`Group`), decreasing = FALSE)
+                    forecastbaselist<-dplyr::filter(AFWings,Group %in% GroupList)                        
+                    forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE) 
+                    ForecastDataTableCases<-dplyr::filter(ForecastDataTableCases,Installation %in% forecastbaselist) 
+                    ForecastDataTable<-dplyr::filter(ForecastDataTable,Installation %in% forecastbaselist) 
+                    
+                    if(input$SummaryStatistic == "Cases") {  #if all groups are selected
+                        ForecastDataTableCases<-FilterDataTable(ForecastDataTableCases,input$SummaryModelType,input$SummaryForecast)
+                        ForecastDataTableCases<-merge(ForecastDataTableCases,AFNAFS, by.x = "Installation", by.y = "Base")
+                        ForecastDataTableCases<-ForecastDataTableCases[, names(ForecastDataTableCases)[colset]]  
+                        colnames(ForecastDataTableCases)[2]<-"State"
+                        FTPrint<-ForecastDataTableCases                        
+                        dt<-DT::datatable(ForecastDataTableCases, rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))   
+                        dt
+                    } else {                                 #if one group is selected
+                        ForecastDataTable<-FilterDataTable(ForecastDataTable,input$SummaryModelType,input$SummaryForecast)
+                        ForecastDataTable<-merge(ForecastDataTable,AFNAFS, by.x = "Installation", by.y = "Base")
+                        ForecastDataTable<-ForecastDataTable[, names(ForecastDataTable)[colset]]  
+                        colnames(ForecastDataTable)[2]<-"State"
+                        FTPrint<-ForecastDataTable                        
+                        dt<-DT::datatable(ForecastDataTable, rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))
+                        dt
+                    }
+                } else {                                    
+                    forecastbaselist<-dplyr::filter(AFWings,Group %in% input$GroupInput)                        
+                    forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE) 
+                    ForecastDataTableCases<-dplyr::filter(ForecastDataTableCases,Installation %in% forecastbaselist) 
+                    ForecastDataTable<-dplyr::filter(ForecastDataTable,Installation %in% forecastbaselist)                     
+                    
+                    if(input$SummaryStatistic == "Cases") {  #if all groups are selected
+                        ForecastDataTableCases<-FilterDataTable(ForecastDataTableCases,input$SummaryModelType,input$SummaryForecast)
+                        ForecastDataTableCases<-merge(ForecastDataTableCases,AFNAFS, by.x = "Installation", by.y = "Base")
+                        ForecastDataTableCases<-ForecastDataTableCases[, names(ForecastDataTableCases)[colset]]  
+                        colnames(ForecastDataTableCases)[2]<-"State"
+                        FTPrint<-ForecastDataTableCases                        
+                        dt<-DT::datatable(ForecastDataTableCases, rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))   
+                        dt
+                    } else {                                 #if one group is selected
+                        ForecastDataTable<-FilterDataTable(ForecastDataTable,input$SummaryModelType,input$SummaryForecast)
+                        ForecastDataTable<-merge(ForecastDataTable,AFNAFS, by.x = "Installation", by.y = "Base")
+                        ForecastDataTable<-ForecastDataTable[, names(ForecastDataTableCases)[colset]]
+                        colnames(ForecastDataTable)[2]<-"State"
+                        FTPrint<-ForecastDataTable
+                        dt<-DT::datatable(ForecastDataTable, rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))
+                        dt
+                    }
+                }
+            } else {      #If one wing is selected
+                
+              AFWings<-dplyr::filter(AFWings,Wing %in% input$WingInput)            
+                
+                if (input$GroupInput == "All") {
+                    GroupList<-sort(unique(AFWings$`Group`), decreasing = FALSE)
+                    forecastbaselist<-dplyr::filter(AFWings,Group %in% GroupList)                        
+                    forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE) 
+                    ForecastDataTableCases<-dplyr::filter(ForecastDataTableCases,Installation %in% forecastbaselist) 
+                    ForecastDataTable<-dplyr::filter(ForecastDataTable,Installation %in% forecastbaselist) 
+                    
+                    if(input$SummaryStatistic == "Cases") {  #if all groups are selected
+                        ForecastDataTableCases<-FilterDataTable(ForecastDataTableCases,input$SummaryModelType,input$SummaryForecast)
+                        ForecastDataTableCases<-merge(ForecastDataTableCases,AFNAFS, by.x = "Installation", by.y = "Base")
+                        ForecastDataTableCases<-ForecastDataTableCases[, names(ForecastDataTableCases)[colset]]  
+                        colnames(ForecastDataTableCases)[2]<-"State"
+                        FTPrint<-ForecastDataTableCases                        
+                        dt<-DT::datatable(ForecastDataTableCases, rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))   
+                        dt
+                    } else {                                 #if one group is selected
+                        ForecastDataTable<-FilterDataTable(ForecastDataTable,input$SummaryModelType,input$SummaryForecast)
+                        ForecastDataTable<-merge(ForecastDataTable,AFNAFS, by.x = "Installation", by.y = "Base")
+                        ForecastDataTable<-ForecastDataTable[, names(ForecastDataTable)[colset]]  
+                        colnames(ForecastDataTable)[2]<-"State"
+                        FTPrint<-ForecastDataTable                        
+                        dt<-DT::datatable(ForecastDataTable, rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))
+                        dt
+                    }
+                } else {                                    
+                    forecastbaselist<-dplyr::filter(AFWings,Group %in% input$GroupInput)                        
+                    forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE) 
+                    ForecastDataTableCases<-dplyr::filter(ForecastDataTableCases,Installation %in% forecastbaselist) 
+                    ForecastDataTable<-dplyr::filter(ForecastDataTable,Installation %in% forecastbaselist)                     
+                    
+                    if(input$SummaryStatistic == "Cases") {  #if all groups are selected
+                        ForecastDataTableCases<-FilterDataTable(ForecastDataTableCases,input$SummaryModelType,input$SummaryForecast)
+                        ForecastDataTableCases<-merge(ForecastDataTableCases,AFNAFS, by.x = "Installation", by.y = "Base")
+                        ForecastDataTableCases<-ForecastDataTableCases[, names(ForecastDataTableCases)[colset]]  
+                        colnames(ForecastDataTableCases)[2]<-"State"
+                        FTPrint<-ForecastDataTableCases                        
+                        dt<-DT::datatable(ForecastDataTableCases, rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))   
+                        dt
+                    } else {                                 #if one group is selected
+                        ForecastDataTable<-FilterDataTable(ForecastDataTable,input$SummaryModelType,input$SummaryForecast)
+                        ForecastDataTable<-merge(ForecastDataTable,AFNAFS, by.x = "Installation", by.y = "Base")
+                        ForecastDataTable<-ForecastDataTable[, names(ForecastDataTable)[colset]]  
+                        colnames(ForecastDataTable)[2]<-"State"
+                        FTPrint<-ForecastDataTable                        
+                        dt<-DT::datatable(ForecastDataTable, rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))
+                        dt
+                    }
+                }
             }
         }
     })
-    
-    
-    
 
-    
-    
-    output$HotSpotData <- downloadHandler(
-        filename = function() { 
-            paste("HotspotDataset-", Sys.Date(), ".csv", sep="")
-        },
-        content = function(file) {
-            write.csv(Top15Report, file)
-            
-        })
-    
     output$downloadData <- downloadHandler(
+      filename = function() { 
+        paste("SummaryDataset-", Sys.Date(), ".csv", sep="")
+      },
+      content = function(file) {
+        write.csv(ForecastDataTable, file)
+        
+      })
+    
+    output$downloadFilteredData <- downloadHandler(
+      filename = function() { 
+        paste("FilteredSummaryDataset-", Sys.Date(), ".csv", sep="")
+      },
+      content = function(file) {
+        if (input$MAJCOMNAF == "MAJCOM") {
+          if (input$MAJCOMInput == "All") {
+            if(input$SummaryStatistic == "Cases") {
+              ForecastDataTableCases<-FilterDataTable(ForecastDataTableCases,input$SummaryModelType,input$SummaryForecast)
+              FTPrint<-ForecastDataTableCases
+            } else {
+              ForecastDataTable<-FilterDataTable(ForecastDataTable,input$SummaryModelType,input$SummaryForecast)
+              FTPrint<-ForecastDataTableCases
+            }
+          } else if(input$MAJCOMInput=="Active Duty"){
+            if(input$SummaryStatistic == "Cases") {
+              ForecastDataTableCases<-FilterDataTable(ForecastDataTableCases,input$SummaryModelType,input$SummaryForecast)
+              FTPrint<-ForecastDataTableCases
+            } else {
+              ForecastDataTable<-FilterDataTable(ForecastDataTable,input$SummaryModelType,input$SummaryForecast)
+              FTPrint<-ForecastDataTable
+            }
+          }
+          else {
+            if(input$SummaryStatistic == "Cases") {
+              ForecastDataTableCases<-FilterDataTable(ForecastDataTableCases,input$SummaryModelType,input$SummaryForecast)
+              FTPrint<-ForecastDataTableCases
+            } else {
+              ForecastDataTable<-FilterDataTable(ForecastDataTable,input$SummaryModelType,input$SummaryForecast)
+              FTPrint<-ForecastDataTable                    
+            }
+          }
+        } else if (input$MAJCOMNAF == "NAF") {
+          AFWings<-dplyr::filter(AFNAFS,NAF %in% NAFList)  # We do not allow for all NAFs to be selected, too many units                     
+          colset<-c(1,3,2,14,15,16,4,6,7,8,9,10)
+          if (input$WingInput == "All") {     
+            #AFWings<-dplyr::filter(AFWings,Wing %in% WingList)
+            if (input$GroupInput == "All") {                
+              GroupList<-sort(unique(AFWings$`Group`), decreasing = FALSE)
+              forecastbaselist<-dplyr::filter(AFWings,Group %in% GroupList)                        
+              forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE) 
+              ForecastDataTableCases<-dplyr::filter(ForecastDataTableCases,Installation %in% forecastbaselist) 
+              ForecastDataTable<-dplyr::filter(ForecastDataTable,Installation %in% forecastbaselist) 
+              
+              if(input$SummaryStatistic == "Cases") {  #if all groups are selected
+                ForecastDataTableCases<-FilterDataTable(ForecastDataTableCases,input$SummaryModelType,input$SummaryForecast)
+                ForecastDataTableCases<-merge(ForecastDataTableCases,AFNAFS, by.x = "Installation", by.y = "Base")
+                ForecastDataTableCases<-ForecastDataTableCases[, names(ForecastDataTableCases)[colset]]  
+                colnames(ForecastDataTableCases)[2]<-"State"
+                FTPrint<-ForecastDataTableCases                        
+              } else {                                 #if one group is selected
+                ForecastDataTable<-FilterDataTable(ForecastDataTable,input$SummaryModelType,input$SummaryForecast)
+                ForecastDataTable<-merge(ForecastDataTable,AFNAFS, by.x = "Installation", by.y = "Base")
+                ForecastDataTable<-ForecastDataTable[, names(ForecastDataTable)[colset]]  
+                colnames(ForecastDataTable)[2]<-"State"
+                FTPrint<-ForecastDataTable                        
+              }
+            } else {                                    
+              forecastbaselist<-dplyr::filter(AFWings,Group %in% input$GroupInput)                        
+              forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE) 
+              ForecastDataTableCases<-dplyr::filter(ForecastDataTableCases,Installation %in% forecastbaselist) 
+              ForecastDataTable<-dplyr::filter(ForecastDataTable,Installation %in% forecastbaselist)                     
+              
+              if(input$SummaryStatistic == "Cases") {  #if all groups are selected
+                ForecastDataTableCases<-FilterDataTable(ForecastDataTableCases,input$SummaryModelType,input$SummaryForecast)
+                ForecastDataTableCases<-merge(ForecastDataTableCases,AFNAFS, by.x = "Installation", by.y = "Base")
+                ForecastDataTableCases<-ForecastDataTableCases[, names(ForecastDataTableCases)[colset]]  
+                colnames(ForecastDataTableCases)[2]<-"State"
+                FTPrint<-ForecastDataTableCases                        
+              } else {                                 #if one group is selected
+                ForecastDataTable<-FilterDataTable(ForecastDataTable,input$SummaryModelType,input$SummaryForecast)
+                ForecastDataTable<-merge(ForecastDataTable,AFNAFS, by.x = "Installation", by.y = "Base")
+                ForecastDataTable<-ForecastDataTable[, names(ForecastDataTableCases)[colset]]
+                colnames(ForecastDataTable)[2]<-"State"
+                FTPrint<-ForecastDataTable
+              }
+            }
+          } else {      #If one wing is selected
+            
+            AFWings<-dplyr::filter(AFWings,Wing %in% input$WingInput)            
+            
+            if (input$GroupInput == "All") {
+              GroupList<-sort(unique(AFWings$`Group`), decreasing = FALSE)
+              forecastbaselist<-dplyr::filter(AFWings,Group %in% GroupList)                        
+              forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE) 
+              ForecastDataTableCases<-dplyr::filter(ForecastDataTableCases,Installation %in% forecastbaselist) 
+              ForecastDataTable<-dplyr::filter(ForecastDataTable,Installation %in% forecastbaselist) 
+              
+              if(input$SummaryStatistic == "Cases") {  #if all groups are selected
+                ForecastDataTableCases<-FilterDataTable(ForecastDataTableCases,input$SummaryModelType,input$SummaryForecast)
+                ForecastDataTableCases<-merge(ForecastDataTableCases,AFNAFS, by.x = "Installation", by.y = "Base")
+                ForecastDataTableCases<-ForecastDataTableCases[, names(ForecastDataTableCases)[colset]]  
+                colnames(ForecastDataTableCases)[2]<-"State"
+                FTPrint<-ForecastDataTableCases                        
+              } else {                                 #if one group is selected
+                ForecastDataTable<-FilterDataTable(ForecastDataTable,input$SummaryModelType,input$SummaryForecast)
+                ForecastDataTable<-merge(ForecastDataTable,AFNAFS, by.x = "Installation", by.y = "Base")
+                ForecastDataTable<-ForecastDataTable[, names(ForecastDataTable)[colset]]  
+                colnames(ForecastDataTable)[2]<-"State"
+                FTPrint<-ForecastDataTable                        
+              }
+            } else {                                    
+              forecastbaselist<-dplyr::filter(AFWings,Group %in% input$GroupInput)                        
+              forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE) 
+              ForecastDataTableCases<-dplyr::filter(ForecastDataTableCases,Installation %in% forecastbaselist) 
+              ForecastDataTable<-dplyr::filter(ForecastDataTable,Installation %in% forecastbaselist)                     
+              
+              if(input$SummaryStatistic == "Cases") {  #if all groups are selected
+                ForecastDataTableCases<-FilterDataTable(ForecastDataTableCases,input$SummaryModelType,input$SummaryForecast)
+                ForecastDataTableCases<-merge(ForecastDataTableCases,AFNAFS, by.x = "Installation", by.y = "Base")
+                ForecastDataTableCases<-ForecastDataTableCases[, names(ForecastDataTableCases)[colset]]  
+                colnames(ForecastDataTableCases)[2]<-"State"
+                FTPrint<-ForecastDataTableCases                        
+              } else {                                 #if one group is selected
+                ForecastDataTable<-FilterDataTable(ForecastDataTable,input$SummaryModelType,input$SummaryForecast)
+                ForecastDataTable<-merge(ForecastDataTable,AFNAFS, by.x = "Installation", by.y = "Base")
+                ForecastDataTable<-ForecastDataTable[, names(ForecastDataTable)[colset]]  
+                colnames(ForecastDataTable)[2]<-"State"
+                FTPrint<-ForecastDataTable                        
+              }
+            }
+          }
+        }        
+        
+        
+        write.csv(FTPrint, file)
+      })
+
+    output$HotSpotData <- downloadHandler(
+      filename = function() { 
+        paste("HotspotDataset-", Sys.Date(), ".csv", sep="")
+      },
+      content = function(file) {
+        write.csv(Top15Report, file)
+        
+      })    
+        
+    output$HotSpotDataOneMile <- downloadHandler(
         filename = function() { 
-            paste("SummaryDataset-", Sys.Date(), ".csv", sep="")
+            paste("HotspotDatasetOneMile-", Sys.Date(), ".csv", sep="")
         },
         content = function(file) {
-            write.csv(ForecastDataTable, file)
+            write.csv(Top15ReportOneMile, file)
             
-        })
-    
+        })    
+
     output$HotSpot <- renderPlot({
             
         HotspotPlot(CovidConfirmedCases, CovidDeaths,input$MAJCOMInput)

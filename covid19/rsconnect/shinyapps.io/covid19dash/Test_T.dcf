@@ -1,0 +1,12 @@
+name: Test_T
+title: Test_T
+username:
+account: covid19dash
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 2202179
+bundleId: 3100838
+url: https://covid19dash.shinyapps.io/Test_T/
+when: 1588595297.86179
+asMultiple: FALSE
+asStatic: FALSE

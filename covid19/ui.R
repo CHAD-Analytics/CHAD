@@ -71,26 +71,64 @@ ui <- tagList(
                                            radioButtons("SummaryStatistic",
                                                         "Cases or Hospitalizations: ",
                                                         c("Cases"="Cases",
-                                                          "Hospitalizations"="Hospitalizations")),
-                                           selectInput(
-                                               "MAJCOMInput",
-                                               "MAJCOM:", 
-                                               list(`MAJCOM` = MAJCOMList ), 
-                                               selectize = FALSE),
+                                                          "Hospitalizations"="Hospitalizations"),selected = c("Hospitalizations")),
+                                           radioButtons("MAJCOMNAF",
+                                                        "MAJCOM or NAF Filter: ",
+                                                        c("MAJCOM"="MAJCOM",
+                                                          "NAF"="NAF"),selected = c("MAJCOM")),   
+                                           conditionalPanel(
+                                               condition = "input.MAJCOMNAF == 'MAJCOM'",
+                                               selectInput(
+                                                   "MAJCOMInput",
+                                                   "MAJCOM:", 
+                                                   list(`MAJCOM` = MAJCOMList ), 
+                                                   selectize = FALSE)
+                                                   ),
+                                           conditionalPanel(
+                                               condition = "input.MAJCOMNAF == 'NAF'",
+                                               selectInput(
+                                                   "NAFInput",
+                                                   "Numbered Air Forces:", 
+                                                   choices=NAFList,
+                                                   selectize = FALSE),
+                                               selectInput(
+                                                   "WingInput",
+                                                   "Wing:", 
+                                                   list(`Wings` = WingList ),
+                                                   selectize = FALSE)
+                                               ,selectInput(
+                                                   "GroupInput",
+                                                   "Group:",
+                                                   choices=NULL,
+                                                   selectize = FALSE)
+                                                    ),  
                                            radioButtons("SummaryModelType",
                                                         "Summary Plot Model: ",
                                                         c("IHME"="IHME",
                                                           "CHIME"="CHIME"),
-                                                        selected = "CHIME"),
+                                                        selected = c("CHIME")),
                                            radioButtons("SummaryForecast",
                                                         "Choose Days Forecasted: ",
                                                         c('Today'='Today',
                                                           "7 Days"="Seven",
                                                           "14 Days"="Fourteen",
                                                           "21 Days"="Twenty-One",
-                                                          "30 Days"="Thirty"))
+                                                          "30 Days"="Thirty"),
+                                                        selected = c("Seven"))
                                            
                                        ),
+                                       
+                                       conditionalPanel(condition="input.tabselected==2",
+                                                        "National Summary",
+                                                        icon = icon("sliders-h"),
+                                                        div(id = "single", style="display: none;", numericInput("tckt", "Ticket Number : ", 12345,  width = 300)),
+                                                        radioButtons("MapView",
+                                                                     "Map Selection: ",
+                                                                     c("US"="US",
+                                                                       "Europe"="Europe",
+                                                                       "Asia"="Asia"))
+                                       ),
+                                       
                                        conditionalPanel(condition="input.tabselected==3",
                                                         "Current Local Health Inputs",
                                            tabName = "localHealthInput",
@@ -118,19 +156,21 @@ ui <- tagList(
                                            #                       "Businesses Telework" = "CB",
                                            #                       "Social Distance" = "SD")),
                                            checkboxGroupInput("ModelSelectionValue","Forecasting Model(s): ",
-                                                              c("IHME"="IHME",
-                                                                "LANL"="LANL",
-                                                                "CHIME SC"="CHIME1",
-                                                                "CHIME NE"="CHIME2",
-                                                                "CHIME SC+NE"="CHIME3",
-                                                                "CHIME SD"="CHIME4",
-                                                                "CHIME SC+SD"="CHIME5",
-                                                                "CHIME NE+SD"="CHIME6",
-                                                                "CHIME SC+NE+SD"="CHIME7",                                                                                                                                
-                                                                "Columbia No Intervetion"="CUNI",
-                                                                "Columbia 20% SC Reduction"="CU20SC",
-                                                                "Columbia 30% SC Reduction"="CU30SC",
-                                                                "Columbia 40% SC Reduction"="CU40SC")),
+                                                              c("IHME (University of Washinton)"="IHME",
+                                                                "CHIME (University of Pennsylvania): SC+NE+SD"="CHIME1",
+                                                                "CHIME: NE+SD"="CHIME2",
+                                                                "CHIME: SC+SD"="CHIME3",                                                                
+                                                                "CHIME: SD"="CHIME4", 
+                                                                "CHIME: SC+NE"="CHIME5",
+                                                                "CHIME: NE"="CHIME6",
+                                                                "CHIME: SC"="CHIME7",
+                                                                "Los Alamos National Labs (LANL)"="LANL",
+                                                                "University of Texas"="UT",
+                                                                "Columbia University: No Intervetion"="CUNI",
+                                                                "Columbia University: 20% SC Reduction"="CU20SC",
+                                                                "Columbia University: 30% SC Reduction"="CU30SC",
+                                                                "Columbia University: 40% SC Reduction"="CU40SC"),
+                                                                selected = c("IHME","CHIME1")),
                                            actionLink("selectall","Select All")
                                        ),
                                        br(),
@@ -180,7 +220,7 @@ ui <- tagList(
                     '))),
                       tags$script(HTML('
                                    $(document).ready(function() {
-                                   $("header").find("nav").append(\'<span class="myClass"> COVID-19 Health Assessment Dashboard Beta v0.8.1</span>\');
+                                   $("header").find("nav").append(\'<span class="myClass"> COVID-19 Health Assessment Dashboard Beta v0.9.2</span>\');
                                    })
                                    ')),
                       tabsetPanel(id = "tabselected",
@@ -202,7 +242,9 @@ ui <- tagList(
                                           height = 900, 
                                           width =13,
                                           downloadButton('downloadData', 'Download Full Dataset'),
-                                          downloadButton('HotSpotData', 'Download Hotspot Dataset'))
+                                          downloadButton('downloadFilteredData', 'Download Filtered Dataset (Table Above)'),
+                                          downloadButton('HotSpotData', 'Download Hotspot Dataset: 50 Mile Radius'),
+                                          downloadButton('HotSpotDataOneMile', 'Download Hotspot Dataset: Single County'))
                                       
                                   ),
                                   ####### END Mission Risk #######
@@ -238,7 +280,15 @@ ui <- tagList(
                                           
                                       ),
                                       fluidRow( 
-                                          box(title = "Daily Reports",plotlyOutput("LocalHealthPlot1",height = 300)),
+                                          tabBox(
+                                              tabPanel("Daily New Cases",
+                                                       plotlyOutput("LocalHealthPlot1",height = 300)
+                                                       ),
+                                              tabPanel("Moving 3-Day Average",
+                                                       plotlyOutput("LocalHealthPlot3day",height = 300)
+                                                       )
+                                          ),
+                                          #box(title = "Daily Reports",plotlyOutput("LocalHealthPlot1",height = 300)),
                                           box(title = "Total Reports",plotlyOutput("LocalHealthPlot2",height = 300))
                                       ),
                                       fluidRow(
