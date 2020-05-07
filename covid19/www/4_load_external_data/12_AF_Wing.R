@@ -1,3 +1,6 @@
+
+# AFNAFS = vroom::vroom("C:/Users/taylo/Documents/CHAD/covid19/www/4_load_external_data/data_files/NAF.csv")
+# AFNAFS = vroom::vroom("www/4_load_external_data/data_files/NAF.csv")
 # AFNAFS = vroom::vroom("C:/Users/taylo/Documents/CHAD/covid19/www/4_load_external_data/data_files/NAF.csv")
 # AFNAFS = vroom::vroom("www/4_load_external_data/data_files/NAF.csv")
 # NAFList <- sort(unique(AFNAFS$NAF), decreasing = FALSE)
@@ -41,7 +44,6 @@
 # save(himd, file = "himd.rda")
 # save(AFBaseLocations, file = "AFBaseLocations.rda")
 # save(AFNAFS, file = "AFNAS.rda")
-
 cimd<-vroom::vroom("www/4_load_external_data/data_files/cimd.csv")
 himd<-vroom::vroom("www/4_load_external_data/data_files/himd.csv")
 AFBaseLocations<-vroom::vroom("www/4_load_external_data/data_files/AFBaseLocations.csv")
