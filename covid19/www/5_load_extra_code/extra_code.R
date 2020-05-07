@@ -7,6 +7,7 @@ BranchList <- sort(unique(AFBaseLocations$Branch), decreasing = FALSE)
 AFBases<-dplyr::filter(AFBaseLocations,Branch %in% "Air Force")
 MAJCOMList <- sort(unique(AFBases$'Major Command'), decreasing = FALSE)
 MAJCOMList<-c("All",'Active Duty',MAJCOMList)
+OperationalList <- sort(unique(AFBases$Operational), decreasing = FALSE)
 OperationalListP <- sort(unique(AFBases$Operational), decreasing = FALSE)
 # Is this used anywhere?
 currCount = 0

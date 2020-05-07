@@ -1,5 +1,5 @@
 CovidCases14DayGrowthChart<-function(IncludedCounties){
-
+  
   #Get cases and deaths in selected region
   CovidCountiesCases<-subset(CovidConfirmedCases, CountyFIPS %in% IncludedCounties$FIPS)
   CovidCountiesDeath<-subset(CovidDeaths, CountyFIPS %in% IncludedCounties$FIPS)
@@ -10,7 +10,7 @@ CovidCases14DayGrowthChart<-function(IncludedCounties){
   DailyNewCasesT <- colSums(DailyNewCases)
   DailyNewCases14Day = round(rollmean(DailyNewCasesT, 14, align = "right"))
   CaseGrowth14Day = round(DailyNewCases14Day[2:length(DailyNewCases14Day)]/
-                    DailyNewCases14Day[1:(length(DailyNewCases14Day)-1)],2)
+                            DailyNewCases14Day[1:(length(DailyNewCases14Day)-1)],2)
   CaseGrowth14Day = ifelse(is.infinite(CaseGrowth14Day), NA, CaseGrowth14Day)
   
   #Plot 14 day moving average
