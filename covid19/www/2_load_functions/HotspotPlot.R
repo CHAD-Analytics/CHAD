@@ -1,4 +1,4 @@
-HotspotPlot <- function(CovidConfirmedCases, CovidDeaths, MAJCOMInput){
+HotspotPlot <- function(CovidConfirmedCases, CovidDeaths, BranchSelect,OpsSelect,MAJNAFSelect,MAJCOMInput,NAFChoice,WingChoice){
     #convert cases and death dataframes to long format. Also add in new_cases in last 1, 3, and 30 days
     tempCases = CovidConfirmedCases %>% select(-State, -stateFIPS) %>%
         reshape2::melt(id.var = c('CountyFIPS','County Name'), variable.name = 'date', value.name = "cumulative_cases") %>%
@@ -72,22 +72,42 @@ HotspotPlot <- function(CovidConfirmedCases, CovidDeaths, MAJCOMInput){
     current_date = (bases_radius %>% ungroup() %>% filter(deaths_pp > 0) %>% filter(date ==max(date)) %>% select(date))$date[1]
     #### Week % Change Chart ####
     
-    if (MAJCOMInput == "All"){ 
-        bases_radius <- bases_radius %>% 
-            mutate(include = ifelse((new_cases_7_pp > 1800) & (date == current_date), TRUE, FALSE))
-    }else if (MAJCOMInput == "Active Duty"){
-        bases_radius <- bases_radius %>% 
-            mutate(include = ifelse((new_cases_7_pp > 500) & (date == current_date) & 
-                                        (`Major Command` != "ANG") & (`Major Command` != "AFRC"), TRUE, FALSE))
-    }else if ((MAJCOMInput == "ANG")){
-        bases_radius <- bases_radius %>% 
-            mutate(include = ifelse((new_cases_7_pp > 1000) & (date == current_date) & 
-                                        (`Major Command` == MAJCOMInput), TRUE, FALSE))
-    }else{
-        bases_radius <- bases_radius %>% mutate(include = ifelse((new_cases_7_pp > 50) & (date == current_date) & 
-                                                                     (`Major Command` == MAJCOMInput), TRUE, FALSE))
-    }
     
+    ####Need to add filtering for branch/operational status/then majcom/NAF
+    bases_radius<-dplyr::filter(bases_radius,Branch %in% BranchSelect) 
+    #bases_radius<-dplyr::filter(bases_radius,Operational %in% OpsSelect)
+    if (BranchSelect!="AirForce"){
+        if (OpsSelect == "All"){ 
+            bases_radius <- bases_radius %>% mutate(include = ifelse((new_cases_7_pp > 1800) & (date == current_date), TRUE, FALSE))
+        }else if (OpsSelect == "Active Duty"){
+            bases_radius <- bases_radius %>% mutate(include = ifelse((new_cases_7_pp > 500) & (date == current_date) & 
+                                                                        (`Operational` == "Active"), TRUE, FALSE))
+        }else if ((OpsSelect == "ANG")){
+            bases_radius <- bases_radius %>% mutate(include = ifelse((new_cases_7_pp > 1000) & (date == current_date) & 
+                                                                        (`Operational` == 'Guard'), TRUE, FALSE))
+        }else{
+            bases_radius <- bases_radius %>% mutate(include = ifelse((new_cases_7_pp > 50) & (date == current_date) & 
+                                                                         (`Operational` == 'Reserve'), TRUE, FALSE))
+        }
+    } else { 
+        bases_radius<-dplyr::filter(bases_radius,Operational %in% OpsSelect)
+        if (MAJCOMInput == "All"){ 
+            bases_radius <- bases_radius %>% 
+                mutate(include = ifelse((new_cases_7_pp > 1800) & (date == current_date), TRUE, FALSE))
+        }else if (MAJCOMInput == "Active Duty"){
+            bases_radius <- bases_radius %>% 
+                mutate(include = ifelse((new_cases_7_pp > 500) & (date == current_date) & 
+                                            (`Major Command` != "ANG") & (`Major Command` != "AFRC"), TRUE, FALSE))
+        }else if ((MAJCOMInput == "ANG")){
+            bases_radius <- bases_radius %>% 
+                mutate(include = ifelse((new_cases_7_pp > 1000) & (date == current_date) & 
+                                            (`Major Command` == MAJCOMInput), TRUE, FALSE))
+        }else{
+            bases_radius <- bases_radius %>% mutate(include = ifelse((new_cases_7_pp > 50) & (date == current_date) & 
+                                                                         (`Major Command` == MAJCOMInput), TRUE, FALSE))
+        }
+    
+    }
     
     min_new_14 <- min(bases_radius %>% filter(date == current_date) %>% .$new_cases_14_pp)
     max_new_14 <- pmin(max(bases_radius %>% filter(date == current_date) %>% .$new_cases_14_pp), 10000)
