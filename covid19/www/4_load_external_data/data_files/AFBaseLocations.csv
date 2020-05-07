@@ -1,0 +1,530 @@
+"Base","City","State","County","Country","Branch","Operational","Lat","Long","Major Command","FIPS"
+"Joint Base Elmendorf-Richardson","Anchorage","AK","Anchorage","United States","Air Force","Active",61.2536,-149.8113,"PACAF",2020
+"Eielson Air Force Base","Fairbanks","AK","Fairbanks North Star","United States","Air Force","Active",64.6431,-147.0638,"PACAF",2090
+"NOLF Summerdale","Summerdale","AL","Baldwin","United States","Navy","Active",30.4877,-87.69971,"Navy",1003
+"NOLF Silverhill","Silverhill","AL","Baldwin","United States","Navy","Active",30.527068,-87.735,"Navy",1003
+"Louisville Stagefield AL","Louisville","AL","Barbour","United States","Army","Active",31.727162,-85.602145,"Army",1005
+"Anniston Army Depot","Anniston","AL","Calhoun","United States","Army","Active",33.64916,-85.879642,"Army",1015
+"Birmingham Airport","Birmingham","AL","Calhoun","United States","Air Force","Guard",33.643851,-85.879914,"ANG",1015
+"Stinson 5AB Stagefield AL","Muscle Shoals","AL","Colbert","United States","Army","Active",34.790605,-87.612,"Army",1033
+"NOLF Evergreen","Evergreen","AL","Conecuh","United States","Navy","Active",31.489241,-87.052004,"Navy",1035
+"Fort Rucker AL","Fort Rucker","AL","Dale","United States","Army","Active",31.327347,-85.737811,"Army",1045
+"Barin Field","Floyd","AL","Elmore","United States","Navy","Active",32.671798,-86.025021,"Navy",1051
+"NOLF Brewton","Brewton","AL","Escambia","United States","Navy","Active",31.129427,-87.096126,"Navy",1053
+"Highbluff Stagefield AL","Hartford","AL","Geneva","United States","Army","Active",31.16587,-85.714613,"Army",1061
+"Sumpter Smith Air National Guard Base","Birmingham, Alabama","AL","Jefferson","United States","Air Force","Guard",33.56388889,-86.75222222,"ANG",1073
+"NG AASF02 Birmingham","Birmingham","AL","Jefferson","United States","Army","Guard",33.456412,-86.801904,"Army",1073
+"Redstone Arsenal","Redstone Arsenal","AL","Madison","United States","Army","Active",34.683875,-86.647643,"Army",1089
+"NG RW Shepherd Hope Hull","Hope Hull","AL","Montgomery","United States","Army","Guard",32.206441,-86.380464,"Army",1101
+"Dannelly Field","Montgomery, Alabama","AL","Montgomery","United States","Air Force","Guard",32.30444444,-86.40027778,"ANG",1101
+"Maxwell Air Force Base Gunter Annex","Montgomery","AL","Montgomery","United States","Air Force","Active",32.37916667,-86.3625,"AETC",1101
+"Abston Air National Guard Station","Montgomery","AL","Montgomery","United States","Air Force","Guard",32.35611111,-86.34666667,"ANG",1101
+"Maxwell Air Force Base","Montgomery","AL","Montgomery","United States","Air Force","Active",32.37916667,-86.3625,"AETC",1101
+"NG Fort McClellan ARNG Tng Center","Center","AL","Winston","United States","Army","Guard",34.264543,-87.587802,"Army",1133
+"NG Camp Joseph T Robinson","Robinson","AR","Benton","United States","Army","Guard",36.169246,-94.358822,"Army",5007
+"Pine Bluff Arsenal","Pine Bluff","AR","Jefferson","United States","Army","Active",34.21805,-92.004485,"Army",5069
+"Little Rock Air Force Base","Little Rock","AR","Pulaski","United States","Air Force","Active",34.91694444,-92.14638889,"AMC",5119
+"Fort Smith Map","Fort Smith","AR","Sebastian","United States","Air Force","Guard",35.366188,-94.416458,"ANG",5131
+"Fort Smith Regional Airport","Fort Smith","AR","Sebastian","United States","Air Force","Guard",35.33666667,-94.3675,"ANG",5131
+"NG Camp Navajo","Navajo","AZ","Apache","United States","Army","Guard",35.124191,-109.538166,"Army",4001
+"Fort Huachuca","Fort Huachuca","AZ","Cochise","United States","Army","Active",31.559131,-110.318682,"Army",4003
+"NAVOBSSTA Flagstaff AZ","Flagstaff","AZ","Coconino","United States","Navy","Active",35.287661,-111.639303,"Navy",4005
+"NG Buckeye TS","Buckeye","AZ","Maricopa","United States","Army","Guard",33.37032,-112.58378,"Army",4013
+"Goldwater Air National Guard Base","Phoenix, Arizona","AZ","Maricopa","United States","Air Force","Guard",33.42666667,-112.0119444,"ANG",4013
+"Luke Air Force Base","Glendale","AZ","Maricopa","United States","Air Force","Active",33.535,-112.3830556,"AETC",4013
+"NG Silver Bell Army Heliport","Silver Bell","AZ","Pima","United States","Army","Guard",32.383404,-111.500669,"Army",4019
+"Tucson International Airport","Tucson","AZ","Pima","United States","Air Force","Guard",32.11527778,-110.9305556,"ANG",4019
+"NG Florence Military Reservation","Florence","AZ","Pinal","United States","Army","Guard",32.982354,-111.424943,"Army",4021
+"NG Picacho Aviation TS","Picacho","AZ","Pinal","United States","Army","Guard",32.689594,-111.531036,"Army",4021
+"Davis-Monthan Air Force Base","Tucson","AZ","Santa Cruz","United States","Air Force","Active",32.16638889,-110.8830556,"ACC",4023
+"MCAS Yuma","Yuma","AZ","Yuma","United States","Marine Corps","Active",32.701461,-114.657232,"Marine Corps",4027
+"Yuma Proving Ground","Yuma","AZ","Yuma","United States","Army","Active",32.701461,-114.657232,"Army",4027
+"CSO Naval Air Station Alameda","Alameda","CA","Alameda","United States","Navy","Active",37.770563,-122.264779,"Navy",6001
+"Moffett Federal Airfield","Mountain View, California","CA","Alameda","United States","Air Force","Guard",37.415,-122.0483333,"ANG",6001
+"Det Concord (BRAC)","Concord","CA","Contra Costa","United States","Navy","Active",37.953672,-122.022872,"Navy",6013
+"Military Ocean Terminal Concord","Concord","CA","Contra Costa","United States","Army","Active",37.953672,-122.022872,"Army",6013
+"Fresno Yosemite International ANG","Fresno","CA","Fresno","United States","Air Force","Guard",36.774075,-119.781538,"ANG",6019
+"Holtville Carrier LS","Holtville","CA","Imperial","United States","Navy","Active",32.781362,-115.383857,"Navy",6025
+"NAF El Centro","El Centro","CA","Imperial","United States","Navy","Active",32.770275,-115.598602,"Navy",6025
+"Dryside","California City","CA","Kern","United States","Navy","Active",35.187133,-117.885359,"Navy",6029
+"Naval Air Station Lemoore","Lemoore","CA","Kings","United States","Navy","Active",36.268194,-119.817274,"Navy",6031
+"CSO NSY Long Beach Ca","Long Beach","CA","Los Angeles","United States","Navy","Active",33.804309,-118.200957,"Navy",6037
+"San Pedro Fuel Depot","San Pedro","CA","Los Angeles","United States","Navy","Active",33.753088,-118.253053,"Navy",6037
+"Los Angeles Space Force Base","El Segundo","CA","Los Angeles","United States","Air Force","Active",33.91888889,-118.3805556,"USSF",6037
+"Norwalk 2","Norwalk","CA","Los Angeles","United States","Air Force","Reserve",33.904087,-118.073183,"AFRC",6037
+"Long Beach Fuel Complex","Long Beach","CA","Los Angeles","United States","Navy","Active",33.810783,-118.18955,"Navy",6037
+"Norwalk Fuel Complex","Norwalk","CA","Los Angeles","United States","Navy","Active",33.904087,-118.073183,"Navy",6037
+"Site 3 NS Long Beach","Long Beach","CA","Los Angeles","United States","Navy","Active",33.804309,-118.200957,"Navy",6037
+"Air Force Plant 42","Palmdale","CA","Los Angeles","United States","Air Force","Active",37.289085,-120.317156,"AFMC",6037
+"Edwards Air Force Base","Edwards","CA","Los Angeles","United States","Air Force","Active",35.005099,-117.809769,"AFMC",6037
+"Bridgeport","Mariposa","CA","Mariposa","United States","Marine Corps","Active",37.437457,-119.999035,"Marine Corps",6043
+"Fort Hunter Liggett","Leggett","CA","Mendocino","United States","Army","Reserve",39.873214,-123.721407,"Army",6045
+"Choc Mt Air Gnry Rng","Monterey","CA","Monterey","United States","Marine Corps","Active",36.57485,-121.840727,"Marine Corps",6053
+"NAVSUPPACT Monterey CA","Monterey","CA","Monterey","United States","Navy","Active",36.57485,-121.840727,"Navy",6053
+"Presidio of Monterey","Monterey","CA","Monterey","United States","Army","Active",36.57485,-121.840727,"Army",6053
+"NG TS AFRC Los Alamitos","Los Alamitos","CA","Orange","United States","Army","Guard",33.795012,-118.062692,"Army",6059
+"March Joint Air Reserve Base","Riverside","CA","Orange","United States","Air Force","Reserve",33.88055556,-117.2594444,"AFRC",6059
+"NAVWPNSTA Seal Beach","Seal Beach","CA","Orange","United States","Navy","Active",33.74141,-118.10479,"Navy",6059
+"San Clemente IS NALF","Irvine","CA","Orange","United States","Navy","Active",33.729641,-117.772954,"Navy",6059
+"Navy Annex","Nuevo","CA","Riverside","United States","Navy","Active",33.801279,-117.139061,"Navy",6065
+"Norco","Norco","CA","Riverside","United States","Navy","Active",33.936248,-117.570053,"Navy",6065
+"Camp Morena","Moreno","CA","Riverside","United States","Navy","Active",33.917517,-117.157813,"Navy",6065
+"McClellan Air Force Base","McClellan Air Force Base","CA","Sacramento","United States","Air Force","Active",38.663017,-121.383935,"N/A",6067
+"NAWS China Lake","Locke","CA","Sacramento","United States","Navy","Active",38.25047,-121.509397,"Navy",6067
+"North Highlands Air National Guard Station","Sacramento, California","CA","Sacramento","United States","Air Force","Guard",38.64,-121.4025,"ANG",6067
+"Twentynine Palms","Twentynine Palms","CA","San Bernardino","United States","Marine Corps","Active",34.135797,-116.052428,"Marine Corps",6071
+"NTC and Fort Irwin","Fort Irwin","CA","San Bernardino","United States","Army","Active",35.262453,-116.696561,"Army",6071
+"Yermo Area","Yermo","CA","San Bernardino","United States","Marine Corps","Active",34.901697,-116.844762,"Marine Corps",6071
+"MCLB Barstow","Barstow","CA","San Bernardino","United States","Marine Corps","Active",34.980295,-116.964449,"Marine Corps",6071
+"Los Angeles Space Force Annex No4","Sugarloaf","CA","San Bernardino","United States","Air Force","Active",34.241389,-116.832701,"USSF",6071
+"Randsburg Wash Area","Randsburg","CA","San Bernardino","United States","Navy","Active",35.559842,-117.063871,"Navy",6071
+"Warner Springs Rts","Warner Springs","CA","San Diego","United States","Navy","Active",33.28226,-116.63363,"Navy",6073
+"MCRD San Diego","San Diego","CA","San Diego","United States","Marine Corps","Active",32.724103,-117.170912,"Marine Corps",6073
+"Amphib Base Coronado West","Coronado","CA","San Diego","United States","Navy","Active",32.699235,-117.209642,"Navy",6073
+"Fallbrook California","Fallbrook","CA","San Diego","United States","Navy","Active",33.376864,-117.259523,"Navy",6073
+"MCB Camp Pendleton","Camp Pendleton","CA","San Diego","United States","Marine Corps","Active",33.387723,-117.444758,"Marine Corps",6073
+"National City","National City","CA","San Diego","United States","Navy","Active",32.661115,-117.101359,"Navy",6073
+"Imperial Beach NOLF","Imperial Beach","CA","San Diego","United States","Navy","Active",32.576415,-117.116514,"Navy",6073
+"NAVBASE San Diego CA","San Diego","CA","San Diego","United States","Navy","Active",32.724103,-117.170912,"Navy",6073
+"NAVBASE Coronado","Coronado","CA","San Diego","United States","Navy","Active",32.699235,-117.209642,"Navy",6073
+"Amphib Base Coronado East","Coronado","CA","San Diego","United States","Navy","Active",32.699235,-117.209642,"Navy",6073
+"NG ITC Camp San Luis Obisbo","San Luis Obispo","CA","San Luis Obispo","United States","Army","Guard",35.265573,-120.62122,"Army",6079
+"MCAS Miramar","Miramar","CA","San Mateo","United States","Marine Corps","Active",37.492996,-122.456643,"Marine Corps",6081
+"Vandenberg Space Force Base","Lompoc","CA","Santa Barbara","United States","Air Force","Active",34.7325,-120.5680556,"USSF",6083
+"Santa Cruz Island","Santa Cruz","CA","Santa Cruz","United States","Navy","Active",36.958936,-122.031549,"Navy",6087
+"Tulelake Radar Site","Tulelake","CA","Siskiyou","United States","Air Force","Active",41.93519,-121.58865,"N/A",6093
+"Travis Air Force Base","Fairfield","CA","Solano","United States","Air Force","Active",38.26277778,-121.9275,"AMC",6095
+"Riverbank AAP","Riverbank","CA","Stanislaus","United States","Army","Active",37.729282,-120.942905,"Army",6099
+"NAVBASE Point Loma","Lomo","CA","Sutter","United States","Navy","Active",39.220724,-121.641635,"Navy",6101
+"San Nicolas Island","Island Mountain","CA","Trinity","United States","Navy","Active",40.026261,-123.490301,"Navy",6105
+"Sewage Evaporation Pond","Peanut","CA","Trinity","United States","Navy","Active",40.467923,-123.168637,"Navy",6105
+"CSO NSY Mare Island","Island Mountain","CA","Trinity","United States","Navy","Active",40.026261,-123.490301,"Navy",6105
+"Ozol Defense Fuel Support Point","Peanut","CA","Trinity","United States","Air Force","Active",40.467923,-123.168637,"N/A",6105
+"Channel Islands Air National Guard Station","Oxnard, California","CA","Ventura","United States","Air Force","Guard",34.115,-119.1102778,"ANG",6111
+"Port Hueneme","Port Hueneme","CA","Ventura","United States","Navy","Active",34.147368,-119.199754,"Navy",6111
+"Silver Strand South","Silver Strand","CA","Ventura","United States","Navy","Active",34.152783,-119.218442,"Navy",6111
+"NAVBASE Ventura Cty Point Mugu CA","Point Mugu Nawc","CA","Ventura","United States","Navy","Active",33.247969,-119.506102,"Navy",6111
+"Beale Air Force Base","Marysville","CA","Yuba","United States","Air Force","Active",39.128035,-121.544781,"ACC",6115
+"Buckley Space Force Base","Aurora","CO","Denver","United States","Air Force","Active",39.70166667,-104.7516667,"USSF",8031
+"Peterson Space Force Base","Colorado Springs","CO","El Paso","United States","Air Force","Active",38.82361111,-104.695,"USSF",8041
+"Schriever Space Force Base","Colorado Springs","CO","El Paso","United States","Air Force","Active",38.80333333,-104.5255556,"USSF",8041
+"USAF Academy","USAF Academy","CO","El Paso","United States","Air Force","Active",38.994252,-104.86375,"USAFA",8041
+"Fort Carson","Fort Carson","CO","El Paso","United States","Army","Active",38.737494,-104.788862,"Army",8041
+"Pueblo Chemical Depot","Pueblo","CO","Pueblo","United States","Army","Active",38.293234,-104.536493,"Army",8101
+"Pinon Canyon","Pinon","CO","Pueblo","United States","Army","Active",38.433334,-104.607473,"Army",8101
+"Dover Air Force Base","Dover","DE","Kent","United States","Air Force","Active",39.126325,-75.491486,"AMC",10001
+"New Castle Airport","New Castle, Delaware","DE","New Castle","United States","Air Force","Guard",39.68527778,-75.59916667,"ANG",10003
+"MCSF Blount Island (FL)","Island Grove","FL","Alachua","United States","Marine Corps","Active",29.681312,-82.353862,"Marine Corps",12001
+"Eglin Air Force Base Site 2 Santa Rosa Island","Island Grove","FL","Alachua","United States","Air Force","Active",29.681312,-82.353862,"N/A",12001
+"NOLF Santa Rosa","Sanderson","FL","Baker","United States","Navy","Active",30.25218,-82.27289,"Navy",12003
+"Tyndall Air Force Base","Panama City","FL","Bay","United States","Air Force","Active",30.07861111,-85.57638889,"AETC",12005
+"Naval Support Activity Panama City","Panama City","FL","Bay","United States","Navy","Active",30.159737,-85.660922,"Navy",12005
+"Patrick Space Force Base","Patrick Space Force Base","FL","Brevard","United States","Air Force","Active",28.235,-80.61,"USSF",12009
+"NOTU Cape Canaveral","Cape Canaveral","FL","Brevard","United States","Navy","Active",28.394642,-80.614323,"Navy",12009
+"Cape Canaveral Air Force Station","Cocoa Beach","FL","Brevard","United States","Air Force","Active",28.48888889,-80.57777778,"USSF",12009
+"Dania Beach (Lauderdale)","Dania","FL","Broward","United States","Navy","Active",26.052876,-80.132929,"Navy",12011
+"Naval Air Station Jacksonville","Jacksonville","FL","Duval","United States","Navy","Active",30.337538,-81.768622,"Navy",12031
+"OLF Whitehouse","Whitehouse","FL","Duval","United States","Navy","Active",30.31635,-81.846215,"Navy",12031
+"NAVSTA Mayport FL","Mayport","FL","Duval","United States","Navy","Active",30.389189,-81.404408,"Navy",12031
+"Jacksonville FL Maint","Jacksonville","FL","Duval","United States","Marine Corps","Reserve",30.337538,-81.768622,"Marine Corps",12031
+"Naval Air Station Pensacola","Pensacola","FL","Escambia","United States","Navy","Active",30.404006,-87.241287,"Navy",12033
+"Saufley Field","Felda","FL","Hendry","United States","Navy","Active",26.5398,-81.43563,"Navy",12051
+"Eglin Air Force Auxiliary Field 6","Felda","FL","Hendry","United States","Air Force","Active",26.5398,-81.43563,"N/A",12051
+"MacDill Air Force Base","Tampa","FL","Hillsborough","United States","Air Force","Active",27.84944444,-82.52111111,"AMC",12057
+"NG HMO3 (Snake Creek TS)","Sink Creek","FL","Jackson","United States","Army","Guard",30.848192,-85.231403,"Army",12063
+"OLF Bronson","Bronson","FL","Levy","United States","Navy","Active",29.44774,-82.64233,"Navy",12075
+"Homestead Air Reserve Base","Homestead","FL","Miami-Dade","United States","Air Force","Reserve",25.48833333,-80.38361111,"AFRC",12086
+"Naval Air Station Key West","Key West","FL","Monroe","United States","Navy","Active",24.557053,-81.780989,"Navy",12087
+"Jacksonville International Airport","Jacksonville","FL","Nassau","United States","Air Force","Guard",30.49416667,-81.68777778,"ANG",12089
+"Destin Moreno Point","Destin","FL","Okaloosa","United States","Army","Active",30.661155,-86.594479,"Army",12091
+"Eglin Air Force Base","Valparaiso","FL","Okaloosa","United States","Air Force","Active",30.48333333,-86.53333333,"AFMC",12091
+"Duke Field","Crestview","FL","Okaloosa","United States","Air Force","Reserve",30.65027778,-86.52277778,"AFRC",12091
+"Hurlburt Field","Mary Esther","FL","Okaloosa","United States","Air Force","Active",30.42777778,-86.68944444,"AFSOC",12091
+"Naval Support Activity Orlando","Orlando","FL","Orange","United States","Navy","Active",28.545179,-81.373291,"Navy",12095
+"Naval Air Station Whiting Field Milton","Milton","FL","Santa Rosa","United States","Navy","Active",30.792885,-86.985834,"Navy",12113
+"NOLF Holley","Holley","FL","Santa Rosa","United States","Navy","Active",30.347061,-87.113185,"Navy",12113
+"NOLF Choctaw","Choctaw","FL","Walton","United States","Navy","Active",30.367422,-86.106051,"Navy",12131
+"NG Macon Readiness Center","Center","GA","Bartow","United States","Army","Guard",34.167895,-84.851983,"Army",13015
+"NG General Lucius D Clay National Guard Center","Center","GA","Bartow","United States","Army","Guard",34.167895,-84.851983,"Army",13015
+"Subase Kings Bay GA","Kings Bay","GA","Camden","United States","Navy","Active",30.790547,-81.559737,"Navy",13039
+"Savannah/Hilton Head International Airport","Savannah","GA","Chatham","United States","Air Force","Guard",32.1275,-81.20194444,"ANG",13051
+"Dobbins Air Reserve Base","Marietta","GA","Cobb","United States","Air Force","Reserve",33.91527778,-84.51638889,"AFRC",13067
+"MCLB Albany","Albany","GA","Dougherty","United States","Marine Corps","Active",31.560674,-84.176751,"Marine Corps",13095
+"Camp Frank D Merrill","Marlow","GA","Effingham","United States","Army","Active",32.269087,-81.390667,"Army",13103
+"NG Cumming","Cumming","GA","Forsyth","United States","Army","Guard",34.293049,-84.176166,"Army",13117
+"NG Atlanta - Confederate Ave","Atlanta","GA","Fulton","United States","Army","Guard",33.844371,-84.47405,"Army",13121
+"Moody Air Force Base","Valdosta","GA","Lanier","United States","Air Force","Active",30.96777778,-83.19277778,"ACC",13173
+"Fort Stewart","Fort Stewart","GA","Liberty","United States","Army","Active",31.870154,-81.631076,"Army",13179
+"NG Oglethorpe Armory","Oglethorpe","GA","Macon","United States","Army","Guard",32.327479,-84.101472,"Army",13193
+"Fort Benning GA","Fort Benning","GA","Muscogee","United States","Army","Active",32.392337,-84.931457,"Army",13215
+"Robins Air Force Base","Warner Robins","GA","Twiggs","United States","Air Force","Active",32.64,-83.59166667,"AFMC",13289
+"Fort Gordon","Gordon","GA","Wilkinson","United States","Army","Active",32.881267,-83.302945,"Army",13319
+"Schofield Barracks Military Reservation","Schofield Barracks","HI","Honolulu","United States","Army","Active",21.48676,-158.051525,"Army",15003
+"Honolulu","Honolulu","HI","Honolulu","United States","Navy","Active",24.859832,-168.021815,"Navy",15003
+"Joint Base Pearl Harbor-Hickam","Honolulu","HI","Honolulu","United States","Air Force","Active",21.3487,-157.944,"PACAF",15003
+"Pearl City","Pearl City","HI","Honolulu","United States","Navy","Active",21.40094,-157.96653,"Navy",15003
+"Waianae Kai Military Reservation","Waianae","HI","Honolulu","United States","Army","Active",21.459675,-158.169077,"Army",15003
+"Waipahu","Waipahu","HI","Honolulu","United States","Navy","Active",21.395273,-157.996553,"Navy",15003
+"MCB Hawaii (Kaneohe Bay)","Kaneohe","HI","Honolulu","United States","Marine Corps","Active",21.40877,-157.7899,"Marine Corps",15003
+"Fort Shafter","Fort Shafter","HI","Honolulu","United States","Army","Active",24.859832,-168.021815,"Army",15003
+"USA Field Station Kunia","Kunia","HI","Honolulu","United States","Army","Active",21.463,-158.06385,"Army",15003
+"Pearl City Annex","Pearl City","HI","Honolulu","United States","Marine Corps","Active",21.40094,-157.96653,"Marine Corps",15003
+"Wahiawa","Wahiawa","HI","Honolulu","United States","Navy","Active",21.5324,-158.047735,"Navy",15003
+"Makaha Ridge","Waianae","HI","Honolulu","United States","Navy","Active",21.464925,-158.20213,"Navy",15003
+"Wheeler Army Airfield","Wheeler Army Airfield","HI","Honolulu","United States","Army","Active",21.475456,-158.03516,"Army",15003
+"Kahuku Tng Area","Kahuku","HI","Honolulu","United States","Army","Active",21.68152,-157.94072,"Army",15003
+"Pupukea Paalaa Uka Mil Road","Haleiwa","HI","Honolulu","United States","Army","Active",21.645737,-158.045746,"Army",15003
+"Aiea","Aiea","HI","Honolulu","United States","Navy","Active",21.39065,-157.927829,"Navy",15003
+"JBPHH Pearl HAir Reserve Baseor HI","Pearl Harbor","HI","Honolulu","United States","Navy","Active",21.349028,-157.93508,"Navy",15003
+"Des Moines International Airport","Des Moines","IA","Polk","United States","Air Force","Guard",41.596212,-93.591022,"ANG",19153
+"NG Camp Dodge Johnston TS","Johnston","IA","Polk","United States","Army","Guard",41.714435,-93.732559,"Army",19153
+"Boise Air Terminal","Boise","ID","Ada","United States","Air Force","Guard",43.594457,-116.199831,"ANG",16001
+"NG Orchard Mates Boise","Boise","ID","Ada","United States","Army","Guard",43.603768,-116.272921,"Army",16001
+"Bayview Idaho","Bayview","ID","Bonner","United States","Navy","Active",48.008329,-116.622426,"Navy",16017
+"Mountain Home Air Force Base","Mountain Home A F B","ID","Elmore","United States","Air Force","Active",43.04361111,-115.8725,"ACC",16039
+"Savanna Depot Act","Savanna","IL","Carroll","United States","Army","Active",42.09447,-90.15679,"Army",17015
+"Glenview","Glenview","IL","Cook","United States","Navy","Active",42.072974,-87.804334,"Navy",17031
+"GL Camp JPJ","Kemp","IL","Douglas","United States","Navy","Active",39.695589,-88.185321,"Navy",17041
+"Chanute Air Force Base","Ferris","IL","Hancock","United States","Air Force","Active",40.46893,-91.17042,"N/A",17067
+"Naval Station Great Lakes IL","Great Lakes","IL","Lake","United States","Navy","Active",42.309272,-87.85427,"Navy",17097
+"Fort Sheridan","Fort Sheridan","IL","Lake","United States","Navy","Active",42.255073,-87.818268,"Navy",17097
+"NG Springfield (TS Cp Lincoln)","Lincoln","IL","Logan","United States","Army","Guard",40.162779,-89.398361,"Army",17107
+"General Wayne A Downing Peoria International Airport","Peoria","IL","Peoria","United States","Air Force","Guard",40.693137,-89.589847,"ANG",17143
+"NG Sparta Armory","Sparta","IL","Randolph","United States","Army","Guard",38.108083,-89.726486,"Army",17157
+"Rock Island Arsenal","Rock Island Arsenal","IL","Rock Island","United States","Army","Active",41.517253,-90.539929,"Army",17161
+"Abraham Lincoln Capital Airport","Springfield","IL","Sangamon","United States","Air Force","Guard",39.84416667,-89.67805556,"ANG",17167
+"Scott Air Force Base","Belleville","IL","St. Clair","United States","Air Force","Active",38.54527778,-89.83527778,"AMC",17163
+"Joliet USARC/JTA","Joliet","IL","Will","United States","Army","Reserve",41.530628,-88.084496,"Army",17197
+"Joliet AAP Elwood","Romeoville","IL","Will","United States","Army","Active",41.684631,-88.050503,"Army",17197
+"Fort Wayne International Airport","Fort Wayne","IN","Allen","United States","Air Force","Guard",40.97833333,-85.195,"ANG",18003
+"Indiana Army Ammunition Plant","Poland","IN","Clay","United States","Army","Active",39.444565,-86.960667,"Army",18021
+"Jefferson Proving Ground","Frankfort","IN","Clinton","United States","Army","Active",40.284569,-86.517004,"Army",18023
+"NG Knightstown","Knightstown","IN","Henry","United States","Army","Guard",39.7956,-85.52636,"Army",18065
+"NG Muscatatuck Urban Training Center","Center","IN","Howard","United States","Army","Guard",40.531266,-86.169537,"Army",18067
+"NG Indianapolis 38 ID","Indianapolis","IN","Marion","United States","Army","Guard",39.775092,-86.13216,"Army",18097
+"Naval Support Activity Crane","Crane","IN","Martin","United States","Navy","Active",38.894879,-86.900174,"Navy",18101
+"Grissom Joint Air Reserve Base","Kokomo","IN","Miami","United States","Air Force","Reserve",40.64805556,-86.15222222,"AFRC",18103
+"NG Shelbyville","Shelbyville","IN","Shelby","United States","Army","Guard",39.511568,-85.791993,"Army",18145
+"Terre Haute International Airport","Terre Haute, Indiana","IN","Vigo","United States","Air Force","Guard",39.45138889,-87.3075,"ANG",18167
+"Hulman Field","Heilman","IN","Warrick","United States","Air Force","Guard",38.157551,-87.090278,"ANG",18173
+"Fort Riley","Fort Riley","KS","Geary","United States","Army","Active",39.113738,-96.837821,"Army",20061
+"Fort Leavenworth","Fort Leavenworth","KS","Leavenworth","United States","Army","Active",39.346798,-94.931329,"Army",20103
+"McConnell Air Force Base","Wichita","KS","Sedgwick","United States","Air Force","Active",37.62305556,-97.26722222,"AMC",20173
+"Forbes Field ANG","Topeka","KS","Shawnee","United States","Air Force","Guard",38.95111111,-95.66583333,"ANG",20177
+"Fort Campbell KY","Fort Campbell","KY","Christian","United States","Army","Active",36.657253,-87.458858,"Army",21047
+"NG WH Ford Regional Tng Ctr","Ford","KY","Clark","United States","Army","Guard",37.968496,-84.157766,"Army",21049
+"Fort Knox","Fort Knox","KY","Hardin","United States","Army","Active",37.899466,-85.952833,"Army",21093
+"Louisville International Airport","Louisville","KY","Jefferson","United States","Air Force","Guard",38.17805556,-85.72472222,"ANG",21111
+"NG Frankfort Boone NG Center","Center","KY","Metcalfe","United States","Army","Guard",37.11767,-85.703791,"Army",21169
+"Naval Air Station Joint Reserve Base New Orleans","Belle Chasse, Louisiana","LA","Orleans","United States","Air Force","Guard",29.82527778,-90.035,"ANG",22071
+"Otis Air National Guard Base","Mashpee","MA","Barnstable","United States","Air Force","Guard",41.65861111,-70.52138889,"ANG",25001
+"Cape Cod Air Force Station","Bourne","MA","Barnstable","United States","Air Force","Active",41.75333333,-70.53861111,"USSF",25001
+"NG MTA Camp Edwards","Camp Edwards","MA","Barnstable","United States","Army","Guard",41.657052,-70.543918,"Army",25001
+"Barnes Municipal Airport","Westfield","MA","Hampden","United States","Air Force","Guard",42.16555556,-72.72055556,"ANG",25013
+"Westover Air Reserve Base","Chicopee","MA","Hampden","United States","Air Force","Reserve",42.19388889,-72.53472222,"AFRC",25013
+"NG Ayer","Ayer","MA","Middlesex","United States","Army","Guard",42.566573,-71.575135,"Army",25017
+"NWIRP Bedford MA","Bedford","MA","Middlesex","United States","Navy","Active",42.49065,-71.27617,"Navy",25017
+"US Army Soldier Systems Center Natick","Natick","MA","Middlesex","United States","Army","Active",42.28343,-71.3495,"Army",25017
+"Hanscom Air Force Base","Lincoln","MA","Middlesex","United States","Air Force","Active",42.47,-71.28916667,"AFMC",25017
+"CSO Naval Air Station South Weymouth","Weymouth","MA","Norfolk","United States","Navy","Active",42.20794,-70.95514,"Navy",25021
+"Devens Reserve Forces Tng Area","Devens","MA","Worcester","United States","Army","Reserve",42.54364,-71.61479,"Army",25027
+"Gambrills","Gambrills","MD","Anne Arundel","United States","Navy","Active",39.069831,-76.679254,"Navy",24003
+"Upper Yard Annapolis","Annapolis","MD","Anne Arundel","United States","Navy","Active",38.98775,-76.5528,"Navy",24003
+"NAVACAD North Severn","Severn","MD","Anne Arundel","United States","Navy","Active",39.1328,-76.69253,"Navy",24003
+"NAVSUPPACT Annapolis","Annapolis","MD","Anne Arundel","United States","Navy","Active",38.98775,-76.5528,"Navy",24003
+"Fort George Meade","Fort George G Meade","MD","Anne Arundel","United States","Army","Active",39.114553,-76.765249,"Army",24003
+"Martin State Airport","Middle River","MD","Baltimore","United States","Air Force","Guard",39.32555556,-76.41361111,"ANG",24005
+"Solomons Island MD","Solomons","MD","Calvert","United States","Navy","Active",38.332035,-76.46564,"Navy",24009
+"NSF Indian Head","Indian Head","MD","Charles","United States","Navy","Active",38.60512,-77.17554,"Navy",24017
+"Aberdeen Proving Ground","Aberdeen Proving Ground","MD","Harford","United States","Army","Active",39.487368,-76.139675,"Army",24025
+"Fort Detrick Forest Glen Annex","Forest Greens","MD","Harford","United States","Army","Active",39.457054,-76.228844,"Army",24025
+"NG Havre De Grace Military Res","Havre De Grace","MD","Harford","United States","Army","Guard",39.560095,-76.15517,"Army",24025
+"NG MTA Gunpowder Military Reservation","Gunpowder","MD","Harford","United States","Army","Guard",39.380158,-76.295468,"Army",24025
+"NAVSUPPACT Bethesda MD","Bethesda","MD","Montgomery","United States","Navy","Active",39.143979,-77.207617,"Navy",24031
+"Joint Base Andrews-Naval Air Facility","Camp Springs","MD","Prince George's","United States","Air Force","Active",38.81083333,-76.86694444,"AFDW",24033
+"NMIC Suitland","Suitland","MD","Prince George's","United States","Navy","Active",38.834912,-76.912745,"Navy",24033
+"Naval Air Station Patuxent River","Patuxent River","MD","St. Mary's","United States","Navy","Active",38.285279,-76.415708,"Navy",24037
+"NG Auburn Training Site","Auburn","ME","Androscoggin","United States","Army","Guard",44.087422,-70.243848,"Army",23001
+"Naval Air Station Brunswick","Brunswick","ME","Cumberland","United States","Navy","Active",43.91172,-69.9405,"Navy",23005
+"Bangor International Airport","Bangor","ME","Penobscot","United States","Air Force","Guard",44.848256,-68.835091,"ANG",23019
+"NG Bangor Training Site","Bangor","ME","Penobscot","United States","Army","Guard",44.848517,-68.850405,"Army",23019
+"NCTS Cutler VLF Area","Cutler","ME","Washington","United States","Navy","Active",44.65758,-67.20387,"Navy",23029
+"W. K. Kellogg Airport","Battle Creek","MI","Calhoun","United States","Air Force","Guard",42.30722222,-85.25138889,"ANG",26025
+"NG Grayling Airfield","Grayling","MI","Crawford","United States","Army","Guard",44.691777,-84.612941,"Army",26039
+"NG MTC-H Camp Grayling","Grayling","MI","Crawford","United States","Army","Guard",44.691777,-84.612941,"Army",26039
+"NG Lansing Joint Forces Readiness Center","Senter","MI","Houghton","United States","Army","Guard",47.100599,-88.483267,"Army",26061
+"NG CTC Fort Custer Trng Center","Senter","MI","Houghton","United States","Army","Guard",47.100599,-88.483267,"Army",26061
+"Selfridge Air National Guard Base","Mount Clemens","MI","Macomb","United States","Air Force","Guard",42.60833333,-82.83555556,"ANG",26099
+"Detroit Arsenal","Detroit","MI","Wayne","United States","Army","Active",42.401388,-82.92451,"Army",26163
+"Duluth International Airport","Duluth","MN","Carlton","United States","Air Force","Guard",47.005566,-92.001934,"ANG",27017
+"NG Rosemount NG Armory","Rosemount","MN","Dakota","United States","Army","Guard",44.73941,-93.12577,"Army",27037
+"NG Rochester NGA and OMS 2","Rochester","MN","Olmsted","United States","Army","Guard",44.075285,-92.516916,"Army",27109
+"Minneapolis-Saint Paul International Airport","Minneapolis – Saint Paul, Minnesota","MN","Ramsey","United States","Air Force","Reserve",44.88166667,-93.23361111,"AFRC",27123
+"NG Arden Hills Army Training Site","Hills","MN","Rock","United States","Army","Guard",43.525185,-96.358365,"Army",27133
+"NG Duluth NG Armory","Duluth","MN","St. Louis","United States","Army","Guard",47.005566,-92.001934,"Army",27137
+"NG St Cloud AASF","Saint Cloud","MN","Stearns","United States","Army","Guard",45.519196,-94.330619,"Army",27145
+"NG St Cloud NG Armory","Saint Cloud","MN","Stearns","United States","Army","Guard",45.519196,-94.330619,"Army",27145
+"Rosecrans Memorial Airport","St. Joseph","MO","Buchanan","United States","Air Force","Guard",39.77194444,-94.90944444,"ANG",29021
+"NG TS Ike Skelton Jefferson City","Jefferson City","MO","Cole","United States","Army","Guard",38.494029,-92.165194,"Army",29051
+"NG Springfield AVCRAD (New)","Springfield","MO","Greene","United States","Army","Guard",37.25807,-93.343673,"Army",29077
+"Lake City AAP","Buckner","MO","Jackson","United States","Army","Active",39.132857,-94.193532,"Army",29095
+"NGA Arnold Site","Arnold","MO","Jefferson","United States","Air Force","Active",38.43283,-90.37762,"N/A",29099
+"Whiteman Air Force Base","Knob Noster","MO","Johnson","United States","Air Force","Active",38.73027778,-93.54805556,"AFGSC",29101
+"NG Macon TS","Macon","MO","Macon","United States","Army","Guard",39.773979,-92.451742,"Army",29121
+"NG MTA Camp Crowder Neosho","Neosho","MO","Newton","United States","Army","Guard",36.904539,-94.372328,"Army",29145
+"Fort Leonard Wood","Fort Leonard Wood","MO","Pulaski","United States","Army","Active",37.767687,-92.111975,"Army",29169
+"Lake Of The Ozarks Recreation","Laquey","MO","Pulaski","United States","Army","Active",37.77032,-92.3035,"Army",29169
+"NG TS Clark Natl Forest Wapp","Clark","MO","Randolph","United States","Army","Guard",39.295025,-92.374105,"Army",29175
+"NG MTA Camp Clark Nevada","Nevada","MO","Vernon","United States","Army","Guard",37.83921,-94.35467,"Army",29217
+"Jackson International Airport Thompson Field","Smithdale","MS","Amite","United States","Air Force","Guard",31.331709,-90.7848,"ANG",28005
+"NG MTA Camp Shelby","Shelby","MS","Bolivar","United States","Army","Guard",33.957757,-90.74504,"Army",28011
+"CBC Gulfport MS","Gulfport","MS","Harrison","United States","Navy","Active",30.382966,-89.102426,"Navy",28047
+"NG Gulfport AVCRAD","Gulfport","MS","Harrison","United States","Army","Guard",30.382966,-89.102426,"Army",28047
+"Woolmarket (De Soto)","Biloxi","MS","Harrison","United States","Navy","Active",30.471039,-88.971253,"Navy",28047
+"Gulfport Combat Readiness Training Center","Gulfport, Mississippi","MS","Harrison","United States","Air Force","Guard",30.40722222,-89.07,"ANG",28047
+"Keesler Air Force Base","Biloxi","MS","Harrison","United States","Air Force","Active",30.41138889,-88.92361111,"AETC",28047
+"Naval Air Station Meridian","Meridian","MS","Lauderdale","United States","Navy","Active",32.381605,-88.663489,"Navy",28075
+"Meridian Regional Airport","Meridian","MS","Lauderdale","United States","Air Force","Guard",32.3325,-88.75194444,"ANG",28075
+"Columbus Auxiliary Airfield","Columbus","MS","Lowndes","United States","Air Force","Active",33.63194,-88.458269,"N/A",28087
+"Columbus Air Force Base","Columbus","MS","Lowndes","United States","Air Force","Active",33.63194,-88.458269,"AETC",28087
+"Jackson-Evers International Airport","Jackson","MS","Rankin","United States","Air Force","Guard",32.31111111,-90.07583333,"ANG",28121
+"Malmstrom Air Force Base","Great Falls","MT","Cascade","United States","Air Force","Active",47.50472222,-111.1872222,"AFGSC",30013
+"Great Falls International Airport","Great Falls","MT","Cascade","United States","Air Force","Guard",47.48194444,-111.3705556,"ANG",30013
+"NG Helena Aviation RC- AASF- C12","Helena","MT","Lewis and Clark","United States","Army","Guard",46.527398,-112.21037,"Army",30049
+"NG MTA Ft Wm Henry Harrison","Harrison","MT","Madison","United States","Army","Guard",45.70355,-111.78548,"Army",30057
+"NG MTA Limestone Hills","Limestone","MT","Stillwater","United States","Army","Guard",45.477717,-109.902402,"Army",30095
+"OLF Atlantic","Atlantic","NC","Carteret","United States","Marine Corps","Active",34.88489,-76.34047,"Marine Corps",37031
+"MCAS Cherry Point","Cherry Point","NC","Craven","United States","Marine Corps","Active",34.903793,-76.899976,"Marine Corps",37049
+"Pope Field","Fayetteville","NC","Cumberland","United States","Air Force","Active",35.17083333,-79.01444444,"AMC",37051
+"Fort Bragg","Fort Bragg","NC","Cumberland","United States","Army","Active",35.140193,-78.987942,"Army",37051
+"Oak Grove","Durham","NC","Durham","United States","Marine Corps","Active",35.982967,-78.806001,"Marine Corps",37063
+"NG MTA Camp Butner","Butner","NC","Granville","United States","Army","Guard",36.13209,-78.75667,"Army",37077
+"Charlotte Douglas International Airport","Charlotte","NC","Mecklenburg","United States","Air Force","Guard",35.21611111,-80.93194444,"ANG",37119
+"Dare County Range","Troy","NC","Montgomery","United States","Air Force","Active",35.393595,-79.907346,"N/A",37123
+"MCB Camp Lejeune (East Site)","East Side Park","NC","Richmond","United States","Marine Corps","Active",34.95682,-79.750056,"Marine Corps",37153
+"NG Raleigh","Raleigh","NC","Wake","United States","Army","Guard",35.773632,-78.634457,"Army",37183
+"Seymour Johnson Air Force Base","Goldsboro","NC","Wayne","United States","Air Force","Active",35.33944444,-77.96055556,"ACC",37191
+"NG Bismarck RJB Complex","Bismarck","ND","Burleigh","United States","Army","Guard",46.816035,-100.700296,"Army",38015
+"Grand Forks Air Force Base","Grand Forks","ND","Grand Forks","United States","Air Force","Active",47.96111111,-97.40111111,"AMC",38035
+"Grand Forks Defense Fuel Support Point","Grand Forks","ND","Grand Forks","United States","Air Force","Active",47.96111111,-97.40111111,"AMC",38035
+"Cavalier Air Force Station","Mountain","ND","Pembina","United States","Air Force","Active",48.79388,-97.62231,"USSF",38067
+"NG Camp Grafton","Grafton","ND","Walsh","United States","Army","Guard",48.368876,-97.437265,"Army",38099
+"Minot Air Force Base","Minot","ND","Ward","United States","Air Force","Active",48.41583333,-101.3580556,"AFGSC",38101
+"NG Grand Island AASF/RC","Grand Island","NE","Hall","United States","Army","Guard",40.87227,-98.368698,"Army",31079
+"NG Lincoln AASF/Readiness Center","Center","NE","Knox","United States","Army","Guard",42.597304,-97.866951,"Army",31107
+"Lincoln Airport","Lincoln","NE","Lancaster","United States","Air Force","Guard",40.85111111,-96.75916667,"ANG",31109
+"Offut Air Force Base","Bellevue","NE","Sarpy","United States","Air Force","Active",41.11944444,-95.90861111,"ACC",31153
+"NG Camp Ashland","Ashland","NE","Saunders","United States","Army","Guard",41.0375,-96.36085,"Army",31155
+"NG Mead TS/FMS 06/Utes 02","Mead","NE","Saunders","United States","Army","Guard",41.22778,-96.4878,"Army",31155
+"New Boston Air Station","Manchester","NH","Hillsborough","United States","Air Force","Active",42.94222222,-71.63583333,"USSF",33011
+"Pease Air National Guard Base","Portsmouth, New Hampshire","NH","Rockingham","United States","Air Force","Guard",43.07805556,-70.82333333,"ANG",33015
+"Atlantic City Air National Guard Base","Atlantic City","NJ","Atlantic","United States","Air Force","Guard",39.612669,-74.825986,"ANG",34001
+"Joint Base McGuire-Dix-Lakehurst STG","Trenton","NJ","Burlington","United States","Navy","Active",40.01916667,-74.52277778,"Navy",34005
+"Joint Base McGuire-Dix-Lakehurst Air Base Station","Trenton","NJ","Burlington","United States","Air Force","Active",40.01916667,-74.52277778,"AMC",34005
+"Joint Base McGuire-Dix-Lakehurst Army Installation","Trenton","NJ","Burlington","United States","Army","Active",40.01916667,-74.52277778,"Army",34005
+"Naval Weapons Station Earle","Erial","NJ","Camden","United States","Navy","Active",39.773448,-75.006278,"Navy",34007
+"Waterfront","Waterford Works","NJ","Camden","United States","Navy","Active",39.723037,-74.836939,"Navy",34007
+"NG Lawrenceville","Lawrenceville","NJ","Mercer","United States","Army","Guard",40.29733,-74.729605,"Army",34021
+"NG Sea Girt NJ NGTC","Sea Girt","NJ","Monmouth","United States","Army","Guard",40.13206,-74.03458,"Army",34025
+"Fort Monmouth Main Post","Fort Monmouth","NJ","Monmouth","United States","Army","Active",40.314531,-74.041654,"Army",34025
+"Picatinny Arsenal","Picatinny Arsenal","NJ","Morris","United States","Army","Active",40.867331,-74.578269,"Army",34027
+"Lakehurst","Lakehurst","NJ","Ocean","United States","Air Force","Active",40.010938,-74.303205,"N/A",34029
+"Kirtland Air Force Base","Albuquerque","NM","Bernalillo","United States","Air Force","Active",35.04027778,-106.6091667,"AFMC",35001
+"Cannon Air Force Base Site 2","Clovis","NM","Curry","United States","Air Force","Active",34.38472,-103.31652,"AFSOC",35009
+"Melrose Air Force Range","Melrose","NM","Curry","United States","Air Force","Active",34.50512,-103.564506,"N/A",35009
+"Cannon Air Force Base","Clovis","NM","Curry","United States","Air Force","Active",34.38472,-103.31652,"AFSOC",35009
+"NG Rio Rancho TS","Roy","NM","Harding","United States","Army","Guard",35.93873,-104.195805,"Army",35021
+"Holloman Air Force Base","Alamogordo","NM","Otero","United States","Air Force","Active",32.8525,-106.1063889,"ACC",35035
+"Bonito Lake System Annex","Bent","NM","Otero","United States","Air Force","Active",33.1587,-105.85693,"N/A",35035
+"Naval Air Station Fallon","Fallon","NV","Churchill","United States","Navy","Active",39.479393,-118.296879,"Navy",32001
+"Creech Air Force Base","Indian Springs","NV","Clark","United States","Air Force","Active",36.58722222,-115.6733333,"ACC",32003
+"Nellis Air Force Base","Las Vegas","NV","Clark","United States","Air Force","Active",36.23611111,-115.0341667,"ACC",32003
+"Hawthorne Army Depot","Hawthorne","NV","Mineral","United States","Army","Active",38.52557,-118.62738,"Army",32021
+"Tonopah Test Range Airport","Tonopah","NV","Nye","United States","Air Force","Active",37.79472222,-116.7786111,"ACC",32023
+"Reno Tahoe International Airport","Reno","NV","Storey","United States","Air Force","Guard",39.49916667,-119.7680556,"ANG",32029
+"Hancock Field","Valatie","NY","Columbia","United States","Air Force","Guard",42.398503,-73.626548,"ANG",36021
+"Fort Drum","Fort Drum","NY","Jefferson","United States","Army","Active",44.032457,-75.754468,"Army",36045
+"Stewart Annex","Garden City","NY","Nassau","United States","Army","Active",40.724595,-73.658024,"Army",36059
+"Niagara Falls International Airport","Niagara Falls, New York","NY","Niagara","United States","Air Force","Reserve",43.11333333,-78.9475,"AFRC",36063
+"Niagara Falls","Niagara Falls","NY","Niagara","United States","Air Force","Reserve",43.093362,-79.009784,"AFRC",36063
+"Rome Laboratory","Rome","NY","Oneida","United States","Air Force","Active",43.2229,-75.4085,"AFMC",36065
+"Griffiss International Airport","Rome, New York","NY","Oneida","United States","Air Force","Guard",43.23055556,-75.40944444,"ANG",36065
+"Syracuse Hancock International Airport","Syracuse, New York","NY","Onondaga","United States","Air Force","Guard",43.11138889,-76.12361111,"ANG",36067
+"Syracuse MCRC","Syracuse","NY","Onondaga","United States","Marine Corps","Reserve",43.047934,-76.17792,"Marine Corps",36067
+"Stewart International Airport","Newburgh","NY","Orange","United States","Air Force","Guard",41.50416667,-74.10472222,"ANG",36071
+"Schenectady ANG Memorial Airport","Schenectady","NY","Schenectady","United States","Air Force","Guard",42.8525,-73.9225,"ANG",36093
+"Francis S. Gabreski Airport","Westhampton Beach","NY","Suffolk","United States","Air Force","Guard",40.83694444,-72.64222222,"ANG",36103
+"NG Camp Smith Tng Site","Smithtown","NY","Suffolk","United States","Army","Guard",40.922326,-72.637078,"Army",36103
+"Springfield-Beckley Municipal Airport","Springfield","OH","Clark","United States","Air Force","Guard",39.84027778,-83.84027778,"ANG",39023
+"Rickenbacker International Airport","Columbus","OH","Franklin","United States","Air Force","Guard",39.81361111,-82.94666667,"ANG",39049
+"Beightler Armory","Columbus, Ohio","OH","Franklin","United States","Air Force","Guard",40.08833333,-83.06694444,"ANG",39049
+"Defense Supply Center Columbus","Columbus","OH","Franklin","United States","Army","Active",40.100924,-83.013402,"Army",39049
+"Toledo Express Airport","Toledo","OH","Fulton","United States","Air Force","Guard",41.58666667,-83.80777778,"ANG",39051
+"Wright-Patterson Air Force Base","Dayton","OH","Greene","United States","Air Force","Active",39.82305556,-84.04944444,"AFMC",39057
+"NG Camp Perry Joint Training Center","Center","OH","Guernsey","United States","Army","Guard",40.06396,-81.529009,"Army",39059
+"NG Camp Sherman Joint Training Center","Center","OH","Guernsey","United States","Army","Guard",40.06396,-81.529009,"Army",39059
+"NG Camp Ravenna Joint Military Training Center","Center","OH","Guernsey","United States","Army","Guard",40.06396,-81.529009,"Army",39059
+"NG McConnelsville Training Site","Mc Connelsville","OH","Morgan","United States","Army","Guard",39.737292,-81.915415,"Army",39115
+"Mansfield Lahm Regional Airport","Mansfield","OH","Richland","United States","Air Force","Guard",40.81361111,-82.51666667,"ANG",39139
+"Youngstown-Warren Regional Airport","Youngstown","OH","Trumbull","United States","Air Force","Reserve",41.26055556,-80.67888889,"AFRC",39155
+"NG Camp Gruber","Kemp","OK","Bryan","United States","Army","Guard",33.76955,-96.35415,"Army",40013
+"Kegelman Air Force Auxiliary Field","Felt","OK","Cimarron","United States","Air Force","Active",36.56753,-102.79353,"N/A",40025
+"NG Lexington AASF No 1","Lexington","OK","Cleveland","United States","Army","Guard",35.057992,-97.26999,"Army",40027
+"NG Norman CSMS","Norman","OK","Cleveland","United States","Army","Guard",35.208566,-97.44451,"Army",40027
+"Fort Sill","Medicine Park","OK","Comanche","United States","Army","Active",34.726548,-98.499443,"Army",40031
+"Vance Air Force Base","Enid","OK","Garfield","United States","Air Force","Active",36.33944444,-97.91722222,"AETC",40047
+"Altus Air Force Base","Altus","OK","Jackson","United States","Air Force","Active",34.598197,-99.440839,"AETC",40065
+"NG Muskogee AFRC","Muskogee","OK","Muskogee","United States","Army","Guard",35.70582,-95.50025,"Army",40101
+"Tinker Air Force Base","Oklahoma City","OK","Oklahoma","United States","Air Force","Active",35.41472222,-97.38666667,"AFMC",40109
+"NG Oklahoma Military Department","Oklahoma City","OK","Oklahoma","United States","Army","Guard",35.491608,-97.562817,"Army",40109
+"Will Rogers World Airport (Tinker AFB)","Oklahoma City","OK","Oklahoma","United States","Air Force","Guard",35.39305556,-97.60083333,"ANG",40109
+"McAlester AAP","McAlester","OK","Pittsburg","United States","Army","Active",34.904585,-95.697624,"Army",40121
+"Tulsa International Airport","Tulsa","OK","Tulsa","United States","Air Force","Guard",36.19833333,-95.88805556,"ANG",40143
+"NG Camp Adair Corvallis","Corvallis","OR","Benton","United States","Army","Guard",44.639931,-123.275969,"Army",41003
+"NG Camp Withycombe Clackamas","Clackamas","OR","Clackamas","United States","Army","Guard",45.415038,-122.499461,"Army",41005
+"NG Bend Cotef","Bend","OR","Deschutes","United States","Army","Guard",44.082037,-121.227125,"Army",41017
+"NG MTA Camp Rilea","Riley","OR","Harney","United States","Army","Guard",43.54154,-119.50384,"Army",41025
+"Klamath Falls Airport","Klamath Falls, Oregon","OR","Klamath","United States","Air Force","Active",42.15611111,-121.7330556,"ANG",41035
+"NG McNary Field Salem AASF","Salem","OR","Marion","United States","Army","Guard",44.94878,-123.003655,"Army",41047
+"NAVWPNSYSTRAFAC Boardman","Boardman","OR","Morrow","United States","Navy","Active",45.83986,-119.70058,"Navy",41049
+"Portland International Airport ANG","Portland","OR","Multnomah","United States","Air Force","Guard",45.507856,-122.690794,"ANG",41051
+"Umatilla Chemical Depot","Umatilla","OR","Umatilla","United States","Army","Active",45.917965,-119.287426,"Army",41059
+"Pittsburgh International Airport (ARS)","Pittsburgh","PA","Allegheny","United States","Air Force","Reserve",40.540984,-79.781253,"AFRC",42003
+"Pittsburgh International Airport (ANG)","Pittsburgh","PA","Allegheny","United States","Air Force","Guard",40.540984,-79.781253,"ANG",42003
+"NG Hollidaysburg Readiness Center","Hollidaysburg","PA","Blair","United States","Army","Guard",40.432059,-78.364965,"Army",42013
+"Naval Air Station Joint Reserve Base Willow Grove","Horsham Township, Pennsylvania","PA","Bucks","United States","Air Force","Guard",40.19972222,-75.14805556,"ANG",42017
+"NG Spring City Readiness Center","Spring City","PA","Chester","United States","Army","Guard",40.17677,-75.54769,"Army",42029
+"NG Cambridge Springs","Cambridge Springs","PA","Crawford","United States","Army","Guard",41.803393,-80.059383,"Army",42039
+"Carlisle Barracks","Carlisle","PA","Cumberland","United States","Army","Active",40.196251,-77.345217,"Army",42041
+"NAVSUPPACT Mechanicsburg PA","Mechanicsburg","PA","Cumberland","United States","Navy","Active",40.182917,-77.004599,"Navy",42041
+"Harrisburg International Airport","Middletown, Pennsylvania","PA","Dauphin","United States","Air Force","Guard",40.19361111,-76.76333333,"ANG",42043
+"NG New Castle Readiness Center/FMS 9","Century","PA","Fayette","United States","Army","Guard",40.010352,-79.88588,"Army",42051
+"Scranton AAP","Scranton","PA","Lackawanna","United States","Army","Active",41.4118,-75.679932,"Army",42069
+"NG Fort Indiantown Gap","Fort Indiantown Gap","PA","Lebanon","United States","Army","Guard",40.362359,-76.569599,"Army",42075
+"Tobyhanna Army Depot","Tobyhanna","PA","Monroe","United States","Army","Active",41.185358,-75.427947,"Army",42089
+"NG Collegeville FMS 4","Collegeville","PA","Montgomery","United States","Army","Guard",40.18566,-75.45157,"Army",42091
+"Naval Air Station JRB Willow Grove","Willow Grove","PA","Montgomery","United States","Navy","Active",40.157452,-75.124753,"Navy",42091
+"Det Philadelphia PA","Philadelphia","PA","Philadelphia","United States","Navy","Active",40.001811,-75.11787,"Navy",42101
+"Fort Jackson","Jackson","SC","Aiken","United States","Army","Active",33.32542,-81.78789,"Army",45003
+"MCRD Beaufort","Beaufort","SC","Beaufort","United States","Marine Corps","Active",32.424353,-80.565343,"Marine Corps",45013
+"NAVSUPPFAC Beaufort SC","Beaufort","SC","Beaufort","United States","Navy","Active",32.424353,-80.565343,"Navy",45013
+"MCAS Beaufort","Beaufort","SC","Beaufort","United States","Marine Corps","Active",32.424353,-80.565343,"Marine Corps",45013
+"Joint Base Charleston","Charleston Air Force Base","SC","Charleston","United States","Air Force","Active",32.892396,-80.076202,"N/A",45019
+"Joint Base Charleston Naval Weapons Station","Charleston","SC","Charleston","United States","Air Force","Active",32.89861111,-80.04055556,"AMC",45019
+"NG MTA Clarks Hill Reservation","Clarks Hill","SC","McCormick","United States","Army","Guard",33.623057,-82.132655,"Army",45065
+"North Air Force Auxiliary Field","North","SC","Orangeburg","United States","Air Force","Active",33.61571,-81.10204,"N/A",45075
+"McEntire Joint National Guard Base","Eastover","SC","Richland","United States","Air Force","Guard",33.92083333,-80.80111111,"ANG",45079
+"Shaw Air Force Base","Sumter","SC","Sumter","United States","Air Force","Active",33.97305556,-80.47277778,"ACC",45085
+"NG Mitchell Complex","Mitchell","SD","Davison","United States","Army","Guard",43.69591,-98.086401,"Army",46035
+"Joe Foss Field","Vessey","SD","Harding","United States","Air Force","Guard",45.84774,-103.362052,"ANG",46063
+"Ellsworth Air Force Base Site 2","Ellsworth Air Force Base","SD","Meade","United States","Air Force","Active",44.15098,-103.09488,"N/A",46093
+"Sioux Falls Regional Airport","Sioux Falls, South Dakota","SD","Minnehaha","United States","Air Force","Guard",43.58194444,-96.74194444,"ANG",46099
+"Ellsworth Air Force Base","Box Elder","SD","Pennington","United States","Air Force","Active",44.145,-103.1036111,"AFGSC",46103
+"NG West Camp","Wasta","SD","Pennington","United States","Army","Guard",44.0686,-102.44572,"Army",46103
+"McGhee Tyson Airport","Knoxville","TN","Blount","United States","Air Force","Guard",35.81083333,-83.99388889,"ANG",47009
+"Arnold Air Force Base","Tullahoma","TN","Coffee","United States","Air Force","Active",35.392585,-86.231502,"AFMC",47031
+"Naval Air Stationhville International Airport","Nashville","TN","Davidson","United States","Air Force","Guard",36.165688,-86.778098,"ANG",47037
+"Nashville International Airport","Nashville, Tennessee","TN","Davidson","United States","Air Force","Guard",36.12666667,-86.68194444,"ANG",47037
+"NG Naval Air Stationhville","Nashville","TN","Davidson","United States","Army","Guard",36.165688,-86.778098,"Army",47037
+"Milan AAP","Milan","TN","Gibson","United States","Army","Active",35.933935,-88.762546,"Army",47053
+"NG VTS Milan","Milan","TN","Gibson","United States","Army","Guard",35.920312,-88.813982,"Army",47053
+"NG Jackson Airport Armory","Jackson","TN","Madison","United States","Army","Guard",35.570424,-88.862742,"Army",47113
+"NG VTS Smyrna","Smyrna","TN","Rutherford","United States","Army","Guard",35.959541,-86.53159,"Army",47149
+"NAVSUPPACT Midsouth Memphis TN","Memphis","TN","Shelby","United States","Navy","Active",35.169255,-89.990415,"Navy",47157
+"Memphis International Airport","Memphis","TN","Shelby","United States","Air Force","Guard",35.0425,-89.97666667,"ANG",47157
+"Holston AAP","Bristol","TN","Sullivan","United States","Army","Active",36.587544,-82.187338,"Army",47163
+"NG Johnson City Gray","Gray","TN","Washington","United States","Army","Guard",36.419826,-82.476535,"Army",47179
+"Fort Hood","Fort Hood","TX","Bell","United States","Army","Active",31.134891,-97.775614,"Army",48027
+"Joint Base San Antonio Lackland AFB","San Antonio","TX","Bexar","United States","Air Force","Active",29.44888889,-98.44888889,"AETC",48029
+"Brooks Air Force Base","Briggs","TX","Burnet","United States","Air Force","Active",30.936006,-97.934579,"N/A",48053
+"NG Martindale - AASF","Martindale","TX","Caldwell","United States","Army","Guard",29.839448,-97.850842,"Army",48055
+"Kelly Field Annex","Kelly","TX","Collin","United States","Air Force","Active",33.362612,-96.618879,"N/A",48085
+"Joint Base San Antonio Kelly AFB","Kelly","TX","Collin","United States","Air Force","Active",33.362612,-96.618879,"N/A",48085
+"Canyon Lake Recreation Annex","Canyon Lake","TX","Comal","United States","Air Force","Active",29.863258,-98.255736,"N/A",48091
+"Grand Prairie Reserve Complex","Grand Prairie","TX","Dallas","United States","Army","Reserve",32.742326,-96.993574,"Army",48113
+"Hensley Field","Grand Prairie, Texas","TX","Dallas","United States","Air Force","Guard",32.74,-96.97,"ANG",48113
+"Lackland Training Annex","Lakeland Heights","TX","Dallas","United States","Air Force","Active",32.776671,-97.009389,"N/A",48113
+"Fort Bliss","Fort Bliss","TX","El Paso","United States","Army","Active",31.810651,-106.404743,"Army",48141
+"Joint Base San Antonio Randolph AFB","Randolph","TX","Fannin","United States","Air Force","Active",33.484594,-96.254127,"N/A",48147
+"Lone Star AAP (BRAC 2005)","Lockney","TX","Floyd","United States","Army","Active",34.120149,-101.432864,"Army",48153
+"NALF Goliad","Goliad","TX","Goliad","United States","Navy","Active",28.664092,-97.460854,"Navy",48175
+"Ellington Airport","Houston","TX","Harris","United States","Air Force","Guard",29.60722222,-95.15888889,"ANG",48201
+"Dixie Target Range","Runge","TX","Karnes","United States","Navy","Active",28.88331,-97.71305,"Navy",48255
+"Yankee Target Range","Runge","TX","Karnes","United States","Navy","Active",28.88331,-97.71305,"Navy",48255
+"Joint Base San Antonio Camp Bullis Training Annex","Kemp","TX","Kaufman","United States","Air Force","Active",32.44264,-96.229977,"N/A",48257
+"Laughlin Air Force Base","Del Rio","TX","Kinney","United States","Air Force","Active",29.35944444,-100.7780556,"AETC",48271
+"Naval Air Station Kingsville","Kingsville","TX","Kleberg","United States","Navy","Active",27.422876,-97.84068,"Navy",48273
+"NG Camp Maxey","Maxey","TX","Lamar","United States","Army","Guard",33.703436,-95.751353,"Army",48277
+"Ellington Field","Follett","TX","Lipscomb","United States","Air Force","Guard",36.433821,-100.139117,"ANG",48295
+"Seguin Auxiliary Field","Follett","TX","Lipscomb","United States","Air Force","Active",36.433821,-100.139117,"N/A",48295
+"NG Camp Bowie - Musgrave (Fed)","Bowie","TX","Montague","United States","Army","Guard",33.530011,-97.856849,"Army",48337
+"NG Camp Bowie (State)","Bowie","TX","Montague","United States","Army","Guard",33.530011,-97.856849,"Army",48337
+"NG Camp Swift","Swift","TX","Nacogdoches","United States","Army","Guard",31.62018,-94.483262,"Army",48347
+"Naval Air Station Corpus Christi","Corpus Christi","TX","Nueces","United States","Navy","Active",27.674946,-97.278473,"Navy",48355
+"ALF Orange","Orange","TX","Orange","United States","Navy","Active",30.071743,-93.864976,"Navy",48361
+"NG Camp Mabry","Mabry","TX","Red River","United States","Army","Guard",33.613442,-95.118279,"Army",48387
+"Medical Center Annex","Center","TX","Shelby","United States","Air Force","Active",31.780781,-94.235334,"N/A",48419
+"NG Fort Worth - Shoreview","Fort Worth","TX","Tarrant","United States","Army","Guard",32.771419,-97.291484,"Army",48439
+"Naval Air Station Joint Reserve Base Fort Worth","Westworth Village, Texas","TX","Tarrant","United States","Air Force","Reserve",32.76916667,-97.44166667,"AFRC",48439
+"NG Saginaw","Saginaw","TX","Tarrant","United States","Army","Guard",32.860128,-97.363907,"Army",48439
+"Naval Air Station Fort Worth JRB","Fort Worth","TX","Tarrant","United States","Navy","Active",32.767064,-97.304038,"Navy",48439
+"Dyess Air Force Base","Abilene","TX","Taylor","United States","Air Force","Active",32.4193,-99.83808,"AFGSC",48441
+"Goodfellow Air Force Base","San Angelo","TX","Tom Green","United States","Air Force","Active",31.42944444,-100.3988889,"AETC",48451
+"Camp Mabry","Austin, Texas","TX","Travis","United States","Air Force","Guard",30.31777778,-97.76055556,"ANG",48453
+"Sheppard Air Force Base","Wichita Falls","TX","Wichita","United States","Air Force","Active",33.98888889,-98.49194444,"AETC",48485
+"Green River Test Complex UT","Green River","UT","Emery","United States","Army","Active",38.999487,-110.157599,"Army",49015
+"Salt Lake City International Airport","Salt Lake City","UT","Salt Lake","United States","Air Force","Guard",40.78833333,-111.9777778,"ANG",49035
+"NAVPMOSSP Magna Utah","Magna","UT","Salt Lake","United States","Navy","Active",40.699401,-112.088875,"Navy",49035
+"Dugway Proving Ground","Dugway","UT","Tooele","United States","Army","Active",40.270806,-112.689833,"Army",49045
+"Tooele Army Depot","Tooele","UT","Tooele","United States","Army","Active",40.530699,-112.326213,"Army",49045
+"NG Saint George/FMS 5B","Saint George","UT","Washington","United States","Army","Guard",37.185679,-113.609837,"Army",49053
+"Hill Air Force Base","Ogden","UT","Weber","United States","Air Force","Active",41.120219,-111.989813,"AFMC",49057
+"JEBLCFS Wallops Island VA","Wallops Island","VA","Accomack","United States","Navy","Active",37.918556,-75.490518,"Navy",51001
+"Pentagon","DC","VA","Arlington","United States","WHS","WHS",38.8719,-77.0563,"HQ",51013
+"Arlington Service Ctr","Arlington","VA","Arlington","United States","Navy","Active",38.840403,-77.0888,"Navy",51013
+"Pumpkin Neck","Pumpkin Center","VA","Bland","United States","Navy","Active",37.227619,-81.008418,"Navy",51021
+"Fort A P Hill","Ford","VA","Dinwiddie","United States","Army","Active",37.134946,-77.736402,"Army",51053
+"Fort Lee","Fort Lee","VA","Dinwiddie","United States","Army","Active",37.23503,-77.33279,"Army",51053
+"Naval Air Station Oceana","Ozeana","VA","Essex","United States","Navy","Active",37.825138,-76.80135,"Navy",51057
+"Mark Center","Alexandria","VA","Fairfax","United States","WHS","WHS",38.8303,-77.1163,"HQ",51059
+"Fort Belvoir","Fort Belvoir","VA","Fairfax","United States","Army","Active",38.714562,-77.167886,"Army",51059
+"Joint Base Langley Eustis","Hampton","VA","Hampton [9]","United States","Air Force","Active",37.08277778,-76.36055556,"ACC",51650
+"Lafayette Rvr Complex","Elliston","VA","Montgomery","United States","Navy","Active",37.235923,-80.212038,"Navy",51121
+"Cheatham Annex","Chatham","VA","Pittsylvania","United States","Navy","Active",36.830785,-79.412735,"Navy",51143
+"MCB Quantico","Quantico","VA","Prince William","United States","Marine Corps","Active",38.52602,-77.322803,"Marine Corps",51153
+"Rivanna Station","Raphine","VA","Rockbridge","United States","Army","Active",37.941296,-79.276332,"Army",51163
+"NAVSUPPACT Hampton Roads VA","Readus","VA","Shenandoah","United States","Navy","Active",38.855946,-78.590846,"Navy",51171
+"Marine Corps Museum","Marion","VA","Smyth","United States","Marine Corps","Active",36.840198,-81.527656,"Marine Corps",51173
+"Naval Weapons Station Yorktown","Yorktown","VA","York","United States","Navy","Active",37.230251,-76.524359,"Navy",51199
+"Burlington International Airport","Burlington","VT","Chittenden","United States","Air Force","Guard",44.496604,-73.227273,"ANG",50007
+"NG TS Camp Johnson","Johnson","VT","Lamoille","United States","Army","Guard",44.642603,-72.735911,"Army",50015
+"NG Westminster Training Site","Westminster","VT","Windham","United States","Army","Guard",43.082635,-72.474882,"Army",50025
+"CNI NAVMAG Indian Island","Island View","WA","Benton","United States","Navy","Active",46.21405,-119.175728,"Navy",53005
+"Naval Air Station Whidbey Island","Island View","WA","Benton","United States","Navy","Active",46.21405,-119.175728,"Navy",53005
+"Sea Plane Base","Plain","WA","Chelan","United States","Navy","Active",47.762622,-120.657315,"Navy",53007
+"OLF Coupeville","Coupeville","WA","Island","United States","Navy","Active",48.1894,-122.66765,"Navy",53029
+"NG Bremerton","Bremerton","WA","Kitsap","United States","Army","Guard",47.606478,-122.634712,"Army",53035
+"Manchester","Manchester","WA","Kitsap","United States","Navy","Active",47.53864,-122.492613,"Navy",53035
+"Keyport NUWC","Keyport","WA","Kitsap","United States","Navy","Active",47.698025,-122.625529,"Navy",53035
+"Naval Base Kitsap Bremerton","Bremerton","WA","Kitsap","United States","Navy","Active",47.569525,-122.646451,"Navy",53035
+"Bangor WA","Bunker","WA","Lewis","United States","Navy","Active",46.644269,-123.116525,"Navy",53041
+"Cusick Survival Training Site","Cusick","WA","Pend Oreille","United States","Air Force","Active",48.510409,-117.348383,"N/A",53051
+"NG Camp Murray","Camp Murray","WA","Pierce","United States","Army","Guard",47.11678,-122.56866,"Army",53053
+"Joint Base Lewis-McChord Army Installation","Tacoma","WA","Pierce","United States","Army","Active",47.1475,-122.4794444,"Army",53053
+"Joint Base Lewis-McChord Air Base Station","Tacoma","WA","Pierce","United States","Air Force","Active",47.1475,-122.4794444,"AMC",53053
+"NAVSTA Everett WA","Everett","WA","Snohomish","United States","Navy","Active",47.988661,-122.199795,"Navy",53061
+"Marysville WA","Marysville","WA","Snohomish","United States","Navy","Active",48.049576,-122.161951,"Navy",53061
+"Fairchild Air Force Base","Airway Heights","WA","Spokane","United States","Air Force","Active",47.639552,-117.646438,"N/A",53063
+"Yakima Training Center","Yakima","WA","Yakima","United States","Army","Active",46.60453,-120.495552,"Army",53077
+"Dane County Regional Airport","Madison, Wisconsin","WI","Dane","United States","Air Force","Guard",43.13972222,-89.3375,"ANG",55025
+"Volk Field Air National Guard Base","New Lisbon","WI","Juneau","United States","Air Force","Guard",43.93638889,-90.25972222,"ANG",55057
+"NG Camp Williams Tomah MTA","Tomah","WI","Monroe","United States","Army","Guard",43.983826,-90.473336,"Army",55081
+"Milwaukee Mitchell International Airport","Milwaukee, Wisconsin","WI","Waukesha","United States","Air Force","Guard",42.94722222,-87.89666667,"ANG",55133
+"Eastern WV Regional Airport","Martinsburg, West Virginia","WV","Berkeley","United States","Air Force","Guard",39.40194444,-77.98444444,"ANG",54003
+"McLaughlin Air National Guard Base (Yeager Airport)","Charleston, West Virginia","WV","Kanawha","United States","Air Force","Guard",38.37305556,-81.59305556,"ANG",54039
+"NG CTC Camp Dawson-Kingwood","Kingwood","WV","Preston","United States","Army","Guard",39.471673,-79.67596,"Army",54077
+"NG Elkins AFRC","Elkins","WV","Randolph","United States","Army","Guard",38.92594,-79.84673,"Army",54083
+"NG Williamstown","Williamstown","WV","Wood","United States","Army","Guard",39.367796,-81.455899,"Army",54107
+"FE Warren Air Force Base","Cheyenne","WY","Laramie","United States","Air Force","Active",41.13305556,-104.8669444,"AFGSC",56021
+"Cheyenne Regional Airport","Cheyenne","WY","Laramie","United States","Air Force","Guard",41.16138889,-104.8194444,"ANG",56021
+"NG MTCH Camp Guernsey","Guernsey","WY","Platte","United States","Army","Guard",42.256819,-104.786912,"Army",56031

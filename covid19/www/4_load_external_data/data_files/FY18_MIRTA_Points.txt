@@ -1,0 +1,814 @@
+FID,OBJECTID,COMPONENT,SITE_NAME,JOINT_BASE,STATE_TERR,COUNTRY,OPER_STAT
+0,2,AF Active,Eglin AFB Site 2 Santa Rosa Island,N/A,Florida,United States,Active
+1,3,AF Active,Eglin Air Force Auxiliary Field 6,N/A,Florida,United States,Active
+2,4,AF Active,Eglin Air Force Auxiliary Field 3 Duke Fld,N/A,Florida,United States,Active
+3,5,AF Active,Edwards AFB,N/A,California,United States,Active
+4,6,AF Active,Arnold,N/A,Tennessee,United States,Active
+5,7,AF Active,Tinker Aerospace Complex,N/A,Oklahoma,United States,Active
+6,8,AF Active,Tinker Support Annex,N/A,Oklahoma,United States,Active
+7,9,AF Active,Tinker AFB,N/A,Oklahoma,United States,Active
+8,10,AF Active,Wright-Patt AFB,N/A,Ohio,United States,Active
+9,11,AF Active,Hanscom AFB,N/A,Massachusetts,United States,Active
+10,12,AF Active,Avon Park AF Range,N/A,Florida,United States,Active
+11,13,AF Active,Arbuckle Airfield,N/A,Florida,United States,Active
+12,14,AF Active,Moody AFB,N/A,Georgia,United States,Active
+13,15,AF Active,Poinsett Range,N/A,South Carolina,United States,Active
+14,16,AF Active,Shaw AFB,N/A,South Carolina,United States,Active
+15,17,AF Active,Fort Fisher Recreation Site,N/A,North Carolina,United States,Active
+16,18,AF Active,Seymour Johnson AFB,N/A,North Carolina,United States,Active
+17,19,AF Active,Dare County Range,N/A,North Carolina,United States,Active
+18,20,AF Active,Nellis Annex,N/A,Nevada,United States,Active
+19,21,AF Active,Nellis AFB,N/A,Nevada,United States,Active
+20,22,AF Active,Creech AFB,N/A,Nevada,United States,Active
+21,23,AF Active,Fort Eustis,N/A,Virginia,United States,Active
+22,24,AF Active,Nellis Air Force Range,N/A,Nevada,United States,Active
+23,27,AF Active,Offut AFB,N/A,Nebraska,United States,Active
+24,28,AF Active,Saylor Creek Air Force Range,N/A,Idaho,United States,Active
+25,29,AF Active,Mountain Home AFB,N/A,Idaho,United States,Active
+26,31,AF Active,Patrick AFB,N/A,Florida,United States,Active
+27,32,AF Active,Cape Canaveral Air Force Station,N/A,Florida,United States,Active
+28,33,AF Active,Los Angeles Air Force Annex No4,N/A,California,United States,Active
+29,34,AF Active,Los Angeles AFB,N/A,California,United States,Active
+30,35,AF Active,Cheyenne Mountain AFS,N/A,Colorado,United States,Active
+31,36,AF Active,Cape Cod Air Station,N/A,Massachusetts,United States,Active
+32,37,AF Active,Cavalier Asn,N/A,North Dakota,United States,Active
+33,38,AF Active,Clear Air Force Station,N/A,Alaska,United States,Active
+34,39,AF Active,Dyess AFB,N/A,Texas,United States,Active
+35,40,AF Active,Barksdale AFB,N/A,Louisiana,United States,Active
+36,41,AF Reserve,March ARB,N/A,California,United States,Active
+37,42,AF Reserve,Norwalk 2,N/A,California,United States,Active
+38,43,AF Reserve,Dobbins ARB,N/A,Georgia,United States,Active
+39,44,AF Active,Kirtland,N/A,New Mexico,United States,Active
+40,45,AF Active,Whiteman AFB,N/A,Missouri,United States,Active
+41,46,AF Active,F E Warren AFB,N/A,Wyoming,United States,Active
+42,47,AF Reserve,Youngstown,N/A,Ohio,United States,Active
+43,48,AF Active,Newington Defense Fuel Support Point,N/A,New Hampshire,United States,Active
+44,49,AF Active,Ellsworth AFB Site 2,N/A,South Dakota,United States,Active
+45,50,AF Active,Ellsworth AFB,N/A,South Dakota,United States,Active
+46,51,AF Active,Malmstrom AFB,N/A,Montana,United States,Active
+47,52,AF Active,Laughlin AFB Aux 1,N/A,Texas,United States,Active
+48,53,AF Active,Laughlin AFB,N/A,Texas,United States,Active
+49,54,AF Active,Hurlburt Field,N/A,Florida,United States,Active
+50,55,AF Active,Boles Annex,N/A,New Mexico,United States,Active
+51,56,AF Active,Holloman AFB,N/A,New Mexico,United States,Active
+52,57,AF Active,Bonito Lake System Annex,N/A,New Mexico,United States,Active
+53,58,AF Active,Melrose Air Force Range,N/A,New Mexico,United States,Active
+54,59,AF Active,Cannon AFB,N/A,New Mexico,United States,Active
+55,60,AF Active,Cannon AFB Site 2,N/A,New Mexico,United States,Active
+56,61,AF Active,Travis AFB,N/A,California,United States,Active
+57,63,AF Active,Travis Annex  2,N/A,California,United States,Active
+58,64,AF Active,USAF Academy Auxiliary Airfield,N/A,Colorado,United States,Active
+59,65,AF Active,USAF Academy,N/A,Colorado,United States,Active
+60,66,AF Active,The Farish Memorial Recreational Annex,N/A,Colorado,United States,Active
+61,67,AF Active,Grand Forks AFB,N/A,North Dakota,United States,Active
+62,69,AF Active,Isabela Puerto Rico,N/A,Puerto Rico,Puerto Rico,Active
+63,70,AF Reserve,Homestead ARB,N/A,Florida,United States,Active
+64,71,AF Active,Vandenberg Main Base,N/A,California,United States,Active
+65,72,AF Active,Pillar Point AFS,N/A,California,United States,Active
+66,73,AF Active,Schriever AFB,N/A,Colorado,United States,Active
+67,74,AF Active,Peterson AFB,N/A,Colorado,United States,Active
+68,75,AF Active,Buckley AFB,N/A,Colorado,United States,Active
+69,76,AF Reserve,Pittsburgh IAP (ARS),N/A,Pennsylvania,United States,Active
+70,77,AF Reserve,Grissom ARB,N/A,Indiana,United States,Active
+71,78,AF Reserve,Westover ARB,N/A,Massachusetts,United States,Active
+72,79,AF Active,New Boston Air Station,N/A,New Hampshire,United States,Active
+73,80,AF Reserve,Niagara Falls,N/A,New York,United States,Active
+74,81,AF Active,Tyndall AFB,N/A,Florida,United States,Active
+75,82,AF Active,Davis Monthan AFB,N/A,Arizona,United States,Active
+76,83,AF Active,Little Rock AFB,N/A,Arkansas,United States,Active
+77,84,AF Active,Langley AFB,N/A,Virginia,United States,Active
+78,85,AF Active,Dover AFB,N/A,Delaware,United States,Active
+79,86,AF Active,Fairchild AFB,N/A,Washington,United States,Active
+80,87,AF Active,White Bluff,N/A,Washington,United States,Active
+81,88,AF Active,Cusick Survival Training Site,N/A,Washington,United States,Active
+82,89,AF Active,Bellows,N/A,Hawaii,United States,Active
+83,90,AF Active,Lackland Training Annex,Joint Base San Antonio,Texas,United States,Active
+84,91,AF Active,Lackland AFB,Joint Base San Antonio,Texas,United States,Active
+85,92,AF Active,Keesler AFB,N/A,Mississippi,United States,Active
+86,93,AF Active,Goodfellow AFB,N/A,Texas,United States,Active
+87,94,AF Active,Maxwell AFB,N/A,Alabama,United States,Active
+88,95,AF Active,Maxwell AFB Gunter Annex,N/A,Alabama,United States,Active
+89,96,AF Active,The Barry M Goldwater Air Force Range,N/A,Arizona,United States,Active
+90,97,AF Active,Gila Bend Air Force Auxiliary Field,N/A,Arizona,United States,Active
+91,98,AF Active,Columbus Auxiliary Airfield,N/A,Mississippi,United States,Active
+92,99,AF Active,Luke AFB,N/A,Arizona,United States,Active
+93,100,AF Active,Luke Waste Annex,N/A,Arizona,United States,Active
+94,101,AF Active,Columbus AFB,N/A,Mississippi,United States,Active
+95,102,AF Active,Luke Air Force Auxiliary Field No 1,N/A,Arizona,United States,Active
+96,103,AF Active,Sheppard AFB,N/A,Texas,United States,Active
+97,104,AF Active,Altus AFB,N/A,Oklahoma,United States,Active
+98,105,AF Active,Vance AFB,N/A,Oklahoma,United States,Active
+99,106,AF Active,Kegelman Air Force Auxiliary Field,N/A,Oklahoma,United States,Active
+100,107,AF Active,Eareckson AS,N/A,Alaska,United States,Active
+101,108,AF Active,King Salmon Airport,N/A,Alaska,United States,Active
+102,109,AF Active,Fort Richardson,Joint Base Elmendorf - Richardson,Alaska,United States,Active
+103,110,AF Active,Elmendorf AFB,Joint Base Elmendorf - Richardson,Alaska,United States,Active
+104,111,AF Active,Birch Lake Recreation Annex,N/A,Alaska,United States,Active
+105,112,AF Active,Eielson AFB,N/A,Alaska,United States,Active
+106,113,AF Active,Yukon Weapons Range,N/A,Alaska,United States,Active
+107,116,AF Guard,Luis Munoz Marin IAP,N/A,Puerto Rico,Puerto Rico,Active
+108,117,AF Guard,Jacksonville IAP,N/A,Florida,United States,Active
+109,118,AF Guard,Tucson IAP,N/A,Arizona,United States,Active
+110,119,AF Guard,Montgomery Regional Airport ANGB,N/A,Alabama,United States,Active
+111,120,AF Guard,Jackson IAP Thompson Field,N/A,Mississippi,United States,Active
+112,121,AF Active,Robins AFB,N/A,Georgia,United States,Active
+113,122,AF Guard,Sky Harbor IAP,N/A,Arizona,United States,Active
+114,123,AF Guard,McEntire Joint National Guard Base,N/A,South Carolina,United States,Active
+115,124,AF Guard,Channel Islands ANG Station,N/A,California,United States,Active
+116,125,AF Guard,Memphis IAP,N/A,Tennessee,United States,Active
+117,126,AF Guard,Charlotte/Douglas IAP,N/A,North Carolina,United States,Active
+118,127,AF Guard,Fort Smith Map,N/A,Arkansas,United States,Active
+119,128,AF Guard,Will Rogers World Airport,N/A,Oklahoma,United States,Active
+120,129,AF Guard,McGhee Tyson Airport,N/A,Tennessee,United States,Active
+121,130,AF Guard,Nashville IAP,N/A,Tennessee,United States,Active
+122,131,AF Guard,Tulsa IAP,N/A,Oklahoma,United States,Active
+123,132,AF Guard,Fresno Yosemite International ANG,N/A,California,United States,Active
+124,133,AF Guard,Louisville IAP-Standiford FL Site 1,N/A,Kentucky,United States,Active
+125,134,AF Guard,Yeager Airport,N/A,West Virginia,United States,Active
+126,135,AF Guard,Smoky Hill ANG Range,N/A,Kansas,United States,Active
+127,136,AF Guard,Forbes Field ANG,N/A,Kansas,United States,Active
+128,137,AF Guard,Martin State Airport,N/A,Maryland,United States,Active
+129,138,AF Guard,Atlantic City IAP,N/A,New Jersey,United States,Active
+130,139,AF Guard,Reno Tahoe IAP,N/A,Nevada,United States,Active
+131,140,AF Guard,New Castle Airport,N/A,Delaware,United States,Active
+132,141,AF Guard,Rosecrans MAP (139AG),N/A,Missouri,United States,Active
+133,142,AF Guard,Rickenbacker,N/A,Ohio,United States,Active
+134,143,AF Guard,Springfield Beckley,N/A,Ohio,United States,Active
+135,144,AF Guard,Pittsburgh IAP (ANG),N/A,Pennsylvania,United States,Active
+136,145,AF Guard,Salt Lake City IAP,N/A,Utah,United States,Active
+137,146,AF Guard,Site 1 Cantonement Area,N/A,Ohio,United States,Active
+138,147,AF Guard,Francis S Gabreski Airport,N/A,New York,United States,Active
+139,148,AF Guard,Stewart IAP,N/A,New York,United States,Active
+140,149,AF Guard,Quonset State Airport,N/A,Rhode Island,United States,Active
+141,150,AF Guard,Otis ANG Base,N/A,Massachusetts,United States,Active
+142,151,AF Guard,Bradley IAP,N/A,Connecticut,United States,Active
+143,152,AF Guard,W K Kellogg,N/A,Michigan,United States,Active
+144,153,AF Guard,Sioux Gateway Airport (ANG),N/A,Iowa,United States,Active
+145,154,AF Guard,Selfridge ANGB,N/A,Michigan,United States,Active
+146,155,AF Guard,Pease ANGB,N/A,New Hampshire,United States,Active
+147,156,AF Guard,Hancock Field,N/A,New York,United States,Active
+148,157,AF Guard,Truax ANGB,N/A,Wisconsin,United States,Active
+149,158,AF Guard,Boise Air Terminal,N/A,Idaho,United States,Active
+150,159,AF Guard,Joe Foss Field,N/A,South Dakota,United States,Active
+151,160,AF Guard,Volk ANGB,N/A,Wisconsin,United States,Active
+152,161,AF Reserve,Minn-St Paul,N/A,Minnesota,United States,Active
+153,162,AF Guard,Alpena County Regional Airport,N/A,Michigan,United States,Active
+154,163,AF Guard,Portland IAP ANG,N/A,Oregon,United States,Active
+155,164,AF Guard,Hector IAP,N/A,North Dakota,United States,Active
+156,165,AF Guard,Great Falls IAP,N/A,Montana,United States,Active
+157,166,AF Guard,EWVRA Shepherd Field,N/A,West Virginia,United States,Active
+158,167,AF Guard,Hulman Fld,N/A,Indiana,United States,Active
+159,168,AF Guard,General Wayne A Downing Peoria IAP,N/A,Illinois,United States,Active
+160,169,AF Guard,Des Moines IAP,N/A,Iowa,United States,Active
+161,170,AF Guard,Toledo/Exp Airport,N/A,Ohio,United States,Active
+162,171,AF Guard,Duluth IAP,N/A,Minnesota,United States,Active
+163,172,AF Active,MacDill AFB,N/A,Florida,United States,Active
+164,173,AF Guard,Ellington Field,N/A,Texas,United States,Active
+165,174,AF Guard,Gulfport-Biloxi Regional Airport (ANG),N/A,Mississippi,United States,Active
+166,175,AF Guard,Birmingham Airport,N/A,Alabama,United States,Active
+167,176,AF Active,McConnell AFB,N/A,Kansas,United States,Active
+168,177,AF Active,NGA Arnold Site,N/A,Missouri,United States,Active
+169,178,AF Active,Scott AFB,N/A,Illinois,United States,Active
+170,179,AF Active,St Louis Air Force Station,N/A,Missouri,United States,Active
+171,180,AF Guard,Capital Airport,N/A,Illinois,United States,Active
+172,181,AF Active,Dix,Joint Base McGuire - Dix - Lakehurst,New Jersey,United States,Active
+173,182,AF Active,McGuire,Joint Base McGuire - Dix - Lakehurst,New Jersey,United States,Active
+174,183,AF Active,Lakehurst,Joint Base McGuire - Dix - Lakehurst,New Jersey,United States,Active
+175,184,AF Guard,Lincoln Map,N/A,Nebraska,United States,Active
+176,185,AF Guard,Barnes Map (ANG),N/A,Massachusetts,United States,Active
+177,186,AF Guard,Gen Mitchell IAP,N/A,Wisconsin,United States,Active
+178,187,AF Guard,Burlington IAP,N/A,Vermont,United States,Active
+179,188,AF Active,Kelly Field Annex,Joint Base San Antonio,Texas,United States,Active
+180,189,AF Active,Kelly AFB,Joint Base San Antonio,Texas,United States,Active
+181,190,AF Active,JBSA Sam Houston,Joint Base San Antonio,Texas,United States,Active
+182,191,AF Active,Medical Center Annex,Joint Base San Antonio,Texas,United States,Active
+183,192,AF Active,Randolph AFB,Joint Base San Antonio,Texas,United States,Active
+184,193,AF Active,Seguin Auxiliary Field,Joint Base San Antonio,Texas,United States,Active
+185,194,AF Active,Camp Bullis Training Annex,Joint Base San Antonio,Texas,United States,Active
+186,195,AF Active,Canyon Lake Recreation Annex,Joint Base San Antonio,Texas,United States,Active
+187,196,Army Active,Fort George G Meade,N/A,Maryland,United States,Active
+188,197,Army Active,Fort Leavenworth,N/A,Kansas,United States,Active
+189,198,Army Active,Fort Riley,N/A,Kansas,United States,Active
+190,199,Army Active,Wheeler Army Airfield,N/A,Hawaii,United States,Active
+191,200,Army Active,Fort Campbell KY,N/A,Kentucky,United States,Active
+192,201,Army Active,Fort Wainwright,N/A,Alaska,United States,Active
+193,202,Army Reserve,Parks Reserve Forces Tng Area,N/A,California,United States,Active
+194,203,Army Active,Fort Polk,N/A,Louisiana,United States,Active
+195,204,Army Active,Fort Knox,N/A,Kentucky,United States,Active
+196,205,Army Active,Blue Grass Army Depot,N/A,Kentucky,United States,Active
+197,206,Army Active,Fort Belvoir,N/A,Virginia,United States,Active
+198,207,AF Guard,Schenectady ANG MAP,N/A,New York,United States,Active
+199,208,Army Active,Fort Gordon,N/A,Georgia,United States,Active
+200,209,Navy Active,Target B-19,N/A,Nevada,United States,Active
+201,210,Army Active,Fort Sill,N/A,Oklahoma,United States,Active
+202,211,Army Active,Redstone Arsenal,N/A,Alabama,United States,Active
+203,212,Army Active,Fort Jackson,N/A,South Carolina,United States,Active
+204,214,Army Active,Watervliet Arsenal,N/A,New York,United States,Active
+205,215,Army Active,Def Gen Supply Center,N/A,Virginia,United States,Active
+206,216,Army Active,Fort Benning GA,N/A,Georgia,United States,Active
+207,217,Navy Active,Naval Air Station Patuxent River,N/A,Maryland,United States,Active
+208,218,Army Active,Fort Hood,N/A,Texas,United States,Active
+209,219,Army Active,Fort Carson,N/A,Colorado,United States,Active
+210,220,Army Reserve,Fort McCoy,N/A,Wisconsin,United States,Active
+211,221,Army Active,Fort Drum,N/A,New York,United States,Active
+212,222,Army Active,Hunter Army Airfield,N/A,Georgia,United States,Active
+213,223,Army Active,Fort Huachuca,N/A,Arizona,United States,Active
+214,224,Army Active,Fort Rucker AL,N/A,Alabama,United States,Active
+215,225,Army Active,Fort A P Hill,N/A,Virginia,United States,Active
+216,226,Army Active,Fort Stewart,N/A,Georgia,United States,Active
+217,227,Army Active,Aberdeen Proving Ground,N/A,Maryland,United States,Active
+218,228,Army Active,Dugway Proving Ground,N/A,Utah,United States,Active
+219,229,Army Reserve,Fort Buchanan,N/A,Puerto Rico,Puerto Rico,Active
+220,230,Army Active,Schofield Barracks Military Reservation,N/A,Hawaii,United States,Active
+221,231,Army Active,Tobyhanna Army Depot,N/A,Pennsylvania,United States,Active
+222,232,AF Active,Beale AFB,N/A,California,United States,Active
+223,233,AF Active,Eglin AFB (Eglin Main and Reservation),N/A,Florida,United States,Active
+224,234,Army Active,NTC and Fort Irwin,N/A,California,United States,Active
+225,235,Army Active,Fort Hamilton,N/A,New York,United States,Active
+226,236,Army Active,White Sands Missile Range NM,N/A,New Mexico,United States,Active
+227,237,Army Active,Holston AAP,N/A,Tennessee,United States,Active
+228,238,Army Active,Iowa AAP,N/A,Iowa,United States,Active
+229,239,Army Active,Yakima Training Center,Joint Base Lewis - McChord,Washington,United States,Active
+230,240,Army Active,Red River Army Depot,N/A,Texas,United States,Active
+231,241,Army Reserve,Grand Prairie Reserve Complex,N/A,Texas,United States,Active
+232,242,Army Active,Fort Bragg,N/A,North Carolina,United States,Active
+233,243,Army Active,Defense Supply Center Columbus,N/A,Ohio,United States,Active
+234,244,Army Active,Fort Lewis,Joint Base Lewis - McChord,Washington,United States,Active
+235,245,Army Active,Fort Leonard Wood,N/A,Missouri,United States,Active
+236,246,Army Active,McAlester AAP,N/A,Oklahoma,United States,Active
+237,247,Navy Active,Barrigada,Joint Region Marianas,Guam,Guam,Active
+238,248,Army Active,Picatinny Arsenal,N/A,New Jersey,United States,Active
+239,249,Army Active,Fort Bliss,N/A,Texas,United States,Active
+240,250,Army Active,Green River Test Complex UT,N/A,Utah,United States,Inactive
+241,251,Army Guard,NG Atlanta - Confederate Ave,N/A,Georgia,United States,Active
+242,252,Army Guard,NG Duluth NG Armory,N/A,Minnesota,United States,Active
+243,253,Army Guard,NG Camp Joseph T Robinson,N/A,Arkansas,United States,Active
+244,254,Army Guard,NG Camp Fogarty Tng Site,N/A,Rhode Island,United States,Active
+245,255,Army Guard,NG MTA Camp Crowder Neosho,N/A,Missouri,United States,Active
+246,256,Army Guard,NG Collegeville FMS 4,N/A,Pennsylvania,United States,Active
+247,257,Army Guard,NG Bismarck RJB Complex,N/A,North Dakota,United States,Active
+248,258,Army Guard,NG Camp Niantic,N/A,Connecticut,United States,Active
+249,259,Army Guard,NG Camp Hartell,N/A,Connecticut,United States,Active
+250,260,Army Guard,NG Stones Ranch Military Res,N/A,Connecticut,United States,Active
+251,261,Army Guard,NG Martindale - AASF,N/A,Texas,United States,Active
+252,262,Army Guard,NG Orchard Mates Boise,N/A,Idaho,United States,Active
+253,263,Army Guard,NG Orchard Combat Training Center,N/A,Idaho,United States,Active
+254,264,Army Guard,NG Bend Cotef,N/A,Oregon,United States,Active
+255,265,Army Guard,NG Biak Training Center COUTES,N/A,Oregon,United States,Active
+256,266,Army Guard,NG Camp Dodge Johnston TS,N/A,Iowa,United States,Active
+257,267,Army Guard,NG Camp Minden Training Site,N/A,Louisiana,United States,Active
+258,268,Army Guard,NG Beightler Armory,N/A,Ohio,United States,Active
+259,269,Army Guard,NG Auburn Training Site,N/A,Maine,United States,Active
+260,270,Army Guard,NG Hollis Plains Training Site,N/A,Maine,United States,Active
+261,271,Army Guard,NG Buckeye TS,N/A,Arizona,United States,Active
+262,272,Army Guard,NG Camp Navajo,N/A,Arizona,United States,Active
+263,273,Army Guard,NG Hollidaysburg Readiness Center,N/A,Pennsylvania,United States,Active
+264,274,Army Guard,NG Thunderbird Youth Academy,N/A,Oklahoma,United States,Active
+265,275,Army Guard,NG Camp Gruber,N/A,Oklahoma,United States,Active
+266,276,Army Guard,NG Fort Chaffee MTC,N/A,Arkansas,United States,Active
+267,277,Army Guard,NG Pelham Range Training Site - Fort McClellan,N/A,Alabama,United States,Active
+268,278,Army Guard,NG MTA Camp Clark Nevada,N/A,Missouri,United States,Active
+269,279,Army Guard,NG Nashville,N/A,Tennessee,United States,Active
+270,280,Army Guard,NG Oglethorpe Armory,N/A,Georgia,United States,Active
+271,281,Army Guard,NG Carville Gillis Long Center,N/A,Louisiana,United States,Active
+272,282,Army Guard,NG Jackson Bks,N/A,Louisiana,United States,Active
+273,283,Army Guard,NG Esler Field,N/A,Louisiana,United States,Active
+274,284,Army Guard,NG Arden Hills Army Training Site,N/A,Minnesota,United States,Active
+275,285,Army Guard,NG Bangor Training Site,N/A,Maine,United States,Active
+276,286,Army Guard,NG Fort Indiantown Gap,N/A,Pennsylvania,United States,Active
+277,287,Army Guard,NG Springfield AVCRAD (New),N/A,Missouri,United States,Active
+278,288,Army Guard,NG MTA Camp Shelby,N/A,Mississippi,United States,Active
+279,289,Army Guard,NG CTA Camp Mccain,N/A,Mississippi,United States,Active
+280,290,Army Guard,NG Fort Worth - Shoreview,N/A,Texas,United States,Active
+281,291,Army Guard,NG Alcantra Armory Complex,N/A,Alaska,United States,Active
+282,292,Army Guard,NG Rickenbacker (MTA),N/A,Ohio,United States,Active
+283,293,Army Guard,NG RW Shepherd Hope Hull,N/A,Alabama,United States,Active
+284,294,Army Guard,NG Hammond Airport,N/A,Louisiana,United States,Active
+285,295,Army Guard,NG Camp Beauregard,N/A,Louisiana,United States,Active
+286,296,Army Guard,NG MTA Clarks Hill Reservation,N/A,South Carolina,United States,Active
+287,297,Army Guard,NG Camp Ashland,N/A,Nebraska,United States,Active
+288,298,Army Guard,NG Greenlief TS/UTES 01,N/A,Nebraska,United States,Active
+289,299,Army Guard,NG Bethel ARM FMS,N/A,Alaska,United States,Inactive
+290,300,Army Guard,NG Papago Military Reservation,N/A,Arizona,United States,Active
+291,301,Army Guard,NG Picacho Aviation TS,N/A,Arizona,United States,Active
+292,302,Army Guard,NG Grayling Airfield,N/A,Michigan,United States,Active
+293,303,Army Guard,NG Santa Fe - Onate Complex TS,N/A,New Mexico,United States,Active
+294,304,Army Guard,NG Bergstrom - (Abia),N/A,Texas,United States,Active
+295,305,Army Guard,NG Fort Wolters,N/A,Texas,United States,Active
+296,306,Army Guard,NG Camp Bowie (State),N/A,Texas,United States,Active
+297,307,Army Guard,NG River Road Training Site,N/A,Delaware,United States,Active
+298,308,Army Guard,NG TS BBTS,N/A,Delaware,United States,Active
+299,309,Army Guard,NG SMD,N/A,Alabama,United States,Active
+300,310,Army Guard,NG General Lucius D Clay National Guard Center,N/A,Georgia,United States,Active
+301,311,Army Guard,NG Macon Readiness Center,N/A,Georgia,United States,Active
+302,312,Army Guard,NG GUARNG Barrigada Complex,N/A,Guam,Guam,Active
+303,313,Army Guard,NG HMO3 (Snake Creek TS),N/A,Florida,United States,Active
+304,314,Army Guard,NG Springfield (TS Cp Lincoln),N/A,Illinois,United States,Active
+305,315,Army Guard,NG Camp Ripley,N/A,Minnesota,United States,Active
+306,316,Army Guard,NG Silver Bell Army Heliport,N/A,Arizona,United States,Active
+307,317,Army Guard,NG Florence Military Reservation,N/A,Arizona,United States,Active
+308,318,Army Guard,NG Lane County AFRC FMS 5,N/A,Oregon,United States,Active
+309,319,Army Guard,NG Camp Villere,N/A,Louisiana,United States,Active
+310,320,Army Guard,NG Muscatatuck Urban Training Center,N/A,Indiana,United States,Active
+311,321,Army Guard,NG Knightstown,N/A,Indiana,United States,Active
+312,322,Army Guard,NG Camp Atterbury,N/A,Indiana,United States,Active
+313,323,Army Guard,NG Indianapolis 38 ID,N/A,Indiana,United States,Active
+314,324,Army Guard,NG Camp Adair Corvallis,N/A,Oregon,United States,Active
+315,325,Army Guard,NG MTA Camp Rilea,N/A,Oregon,United States,Active
+316,326,Army Guard,NG Camp Withycombe Clackamas,N/A,Oregon,United States,Active
+317,327,Army Guard,NG Shelbyville,N/A,Indiana,United States,Active
+318,328,Army Guard,NG MTA Ft Wm Henry Harrison,N/A,Montana,United States,Active
+319,329,Army Guard,NG Helena Aviation RC- AASF- C12,N/A,Montana,United States,Active
+320,330,Army Guard,NG Cumming,N/A,Georgia,United States,Active
+321,331,Army Guard,NG Beauregard Training Range,N/A,Louisiana,United States,Active
+322,332,Army Guard,NG MTA Camp Curtis Guil,N/A,Massachusetts,United States,Active
+323,333,Army Guard,NG Ayer,N/A,Massachusetts,United States,Active
+324,334,Army Guard,NG Lansing Joint Forces Readiness Center,N/A,Michigan,United States,Active
+325,335,Army Guard,NG Camp Perry Joint Training Center,N/A,Ohio,United States,Active
+326,336,Army Guard,NG Edgemeade TS Mtn Home,N/A,Idaho,United States,Active
+327,337,Army Guard,NG AASF02 Birmingham,N/A,Alabama,United States,Active
+328,338,Army Guard,NG MTC-H Camp Roberts,N/A,California,United States,Active
+329,339,Army Guard,NG ITC Camp San Luis Obisbo,N/A,California,United States,Active
+330,340,Army Guard,NG Camp Ravenna Joint Military Training Center,N/A,Ohio,United States,Active
+331,341,Army Guard,NG Marseilles (MTA Tng Area),N/A,Illinois,United States,Active
+332,342,Army Guard,NG McConnelsville Training Site,N/A,Ohio,United States,Active
+333,343,Army Guard,NG Training Site,N/A,New Hampshire,United States,Active
+334,344,Army Guard,NG CTC Fort Custer Trng Center,N/A,Michigan,United States,Active
+335,345,Army Guard,NG TS AFRC Los Alamitos,N/A,California,United States,Active
+336,346,Army Guard,NG Camp Sherman Joint Training Center,N/A,Ohio,United States,Active
+337,347,Army Guard,NG McNary Field Salem AASF,N/A,Oregon,United States,Active
+338,348,Army Guard,NG Ft Allen Rq 177,N/A,Puerto Rico,Puerto Rico,Active
+339,349,Army Guard,NG Bog Brook Training Site,N/A,Maine,United States,Active
+340,350,Army Guard,NG TS Ike Skelton Jefferson City,N/A,Missouri,United States,Active
+341,351,Army Guard,NG TS Clark Natl Forest Wapp,N/A,Missouri,United States,Active
+342,352,Army Guard,NG Macon TS,N/A,Missouri,United States,Active
+343,353,Army Guard,NG Fort McClellan ARNG Tng Center,N/A,Alabama,United States,Active
+344,354,Army Guard,NG MTA Limestone Hills,N/A,Montana,United States,Active
+345,355,Army Guard,NG Cambridge Springs,N/A,Pennsylvania,United States,Active
+346,356,Army Guard,NG Johnson City Gray,N/A,Tennessee,United States,Active
+347,357,Army Guard,NG MTA Camp Edwards,N/A,Massachusetts,United States,Active
+348,358,Army Guard,NG St Cloud NG Armory,N/A,Minnesota,United States,Active
+349,359,Army Guard,NG Las Cruces,N/A,New Mexico,United States,Active
+350,360,Army Guard,NG Rio Rancho TS,N/A,New Mexico,United States,Active
+351,361,Army Guard,NG Raleigh,N/A,North Carolina,United States,Active
+352,362,Army Guard,NG MTC-H Camp Grayling,N/A,Michigan,United States,Active
+353,363,Army Guard,NG Sparta Armory,N/A,Illinois,United States,Active
+354,364,Army Guard,NG TS Ethan Allen Range,N/A,Vermont,United States,Active
+355,365,Army Guard,NG Jackson County AFRC,N/A,West Virginia,United States,Active
+356,366,Army Guard,NG Norman CSMS,N/A,Oklahoma,United States,Active
+357,367,Army Guard,NG Muskogee AFRC,N/A,Oklahoma,United States,Active
+358,368,Army Guard,NG Baton Rouge AFRC,N/A,Louisiana,United States,Active
+359,369,Army Guard,NG St Cloud AASF,N/A,Minnesota,United States,Active
+360,370,Army Guard,NG Rochester NGA and OMS 2,N/A,Minnesota,United States,Active
+361,371,Army Guard,NG Rosemount NG Armory,N/A,Minnesota,United States,Active
+362,372,Army Guard,NG Mead TS/FMS 06/Utes 02,N/A,Nebraska,United States,Active
+363,373,Army Guard,NG Lincoln AASF/Readiness Center,N/A,Nebraska,United States,Active
+364,374,Army Guard,NG Grand Island AASF/RC,N/A,Nebraska,United States,Active
+365,375,Army Guard,NG Gulfport AVCRAD,N/A,Mississippi,United States,Active
+366,376,Army Guard,NG Westminster Training Site,N/A,Vermont,United States,Active
+367,377,Army Guard,NG Camp Grafton,N/A,North Dakota,United States,Active
+368,378,Army Guard,NG Oklahoma Military Department,N/A,Oklahoma,United States,Active
+369,379,Army Guard,NG Lexington AASF No 1,N/A,Oklahoma,United States,Active
+370,380,Army Guard,NG Sea Girt NJ NGTC,N/A,New Jersey,United States,Active
+371,381,Army Guard,NG Lawrenceville,N/A,New Jersey,United States,Active
+372,382,Army Guard,NG Camp Swift,N/A,Texas,United States,Active
+373,383,Army Guard,NG Floyd Edsall Training Center,N/A,Nevada,United States,Active
+374,384,Army Guard,NG Elkins AFRC,N/A,West Virginia,United States,Active
+375,385,Army Guard,NG Camp Murray,N/A,Washington,United States,Active
+376,386,Army Guard,NG Anthony Cometa Complex,N/A,Nevada,United States,Active
+377,387,Army Guard,NG Youngstown Tng Site,N/A,New York,United States,Active
+378,388,Army Guard,NG Camp Smith Tng Site,N/A,New York,United States,Active
+379,389,Army Guard,NG New Castle Readiness Center/FMS 9,N/A,Pennsylvania,United States,Active
+380,390,Army Guard,NG VTS Catoosa,N/A,Georgia,United States,Active
+381,391,Army Guard,NG VTS Smyrna,N/A,Tennessee,United States,Active
+382,392,Army Guard,NG Spring City Readiness Center,N/A,Pennsylvania,United States,Active
+383,393,Army Guard,NG MTA Camp Santiago,N/A,Puerto Rico,Puerto Rico,Active
+384,394,Army Guard,NG Camp Pendleton SMR,N/A,Virginia,United States,Active
+385,395,Army Guard,NG Williamstown,N/A,West Virginia,United States,Active
+386,396,Army Guard,NG Jackson Airport Armory,N/A,Tennessee,United States,Active
+387,397,Army Guard,NG VTS Milan,N/A,Tennessee,United States,Active
+388,398,Army Guard,NG Camp Bowie - Musgrave (Fed),N/A,Texas,United States,Active
+389,399,Army Guard,NG Camp Mabry,N/A,Texas,United States,Active
+390,400,Army Guard,NG Camp Maxey,N/A,Texas,United States,Active
+391,401,Army Guard,NG Saginaw,N/A,Texas,United States,Active
+392,402,Army Guard,NG MTA-L Camp Williams,N/A,Utah,United States,Active
+393,403,Army Guard,NG Saint George/FMS 5B,N/A,Utah,United States,Active
+394,404,Army Guard,NG Bremerton,N/A,Washington,United States,Active
+395,405,Army Guard,NG Fort Pickett ARNG MTC,N/A,Virginia,United States,Active
+396,406,Army Guard,NG Volkstone,N/A,West Virginia,United States,Active
+397,407,Army Guard,NG CTC Camp Dawson-Kingwood,N/A,West Virginia,United States,Active
+398,408,Army Guard,NG MTCH Camp Guernsey,N/A,Wyoming,United States,Active
+399,409,Army Guard,NG AASF Byrd Field,N/A,Virginia,United States,Active
+400,410,Army Guard,NG Mitchell Complex,N/A,South Dakota,United States,Active
+401,411,Army Guard,NG Ethan Allen AFB MTA,N/A,Vermont,United States,Active
+402,412,Army Guard,NG TS Camp Johnson,N/A,Vermont,United States,Active
+403,413,Army Guard,NG Camp Williams Tomah MTA,N/A,Wisconsin,United States,Active
+404,414,Army Guard,NG Ft Ruger,N/A,Hawaii,United States,Active
+405,415,Army Guard,NG Kalaeloa,N/A,Hawaii,United States,Active
+406,416,Army Guard,NG TS Keaukaha Mil Res,N/A,Hawaii,United States,Active
+407,417,Army Guard,NG Kansas,N/A,Kansas,United States,Active
+408,418,Army Guard,NG Salina KS Training Center,N/A,Kansas,United States,Active
+409,419,Army Guard,NG Frankfort Boone NG Center,N/A,Kentucky,United States,Active
+410,420,Army Guard,NG WH Ford Regional Tng Ctr,N/A,Kentucky,United States,Active
+411,421,Army Guard,NG MTA Gunpowder Military Reservation,N/A,Maryland,United States,Active
+412,422,Army Guard,NG MTA Camp Fretterd,N/A,Maryland,United States,Active
+413,423,Army Guard,NG Havre De Grace Military Res,N/A,Maryland,United States,Active
+414,424,Army Guard,NG MTA Camp Butner,N/A,North Carolina,United States,Active
+415,425,Army Guard,NG West Camp,N/A,South Dakota,United States,Active
+416,426,Army Guard,NG Sioux Falls Benson Rd Complex,N/A,South Dakota,United States,Active
+417,427,Army Guard,NG Camp Rapid,N/A,South Dakota,United States,Active
+418,428,MC Active,MCLB Albany,N/A,Georgia,United States,Active
+419,429,MC Active,TBR Main,N/A,Georgia,United States,Active
+420,430,MC Active,MCAS Beaufort,N/A,South Carolina,United States,Active
+421,431,MC Active,MCSF Blount Island (FL),N/A,Florida,United States,Active
+422,432,MC Active,Point of Marsh Target,N/A,North Carolina,United States,Active
+423,433,MC Active,ALF Bogue,N/A,North Carolina,United States,Active
+424,434,MC Active,OLF Atlantic,N/A,North Carolina,United States,Active
+425,435,MC Active,Oak Grove,N/A,North Carolina,United States,Active
+426,436,MC Active,MCAS Cherry Point,N/A,North Carolina,United States,Active
+427,437,MC Active,MCB Camp Lejeune (West Site),N/A,North Carolina,United States,Active
+428,438,MC Active,MCB Camp Lejeune (East Site),N/A,North Carolina,United States,Active
+429,439,MC Active,MCRD Beaufort,N/A,South Carolina,United States,Active
+430,440,MC Active,MCLB Barstow,N/A,California,United States,Active
+431,441,MC Active,Yermo Area,N/A,California,United States,Active
+432,442,MC Active,MCAS Miramar,N/A,California,United States,Active
+433,443,Navy Active,Fallbrook California,N/A,California,United States,Active
+434,444,MC Active,MCB Camp Pendleton,N/A,California,United States,Active
+435,445,MC Active,Former NTC,N/A,California,United States,Active
+436,446,MC Active,MCRD San Diego,N/A,California,United States,Active
+437,447,MC Active,Twentynine Palms,N/A,California,United States,Active
+438,448,MC Active,MCAS Yuma,N/A,Arizona,United States,Active
+439,449,MC Active,Barry Goldwater Range,N/A,Arizona,United States,Active
+440,450,MC Active,Choc Mt Air Gnry Rng,N/A,California,United States,Active
+441,451,MC Active,Marine Corps Museum,N/A,Virginia,United States,Active
+442,452,MC Active,MCB Quantico,N/A,Virginia,United States,Active
+443,453,MC Reserve,Jacksonville FL Maint,N/A,Florida,United States,Active
+444,454,MC Reserve,Brooklyn NY,N/A,New York,United States,Active
+445,455,MC Reserve,Syracuse MCRC,N/A,New York,United States,Active
+446,456,MC Active,Pearl City Annex,N/A,Hawaii,United States,Active
+447,457,MC Active,MCB Camp Smith,N/A,Hawaii,United States,Active
+448,458,MC Active,MC Trng Area Bellows,N/A,Hawaii,United States,Active
+449,459,MC Active,Puuloa-Oahu,N/A,Hawaii,United States,Active
+450,460,MC Active,MCB Hawaii (Kaneohe Bay),N/A,Hawaii,United States,Active
+451,461,Navy Active,Craney Island,N/A,Virginia,United States,Active
+452,462,Navy Active,Northwest Chesapeake VA,N/A,Virginia,United States,Active
+453,463,Navy Active,NAVSUPPACT Mechanicsburg PA,N/A,Pennsylvania,United States,Active
+454,464,Navy Active,NAVSUPPACT Norfolk NSY,N/A,Virginia,United States,Active
+455,465,Navy Active,NNSY South Gate,N/A,Virginia,United States,Active
+456,466,Navy Active,NNSY St Helena,N/A,Virginia,United States,Active
+457,467,Navy Active,St Juliens Creek East,N/A,Virginia,United States,Active
+458,468,Navy Active,Dam Neck,N/A,Virginia,United States,Active
+459,469,Navy Active,Lafayette Rvr Complex,N/A,Virginia,United States,Active
+460,470,Navy Active,Yorktown Fuel Depot,N/A,Virginia,United States,Active
+461,471,Navy Active,Naval Weapons Station Yorktown,N/A,Virginia,United States,Active
+462,472,Navy Active,NAS Oceana VA,N/A,Virginia,United States,Active
+463,473,Navy Active,Waterfront,N/A,New Jersey,United States,Active
+464,474,Navy Active,Naval Weapons Station Earle NJ,N/A,New Jersey,United States,Active
+465,475,Navy Active,Det Phil Pny Annex,N/A,Pennsylvania,United States,Active
+466,476,Navy Active,Cheatham Annex,N/A,Virginia,United States,Active
+467,477,Navy Active,NAVSUPPACT Hampton Roads VA,N/A,Virginia,United States,Active
+468,478,Navy Active,SDA Area,N/A,Virginia,United States,Active
+469,479,Navy Active,Fire Fighters School,N/A,Virginia,United States,Active
+470,480,Navy Active,JEBLCFS East,Joint Expeditionary Base Little Creek - Fort Story,Virginia,United States,Active
+471,481,Navy Active,Det Philadelphia PA,N/A,Pennsylvania,United States,Active
+472,482,Navy Active,JNTEXPBASE Little Creek FS VA,Joint Expeditionary Base Little Creek - Fort Story,Virginia,United States,Active
+473,485,Navy Active,ALF Fentress Chesapke,N/A,Virginia,United States,Active
+474,486,Navy Active,NAVSUBASE New London CT,N/A,Connecticut,United States,Active
+475,487,Navy Active,NAVMEDCEN Portsmouth VA,N/A,Virginia,United States,Active
+476,488,Navy Active,Elizabeth Rvr Channel,N/A,Virginia,United States,Active
+477,489,Navy Active,NSA Saratoga Springs NY,N/A,New York,United States,Active
+478,490,Navy Active,JEBLCFS Wallops Island VA,Joint Expeditionary Base Little Creek - Fort Story,Virginia,United States,Active
+479,491,Navy Active,Fort Adams RI,N/A,Rhode Island,United States,Active
+480,492,Navy Active,NCTS Cutler VLF Area,N/A,Maine,United States,Active
+481,493,Navy Active,NSY Portsmouth,N/A,Maine,United States,Active
+482,494,Navy Active,Redington Township,N/A,Maine,United States,Active
+483,495,Navy Active,Gould Island RI,N/A,Rhode Island,United States,Active
+484,496,Navy Active,Glenview,N/A,Illinois,United States,Active
+485,497,Navy Active,GL Camp JPJ,N/A,Illinois,United States,Active
+486,498,Navy Active,Naval Support Activity Crane,N/A,Indiana,United States,Active
+487,499,Navy Active,Bratenahl,N/A,Ohio,United States,Active
+488,500,Navy Active,Naval Station Newport RI,N/A,Rhode Island,United States,Active
+489,501,Navy Active,NAVSTA Norfolk VA,N/A,Virginia,United States,Active
+490,502,Navy Active,JBAB Anacostia Bolling,Joint Base Anacostia - Bolling,District of Columbia,United States,Active
+491,503,Navy Active,Naval Support Activity Wash,N/A,District of Columbia,United States,Active
+492,504,Navy Active,Webster Field,N/A,Maryland,United States,Active
+493,505,Navy Active,Solomons Island MD,N/A,Maryland,United States,Active
+494,506,Navy Active,Arlington Service Ctr,N/A,Virginia,United States,Active
+495,507,Navy Active,Naval Research Lab,N/A,District of Columbia,United States,Active
+496,508,Navy Active,NSWC Carderock,N/A,Maryland,United States,Active
+497,509,Navy Active,NAVSUPPACT Bethesda MD,N/A,Maryland,United States,Active
+498,510,Navy Active,Naval Observatory,N/A,District of Columbia,United States,Active
+499,511,Navy Active,Tenjo Vista,Joint Region Marianas,Guam,Guam,Active
+500,512,Navy Active,Sasa Valley,Joint Region Marianas,Guam,Guam,Active
+501,513,Navy Active,Allegany Ballistics Lab,N/A,West Virginia,United States,Active
+502,514,Army Active,Rock Island Arsenal,N/A,Illinois,United States,Active
+503,515,Navy Active,Nimitz Hill,Joint Region Marianas,Guam,Guam,Active
+504,516,Navy Active,Magazine Reservoir Naval Magazine,Joint Region Marianas,Guam,Guam,Active
+505,517,Navy Active,"NAVBASE Guam, Naval Magazine",Joint Region Marianas,Guam,Guam,Active
+506,518,Navy Active,NAVBASE Guam,Joint Region Marianas,Guam,Guam,Active
+507,519,Navy Active,Barrigada,Joint Region Marianas,Guam,Guam,Active
+508,520,Navy Active,Apra Heights,Joint Region Marianas,Guam,Guam,Active
+509,521,Navy Active,Naval Magazine,Joint Region Marianas,Guam,Guam,Active
+510,522,Navy Active,Andy South,Joint Region Marianas,Guam,Guam,Active
+511,523,Navy Active,Saufley Field,N/A,Florida,United States,Active
+512,524,Navy Active,NAS Pensacola FL,N/A,Florida,United States,Active
+513,525,Navy Active,Subase Kings Bay GA,N/A,Georgia,United States,Active
+514,526,Navy Active,Corry Station,N/A,Florida,United States,Active
+515,527,Navy Active,CBC Gulfport MS,N/A,Mississippi,United States,Active
+516,528,Navy Active,OLF Bronson,N/A,Florida,United States,Active
+517,529,Navy Active,Woolmarket (De Soto),N/A,Mississippi,United States,Active
+518,530,Navy Active,Keyport NUWC,N/A,Washington,United States,Active
+519,531,Navy Active,NAS Whidbey Island WA,N/A,Washington,United States,Active
+520,532,Navy Active,Shipyard Puget Sound,N/A,Washington,United States,Active
+521,533,Navy Active,Naval Base Kitsap Bremerton WA,N/A,Washington,United States,Active
+522,535,Navy Active,OLF Coupeville,N/A,Washington,United States,Active
+523,536,Navy Active,Bangor WA,N/A,Washington,United States,Active
+524,537,Navy Active,Marysville WA,N/A,Washington,United States,Active
+525,539,Navy Active,Bayview Idaho,N/A,Idaho,United States,Active
+526,540,Navy Active,CNI NAVMAG Indian Island,N/A,Washington,United States,Active
+527,542,Navy Active,NAVSTA Everett WA,N/A,Washington,United States,Active
+528,543,Navy Active,Jim Creek,N/A,Washington,United States,Active
+529,544,Navy Active,Manchester,N/A,Washington,United States,Active
+530,545,Navy Active,Sea Plane Base,N/A,Washington,United States,Active
+531,547,Navy Active,NAVWPNSYSTRAFAC Boardman,N/A,Oregon,United States,Active
+532,548,Navy Active,NARL Barrow Camp Tr1,N/A,Alaska,United States,Active
+533,549,Navy Active,Fort Sheridan,N/A,Illinois,United States,Active
+534,550,Navy Active,Naval Station Great Lakes IL,N/A,Illinois,United States,Active
+535,551,Navy Active,Naval Support Activity Panama City,N/A,Florida,United States,Active
+536,552,Navy Active,NAS Meridian MS,N/A,Mississippi,United States,Active
+537,553,Navy Active,Dixie Target Range,N/A,Texas,United States,Active
+538,554,Navy Active,FLC Fuel Depot Heckscher,N/A,Florida,United States,Active
+539,555,Navy Active,NSWC Carderock Div,N/A,Tennessee,United States,Active
+540,556,Navy Active,Yankee Target Range,N/A,Texas,United States,Active
+541,557,Navy Active,NAVSTA Mayport FL,N/A,Florida,United States,Active
+542,558,Navy Active,NAS Kingsville TX,N/A,Texas,United States,Active
+543,559,Navy Active,NAS Jacksonville FL,N/A,Florida,United States,Active
+544,560,Navy Active,ALF Orange,N/A,Texas,United States,Active
+545,561,Navy Active,NAVSUPPACT Midsouth Memphis TN,N/A,Tennessee,United States,Active
+546,562,Navy Active,Northside Mid-South,N/A,Tennessee,United States,Active
+547,563,Navy Active,NAS Corpus Christi TX,N/A,Texas,United States,Active
+548,564,Navy Active,OLF Bravo,N/A,Mississippi,United States,Active
+549,565,WHS,Pentagon Building Site,N/A,Virginia,United States,Active
+550,566,Army Active,Fort Lee,N/A,Virginia,United States,Active
+551,567,Army Active,Fort Myer,Joint Base Myer - Henderson Hall,Virginia,United States,Active
+552,568,Army Active,Letterkenny Army Depot,N/A,Pennsylvania,United States,Active
+553,569,Army Active,Anniston Army Depot,N/A,Alabama,United States,Active
+554,570,Army Active,Fort Campbell TN,N/A,Tennessee,United States,Active
+555,571,Army Active,Arlington National Cemetery,N/A,Virginia,United States,Active
+556,572,Army Active,Pine Bluff Arsenal,N/A,Arkansas,United States,Active
+557,573,Army Reserve,Fort Hunter Liggett,N/A,California,United States,Active
+558,574,Army Active,Pinon Canyon,N/A,Colorado,United States,Active
+559,575,Army Active,Lake Of The Ozarks Recreation,N/A,Missouri,United States,Active
+560,576,Army Active,England Authority,N/A,Louisiana,United States,Active
+561,578,Army Active,Allen Stagefield AL,N/A,Alabama,United States,Active
+562,579,Army Active,Brown 4b Stagefield AL,N/A,Alabama,United States,Active
+563,580,Army Active,Cairns Basefield AL,N/A,Alabama,United States,Active
+564,581,Army Active,Goldberg Stagefield AL,N/A,Alabama,United States,Active
+565,582,Army Active,Highbluff Stagefield AL,N/A,Alabama,United States,Active
+566,583,Army Active,Hunt Stagefield AL,N/A,Alabama,United States,Active
+567,584,Army Active,Louisville Stagefield AL,N/A,Alabama,United States,Active
+568,585,Army Active,Runkle Stagefield AL,N/A,Alabama,United States,Active
+569,586,Army Active,Shell Basefield AL,N/A,Alabama,United States,Active
+570,587,Army Active,Skelly Stagefield AL,N/A,Alabama,United States,Active
+571,588,Army Active,Stinson 5AB Stagefield AL,N/A,Alabama,United States,Active
+572,589,Army Active,Tac X Stagefield AL,N/A,Alabama,United States,Active
+573,590,Army Active,Toth Stagefield AL,N/A,Alabama,United States,Active
+574,591,Army Active,Grant Training Annex,Joint Base Lewis - McChord,Washington,United States,Active
+575,592,Army Active,Fort Lesley J McNair,Joint Base Myer - Henderson Hall,District of Columbia,United States,Active
+576,593,Army Active,Military Ocean Tml Sunny Point,N/A,North Carolina,United States,Active
+577,594,Army Active,Military Ocean Terminal Concord,N/A,California,United States,Active
+578,595,Army Active,Presidio of Monterey,N/A,California,United States,Active
+579,596,Army Active,Pueblo Chemical Depot,N/A,Colorado,United States,Active
+580,597,Army Active,Sierra Army Depot,N/A,California,United States,Active
+581,598,Army Active,Kahuku Tng Area,N/A,Hawaii,United States,Active
+582,599,Army Active,Makua Mil Reserve,N/A,Hawaii,United States,Active
+583,600,Army Active,Tripler Army Medical Center,N/A,Hawaii,United States,Active
+584,601,Army Active,Aliamanu Military Reservation,N/A,Hawaii,United States,Active
+585,602,Army Active,Dillingham Mil Res,N/A,Hawaii,United States,Active
+586,603,Army Active,Fort De Russy,N/A,Hawaii,United States,Active
+587,604,Army Active,Fort Shafter,N/A,Hawaii,United States,Active
+588,605,Army Active,Helemano Military Reservation,N/A,Hawaii,United States,Active
+589,606,Army Active,USA Field Station Kunia,N/A,Hawaii,United States,Active
+590,607,Army Active,Waianae Kai Military Reservation,N/A,Hawaii,United States,Active
+591,608,Army Active,Kawaihae Mil Reserve,N/A,Hawaii,United States,Active
+592,609,Army Active,Kilauea Mil Reserve,N/A,Hawaii,United States,Active
+593,610,Army Active,Stewart Annex,N/A,New York,United States,Active
+594,611,Army Active,Yuma Proving Ground,N/A,Arizona,United States,Active
+595,612,Army Active,West Point Military Reservation,N/A,New York,United States,Active
+596,613,Army Reserve,Joliet USARC/JTA,N/A,Illinois,United States,Active
+597,614,Army Reserve,W Silver Spring Complex,N/A,Wisconsin,United States,Active
+598,615,Army Active,Blossom Point Research Facility,N/A,Maryland,United States,Active
+599,616,Army Active,US Army Adelphi Laboratory Center,N/A,Maryland,United States,Active
+600,618,Army Active,Defense Distrib Depot Susq,N/A,Pennsylvania,United States,Active
+601,619,Army Active,Fort Benning AL,N/A,Alabama,United States,Active
+602,620,Army Active,Camp Mackall,N/A,North Carolina,United States,Active
+603,621,Army Active,Rivanna Station,N/A,Virginia,United States,Active
+604,622,Army Active,Detroit Arsenal,N/A,Michigan,United States,Active
+605,623,Army Active,Fort Detrick,N/A,Maryland,United States,Active
+606,624,Army Active,Fort Detrick Forest Glen Annex,N/A,Maryland,United States,Active
+607,625,Army Active,Fort Detrick Glen Haven Annex,N/A,Maryland,United States,Active
+608,626,Army Reserve,Devens Reserve Forces Tng Area,N/A,Massachusetts,United States,Active
+609,627,Army Active,Fort Greely,N/A,Alaska,United States,Active
+610,628,Army Active,Hawthorne Army Depot,N/A,Nevada,United States,Active
+611,629,Army Active,Us Army Joint Sys Mfg CtrLima,N/A,Ohio,United States,Active
+612,630,Army Active,Lake City AAP,N/A,Missouri,United States,Active
+613,631,Army Active,Milan AAP,N/A,Tennessee,United States,Active
+614,632,Army Active,Scranton AAP,N/A,Pennsylvania,United States,Active
+615,633,Army Active,Radford AAP,N/A,Virginia,United States,Active
+616,634,Army Active,Seward Recreation Area,N/A,Alaska,United States,Active
+617,635,Army Active,Fort Monmouth Main Post,N/A,New Jersey,United States,Inactive
+618,636,Army Active,Fort Monroe,N/A,Virginia,United States,Inactive
+619,638,Army Active,Carlisle Barracks,N/A,Pennsylvania,United States,Active
+620,639,Army Active,US Army Garrison Selfridge,N/A,Michigan,United States,Active
+621,641,Army Active,Fort Benjamin Harrison,N/A,Indiana,United States,Inactive
+622,642,Army Active,Indiana Army Ammunition Plant,N/A,Indiana,United States,Inactive
+623,643,Army Active,Jefferson Proving Ground,N/A,Indiana,United States,Inactive
+624,644,Army Active,Joliet AAP Elwood,N/A,Illinois,United States,Inactive
+625,645,Army Active,Destin Moreno Point,N/A,Florida,United States,Active
+626,647,Army Active,Savanna Depot Act,N/A,Illinois,United States,Inactive
+627,648,Army Active,Badger AAP,N/A,Wisconsin,United States,Inactive
+628,649,Army Active,Twin Cities AAP,N/A,Minnesota,United States,Inactive
+629,650,Army Active,Longhorn AAP,N/A,Texas,United States,Inactive
+630,651,Army Active,Lone Star AAP (BRAC 2005),N/A,Texas,United States,Inactive
+631,652,Army Active,Rocky Mountain Arsenal,N/A,Colorado,United States,Inactive
+632,653,Army Active,Cornhusker AAP,N/A,Nebraska,United States,Inactive
+633,654,Army Active,Tooele Army Depot South,N/A,Utah,United States,Active
+634,656,Army Active,Fort Wingate Depot Activity,N/A,New Mexico,United States,Inactive
+635,657,Army Active,Kipapa Ammo Storage Site,N/A,Hawaii,United States,Inactive
+636,658,Army Active,Camp Frank D Merrill,N/A,Georgia,United States,Active
+637,659,Army Active,Pupukea Paalaa Uka Mil Road,N/A,Hawaii,United States,Active
+638,660,Army Active,Riverbank AAP,N/A,California,United States,Inactive
+639,662,AF Active,UTTR - North,N/A,Utah,United States,Active
+640,663,AF Active,Hill AFB,N/A,Utah,United States,Active
+641,664,AF Active,Point Arena Air Force Station,N/A,California,United States,Inactive
+642,665,AF Active,McClellan AFB,N/A,California,United States,Inactive
+643,667,AF Active,Minot AFB,N/A,North Dakota,United States,Active
+644,668,AF Active,JB Andrews,Joint Base Andrews,Maryland,United States,Active
+645,669,AF Active,Ozol Defense Fuel Support Point,N/A,California,United States,Active
+646,670,AF Active,Charleston AFB,Joint Base Charleston,South Carolina,United States,Active
+647,671,AF Active,Joint Base Charleston North Yard,Joint Base Charleston,South Carolina,United States,Active
+648,672,AF Active,Charleston Defense Fuel Support Point,Joint Base Charleston,South Carolina,United States,Active
+649,673,AF Active,Joint Base Charleston Naval Weapons Station,Joint Base Charleston,South Carolina,United States,Active
+650,674,AF Active,Joint Base Charleston Short Stay,Joint Base Charleston,South Carolina,United States,Active
+651,675,AF Active,North Air Force Auxiliary Field,Joint Base Charleston,South Carolina,United States,Active
+652,676,AF Guard,Bangor IAP,N/A,Maine,United States,Active
+653,677,AF Guard,Cheyenne Regional Airport,N/A,Wyoming,United States,Active
+654,678,AF Guard,Savannah/Hilton Head IAP,N/A,Georgia,United States,Active
+655,679,Navy Active,Imperial Beach NOLF,N/A,California,United States,Active
+656,680,Navy Active,Silver Strand South,N/A,California,United States,Active
+657,681,Navy Active,CNIC PMRF Barking Sands HI,N/A,Hawaii,United States,Active
+658,682,Navy Active,Kamokala Ridge,N/A,Hawaii,United States,Active
+659,683,Navy Active,Makaha Ridge,N/A,Hawaii,United States,Active
+660,684,Navy Active,San Pedro Fuel Depot,N/A,California,United States,Active
+661,685,Navy Active,Aiea,Joint Base Pearl Harbor - Hickam,Hawaii,United States,Active
+662,686,Navy Active,Ewa,Joint Base Pearl Harbor - Hickam,Hawaii,United States,Active
+663,687,Navy Active,Ford Island,Joint Base Pearl Harbor - Hickam,Hawaii,United States,Active
+664,688,Navy Active,JBPHH Pearl Harbor HI,Joint Base Pearl Harbor - Hickam,Hawaii,United States,Active
+665,689,Navy Active,Honolulu,Joint Base Pearl Harbor - Hickam,Hawaii,United States,Active
+666,690,Navy Active,CSO Barbers Point HI,N/A,Hawaii,United States,Inactive
+667,691,Navy Active,Pearl City,Joint Base Pearl Harbor - Hickam,Hawaii,United States,Active
+668,692,Navy Active,Wahiawa,Joint Base Pearl Harbor - Hickam,Hawaii,United States,Active
+669,693,Navy Active,Waipahu,Joint Base Pearl Harbor - Hickam,Hawaii,United States,Active
+670,694,Navy Active,NAS Lemoore CA,N/A,California,United States,Active
+671,695,Navy Active,NAF El Centro,N/A,California,United States,Active
+672,696,Navy Active,Holtville Carrier LS,N/A,California,United States,Active
+673,697,Navy Active,NAVOBSSTA Flagstaff AZ,N/A,Arizona,United States,Active
+674,698,Navy Active,Target 101 Shade Tree,N/A,California,United States,Active
+675,699,Navy Active,ALF Cabaniss,N/A,Texas,United States,Active
+676,700,Navy Active,ALF Waldron,N/A,Texas,United States,Active
+677,701,Navy Active,NALF Goliad,N/A,Texas,United States,Active
+678,702,Navy Active,NAS Fallon NV,N/A,Nevada,United States,Active
+679,704,Navy Active,Target B-16,N/A,Nevada,United States,Active
+680,705,Navy Active,Target B-17,N/A,Nevada,United States,Active
+681,706,Navy Active,Target B-20,N/A,Nevada,United States,Active
+682,707,Navy Active,OLF Whitehouse,N/A,Florida,United States,Active
+683,709,Navy Active,Vieques West PR,N/A,Puerto Rico,Puerto Rico,Active
+684,710,Navy Active,NAS JRB New Orleans LA,N/A,Louisiana,United States,Active
+685,711,Navy Active,NAS Key West FL,N/A,Florida,United States,Active
+686,712,Navy Active,Dredgers Key-Sigsbee,N/A,Florida,United States,Active
+687,713,Navy Active,Naval Hospital,N/A,Florida,United States,Active
+688,714,Navy Active,Truman Annex,N/A,Florida,United States,Active
+689,715,Navy Active,Trumbo Point Annex,N/A,Florida,United States,Active
+690,716,Navy Active,Sewage Evaporation Pond,N/A,California,United States,Active
+691,717,Navy Active,NAS Whiting Field Milton FL,N/A,Florida,United States,Active
+692,718,Navy Active,Barin Field,N/A,Alabama,United States,Active
+693,719,Navy Active,NOLF Brewton,N/A,Alabama,United States,Active
+694,720,Navy Active,NOLF Evergreen,N/A,Alabama,United States,Active
+695,721,Navy Active,NOLF Holley,N/A,Florida,United States,Active
+696,722,Navy Active,NOLF Santa Rosa,N/A,Florida,United States,Active
+697,723,Navy Active,NOLF Silverhill,N/A,Alabama,United States,Active
+698,724,Navy Active,NOLF Spencer,N/A,Florida,United States,Active
+699,725,Navy Active,NOLF Summerdale,N/A,Alabama,United States,Active
+700,726,Navy Active,NOLF Wolf,N/A,Alabama,United States,Active
+701,728,Navy Active,Naval Support Activity Orlando,N/A,Florida,United States,Active
+702,729,Navy Active,NOTU Cape Canaveral,N/A,Florida,United States,Active
+703,731,Navy Active,NMIC Suitland,N/A,Maryland,United States,Active
+704,732,Navy Active,NAVBASE Coronado,N/A,California,United States,Active
+705,733,Navy Active,Amphib Base Coronado East,N/A,California,United States,Active
+706,734,Navy Active,Amphib Base Coronado West,N/A,California,United States,Active
+707,735,Navy Active,Camp Michael Monsoor,N/A,California,United States,Active
+708,736,Navy Active,Camp Morena,N/A,California,United States,Active
+709,737,Navy Active,San Clemente IS NALF,N/A,California,United States,Active
+710,738,Navy Active,Warner Springs Rts,N/A,California,United States,Active
+711,739,Navy Active,Agana,Joint Region Marianas,Guam,Guam,Active
+712,740,Navy Active,Dandan,Joint Region Marianas,Guam,Guam,Active
+713,741,Navy Active,Finegayan South,Joint Region Marianas,Guam,Guam,Active
+714,742,Navy Active,Harmon,Joint Region Marianas,Guam,Guam,Active
+715,743,Navy Active,Marbo,Joint Region Marianas,Guam,Guam,Active
+716,744,Navy Active,Naval Hospital,Joint Region Marianas,Guam,Guam,Active
+717,745,Navy Active,Tanguisson Point,Joint Region Marianas,Guam,Guam,Active
+718,746,Navy Active,NAVBASE Point Loma,N/A,California,United States,Active
+719,747,Navy Active,Harbor Drive,N/A,California,United States,Active
+720,748,Navy Active,Old Town Site 1,N/A,California,United States,Active
+721,749,Navy Active,SPAWARS South,N/A,California,United States,Active
+722,750,Navy Active,NAVBASE San Diego CA,N/A,California,United States,Active
+723,751,Navy Active,Balboa Hospital,N/A,California,United States,Active
+724,752,Navy Active,Broadway Complex,N/A,California,United States,Active
+725,753,Navy Active,Dryside,N/A,California,United States,Active
+726,754,Navy Active,Mission Gorge Rec Area,N/A,California,United States,Active
+727,755,Navy Active,National City,N/A,California,United States,Active
+728,756,Navy Active,NAVBASE Ventura Cty Point Mugu CA,N/A,California,United States,Active
+729,758,Navy Active,Port Hueneme,N/A,California,United States,Active
+730,759,Navy Active,San Nicolas Island,N/A,California,United States,Active
+731,760,Navy Active,Santa Cruz Island,N/A,California,United States,Active
+732,761,Navy Active,NAVSUPPFAC Beaufort SC,N/A,South Carolina,United States,Active
+733,762,Navy Active,NAVSUPPACT Annapolis,N/A,Maryland,United States,Active
+734,763,Navy Active,Chesapeake Bay Detach,N/A,Maryland,United States,Active
+735,764,Navy Active,Gambrills,N/A,Maryland,United States,Active
+736,765,Navy Active,NAVACAD North Severn,N/A,Maryland,United States,Active
+737,766,Navy Active,Upper Yard Annapolis,N/A,Maryland,United States,Active
+738,767,Navy Active,NAVSUPPACT Monterey CA,N/A,California,United States,Active
+739,769,Navy Active,NAVPMOSSP Magna Utah,N/A,Utah,United States,Active
+740,770,Navy Active,NAVPMOSSP Mtn View,N/A,California,United States,Active
+741,771,Navy Active,Navy Annex,N/A,California,United States,Active
+742,772,Navy Active,NAVWPNSTA Seal Beach,N/A,California,United States,Active
+743,773,Navy Active,Long Beach Fuel Complex,N/A,California,United States,Active
+744,774,Navy Active,Norco,N/A,California,United States,Active
+745,775,Navy Active,NAWS China Lake,N/A,California,United States,Active
+746,776,Navy Active,NSA Andersen,Joint Region Marianas,Guam,Guam,Active
+747,777,Navy Active,Potts Tank Farm,Joint Region Marianas,Guam,Guam,Active
+748,779,Navy Active,Santa Rosa Parcel B,Joint Region Marianas,Guam,Guam,Active
+749,780,Navy Active,Tumon Tank Farm,Joint Region Marianas,Guam,Guam,Active
+750,781,Navy Active,Tumon,Joint Region Marianas,Guam,Guam,Active
+751,783,Navy Active,NSF Indian Head,N/A,Maryland,United States,Active
+752,784,Navy Active,Pumpkin Neck,N/A,Virginia,United States,Active
+753,785,Navy Active,Stump Neck Area,N/A,Maryland,United States,Active
+754,789,AF Active,Grand Forks Defense Fuel Support Point,N/A,North Dakota,United States,Active
+755,790,AF Active,Ramey AF Solar Observatory Research Site,N/A,Puerto Rico,Puerto Rico,Active
+756,791,AF Active,George AFB,N/A,California,United States,Inactive
+757,792,AF Active,Verona Defense Fuel Support Point,N/A,New York,United States,Active
+758,794,AF Active,Rome Laboratory,N/A,New York,United States,Active
+759,795,AF Active,Brooks AFB,N/A,Texas,United States,Active
+760,796,AF Active,Tulelake Radar Site,N/A,California,United States,Inactive
+761,797,AF Active,Jonathan Dickinson Tracking Annex,N/A,Florida,United States,Active
+762,798,Navy Active,Dania Beach (Lauderdale),N/A,Florida,United States,Active
+763,800,Navy Active,Finegayan,Joint Region Marianas,Guam,Guam,Active
+764,801,MC Active,Bridgeport,N/A,California,United States,Active
+765,802,AF Active,Haarp Research Station,Joint Base Elmendorf - Richardson,Alaska,United States,Active
+766,804,AF Guard,Kingsley Field Cantonement Site 1,N/A,Oregon,United States,Active
+767,806,Army Active,Tooele Army Depot,N/A,Utah,United States,Active
+768,807,Army Active,Umatilla Chemical Depot,Joint Base Lewis - McChord,Oregon,United States,Active
+769,808,Navy Active,CSO NAS Alameda,N/A,California,United States,Inactive
+770,810,AF Guard,NAS JRB NOLA,N/A,Louisiana,United States,Active
+771,811,AF Guard,Fort Carson Weapons Range,N/A,Colorado,United States,Active
+772,814,Army Active,Stratford Army Engine Plant,N/A,Connecticut,United States,Inactive
+773,816,Army Active,US Army Soldier Systems Center Natick,N/A,Massachusetts,United States,Active
+774,818,Army Active,Pohakuloa Training Area,N/A,Hawaii,United States,Active
+775,819,Army Active,Fort Gillem,N/A,Georgia,United States,Inactive
+776,820,AF Active,Utah Test and Training Range South UT,N/A,Utah,United States,Active
+777,821,AF Active,Air Force Plant 42,N/A,California,United States,Active
+778,822,Navy Active,CSO Hunters Point Annex,N/A,California,United States,Inactive
+779,823,AF Active,Air Force Plant 44,N/A,Arizona,United States,Active
+780,824,AF Active,Air Force Plant 4,N/A,Texas,United States,Active
+781,825,AF Active,Air Force Plant 6,N/A,Georgia,United States,Active
+782,826,AF Active,USAF Expeditionary Center,Joint Base McGuire - Dix - Lakehurst,New Jersey,United States,Active
+783,829,AF Active,Chanute AFB,N/A,Illinois,United States,Inactive
+784,833,AF Active,DFAS Annex,N/A,Maine,United States,Active
+785,834,Navy Active,CSO NAS South Weymouth,N/A,Massachusetts,United States,Inactive
+786,835,Navy Active,Pico Del Este - AFWTF,N/A,Puerto Rico,Puerto Rico,Inactive
+787,836,Navy Active,Pineros Island,N/A,Puerto Rico,Puerto Rico,Inactive
+788,837,Navy Active,NAS Brunswick ME,N/A,Maine,United States,Inactive
+789,838,Navy Active,NAS JRB Willow Grove PA,N/A,Pennsylvania,United States,Inactive
+790,839,Navy Active,NSA South Potomac,N/A,Virginia,United States,Active
+791,841,Navy Active,NSGA Sabana Seca PR,N/A,Puerto Rico,Puerto Rico,Inactive
+792,842,Navy Active,Fleming Key Magazine,N/A,Florida,United States,Active
+793,843,Navy Active,Fort Allen Puerto Rico,N/A,Puerto Rico,Puerto Rico,Active
+794,844,Navy Active,NOLF Choctaw,N/A,Florida,United States,Active
+795,845,Navy Active,NAS Fort Worth JRB TX,N/A,Texas,United States,Active
+796,846,Navy Active,Kalaeloa,Joint Base Pearl Harbor - Hickam,Hawaii,United States,Active
+797,847,Navy Active,Waikele,Joint Base Pearl Harbor - Hickam,Hawaii,United States,Active
+798,848,Navy Active,Hickam Petrol Strg Ann,Joint Base Pearl Harbor - Hickam,Hawaii,United States,Active
+799,849,Navy Active,Det Concord (BRAC),N/A,California,United States,Inactive
+800,850,Navy Active,CSO NSY Long Beach Ca,N/A,California,United States,Inactive
+801,851,Navy Active,CSO NS Treasure Island,N/A,California,United States,Inactive
+802,852,Navy Active,CSO NSY Mare Island,N/A,California,United States,Inactive
+803,853,Navy Active,Norwalk Fuel Complex,N/A,California,United States,Active
+804,854,Navy Active,Site 3 NS Long Beach,N/A,California,United States,Inactive
+805,855,Navy Active,Tiyan,Joint Region Marianas,Guam,Guam,Active
+806,856,Navy Active,Cabeza De Perro,N/A,Puerto Rico,Puerto Rico,Inactive
+807,857,Navy Active,NWIRP Bedford MA,N/A,Massachusetts,United States,Inactive
+808,858,Navy Active,Randsburg Wash Area,N/A,California,United States,Active
+809,859,Navy Active,Talofofo,Joint Region Marianas,Guam,Guam,Active
+810,860,Navy Active,Mount Pirata,N/A,Puerto Rico,Puerto Rico,Active
+811,861,Navy Active,West Bank,N/A,Louisiana,United States,Active
+812,862,WHS,Mark Center,N/A,Virginia,United States,Active
