@@ -17,21 +17,18 @@
 54,Fort Richardson,Fort Richardson,United States,AK,Air Force,N/A,61.259092,-149.690318,Anchorage Municipality,,Active,Joint Base Elmendorf - Richardson,Alaska,99505
 60,Haarp Research Station,Gakona ,United States,AK,Air Force,N/A,63.346191,-152.837069,Valdez-Cordova,,Active,Joint Base Elmendorf - Richardson,Alaska,
 75,Kegelman Air Force Auxiliary Field,Felt,United States,OK,Air Force,N/A,36.56753,-102.79353,Cimarron ,,Active,N/A,Oklahoma,73937
-76,Kelly Air Force Base,Kelly,United States,TX,Air Force,N/A,33.362612,-96.618879,Collin ,,Active,Joint Base San Antonio,Texas,75003
+76,Joint Base San Antonio Kelly AFB,Kelly,United States,TX,Air Force,N/A,33.362612,-96.618879,Collin ,,Active,Joint Base San Antonio,Texas,75003
 77,Kelly Field Annex,Kelly,United States,TX,Air Force,N/A,33.362612,-96.618879,Collin ,,Active,Joint Base San Antonio,Texas,75003
 78,King Salmon Airport,King Salmon,United States,AK,Air Force,N/A,58.7546,-156.50633,Bristol Bay Borough,,Active,N/A,Alaska,99613
-80,Lackland Air Force Base,Lakeland Heights,United States,TX,Air Force,N/A,32.776671,-97.009389,Dallas ,,Active,Joint Base San Antonio,Texas,75050
 81,Lackland Training Annex,Lakeland Heights,United States,TX,Air Force,N/A,32.776671,-97.009389,Dallas ,,Active,Joint Base San Antonio,Texas,75050
 82,Lakehurst,Lakehurst,United States,NJ,Air Force,N/A,40.010938,-74.303205,Ocean ,,Active,Joint Base McGuire - Dix - Lakehurst,New Jersey,8733
-84,Langley Air Force Base,Langley Forest,United States,VA,Air Force,N/A,38.955944,-77.178313,Fairfax ,,Active,N/A,Virginia,22103
 97,McClellan Air Force Base,McClellan Air Force Base,United States,CA,Air Force,N/A,38.663017,-121.383935,Sacramento ,,Active,N/A,California,95652
-99,McGuire Air Force Base,Trenton,United States,NJ,Air Force,N/A,40.01916667,-74.52277778,Burlington,,Active,Joint Base McGuire - Dix - Lakehurst,New Jersey,
 101,Medical Center Annex,Center,United States,TX,Air Force,N/A,31.780781,-94.235334,Shelby ,,Active,Joint Base San Antonio,Texas,75935
 102,Melrose Air Force Range,Melrose,United States,NM,Air Force,N/A,34.50512,-103.564506,Curry ,,Active,N/A,New Mexico,88124
 113,NGA Arnold Site,Arnold,United States,MO,Air Force,N/A,38.43283,-90.37762,Jefferson ,,Active,N/A,Missouri,63010
 114,North Air Force Auxiliary Field,North,United States,SC,Air Force,N/A,33.61571,-81.10204,Orangeburg ,,Active,Joint Base Charleston,South Carolina,29112
 117,Ozol Defense Fuel Support Point,Peanut,United States,CA,Air Force,N/A,40.467923,-123.168637,Trinity ,,Active,N/A,California,96041
-125,Randolph Air Force Base,Randolph,United States,TX,Air Force,N/A,33.484594,-96.254127,Fannin ,,Active,Joint Base San Antonio,Texas,75475
+125,Joint Base San Antonio Randolph AFB,Randolph,United States,TX,Air Force,N/A,33.484594,-96.254127,Fannin ,,Active,Joint Base San Antonio,Texas,75475
 131,Seguin Auxiliary Field,Follett,United States,TX,Air Force,N/A,36.433821,-100.139117,Lipscomb ,,Active,Joint Base San Antonio,Texas,79034
 144,Tulelake Radar Site,Tulelake,United States,CA,Air Force,N/A,41.93519,-121.58865,Siskiyou ,,Active,N/A,California,96134
 163,Birmingham Airport,Birmingham,United States,AL,Air Force,ANG,33.643851,-85.879914,Calhoun ,,Guard,N/A,Alabama,35201
@@ -46,7 +43,7 @@
 221,Truax Air National Guard Base,,United States,WI,Air Force,ANG,44.630907,-89.709392,,,Guard,N/A,Wisconsin,
 11,Beale Air Force Base,Marysville,United States,CA,Air Force,ACC,39.128035,-121.544781,Yuba ,,Active,N/A,California,95901
 32,Creech Air Force Base,Indian Springs,United States,NV,Air Force,ACC,36.58722222,-115.6733333,Clark,32003,Active,N/A,Nevada,32003
-35,Davis Monthan Air Force Base,Tucson,United States,AZ,Air Force,ACC,32.16638889,-110.8830556,Santa Cruz,4023,Active,N/A,Arizona,4023
+35,Davis-Monthan Air Force Base,Tucson,United States,AZ,Air Force,ACC,32.16638889,-110.8830556,Santa Cruz,4023,Active,N/A,Arizona,4023
 64,Holloman Air Force Base,Alamogordo,United States,NM,Air Force,ACC,32.8525,-106.1063889,Otero,35035,Active,N/A,New Mexico,87723
 67,Joint Base Langley Eustis,Hampton,United States,VA,Air Force,ACC,37.08277778,-76.36055556,Hampton [9],51650,Active,,,
 106,Moody Air Force Base,Valdosta,United States,GA,Air Force,ACC,30.96777778,-83.19277778,Lanier,13173,Active,N/A,Georgia,30130
@@ -59,7 +56,7 @@
 5,Altus Air Force Base,Altus,United States,OK,Air Force,AETC,34.598197,-99.440839,Jackson ,40065,Active,N/A,Oklahoma,73523
 30,Columbus Air Force Base,Columbus,United States,MS,Air Force,AETC,33.63194,-88.458269,Lowndes ,28087,Active,N/A,Mississippi,39701
 57,Goodfellow Air Force Base,San Angelo,United States,TX,Air Force,AETC,31.42944444,-100.3988889,Tom Green,48451,Active,N/A,Texas,76908
-71,Joint Base San Antonio,San Antonio,United States,TX,Air Force,AETC,29.44888889,-98.44888889,Bexar,48029,Active,Joint Base San Antonio,Texas,77001
+71,Joint Base San Antonio Lackland AFB,San Antonio,United States,TX,Air Force,AETC,29.44888889,-98.44888889,Bexar,48029,Active,Joint Base San Antonio,Texas,77001
 74,Keesler Air Force Base,Biloxi,United States,MS,Air Force,AETC,30.41138889,-88.92361111,Harrison,28047,Active,N/A,Mississippi,38863
 85,Laughlin Air Force Base,Del Rio,United States,TX,Air Force,AETC,29.35944444,-100.7780556,Kinney,48271,Active,N/A,Texas,78843
 91,Luke Air Force Base,Glendale,United States,AZ,Air Force,AETC,33.535,-112.3830556,Maricopa,4013,Active,N/A,Arizona,85309
@@ -69,7 +66,7 @@
 145,Tyndall Air Force Base,Panama City,United States,FL,Air Force,AETC,30.07861111,-85.57638889,Bay,12005,Active,N/A,Florida,32403
 151,Vance Air Force Base,Enid,United States,OK,Air Force,AETC,36.33944444,-97.91722222,Garfield,40047,Active,N/A,Oklahoma,40047
 80,Joint Base Anacostia-Bolling,Southwest,United States,MD,Air Force,AFDW,38.84277778,-77.01611111,Alexandria,51510,Active,,,
-67,Joint Base Andrews-Naval Air Facility Washington,Camp Springs,United States,MD,Air Force,AFDW,38.81083333,-76.86694444,Prince George's,24033,Active,Joint Base Andrews,Maryland,20762
+67,Joint Base Andrews-Naval Air Facility,Camp Springs,United States,MD,Air Force,AFDW,38.81083333,-76.86694444,Prince George's,24033,Active,Joint Base Andrews,Maryland,20762
 10,Barksdale Air Force Base,Bossier City,United States,LA,Air Force,AFGSC,32.513919,-93.654416,Bossier Parish,,Active,N/A,Louisiana,71110
 38,Dyess Air Force Base,Abilene,United States,TX,Air Force,AFGSC,32.4193,-99.83808,Taylor ,48441,Active,N/A,Texas,79607
 47,Ellsworth Air Force Base,Box Elder,United States,SD,Air Force,AFGSC,44.145,-103.1036111,Pennington,46103,Active,N/A,South Dakota,57706
@@ -108,7 +105,8 @@
 151,Grand Forks Air Force Base,Grand Forks,United States,ND,Air Force,AMC,47.96111111,-97.40111111,Grand Forks,38035,Active,N/A,North Dakota,58204
 59,Grand Forks Defense Fuel Support Point,Grand Forks,United States,ND,Air Force,AMC,47.96111111,-97.40111111,Grand Forks,38035,Active,N/A,North Dakota,58204
 68,Joint Base Charleston Naval Weapons Station,Charleston,United States,SC,Air Force,AMC,32.89861111,-80.04055556,Charleston,45019,Active,Joint Base Charleston,South Carolina,29404
-147,Joint Base Lewis-McChord,Tacoma,United States,WA,Air Force,AMC,47.1475,-122.4794444,Pierce,53053,Active,N/A,Washington,
+,Joint Base Lewis-McChord Army Installation,Tacoma,United States,WA,Army,Army,47.1475,-122.4794444,Pierce,53053,Active,Joint,Washington,
+147,Joint Base Lewis-McChord Air Base Station,Tacoma,United States,WA,Air Force,AMC,47.1475,-122.4794444,Pierce,53053,Active,Joint,Washington,
 97,Joint Base McGuire-Dix-Lakehurst,Trenton,United States,NJ,Air Force,AMC,40.01916667,-74.52277778,Burlington,34005,Active,,,
 87,Little Rock Air Force Base,Little Rock,United States,AR,Air Force,AMC,34.91694444,-92.14638889,Pulaski,5119,Active,N/A,Arkansas,72206
 93,MacDill Air Force Base,Tampa,United States,FL,Air Force,AMC,27.84944444,-82.52111111,Hillsborough,12057,Active,N/A,Florida,12057
@@ -184,7 +182,7 @@
 223,Tulsa International Airport,Tulsa,United States,OK,Air Force,ANG,36.19833333,-95.88805556,Tulsa,40143,Guard,N/A,Oklahoma,74101
 224,Volk Field Air National Guard Base,New Lisbon,United States,WI,Air Force,ANG,43.93638889,-90.25972222,Juneau,55057,Guard,N/A,Wisconsin,55057
 225,W. K. Kellogg Airport,Battle Creek,United States,MI,Air Force,ANG,42.30722222,-85.25138889,Calhoun,26025,Guard,N/A,Michigan,26025
-226,Will Rogers World Airport Moved to Tinker AFB in 2007[163],Oklahoma City,United States,OK,Air Force,ANG,35.39305556,-97.60083333,Oklahoma,40109,Guard,N/A,Oklahoma,40109
+226,Will Rogers World Airport (Tinker AFB) ,Oklahoma City,United States,OK,Air Force,ANG,35.39305556,-97.60083333,Oklahoma,40109,Guard,N/A,Oklahoma,40109
 9,Naval Air Station Joint Reserve Base New Orleans,"Belle Chasse, Louisiana",United States,LA,Air Force,ANG,29.82527778,-90.035,Orleans,22071,Guard,N/A,Louisiana,
 100,Naval Air Station Joint Reserve Base Willow Grove,"Horsham Township, Pennsylvania",United States,PA,Air Force,ANG,40.19972222,-75.14805556,Bucks,42017,Guard,N/A,Pennsylvania,
 75,North Highlands Air National Guard Station,"Sacramento, California",United States,CA,Air Force,ANG,38.64,-121.4025,Sacramento,6067,Guard,N/A,California,
@@ -276,7 +274,7 @@
 366,USA Field Station Kunia,Kunia,United States,HI,Army,Army,21.463,-158.06385,Honolulu ,,Active,N/A,Hawaii,96759
 367,Waianae Kai Military Reservation,Waianae,United States,HI,Army,Army,21.459675,-158.169077,Honolulu ,,Active,N/A,Hawaii,96792
 370,Wheeler Army Airfield,Wheeler Army Airfield,United States,HI,Army,Army,21.475456,-158.03516,Honolulu ,,Active,N/A,Hawaii,96854
-371,White Sands Missile Range NM,White Sands Missile Range,United States,NM,Army,Army,32.383871,-106.493675,Do├▒a Ana ,,Active,N/A,New Mexico,88002
+371,White Sands Missile Range,White Sands Missile Range,United States,NM,Army,Army,32.383871,-106.493675,Do├▒a Ana ,,Active,N/A,New Mexico,88002
 372,Yakima Training Center,Yakima,United States,WA,Army,Army,46.60453,-120.495552,Yakima ,,Active,Joint Base Lewis - McChord,Washington,98901
 373,Yuma Proving Ground,Yuma,United States,AZ,Army,Army,32.701461,-114.657232,Yuma ,,Active,N/A,Arizona,85364
 375,NG AASF02 Birmingham,Birmingham,United States,AL,Army,Army,33.456412,-86.801904,Jefferson ,,Guard,N/A,Alabama,35201
@@ -494,22 +492,22 @@
 680,NARL Barrow Camp Tr1,Barrow,United States,AK,Navy,Navy,71.324132,-156.683095,North Slope Borough,,Active,N/A,Alaska,99723
 681,National City,National City,United States,CA,Navy,Navy,32.661115,-117.101359,San Diego ,,Active,N/A,California,91950
 682,NAVACAD North Severn,Severn,United States,MD,Navy,Navy,39.1328,-76.69253,Anne Arundel ,,Active,N/A,Maryland,21144
-683,Naval Air Station Brunswick ME,Brunswick,United States,ME,Navy,Navy,43.91172,-69.9405,Cumberland ,,Active,N/A,Maine,4011
-684,Naval Air Station Corpus Christi TX,Corpus Christi,United States,TX,Navy,Navy,27.674946,-97.278473,Nueces ,,Active,N/A,Texas,78418
-685,Naval Air Station Fallon NV,Fallon,United States,NV,Navy,Navy,39.479393,-118.296879,Churchill ,,Active,N/A,Nevada,89406
-686,Naval Air Station Fort Worth JRB TX,Fort Worth,United States,TX,Navy,Navy,32.767064,-97.304038,Tarrant ,,Active,N/A,Texas,76111
-687,Naval Air Station Jacksonville FL,Jacksonville,United States,FL,Navy,Navy,30.337538,-81.768622,Duval ,,Active,N/A,Florida,32099
+683,Naval Air Station Brunswick,Brunswick,United States,ME,Navy,Navy,43.91172,-69.9405,Cumberland ,,Active,N/A,Maine,4011
+684,Naval Air Station Corpus Christi,Corpus Christi,United States,TX,Navy,Navy,27.674946,-97.278473,Nueces ,,Active,N/A,Texas,78418
+685,Naval Air Station Fallon,Fallon,United States,NV,Navy,Navy,39.479393,-118.296879,Churchill ,,Active,N/A,Nevada,89406
+686,Naval Air Station Fort Worth JRB,Fort Worth,United States,TX,Navy,Navy,32.767064,-97.304038,Tarrant ,,Active,N/A,Texas,76111
+687,Naval Air Station Jacksonville,Jacksonville,United States,FL,Navy,Navy,30.337538,-81.768622,Duval ,,Active,N/A,Florida,32099
 689,Naval Air Station JRB Willow Grove,Willow Grove,United States,PA,Navy,Navy,40.157452,-75.124753,Montgomery ,,Active,N/A,Pennsylvania,19090
-690,Naval Air Station Key West FL,Key West,United States,FL,Navy,Navy,24.557053,-81.780989,Monroe ,,Active,N/A,Florida,33040
-691,Naval Air Station Kingsville TX,Kingsville,United States,TX,Navy,Navy,27.422876,-97.84068,Kleberg ,,Active,N/A,Texas,78363
-692,Naval Air Station Lemoore CA,Lemoore,United States,CA,Navy,Navy,36.268194,-119.817274,Kings ,,Active,N/A,California,93245
-693,Naval Air Station Meridian MS,Meridian,United States,MS,Navy,Navy,32.381605,-88.663489,Lauderdale ,,Active,N/A,Mississippi,39301
-694,Naval Air Station Oceana VA,Ozeana,United States,VA,Navy,Navy,37.825138,-76.80135,Essex ,,Active,N/A,Virginia,22454
+690,Naval Air Station Key West,Key West,United States,FL,Navy,Navy,24.557053,-81.780989,Monroe ,,Active,N/A,Florida,33040
+691,Naval Air Station Kingsville,Kingsville,United States,TX,Navy,Navy,27.422876,-97.84068,Kleberg ,,Active,N/A,Texas,78363
+692,Naval Air Station Lemoore,Lemoore,United States,CA,Navy,Navy,36.268194,-119.817274,Kings ,,Active,N/A,California,93245
+693,Naval Air Station Meridian,Meridian,United States,MS,Navy,Navy,32.381605,-88.663489,Lauderdale ,,Active,N/A,Mississippi,39301
+694,Naval Air Station Oceana,Ozeana,United States,VA,Navy,Navy,37.825138,-76.80135,Essex ,,Active,N/A,Virginia,22454
 695,Naval Air Station Patuxent River,Patuxent River,United States,MD,Navy,Navy,38.285279,-76.415708,St. Mary's ,,Active,N/A,Maryland,20670
-696,Naval Air Station Pensacola FL,Pensacola,United States,FL,Navy,Navy,30.404006,-87.241287,Escambia ,,Active,N/A,Florida,32501
-697,Naval Air Station Whidbey Island WA,Island View,United States,WA,Navy,Navy,46.21405,-119.175728,Benton ,,Active,N/A,Washington,99336
-698,Naval Air Station Whiting Field Milton FL,Milton,United States,FL,Navy,Navy,30.792885,-86.985834,Santa Rosa ,,Active,N/A,Florida,32570
-699,Naval Base Kitsap Bremerton WA,Bremerton,United States,WA,Navy,Navy,47.569525,-122.646451,Kitsap ,,Active,N/A,Washington,98312
+696,Naval Air Station Pensacola,Pensacola,United States,FL,Navy,Navy,30.404006,-87.241287,Escambia ,,Active,N/A,Florida,32501
+697,Naval Air Station Whidbey Island,Island View,United States,WA,Navy,Navy,46.21405,-119.175728,Benton ,,Active,N/A,Washington,99336
+698,Naval Air Station Whiting Field Milton,Milton,United States,FL,Navy,Navy,30.792885,-86.985834,Santa Rosa ,,Active,N/A,Florida,32570
+699,Naval Base Kitsap Bremerton,Bremerton,United States,WA,Navy,Navy,47.569525,-122.646451,Kitsap ,,Active,N/A,Washington,98312
 700,Naval Hospital U.S.,,United States,FL,Navy,Navy,28.45743,-82.409148,,,Active,N/A,Florida,
 701,Naval Hospital Guam,,Guam,GU,Navy,Navy,13.438296,144.77295,,,Active,Joint Region Marianas,Guam,
 703,Naval Observatory,,United States,DC,Navy,Navy,38.904103,-77.017229,,,Active,N/A,District of Columbia,
@@ -597,7 +595,7 @@
 821,Yankee Target Range,Runge,United States,TX,Navy,Navy,28.88331,-97.71305,Karnes ,,Active,N/A,Texas,78151
 6,Andersen Air Force Base,Guam,Guam,GU,Air Force,PACAF,13.5882,144.9202,Guam,,Active,N/A,Guam,250
 157,Eielson Air Force Base,Fairbanks,United States,AK,Air Force,PACAF,64.6431,-147.0638,Fairbanks North Star,2090,Active,N/A,Alaska,2090
-49,Elmendorf Air Force Base,Anchorage,United States,AK,Air Force,PACAF,61.2536,-149.8113,Anchorage,2020,Active,Joint Base Elmendorf - Richardson,Alaska,2020
+49,Joint Base Elmendorf-Richardson,Anchorage,United States,AK,Air Force,PACAF,61.2536,-149.8113,Anchorage,2020,Active,Joint Base Elmendorf - Richardson,Alaska,2020
 62,Joint Base Pearl Harbor-Hickam,Honolulu,United States,HI,Air Force,PACAF,21.3487,-157.944,Honolulu,15003,Active,Joint Base Pearl Harbor-Hickam,Honolulu,15003
 73,Kadena Air Force Base,Okinawa,Japan,Okinawa,Air Force,PACAF,26.3557,127.7679,Okinawa,359,Active,N/A,Japan,359
 105,Misawa Air Force Base,Aomori,Japan,Aomori,Air Force,PACAF,40.6965,141.3878,Aomori,389,Active,N/A,Japan,389

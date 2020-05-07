@@ -8,21 +8,27 @@ GetHeatMap<-function(BranchSelect,OpsSelect,MAJNAFSelect,MAJCOMChoice,NAFChoice,
   }
   
   
-  HeatMap<-dplyr::filter(HeatMap,Branch %in% BranchSelect) 
-  HeatMap<-dplyr::filter(HeatMap,Operational %in% OpsSelect)
-  if (BranchSelect!="AirForce"){
-        HeatMap<- HeatMap %>% filter(Days == ForecastChoice)        
-  } else { 
+  HeatMap<-dplyr::filter(HeatMap,Branch %in% BranchSelect) #"Air Force") 
+
+  if (BranchSelect!="Air Force"){
+        HeatMap<- HeatMap %>% filter(Days == ForecastChoice)
+        if (OpsSelect!="All"){
+          HeatMap<-dplyr::filter(HeatMap,Operational %in% OpsSelect)
+        }
+  } else {
+        if (OpsSelect!="All"){
+          HeatMap<-dplyr::filter(HeatMap,Operational %in% OpsSelect)
+        }    
         #Filter Majcom by branch 
         if (MAJNAFSelect=="MAJCOM"){
           if (MAJCOMChoice=="All") {
-            HeatMap<- HeatMap %>%
-              filter(Days == ForecastChoice)
-          } else if(MAJCOMChoice=="Active Duty"){
-            HeatMap<-HeatMap %>%
-              filter((!MAJCOM %in% c("ANG","AFRC")) & (Days == ForecastChoice))
-          }
-          else {
+            HeatMap<- HeatMap %>% filter(Days == ForecastChoice)
+          #
+          #} else if(MAJCOMChoice=="Active Duty"){
+          #  HeatMap<-HeatMap %>%
+          #    filter((!MAJCOM %in% c("ANG","AFRC")) & (Days == ForecastChoice))
+          #}
+          } else {
             HeatMap<- HeatMap %>%
               filter(MAJCOM == MAJCOMChoice & Days == ForecastChoice)
           }
@@ -42,7 +48,6 @@ GetHeatMap<-function(BranchSelect,OpsSelect,MAJNAFSelect,MAJCOMChoice,NAFChoice,
         }
   }
 
-  
   if (ModelChoice=="IHME") {
     
     g <- list(
