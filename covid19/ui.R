@@ -309,7 +309,33 @@ ui <- tagList(
                                       box(plotlyOutput("OverlayPlots",height=700, width=1500))
                                   ),
                                   ####### END PROJECTION TAB #######
-                                  
+                                  ####### RIVAL TAB ################
+                                  tabPanel(title="RIVAL", tabsetPanel(
+                                           navbarMenu("Select Table",
+                                                      tabPanel("Active Duty and Reserve",
+                                                               box(title = "Active Duty and Reserve Installation Vulnerability", solidHeader=T, align = "left", column(width = 12, DT::dataTableOutput("NationalDataTable1"), style = "height:400px;overflow-y: scroll;overflow-x:scroll"),width = 13, height = 500)),
+                                                      tabPanel("National Guard",
+                                                               box(title = "National Guard Installation Vulnerability", solidHeader=T, align = "left", column(width = 12, DT::dataTableOutput("NationalDataTable1"), style = "height:400px;overflow-y: scroll;overflow-x:scroll"),width = 13, height = 500)),
+                                                      tabPanel("Core Missions: Air Superiority",                                                               
+                                                                box(title = "Air Superiority Core Mission Vulnerability", solidHeader=T, align = "left", column(width = 12, DT::dataTableOutput("NationalDataTable1"), style = "height:400px;overflow-y: scroll;overflow-x:scroll"),width = 13, height = 500)),
+                                                      tabPanel("Core Mission: Command and Control",
+                                                                box(title = "Command and Control Core Mission Vulnerability", solidHeader=T, align = "left", column(width = 12, DT::dataTableOutput("NationalDataTable1"), style = "height:400px;overflow-y: scroll;overflow-x:scroll"),width = 13, height = 500)),
+                                                      tabPanel("Core Mission: Defense Industrial Base",
+                                                                box(title = "Defense Industrial Base Core Mission Vulnerability", solidHeader=T, align = "left", column(width = 12, DT::dataTableOutput("NationalDataTable1"), style = "height:400px;overflow-y: scroll;overflow-x:scroll"),width = 13, height = 500)),
+                                                      tabPanel("Core Mission: Global Strike",
+                                                                box(title = "Global Strike Core Mission Vulnerability", solidHeader=T, align = "left", column(width = 12, DT::dataTableOutput("NationalDataTable1"), style = "height:400px;overflow-y: scroll;overflow-x:scroll"),width = 13, height = 500)),
+                                                      tabPanel("Core Mission: ISR",
+                                                                box(title = "ISR Core Mission Vulnerability", solidHeader=T, align = "left", column(width = 12, DT::dataTableOutput("NationalDataTable1"), style = "height:400px;overflow-y: scroll;overflow-x:scroll"),width = 13, height = 500)),
+                                                      tabPanel("Core Mission: Rapid Global Mobility",
+                                                                box(title = "Rapid Global Mobility Core Mission Vulnerability", solidHeader=T, align = "left", column(width = 12, DT::dataTableOutput("NationalDataTable1"), style = "height:400px;overflow-y: scroll;overflow-x:scroll"),width = 13, height = 500)),
+                                                      tabPanel("Core Mission: Space Superiority",
+                                                                box(title = "Space Superiority Core Mission Vulnerability", solidHeader=T, align = "left", column(width = 12, DT::dataTableOutput("NationalDataTable1"), style = "height:400px;overflow-y: scroll;overflow-x:scroll"),width = 13, height = 500)),
+                                                      tabPanel("Core Mission: Training",
+                                                                box(title = "Training Core Mission Vulnerability", solidHeader=T, align = "left", column(width = 12, DT::dataTableOutput("NationalDataTable1"), style = "height:400px;overflow-y: scroll;overflow-x:scroll"),width = 13, height = 500)),
+                                                      tabPanel("Core Mission: Nuclear Surety Supply Chain Pipeline",
+                                                                box(title = "Nuclear Surety Supply Chain Pipeline Core Mission Vulnerability", solidHeader=T, align = "left", column(width = 12, DT::dataTableOutput("NationalDataTable1"), style = "height:400px;overflow-y: scroll;overflow-x:scroll"),width = 13, height = 500))
+                                                      ))
+                                           ),
                                   ####### BEGIN National PROJECTION TAB #########
                                   # National Health Projections ------------------------------------------------
                                   # tabPanel(
