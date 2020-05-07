@@ -66,7 +66,7 @@ HotspotPlot <- function(CovidConfirmedCases, CovidDeaths, BranchSelect,OpsSelect
                          new_cases_7_pp = sum(new_cases_7_pp), new_cases_14_pp = sum(new_cases_14_pp)) %>% 
         mutate(case_growth = new_cases_3_pp/(new_cases_30_pp+new_cases_3_pp),
                case_growth_week = ((new_cases_7_pp - (new_cases_14_pp-new_cases_7_pp)) / (new_cases_14_pp-new_cases_7_pp)))
-    bases_radius = bases_radius %>% left_join(AFBaseLocations %>% select(Base, 'Major Command'), by = c("base" = "Base"))
+    bases_radius = bases_radius %>% left_join(AFBaseLocations %>% select(Base,Branch,Operational,'Major Command'), by = c("base" = "Base"))
     
     #this morning, cases were updated before deaths so I added in this code to pull the most current reported deaths date
     current_date = (bases_radius %>% ungroup() %>% filter(deaths_pp > 0) %>% filter(date ==max(date)) %>% select(date))$date[1]
