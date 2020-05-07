@@ -320,9 +320,9 @@ server <- function(input, output,session) {
     CumulChart <- dplyr::filter(CumulChart, ForecastDate >= CumulChart$ForecastDate[1] + 35)
     
     #Plot for local area cumulative cases
-    plotTot <- ggplot(CumulChart,height = 250) + 
+    plotTot <- ggplot(CumulChart) + 
       geom_line(aes(x=ForecastDate, y=value, colour = variable), size = 0.5) +
-      scale_colour_manual(values=c("Blue", "Red"))+
+      scale_colour_manual(values=c("Blue", "Red", "Green"))+
       xlab('Date') +
       ylab('Number of People') +
       theme_bw() + 
