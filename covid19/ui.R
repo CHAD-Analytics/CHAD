@@ -126,7 +126,7 @@ ui <- tagList(
                                                               selectInput("Base",
                                                                           "Choose your base:",
                                                                           list(`Base` = BaseListP),
-                                                                          selected = c("Pentagon")),
+                                                                          selected = c("Eglin Air Force Base")),
                                                               sliderInput("Radius",
                                                                           "Choose your local radius (miles):",
                                                                           min = 10,
