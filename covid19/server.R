@@ -1150,7 +1150,8 @@ server <- function(input, output,session) {
       })    
     
     output$HotSpot <- renderPlot({
-      HotspotPlot(CovidConfirmedCases,CovidDeaths,input$Branch,input$OperationalInput,input$MAJCOMNAF,input$MAJCOMInput,input$NAFInput,input$WingInput)
+      HotspotPlot(CovidConfirmedCases,CovidDeaths,input$Branch,input$OperationalInput,input$MAJCOMNAF,
+                  input$MAJCOMInput,input$NAFInput,input$WingInput,input$GroupInput)
     })
     
     # Output Report ------------------------------------------------------------------------------------------------------------------------------------------------------------------
