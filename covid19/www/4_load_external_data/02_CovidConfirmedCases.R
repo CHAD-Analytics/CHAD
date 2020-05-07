@@ -18,9 +18,9 @@ CovidConfirmedCases[is.na(CovidConfirmedCases)] <- 0
 #Get rid of days with incorrect cumulative reporting of zeros after reported cases have been seen
 for(i in 6:(ncol(CovidConfirmedCases))){
   
-    CovidConfirmedCases[,i] = ifelse(CovidConfirmedCases[,i] < CovidConfirmedCases[,(i-1)],
-                                     CovidConfirmedCases[,(i-1)],
-                                     CovidConfirmedCases[,i])
+  CovidConfirmedCases[,i] = ifelse(CovidConfirmedCases[,i] < CovidConfirmedCases[,(i-1)],
+                                   CovidConfirmedCases[,(i-1)],
+                                   CovidConfirmedCases[,i])
 }
 
 colnames(CovidConfirmedCases) = c(colnames(CovidConfirmedCases[1:4]), 
@@ -55,8 +55,8 @@ colnames(GlobalCases) = c(colnames(CovidConfirmedCases[1:4]),
                           format.Date(sub('.',
                                           '',
                                           gsub("\\.",
-                                                "/",
-                                                names(GlobalCases[5:ncol(GlobalCases)]))),
+                                               "/",
+                                               names(GlobalCases[5:ncol(GlobalCases)]))),
                                       "%m/%d/%y"))
 
 combNames = c(colnames(GlobalCases),colnames(CovidConfirmedCases))
@@ -69,4 +69,3 @@ cols<-names(CovidConfirmedCases[5:length(CovidConfirmedCases)])
 CovidConfirmedCases[,cols]<-lapply(CovidConfirmedCases[cols], as.numeric)
 
 CovidConfirmedCases$CountyFIPS = as.numeric(CovidConfirmedCases$CountyFIPS)
-

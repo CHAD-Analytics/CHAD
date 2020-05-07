@@ -17,29 +17,25 @@ if(test_date < Sys.Date()) {
   R.utils::downloadFile("https://ihmecovid19storage.blob.core.windows.net/latest/ihme-covid19.zip", 
                         filename = "www/4_load_external_data/data_files/ihme-covid19.zip", 
                         overwrite = T)  
-
+  
   # R.utils::downloadFile("https://open-covid-19.github.io/data/data.csv",
   #                       filename = "www/4_load_external_data/data_files/data.csv",
   #                       skip = F,
   #                       overwrite = T)
   GlobalData = as.data.frame(data.table::fread("https://open-covid-19.github.io/data/data.csv"))
-
+  
   shaman.lab.json = jsonlite::fromJSON("https://api.github.com/repos/shaman-lab/COVID-19Projection/contents?per_page=100")
   shaman.lab.path = get.shaman.lab.path()
 
-  R.utils::downloadFile(paste0("https://raw.githubusercontent.com/shaman-lab/COVID-19Projection/master/",shaman.lab.path,"/bed_60contact.csv"),
-                        filename = "www/4_load_external_data/data_files/bed_60contact.csv",
+  R.utils::downloadFile(paste0("https://raw.githubusercontent.com/shaman-lab/COVID-19Projection/master/",shaman.lab.path,"/bed_80contact.csv"),
+                        filename = "www/4_load_external_data/data_files/bed_80contact.csv",
                         overwrite = T)
-  R.utils::downloadFile(paste0("https://raw.githubusercontent.com/shaman-lab/COVID-19Projection/master/",shaman.lab.path,"/bed_70contact.csv"),
-                        filename = "www/4_load_external_data/data_files/bed_70contact.csv",
+  R.utils::downloadFile(paste0("https://raw.githubusercontent.com/shaman-lab/COVID-19Projection/master/",shaman.lab.path,"/bed_80contact_1x.csv"),
+                        filename = "www/4_load_external_data/data_files/bed_80contact_1x.csv",
                         overwrite = T)
-  R.utils::downloadFile(paste0("https://raw.githubusercontent.com/shaman-lab/COVID-19Projection/master/",shaman.lab.path,"/bed_80contact.csv"), 
-                        filename = "www/4_load_external_data/data_files/bed_80contact.csv", 
+  R.utils::downloadFile(paste0("https://raw.githubusercontent.com/shaman-lab/COVID-19Projection/master/",shaman.lab.path,"/bed_80contactw.csv"), 
+                        filename = "www/4_load_external_data/data_files/bed_80contactw.csv", 
                         overwrite = T)  
-  R.utils::downloadFile(paste0("https://raw.githubusercontent.com/shaman-lab/COVID-19Projection/master/",shaman.lab.path,"/bed_nointerv.csv"), 
-                        filename = "www/4_load_external_data/data_files/bed_nointerv.csv", 
-                        overwrite = T)  
-  
   
   # YYG.json = jsonlite::fromJSON("https://api.github.com/repos/youyanggu/COVID-19Projection/contents?per_page=100")
   # YYG.path = get_YYG_path()

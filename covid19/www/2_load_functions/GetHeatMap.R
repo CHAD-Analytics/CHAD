@@ -1,4 +1,4 @@
-GetHeatMap<-function(MAJNAFSelect,MAJCOMChoice,NAFChoice,WingChoice,ModelChoice,ForecastChoice,Stat){
+GetHeatMap<-function(BranchSelect,OpsSelect,MAJNAFSelect,MAJCOMChoice,NAFChoice,WingChoice,ModelChoice,ForecastChoice,Stat){
   if (Stat == "Cases") {
     HeatMap<-HeatMapForecastCases
     Banner<-"Projected Daily New Cases"
@@ -6,34 +6,48 @@ GetHeatMap<-function(MAJNAFSelect,MAJCOMChoice,NAFChoice,WingChoice,ModelChoice,
     HeatMap<-HeatMapForecast
     Banner<-"Projected Daily New Hospitalizations"
   }
-  if (MAJNAFSelect=="MAJCOM"){
-    if (MAJCOMChoice=="All") {
-      HeatMap<- HeatMap %>%
-        filter(Days == ForecastChoice)
-    } else if(MAJCOMChoice=="Active Duty"){
-      HeatMap<-HeatMap %>%
-        filter((!MAJCOM %in% c("ANG","AFRC")) & (Days == ForecastChoice))
-    }
-    else {
-      HeatMap<- HeatMap %>%
-        filter(MAJCOM == MAJCOMChoice & Days == ForecastChoice)
-    }
-  }else{  # if NAF is 
-    AFWings<-dplyr::filter(AFNAFS,NAF %in% NAFChoice)
-    if (WingChoice=="All") {
-      forecastbaselist<-dplyr::filter(AFWings,Wing %in% WingList)            
-      forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE) 
-      HeatMap<-dplyr::filter(HeatMap,Base %in% forecastbaselist) 
-      HeatMap<- HeatMap %>% filter(Days == ForecastChoice)
-    } else {
-      forecastbaselist<-dplyr::filter(AFWings,Wing %in% WingChoice)            
-      forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE) 
-      HeatMap<-dplyr::filter(HeatMap,Base %in% forecastbaselist)       
-      HeatMap<- HeatMap %>% filter(Days == ForecastChoice)
-    }
+  
+  
+  HeatMap<-dplyr::filter(HeatMap,Branch %in% BranchSelect) #"Air Force") 
+
+  if (BranchSelect!="Air Force"){
+        HeatMap<- HeatMap %>% filter(Days == ForecastChoice)
+        if (OpsSelect!="All"){
+          HeatMap<-dplyr::filter(HeatMap,Operational %in% OpsSelect)
+        }
+  } else {
+        if (OpsSelect!="All"){
+          HeatMap<-dplyr::filter(HeatMap,Operational %in% OpsSelect)
+        }    
+        #Filter Majcom by branch 
+        if (MAJNAFSelect=="MAJCOM"){
+          if (MAJCOMChoice=="All") {
+            HeatMap<- HeatMap %>% filter(Days == ForecastChoice)
+          #
+          #} else if(MAJCOMChoice=="Active Duty"){
+          #  HeatMap<-HeatMap %>%
+          #    filter((!MAJCOM %in% c("ANG","AFRC")) & (Days == ForecastChoice))
+          #}
+          } else {
+            HeatMap<- HeatMap %>%
+              filter(MAJCOM == MAJCOMChoice & Days == ForecastChoice)
+          }
+        }else{  # if NAF is 
+          AFWings<-dplyr::filter(AFNAFS,NAF %in% NAFChoice)
+          if (WingChoice=="All") {
+            forecastbaselist<-dplyr::filter(AFWings,Wing %in% WingList)            
+            forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE) 
+            HeatMap<-dplyr::filter(HeatMap,Base %in% forecastbaselist) 
+            HeatMap<- HeatMap %>% filter(Days == ForecastChoice)
+          } else {
+            forecastbaselist<-dplyr::filter(AFWings,Wing %in% WingChoice)            
+            forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE) 
+            HeatMap<-dplyr::filter(HeatMap,Base %in% forecastbaselist)       
+            HeatMap<- HeatMap %>% filter(Days == ForecastChoice)
+          }
+        }
   }
 
-    
   if (ModelChoice=="IHME") {
     
     g <- list(
