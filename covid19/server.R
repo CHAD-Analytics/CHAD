@@ -269,6 +269,49 @@ server <- function(input, output,session) {
   })
   
   
+  output$LocalHealthPlot14dayGrowth<-renderPlotly({
+    
+    MyCounties<-GetCounties(input$Base,input$Radius)
+    DailyChart <- CovidCases14DayGrowthChart(MyCounties)
+    
+    plotDaily <- ggplot(DailyChart) + 
+      geom_col(aes(x=ForecastDate, 
+                   y=value-1, 
+                   fill = ifelse(value-1>0, 
+                                 "Growth Increase", 
+                                 "Growth Decrease")), 
+               size = 0.5) +
+      scale_fill_manual(values=c("Green", "Red"),
+                         name = "Case Growth") +
+      geom_hline(aes(yintercept = 0),
+                 colour = "black",
+                 linetype = "dashed") +
+      xlab('Date') +
+      ylab('14-Day Growth Rate') +
+      theme_bw() + 
+      theme(plot.title = element_text(face = "bold", size = 15, family = "sans"),
+            axis.title = element_text(face = "bold", size = 11, family = "sans"),
+            axis.text.x = element_text(angle = 60, hjust = 1), 
+            axis.line = element_line(color = "black"),
+            legend.position = "top",
+            plot.background = element_blank(),
+            panel.grid.major = element_blank(),
+            panel.grid.minor = element_blank(),
+            panel.border = element_blank()) +
+      scale_x_date(date_breaks = "1 week") +
+      scale_y_continuous(labels = function(y) paste0(y*100,"%")) +
+    #ylim(0,max(Chart1DataSub$value) * 1.1) +
+    labs(color='')
+    
+    plotDaily <- ggplotly(plotDaily)
+    plotDaily <- plotDaily %>% layout(legend = list(orientation = "h",   # show entries horizontally
+                                                    xanchor = "center",  # use center of legend as anchor
+                                                    x = 0.5,
+                                                    y = 1.2)) %>% config(displayModeBar = FALSE)
+    plotDaily
+  })
+  
+  
   #Create second plot of local health population 
   output$LocalHealthPlot2<-renderPlotly({
     
