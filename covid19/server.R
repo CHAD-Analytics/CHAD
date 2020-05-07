@@ -796,14 +796,14 @@ server <- function(input, output,session) {
     })
     observe(updateSelectInput(session,"OperationalInputP",choices = OperationalListP()))  
     
-    Base<- reactive({
+    BaseListP<- reactive({
       #Once select service, select active, guard, reserve
       Bases <- dplyr::filter(AFBaseLocations,Branch %in% input$BranchP)
       Bases <- dplyr::filter(Bases,Operational %in% input$OperationalInputP)    
-      Base <- sort(unique(Bases$Base), decreasing = FALSE)
-      Base <- c(Base)
+      BaseList <- sort(unique(Bases$Base), decreasing = FALSE)
+      BaseList <- c(BaseList)
     })
-    observe(updateSelectInput(session,"Base",choices = Base()))
+    observe(updateSelectInput(session,"Base",choices = BaseListP()))
     ###################################################################
     
     ####### Filter MAJCOM Summary Tab###############

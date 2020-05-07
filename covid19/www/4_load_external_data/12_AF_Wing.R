@@ -1,11 +1,11 @@
-AFNAFS = vroom::vroom("www/4_load_external_data/data_files/AF_Wings2.csv")
+# AFNAFS = vroom::vroom("www/4_load_external_data/data_files/NAF.csv")
+# 
+# NAFList <- sort(unique(AFNAFS$NAF), decreasing = FALSE)
+# AFWings<-dplyr::filter(AFNAFS,NAF %in% NAFList)
+# WingList <- sort(unique(AFWings$Wing), decreasing = FALSE)
+# WingList <- c("All",WingList)
 
-NAFList <- sort(unique(AFNAFS$NAF), decreasing = FALSE)
-AFWings<-dplyr::filter(AFNAFS,NAF %in% NAFList)
-WingList <- sort(unique(AFWings$Wing), decreasing = FALSE)
-WingList <- c("All",WingList)
-
-###Constructing the cimdtest and himdtest matrices
+# ##Constructing the cimdtest and himdtest matrices
 # AFBaseLocations2 = vroom::vroom("C:/Users/taylo/Documents/CHAD/covid19/www/4_load_external_data/data_files/AllServiceBases.csv")
 # 
 # AFBaseLocations2$Lat <- as.numeric(AFBaseLocations2$Lat)
@@ -36,13 +36,9 @@ WingList <- c("All",WingList)
 # write.csv(himdtest,"C:/Users/taylo/Documents/CHAD/covid19/www/4_load_external_data/data_files/himdtest.csv", row.names = FALSE)
 # write.csv(AFBaseLocations,"C:/Users/taylo/Documents/CHAD/covid19/www/4_load_external_data/data_files/AFBaseLocations.csv", row.names = FALSE)
 
-# ##setwd("C:/Users/taylo/Documents/CHAD/covid19/www/4_load_external_data/data_files/")
-# #setwd("C:/Users/taylo/Documents/CHAD/covid19/www/3_load_local_data/")
-# #save(cimdtest, file = "cimd.rda")
-# #save(himdtest, file = "himd.rda")
-# #save(AFBaseLocations, file = "AFBaseLocations.rda")
-
-AFBaseLocations <-vroom::vroom("www/4_load_external_data/data_files/AFBaseLocations.csv")
-cimd <-vroom::vroom("www/4_load_external_data/data_files/cimdtest.csv")
-himd <-vroom::vroom("www/4_load_external_data/data_files/himdtest.csv")
+# setwd("C:/Users/taylo/Documents/CHAD/covid19/www/3_load_local_data/")
+# save(cimdtest, file = "cimd.rda")
+# save(himdtest, file = "himd.rda")
+# save(AFBaseLocations, file = "AFBaseLocations.rda")
+# save(AFNAFS, file = "AFNAS.rda")
 

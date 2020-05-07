@@ -1,3 +1,8 @@
+NAFList <- sort(unique(AFNAFS$NAF), decreasing = FALSE)
+AFWings<-dplyr::filter(AFNAFS,NAF %in% NAFList)
+WingList <- sort(unique(AFWings$Wing), decreasing = FALSE)
+WingList <- c("All",WingList)
+
 #Create list of hospitals, bases, and counties.
 BaseList <- sort(AFBaseLocations$Base, decreasing = FALSE)
 HospitalList <- HospitalInfo$NAME
@@ -5,6 +10,7 @@ CountyList <- CountyInfo$County
 
 BranchList <- sort(unique(AFBaseLocations$Branch), decreasing = FALSE)
 AFBases<-dplyr::filter(AFBaseLocations,Branch %in% "Air Force")
+BaseListP<-dplyr::filter(AFBases,Operational %in% "Active")
 MAJCOMList <- sort(unique(AFBases$'Major Command'), decreasing = FALSE)
 MAJCOMList<-c("All",'Active Duty',MAJCOMList)
 OperationalList <- sort(unique(AFBases$Operational), decreasing = FALSE)

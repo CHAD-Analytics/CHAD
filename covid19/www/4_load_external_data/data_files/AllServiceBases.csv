@@ -1,7 +1,7 @@
 ﻿FID,Base,City,Country,State,Branch,Major Command,Lat,Long,County,FIP,Operational,Joint,State2,Zip
 15,Bonito Lake System Annex,Bent,United States,NM,Air Force,N/A,33.1587,-105.85693,Otero ,,Active,N/A,New Mexico,88314
 16,Brooks Air Force Base,Briggs,United States,TX,Air Force,N/A,30.936006,-97.934579,Burnet ,,Active,N/A,Texas,78608
-18,Camp Bullis Training Annex,Kemp,United States,TX,Air Force,N/A,32.44264,-96.229977,Kaufman ,,Active,Joint Base San Antonio,Texas,75143
+18,Joint Base San Antonio Camp Bullis Training Annex,Kemp,United States,TX,Air Force,N/A,32.44264,-96.229977,Kaufman ,,Active,Joint Base San Antonio,Texas,75143
 21,Canyon Lake Recreation Annex,Canyon Lake,United States,TX,Air Force,N/A,29.863258,-98.255736,Comal ,,Active,Joint Base San Antonio,Texas,78133
 25,Chanute Air Force Base,Ferris,United States,IL,Air Force,N/A,40.46893,-91.17042,Hancock ,,Active,N/A,Illinois,62336
 26,Joint Base Charleston,Charleston Air Force Base,United States,SC,Air Force,N/A,32.892396,-80.076202,Charleston ,,Active,Joint Base Charleston,South Carolina,29404
@@ -107,7 +107,9 @@
 68,Joint Base Charleston Naval Weapons Station,Charleston,United States,SC,Air Force,AMC,32.89861111,-80.04055556,Charleston,45019,Active,Joint Base Charleston,South Carolina,29404
 ,Joint Base Lewis-McChord Army Installation,Tacoma,United States,WA,Army,Army,47.1475,-122.4794444,Pierce,53053,Active,Joint,Washington,
 147,Joint Base Lewis-McChord Air Base Station,Tacoma,United States,WA,Air Force,AMC,47.1475,-122.4794444,Pierce,53053,Active,Joint,Washington,
-97,Joint Base McGuire-Dix-Lakehurst,Trenton,United States,NJ,Air Force,AMC,40.01916667,-74.52277778,Burlington,34005,Active,,,
+97,Joint Base McGuire-Dix-Lakehurst Air Base Station,Trenton,United States,NJ,Air Force,AMC,40.01916667,-74.52277778,Burlington,34005,Active,,,
+97,Joint Base McGuire-Dix-Lakehurst Army Installation,Trenton,United States,NJ,Army,Army,40.01916667,-74.52277778,Burlington,34005,Active,,,
+97,Joint Base McGuire-Dix-Lakehurst STG,Trenton,United States,NJ,Navy,Navy,40.01916667,-74.52277778,Burlington,34005,Active,,,
 87,Little Rock Air Force Base,Little Rock,United States,AR,Air Force,AMC,34.91694444,-92.14638889,Pulaski,5119,Active,N/A,Arkansas,72206
 93,MacDill Air Force Base,Tampa,United States,FL,Air Force,AMC,27.84944444,-82.52111111,Hillsborough,12057,Active,N/A,Florida,12057
 98,McConnell Air Force Base,Wichita,United States,KS,Air Force,AMC,37.62305556,-97.26722222,Sedgwick,20173,Active,N/A,Kansas,67221
@@ -208,7 +210,7 @@
 269,Fort Carson,Fort Carson,United States,CO,Army,Army,38.737494,-104.788862,El Paso ,,Active,N/A,Colorado,80913
 272,Fort Detrick Forest Glen Annex,Forest Greens,United States,MD,Army,Army,39.457054,-76.228844,Harford ,,Active,N/A,Maryland,21001
 274,Fort Drum,Fort Drum,United States,NY,Army,Army,44.032457,-75.754468,Jefferson ,,Active,N/A,New York,13602
-275,Fort George G Meade,Fort George G Meade,United States,MD,Army,Army,39.114553,-76.765249,Anne Arundel ,,Active,N/A,Maryland,20755
+275,Fort George Meade,Fort George G Meade,United States,MD,Army,Army,39.114553,-76.765249,Anne Arundel ,,Active,N/A,Maryland,20755
 277,Fort Gordon,Gordon,United States,GA,Army,Army,32.881267,-83.302945,Wilkinson ,,Active,N/A,Georgia,31031
 278,Fort Greely,Fort Greely,United States,AK,Army,Army,63.941202,-145.57398,Southeast Fairbanks Census Area,,Active,N/A,Alaska,98733
 279,Fort Hamilton,Fort Hamilton,United States,NY,Army,Army,40.618715,-74.033196,Kings ,,Active,N/A,New York,11209
