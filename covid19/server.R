@@ -805,7 +805,8 @@ server <- function(input, output,session) {
     })
     observe(updateSelectInput(session,"Base",choices = BaseListP()))
     ###################################################################
-    
+
+        
     ####### Filter MAJCOM Summary Tab###############
     OperationalList<- reactive({
       #Once select service, select active, guard, reserve
@@ -815,8 +816,9 @@ server <- function(input, output,session) {
     })
     observe(updateSelectInput(session,"OperationalInput",choices = OperationalList()))  
   
-    # ##Add in Wing/Group Filter
-    # ##Might need make a separate  funtion that's global
+    ######
+    ######  Need to filter NAF and MAJCOM lists by operational status above
+    ######
     
     WingList<- reactive({
       #Once add additional NAFS, change NAFList to input$NAFInput
@@ -1150,7 +1152,8 @@ server <- function(input, output,session) {
       })    
     
     output$HotSpot <- renderPlot({
-      HotspotPlot(CovidConfirmedCases,CovidDeaths,input$Branch,input$OperationalInput,input$MAJCOMNAF,input$MAJCOMInput,input$NAFInput,input$WingInput)
+      HotspotPlot(CovidConfirmedCases,CovidDeaths,input$Branch,input$OperationalInput,input$MAJCOMNAF,
+                  input$MAJCOMInput,input$NAFInput,input$WingInput,input$GroupInput)
     })
     
     # Output Report ------------------------------------------------------------------------------------------------------------------------------------------------------------------

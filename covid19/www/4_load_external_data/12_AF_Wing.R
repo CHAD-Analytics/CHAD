@@ -1,18 +1,13 @@
-<<<<<<< HEAD
+
 # AFNAFS = vroom::vroom("C:/Users/taylo/Documents/CHAD/covid19/www/4_load_external_data/data_files/NAF.csv")
-=======
 # AFNAFS = vroom::vroom("www/4_load_external_data/data_files/NAF.csv")
->>>>>>> c8d30a770650c16fd4b24006318d50c991d6f296
-# 
+# AFNAFS = vroom::vroom("C:/Users/taylo/Documents/CHAD/covid19/www/4_load_external_data/data_files/NAF.csv")
+# AFNAFS = vroom::vroom("www/4_load_external_data/data_files/NAF.csv")
 # NAFList <- sort(unique(AFNAFS$NAF), decreasing = FALSE)
 # AFWings<-dplyr::filter(AFNAFS,NAF %in% NAFList)
 # WingList <- sort(unique(AFWings$Wing), decreasing = FALSE)
 # WingList <- c("All",WingList)
-<<<<<<< HEAD
-# 
-=======
 
->>>>>>> c8d30a770650c16fd4b24006318d50c991d6f296
 # ##Constructing the cimdtest and himdtest matrices
 # AFBaseLocations2 = vroom::vroom("C:/Users/taylo/Documents/CHAD/covid19/www/4_load_external_data/data_files/AllServiceBases.csv")
 # 
@@ -49,19 +44,14 @@
 # save(himd, file = "himd.rda")
 # save(AFBaseLocations, file = "AFBaseLocations.rda")
 # save(AFNAFS, file = "AFNAS.rda")
-
-
-<<<<<<< HEAD
 cimd<-vroom::vroom("www/4_load_external_data/data_files/cimd.csv")
 himd<-vroom::vroom("www/4_load_external_data/data_files/himd.csv")
 AFBaseLocations<-vroom::vroom("www/4_load_external_data/data_files/AFBaseLocations.csv")
 AFNAFS<-vroom::vroom("www/4_load_external_data/data_files/NAF.csv")
 
-=======
 # setwd("C:/Users/taylo/Documents/CHAD/covid19/www/3_load_local_data/")
 # save(cimdtest, file = "cimd.rda")
 # save(himdtest, file = "himd.rda")
 # save(AFBaseLocations, file = "AFBaseLocations.rda")
 # save(AFNAFS, file = "AFNAS.rda")
->>>>>>> c8d30a770650c16fd4b24006318d50c991d6f296
 
