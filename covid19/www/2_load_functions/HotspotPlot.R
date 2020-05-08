@@ -85,6 +85,7 @@ HotspotPlot <- function(CovidConfirmedCases, CovidDeaths, BranchSelect,OpsSelect
     # OpsSelect <- "Guard"   
     # MAJNAFSelect<-"MAJCOM"
     # MAJCOMInput<-"ACC"
+
     
     ####Need to add filtering for branch/operational status/then majcom/NAF
     bases_radius<-dplyr::filter(bases_radius,Branch %in% BranchSelect) #
