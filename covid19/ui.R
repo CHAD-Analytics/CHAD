@@ -177,7 +177,7 @@ ui <- tagList(
                                                                 selected = c("IHME","CHIME1")),
                                            actionLink("selectall","Select All")
                                        ),
-                                       br(),
+                                       br()
                                        
                                    # menuItem(
                                    #     "National Health Projection Inputs",
@@ -195,13 +195,13 @@ ui <- tagList(
                                    #                          "Social Distance" = "SDN"))
                                    # ),
                                    
-                                   div(style="text-align:center", tags$hr(style="border-color: #444;"), "Generate & Download Report:"),
-                                   br(),
-                                   fluidRow(
-                                     downloadButton("report", "Generate Report", class = "butt"),
-                                     tags$style(".skin-black .sidebar .butt{background-color:#15824d;color: white;border-color:white;}"),
-                                     align = "center"
-                                   )
+                                   # div(style="text-align:center", tags$hr(style="border-color: #444;"), "Generate & Download Report:"),
+                                   # br(),
+                                   # fluidRow(
+                                   #   downloadButton("report", "Generate Report", class = "butt"),
+                                   #   tags$style(".skin-black .sidebar .butt{background-color:#15824d;color: white;border-color:white;}"),
+                                   #   align = "center"
+                                   # )
                                    
                                    
                   )
@@ -290,17 +290,22 @@ ui <- tagList(
                         ),
                         tabPanel("Moving 3-Day Average",
                                  plotlyOutput("LocalHealthPlot3day",height = 300)
-                        ),
-                        tabPanel("14-day Growth Rate",
-                                 plotlyOutput("LocalHealthPlot14dayGrowth",height = 300)
                         )
+                        # tabPanel("14-day Growth Rate",
+                        #          plotlyOutput("LocalHealthPlot14dayGrowth",height = 300)
+                        # )
                       ),
                       #box(title = "Daily Reports",plotlyOutput("LocalHealthPlot1",height = 300)),
                       box(title = "Total Reports",plotlyOutput("LocalHealthPlot2",height = 300))
                     ),
                     fluidRow(
                       box(title = "Local Impact Map", plotlyOutput("LocalChoroPlot", height = 250),height = 300),
-                      box(title = "Local County Statistics", solidHeader=T, align = "left", column(width = 12, DT::dataTableOutput("CountyDataTable1"), style = "height:240px;overflow-y: scroll"), height = 300)
+                      box(title = "Local County Statistics", 
+                          solidHeader=T, align = "left", 
+                          column(width = 12, 
+                                 DT::dataTableOutput("CountyDataTable1"), 
+                                 style = "height:240px;overflow-y: scroll"), 
+                          height = 300)
                     )
                   ),
                   ####### END CURRENT LOCAL HEALTH TAB #######
