@@ -43,7 +43,10 @@ ForecastDataTableCases <- setNames(data.frame(matrix(ncol = 32, nrow = 0)),c("In
 for (i in 2:AFrow){
   #Create Number of current cases and cases per 100,000 in a local area
   radius<-50
-  MyCounties<-GetCounties(AFBaseLocations$Base[i],radius)
+  baseDF = dplyr::filter(AFBaseLocations, Base == AFBaseLocations$Base[i])
+  CountyInfo$DistanceMiles = cimd[,AFBaseLocations$Base[i]]
+  MyCounties<-dplyr::filter(CountyInfo, DistanceMiles <= radius | FIPS == baseDF$FIPS)
+  
   CovidDataCounties<-subset(CovidConfirmedCases, CountyFIPS %in% MyCounties$FIPS)
   NewCases<-sum(rev(CovidDataCounties)[,1]-rev(CovidDataCounties)[,2])
   NewHospitalizations<-round(NewCases*.2)
@@ -316,7 +319,10 @@ ForecastDataTableCasesOneMile <- setNames(data.frame(matrix(ncol = 32, nrow = 0)
 for (i in 2:AFrow){
   #Create Number of current cases and cases per 100,000 in a local area
   radius<-5
-  MyCounties<-GetCounties(AFBaseLocations$Base[i],radius)
+  baseDF = dplyr::filter(AFBaseLocations, Base == AFBaseLocations$Base[i])
+  CountyInfo$DistanceMiles = cimd[,AFBaseLocations$Base[i]]
+  MyCounties<-dplyr::filter(CountyInfo, DistanceMiles <= radius | FIPS == baseDF$FIPS)
+  
   CovidDataCounties<-subset(CovidConfirmedCases, CountyFIPS %in% MyCounties$FIPS)
   NewCases<-sum(rev(CovidDataCounties)[,1]-rev(CovidDataCounties)[,2])
   NewHospitalizations<-round(NewCases*.2)

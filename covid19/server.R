@@ -19,20 +19,136 @@ server <- function(input, output,session) {
   # Step One
   ###################################################################################################################################################
   
+  addedCounties<-reactiveVal(value = NULL)
+  deletedCounties<-reactiveVal(value=NULL)
   
+  observeEvent(input$Base, {
+    addedCounties(NULL)
+    deletedCounties(NULL)
+  })
+  
+  observeEvent(input$Radius, {
+    addedCounties(NULL)
+    deletedCounties(NULL)
+  })
+  
+  observeEvent(event_data("plotly_click", source = "TEST"), {
+    county_clicked <- event_data("plotly_click", source = "TEST")
+    #df<-GetCounties(input$Base,input$Radius, NULL, NULL)
+    df<-MyCounties()
+    newCounty<-getNewCounty(df,input$Base, as.integer(county_clicked$curveNumber))
+    # print("Just Clicked Something")
+    # print(newCounty[[1]])
+    # print(addedCounties())
+    # print(deletedCounties())
+    if(is.null(addedCounties())){ #do nothing
+    }else{ # see if new county is in addedcounties
+      myFIPS<-newCounty[[1]][["FIPS"]]
+      myRow<-which(addedCounties() == myFIPS, arr.ind = TRUE)#which(grepl(myFIPS, deletedCounties()))
+      if(is_empty(myRow)){
+      }else{
+        tempcounty<-addedCounties()
+        tempcounty<-tempcounty[-c(myRow[1,1]),] #remove it from addedCounties
+        if(nrow(tempcounty)==0){addedCounties(NULL)}else{addedCounties(tempcounty)}            }
+    }
+    if(is.null(deletedCounties())){ #do nothing
+    }else{ # see if new county is in addedcounties
+      myFIPS<-newCounty[[1]][["FIPS"]]
+      myRow<-which(deletedCounties() == myFIPS, arr.ind = TRUE)#which(grepl(myFIPS, deletedCounties()))
+      if(is_empty(myRow)){
+      }else{
+        tempcounty<-deletedCounties()
+        tempcounty<-tempcounty[-c(myRow[1,1]),] #remove it from addedCounties
+        if(nrow(tempcounty)==0){deletedCounties(NULL)}else{deletedCounties(tempcounty)}
+      }
+    }
+    # print("Removed Clicked Something")
+    # print(addedCounties())
+    # print(deletedCounties())
+    if(newCounty[[2]]==1){
+      if(is.null(addedCounties())){
+        addedCounties(newCounty[[1]])
+      }else{
+        tempcounty<-rbind(addedCounties(),newCounty[[1]])
+        addedCounties(tempcounty)
+      }
+      
+      #     #tempcounty<-subset(CountyInfo, FIPS %in% newCounty[[1]])
+      #     if(is.null(deletedCounties())){
+      #     }else{
+      #         oldDeleted<-deletedCounties()
+      #         myFIPS<-newCounty[[1]][["FIPS"]]
+      #         print(myFIPS)
+      #         myFIPS<-which(deletedCounties() == myFIPS, arr.ind = TRUE)#which(grepl(myFIPS, deletedCounties()))
+      #         print(myFIPS)
+      #         if(is_empty(myFIPS)){}else{
+      #             oldDeleted<-oldDeleted[-c(myFIPS[1,1]),]
+      #             print(oldDeleted)
+      #         }
+      #         deletedCounties(oldDeleted)
+      #     }
+      #     addedCounties(newCounty[[1]])
+      # }else{
+      #     if(is.null(deletedCounties())){
+      #     }else{
+      #         oldDeleted<-deletedCounties()
+      #         myFIPS<-newCounty[[1]][["FIPS"]]
+      #         print(myFIPS)
+      #         myFIPS<-which(deletedCounties() == myFIPS, arr.ind = TRUE)#which(grepl(myFIPS, deletedCounties()))
+      #         print(myFIPS)
+      #         if(is_empty(myFIPS)){}else{
+      #             oldDeleted<-oldDeleted[-c(myFIPS[1,1]),]
+      #             print(oldDeleted)
+      #         }
+      #         deletedCounties(oldDeleted)
+      #     }
+      #}
+    }else{
+      checkAdded(newCounty[[1]],addedCounties(), deletedCounties())
+      if(is.null(deletedCounties())){
+        deletedCounties(newCounty[[1]])
+      }else{
+        tempcounty<-rbind(deletedCounties(),newCounty[[1]])
+        deletedCounties(tempcounty)
+      }
+      # if(is.null(deletedCounties())){
+      #    # tempcounty<-subset(CountyInfo, FIPS %in% newCounty[[1]])
+      #     deletedCounties(newCounty[[1]])
+      # }else{
+      #     if(is.null(addedCounties())){
+      #     }else{
+      #         oldAdded<-addedCounties()
+      #         myFIPS<-newCounty[[1]][["FIPS"]]
+      #         myFIPS<-which(addedCounties() == myFIPS, arr.ind = TRUE) #which(grepl(myFIPS, addedCounties()))
+      #         if(is_empty(myFIPS)){}else{
+      #             oldAdded<-oldAdded[-c(myFIPS[1,1]),]
+      #         }
+      #         addedCounties(oldAdded)
+      #     }
+      #     tempcounty<-rbind(deletedCounties(), newCounty[[1]])
+      #     deletedCounties(tempcounty)
+      # }
+    }
+    # print("added or removed Clicked Something")
+    # print(newCounty[[2]])
+    # print(addedCounties())
+    # print(deletedCounties())
+  })  
   
   
   # Step Two
   ###################################################################################################################################################
-  
+  MyCounties<-reactive({
+    GetCounties(input$Base,input$Radius, addedCounties(), deletedCounties())    
+  })
   
   # Output common statistics -------------------------------------------------------------------------------------------------------------------------------------------
   
   #Finds which counties in given radius. Also Give county statistics
   output$TotalPopulation <- renderValueBox({
-    MyCounties<-GetCounties(input$Base,input$Radius)
+    #MyCounties<-GetCounties(input$Base,input$Radius)
     valueBox(subtitle = "Total Regional Population",
-             comma(CalculateCounties(MyCounties)),
+             comma(CalculateCounties(MyCounties())),
              #icon = icon("list-ol"),
              color = "light-blue"
     )
@@ -41,9 +157,9 @@ server <- function(input, output,session) {
   
   # Finds Covid Cases and statistics on covid per county
   output$CovidCases <- renderValueBox({
-    MyCounties<-GetCounties(input$Base,input$Radius)
+    #MyCounties<-GetCounties(input$Base,input$Radius)
     valueBox(subtitle = "Total Confirmed Cases",
-             comma(CalculateCovid(MyCounties)),
+             comma(CalculateCovid(MyCounties())),
              #icon = icon("list-ol"),
              color = "light-blue"
     )
@@ -52,9 +168,9 @@ server <- function(input, output,session) {
   
   # Finds Covid Cases per 1,000
   output$CasesPer1000 <- renderValueBox({
-    MyCounties<-GetCounties(input$Base,input$Radius)
+    #MyCounties<-GetCounties(input$Base,input$Radius)
     valueBox(subtitle = "Total Confirmed Cases per 1,000",
-             comma(CalculateCovid1000(MyCounties)),
+             comma(CalculateCovid1000(MyCounties())),
              #icon = icon("list-ol"),
              color = "teal"
     )
@@ -63,8 +179,9 @@ server <- function(input, output,session) {
   
   #Outputs change in covid cases per day
   output$CaseChangeLocal <- renderValueBox({
-    MyCounties<-GetCounties(input$Base,input$Radius)
-    CovidCounties<-subset(CovidConfirmedCases, CountyFIPS %in% MyCounties$FIPS)
+    #MyCounties<-GetCounties(input$Base,input$Radius)
+    df<-MyCounties()
+    CovidCounties<-subset(CovidConfirmedCases, CountyFIPS %in% df$FIPS)
     changeC <- sum(rev(CovidCounties)[,1] - rev(CovidCounties)[,2])
     
     valueBox(paste("+",toString(changeC)),
@@ -75,9 +192,9 @@ server <- function(input, output,session) {
   
   # Finds Covid deaths and statistics on covid per county
   output$LocalCovidDeaths <- renderValueBox({
-    MyCounties<-GetCounties(input$Base,input$Radius)
+    #MyCounties<-GetCounties(input$Base,input$Radius)
     valueBox(subtitle = "Total Fatalities",
-             comma(CalculateDeaths(MyCounties)),
+             comma(CalculateDeaths(MyCounties())),
              #icon = icon("skull"),
              color = "light-blue"
     )
@@ -85,8 +202,9 @@ server <- function(input, output,session) {
   
   #Outputs change in deaths per day   
   output$DeathChangeLocal <- renderValueBox({
-    MyCounties<-GetCounties(input$Base,input$Radius)
-    CovidCounties<-subset(CovidDeaths, CountyFIPS %in% MyCounties$FIPS)
+    #MyCounties<-GetCounties(input$Base,input$Radius)
+    df<-MyCounties()
+    CovidCounties<-subset(CovidDeaths, CountyFIPS %in% df$FIPS)
     changeC <- sum(rev(CovidCounties)[,1] - rev(CovidCounties)[,2])
     
     valueBox(paste("+",toString(changeC)),
@@ -96,25 +214,25 @@ server <- function(input, output,session) {
   
   #Finds hospital information within a given 100 mile radius. Calculates number of total hospital beds. Can compare to number of cases
   output$HospitalUtilization <- renderValueBox({
-    MyCounties<-GetCounties(input$Base,input$Radius)
+    #MyCounties<-GetCounties(input$Base,input$Radius)
     valueBox(subtitle = "Estimated Local Hospital Bed Utilization",
-             HospitalIncreases(MyCounties),
+             HospitalIncreases(MyCounties()),
              #icon = icon("hospital"),
              color = "navy")
   })
   
   
   output$CaseDbRate <- renderValueBox({
-    MyCounties<-GetCounties(input$Base,input$Radius)
-    valueBox(paste(CaseDblRate(MyCounties),"days"),
+    #MyCounties<-GetCounties(input$Base,input$Radius)
+    valueBox(paste(CaseDblRate(MyCounties()),"days"),
              subtitle = "Case Doubling Rate",
              color = "teal")
   })
   
   
   output$Rt_Estimate <- renderValueBox({
-    MyCounties<-GetCounties(input$Base,input$Radius)
-    valueBox(paste(Estimate_Rt(MyCounties)),
+    #MyCounties<-GetCounties(input$Base,input$Radius)
+    valueBox(paste(Estimate_Rt(MyCounties())),
              subtitle = "Estimated Virus Reproduction Rate",
              color = "navy")
   })
@@ -123,11 +241,11 @@ server <- function(input, output,session) {
   ###################################################################################################
   
   output$CHIMEPeakDate<-renderValueBox({
-    MyCounties<-GetCounties(input$Base,input$Radius)
+    #MyCounties<-GetCounties(input$Base,input$Radius)
     if (is.null(input$SocialDistanceValue) ){social_dist<-1}
     
-    CS      <- "CS"       %in% input$SocialDistanceValue
-    CB    <- "CB"     %in% input$SocialDistanceValue
+    CS <- "CS"  %in% input$SocialDistanceValue
+    CB <- "CB"  %in% input$SocialDistanceValue
     SD <- "SD"  %in% input$SocialDistanceValue
     
     if (CS & CB & SD){
@@ -145,7 +263,7 @@ server <- function(input, output,session) {
     }  else if (SD) {
       social_dist <- 15
     }
-    Peak<-CalculateCHIMEPeak(MyCounties, input$Base, input$Radius, social_dist, input$proj_days, input$StatisticType)
+    Peak<-CalculateCHIMEPeak(MyCounties(), input$Base, input$Radius, social_dist, input$proj_days, input$StatisticType)
     Peak<-format(Peak)
     if (input$StatisticType == "Hospitalizations") {
       valueBox(subtitle = "CHIME Predicted Peak Hospitalizations",
@@ -204,8 +322,8 @@ server <- function(input, output,session) {
   #Create local health plot for Daily Cases 
   output$LocalHealthPlot1<-renderPlotly({
     
-    MyCounties<-GetCounties(input$Base,input$Radius)
-    DailyChart <- CovidCasesPerDayChart(MyCounties)
+    #MyCounties <-GetCounties(input$Base,input$Radius)
+    DailyChart <- CovidCasesPerDayChart(MyCounties())
     DailyChart <- dplyr::filter(DailyChart, ForecastDate >= DailyChart$ForecastDate[1] + 35)
     
     plotDaily <- ggplot(DailyChart) + 
@@ -238,8 +356,8 @@ server <- function(input, output,session) {
   #Create local health plot for Daily Cases 
   output$LocalHealthPlot3day<-renderPlotly({
     
-    MyCounties<-GetCounties(input$Base,input$Radius)
-    DailyChart <- CovidCasesPer3DayAverageChart(MyCounties)
+    #MyCounties<-GetCounties(input$Base,input$Radius)
+    DailyChart <- CovidCasesPer3DayAverageChart(MyCounties())
     DailyChart <- dplyr::filter(DailyChart, ForecastDate >= DailyChart$ForecastDate[1] + 35)
     
     plotDaily <- ggplot(DailyChart) + 
@@ -271,8 +389,8 @@ server <- function(input, output,session) {
   
   output$LocalHealthPlot14dayGrowth<-renderPlotly({
     
-    MyCounties<-GetCounties(input$Base,input$Radius)
-    DailyChart <- CovidCases14DayGrowthChart(MyCounties)
+    #MyCounties<-GetCounties(input$Base,input$Radius)
+    DailyChart <- CovidCases14DayGrowthChart(MyCounties())
     
     plotDaily <- ggplot(DailyChart) + 
       geom_col(aes(x=ForecastDate, 
@@ -315,8 +433,8 @@ server <- function(input, output,session) {
   #Create second plot of local health population 
   output$LocalHealthPlot2<-renderPlotly({
     
-    MyCounties<-GetCounties(input$Base,input$Radius)
-    CumulChart <- CovidCasesCumChart(MyCounties)
+    #MyCounties<-GetCounties(input$Base,input$Radius)
+    CumulChart <- CovidCasesCumChart(MyCounties())
     CumulChart <- dplyr::filter(CumulChart, ForecastDate >= CumulChart$ForecastDate[1] + 35)
     
     #Plot for local area cumulative cases
@@ -405,8 +523,8 @@ server <- function(input, output,session) {
   
   #Creates the local choropleth charts that change based on which base and radius.
   output$LocalChoroPlot<-renderPlotly({
-    MyCounties<-GetCounties(input$Base,input$Radius)
-    PlotLocalChoro(MyCounties, input$Base, input$TypeLocal)
+    #MyCounties<-GetCounties(input$Base,input$Radius)
+    PlotLocalChoro(MyCounties(), input$Base, input$TypeLocal)
   })
   
   #Choice between cases heat map or hospitalizations heat map
@@ -763,9 +881,9 @@ server <- function(input, output,session) {
     # }  else if (SD) {
     #     social_dist <- 15
     # }
-    MyCounties<-GetCounties(input$Base,input$Radius)
+    #MyCounties<-GetCounties(input$Base,input$Radius)
     MyHospitals<-GetHospitals(input$Base,input$Radius)
-    PlotOverlay(input$Base, MyCounties, MyHospitals,ModelID,input$proj_days,input$StatisticType)
+    PlotOverlay(input$Base, MyCounties(), MyHospitals,ModelID,input$proj_days,input$StatisticType)
   })
   
   
@@ -779,8 +897,8 @@ server <- function(input, output,session) {
   })
   
   output$CountyDataTable1<-DT::renderDataTable({
-    MyCounties<-GetCounties(input$Base,input$Radius)
-    dt<-GetLocalDataTable(MyCounties)
+    #MyCounties<-GetCounties(input$Base,input$Radius)
+    dt<-GetLocalDataTable(MyCounties())
     dt<-DT::datatable(dt, rownames = FALSE, options = list(dom = 't',ordering = F, "pageLength"=100))
     dt
   })

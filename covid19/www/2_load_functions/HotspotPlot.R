@@ -95,7 +95,7 @@ HotspotPlot <- function(CovidConfirmedCases, CovidDeaths, BranchSelect,OpsSelect
             bases_radius<-dplyr::filter(bases_radius,Operational %in% OpsSelect)
         }
         bases_radius <- bases_radius %>% 
-            mutate(include = ifelse((new_cases_7_pp > 500) & (date == current_date), TRUE, FALSE))
+            mutate(include = ifelse((new_cases_7_pp > 100) & (date == current_date), TRUE, FALSE))
         
     } else if (BranchSelect=="Air Force"){
         if (OpsSelect != "All"){ 
