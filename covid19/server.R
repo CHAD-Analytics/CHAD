@@ -22,11 +22,19 @@ server <- function(input, output,session) {
   addedCounties<-reactiveVal(value = NULL)
   deletedCounties<-reactiveVal(value=NULL)
   
-  observeEvent(input$Base, {
+  observeEvent(input$BranchP, {
     addedCounties(NULL)
     deletedCounties(NULL)
   })
   
+  observeEvent(input$OperationalInputP, {
+      addedCounties(NULL)
+      deletedCounties(NULL)
+  })
+  observeEvent(input$Base, {
+      addedCounties(NULL)
+      deletedCounties(NULL)
+  })
   observeEvent(input$Radius, {
     addedCounties(NULL)
     deletedCounties(NULL)
