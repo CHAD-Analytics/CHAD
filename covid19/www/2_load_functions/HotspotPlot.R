@@ -136,7 +136,7 @@ HotspotPlot <- function(CovidConfirmedCases, CovidDeaths, BranchSelect,OpsSelect
     min_week_rate <- pmax(min(bases_radius %>% filter(date== current_date) %>% .$case_growth_week), -2) 
     max_week_rate <- pmin(max(bases_radius %>% filter(date== current_date) %>% .$case_growth_week), 2)
     max_deaths <- max(bases_radius %>% filter(date== current_date) %>% .$deaths_pp)
-    print(c(min(bases_radius$deaths_pp), max(bases_radius$deaths_pp)-100))
+                                   
     bases_radius %>%  # had to truncate cases at 10000 before since Mcguire was goin nuts 
         filter(include == TRUE) %>% # filter for "included" bases from IF statement above
         mutate(truncate_week_rate = pmin(case_growth_week, 2)) %>%
