@@ -81,8 +81,14 @@ HotspotPlot <- function(CovidConfirmedCases, CovidDeaths, BranchSelect,OpsSelect
     #### Week % Change Chart ####
     
     
+    # BranchSelect<-"Air Force"
+    # OpsSelect <- "Guard"   
+    # MAJNAFSelect<-"MAJCOM"
+    # MAJCOMInput<-"ACC"
+
+    
     ####Need to add filtering for branch/operational status/then majcom/NAF
-    bases_radius<-dplyr::filter(bases_radius,Branch %in% BranchSelect) #"Air Force")#
+    bases_radius<-dplyr::filter(bases_radius,Branch %in% BranchSelect) #
 
     if (BranchSelect!="Air Force"){
         if (OpsSelect != "All"){ 
@@ -90,6 +96,7 @@ HotspotPlot <- function(CovidConfirmedCases, CovidDeaths, BranchSelect,OpsSelect
         }
         bases_radius <- bases_radius %>% 
             mutate(include = ifelse((new_cases_7_pp > 1800) & (date == current_date), TRUE, FALSE))
+        
     } else if (BranchSelect=="Air Force"){
         if (OpsSelect != "All"){ 
             bases_radius<-dplyr::filter(bases_radius,Operational %in% OpsSelect)
@@ -98,32 +105,38 @@ HotspotPlot <- function(CovidConfirmedCases, CovidDeaths, BranchSelect,OpsSelect
             if (MAJCOMInput == "All"){ 
                 bases_radius <- bases_radius %>% 
                     mutate(include = ifelse((new_cases_7_pp > 1800) & (date == current_date), TRUE, FALSE))
-            }else if (MAJCOMInput == "Active Duty"){
-                bases_radius <- bases_radius %>% 
-                    mutate(include = ifelse((new_cases_7_pp > 500) & (date == current_date) & 
-                                                (`Major Command` != "ANG") & (`Major Command` != "AFRC"), TRUE, FALSE))
-            }else if ((MAJCOMInput == "ANG")){
-                bases_radius <- bases_radius %>% 
-                    mutate(include = ifelse((new_cases_7_pp > 1000) & (date == current_date) & 
-                                                (`Major Command` == MAJCOMInput), TRUE, FALSE))
-            }else{
+            }
+            # else if (MAJCOMInput == "Active Duty"){
+            #     bases_radius <- bases_radius %>% 
+            #         mutate(include = ifelse((new_cases_7_pp > 500) & (date == current_date) & 
+            #                                     (`Major Command` != "ANG") & (`Major Command` != "AFRC"), TRUE, FALSE))
+            # }else if ((MAJCOMInput == "ANG")){
+            #     bases_radius <- bases_radius %>% 
+            #         mutate(include = ifelse((new_cases_7_pp > 1000) & (date == current_date) & 
+            #                                     (`Major Command` == MAJCOMInput), TRUE, FALSE))
+            # }
+            else{
                 bases_radius <- bases_radius %>% mutate(include = ifelse((new_cases_7_pp > 0) & (date == current_date) & 
                                                                              (`Major Command` == MAJCOMInput), TRUE, FALSE))
             }
         } else if (MAJNAFSelect=="NAF"){
             AFWings<-dplyr::filter(AFNAFS,NAF %in% NAFChoice)
             if (WingChoice=="All") {
-                forecastbaselist<-dplyr::filter(AFWings,Wing %in% WingList) 
-                #forecastbaselist<-dplyr::filter(forecastbaselist,Group %in% GroupChoice)                 
+                forecastbaselist<-dplyr::filter(AFWings,Wing %in% WingList)
+                if (GroupChoice!="All") {                
+                    forecastbaselist<-dplyr::filter(forecastbaselist,Group %in% GroupChoice)                 
+                }
                 forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE) 
-                bases_radius<-dplyr::filter(bases_radius,Base %in% forecastbaselist) 
+                bases_radius<-dplyr::filter(bases_radius,base %in% forecastbaselist) 
                 bases_radius <- bases_radius %>% 
                     mutate(include = ifelse((new_cases_7_pp > 1800) & (date == current_date), TRUE, FALSE))
             } else {
                 forecastbaselist<-dplyr::filter(AFWings,Wing %in% WingChoice) 
-                forecastbaselist<-dplyr::filter(forecastbaselist,Group %in% GroupChoice)                 
+                if (GroupChoice!="All") {                
+                    forecastbaselist<-dplyr::filter(forecastbaselist,Group %in% GroupChoice)                 
+                }                
                 forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE) 
-                bases_radius<-dplyr::filter(bases_radius,Base %in% forecastbaselist)       
+                bases_radius<-dplyr::filter(bases_radius,base %in% forecastbaselist)       
                 bases_radius <- bases_radius %>% 
                     mutate(include = ifelse((new_cases_7_pp > 1800) & (date == current_date), TRUE, FALSE))
             }            
