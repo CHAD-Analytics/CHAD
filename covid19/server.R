@@ -820,6 +820,16 @@ server <- function(input, output,session) {
     ######  Need to filter NAF and MAJCOM lists by operational status above
     ######
     
+    MAJCOMList<- reactive({
+      #Once add additional NAFS, change NAFList to input$NAFInput
+      MAJCOMList <- dplyr::filter(AFBaseLocations,Branch %in% input$Branch)
+      MAJCOMList <- dplyr::filter(MAJCOMList,Operational %in% input$OperationalInput) 
+      MAJCOMList <- sort(unique(MAJCOMList$'Major Command'), decreasing = FALSE)
+      MAJCOMList <- c("All",MAJCOMList)
+    })
+    observe(updateSelectInput(session,"WingInput",choices = WingList()))  
+    
+    
     WingList<- reactive({
       #Once add additional NAFS, change NAFList to input$NAFInput
       AFWings<-dplyr::filter(AFNAFS,NAF %in% NAFList)
@@ -844,7 +854,19 @@ server <- function(input, output,session) {
     
 
     output$ForecastDataTable<-DT::renderDataTable({
-      
+
+      forecastbaselist<-dplyr::filter(AFBaseLocations,Branch %in% input$Branch)                        
+      forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE) 
+      ForecastDataTableCases<-dplyr::filter(ForecastDataTableCases,Installation %in% forecastbaselist) 
+      ForecastDataTable<-dplyr::filter(ForecastDataTableCases,Installation %in% forecastbaselist)       
+
+      if(input$OperationalInput != "All") {
+        forecastbaselist<-dplyr::filter(AFBaseLocations,Operational %in% input$OperationalInput)                        
+        forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE)         
+        ForecastDataTableCases<-dplyr::filter(ForecastDataTableCases,Installation %in% forecastbaselist)
+        ForecastDataTable<-dplyr::filter(ForecastDataTable,Installation %in% forecastbaselist)                
+      }      
+
       if (input$MAJCOMNAF == "MAJCOM") {
         if (input$MAJCOMInput == "All") {
           if(input$SummaryStatistic == "Cases") {
@@ -858,7 +880,7 @@ server <- function(input, output,session) {
             dt<-DT::datatable(ForecastDataTable, rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))
             dt
           }
-        } else if(input$MAJCOMInput=="Active Duty"){
+        } else if(input$OperationalInput=="Active"){
           if(input$SummaryStatistic == "Cases") {
             ForecastDataTableCases<-FilterDataTable(ForecastDataTableCases,input$SummaryModelType,input$SummaryForecast)
             FTPrint<-ForecastDataTableCases
