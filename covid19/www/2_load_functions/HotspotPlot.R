@@ -7,13 +7,15 @@ HotspotPlot <- function(CovidConfirmedCases, CovidDeaths, BranchSelect,OpsSelect
     CasesGrowth <- tempCases %>% group_by(CountyFIPS) %>% arrange(CountyFIPS, date) %>%
         dplyr::mutate(new_cases_1 = cumulative_cases - lag(cumulative_cases, 1), 
                       new_cases_3_days = cumulative_cases - lag(cumulative_cases,3),
-                      new_cases_30_days = lag(cumulative_cases,3) - lag(cumulative_cases, 30),
-                      case_growth = ifelse(is.nan(new_cases_3_days/(new_cases_3_days + new_cases_30_days)), 0,
-                                           (new_cases_3_days/(new_cases_3_days +new_cases_30_days))),
+                      new_cases_30_days = cumulative_cases - lag(cumulative_cases, 30),
+                      case_growth = ifelse(is.nan(new_cases_3_days/(new_cases_30_days)), 0,
+                                           (new_cases_3_days/(new_cases_30_days))),
                       new_cases_7_days = cumulative_cases - lag(cumulative_cases,7),
                       new_cases_14_days = cumulative_cases - lag(cumulative_cases,14),
                       case_growth_week = ifelse(is.nan(new_cases_7_days/(new_cases_14_days - new_cases_7_days)), 0,
-                                                (new_cases_7_days/(new_cases_14_days  - new_cases_7_days))))
+                                                (new_cases_7_days/(new_cases_14_days  - new_cases_7_days)))) %>%
+                      replace(is.na(.),0)
+    
     tempDeaths = CovidDeaths %>% select(-State, -stateFIPS) %>%
         reshape2::melt(id.var = c('CountyFIPS','County Name'), variable.name = 'date', value.name = "cumulative_deaths") %>%
         mutate(date = as.Date(str_replace(date, "X",""), format = "%m/%d/%y"), `County Name` = as.character(`County Name`)) %>%
@@ -60,12 +62,18 @@ HotspotPlot <- function(CovidConfirmedCases, CovidDeaths, BranchSelect,OpsSelect
     
     #join base data with county growth data. aggregate county data to base-radius level. also add back in the MAJCOM column 
     bases_radius <- Bases50 %>% left_join(Growth, by = c("FIPS" = "CountyFIPS")) %>% dplyr::group_by(base, date) %>% 
-        dplyr::summarise(cumulative_cases = sum(cumulative_cases), cases_pp = sum(cases_pp), 
-                         new_cases_1_pp = sum(new_cases_1_pp), new_cases_3_pp = sum(new_cases_3_pp),
-                         new_cases_30_pp = sum(new_cases_30_pp), cumulative_deaths = sum(cumulative_deaths), deaths_pp = sum(deaths_pp),
-                         new_cases_7_pp = sum(new_cases_7_pp), new_cases_14_pp = sum(new_cases_14_pp)) %>% 
-        mutate(case_growth = new_cases_3_pp/(new_cases_30_pp+new_cases_3_pp),
-               case_growth_week = ((new_cases_7_pp - (new_cases_14_pp-new_cases_7_pp)) / (new_cases_14_pp-new_cases_7_pp)))
+        dplyr::summarise(cumulative_cases = sum(cumulative_cases),  new_cases_1 = sum(new_cases_1),
+                          new_cases_3_days = sum(new_cases_3_days),new_cases_7_days = sum(new_cases_7_days),
+                          new_cases_14_days = sum(new_cases_14_days),new_cases_30_days = sum(new_cases_30_days),
+                          cumulative_deaths = sum(cumulative_deaths), Population = sum(Population),
+                          ) %>% 
+         mutate(cases_pp = cumulative_cases/Population,
+                new_cases_1_pp = new_cases_1/Population*100000, new_cases_3_pp = new_cases_3_days/Population*100000,
+                new_cases_7_pp = new_cases_7_days/Population*100000, new_cases_14_pp = new_cases_14_days/Population*100000,
+                new_cases_30_pp = new_cases_30_days/Population*100000, deaths_pp = cumulative_deaths/Population*100000,
+                case_growth = new_cases_3_pp/(new_cases_30_pp),
+                case_growth_week = ((new_cases_7_pp - (new_cases_14_pp-new_cases_7_pp)) / (new_cases_14_pp-new_cases_7_pp))
+        )
 
     bases_radius = bases_radius %>% left_join(AFBaseLocations %>% select(Base,Branch,Operational,'Major Command'), by = c("base" = "Base"))
     #this morning, cases were updated before deaths so I added in this code to pull the most current reported deaths date
@@ -99,7 +107,7 @@ HotspotPlot <- function(CovidConfirmedCases, CovidDeaths, BranchSelect,OpsSelect
                     mutate(include = ifelse((new_cases_7_pp > 1000) & (date == current_date) & 
                                                 (`Major Command` == MAJCOMInput), TRUE, FALSE))
             }else{
-                bases_radius <- bases_radius %>% mutate(include = ifelse((new_cases_7_pp > 50) & (date == current_date) & 
+                bases_radius <- bases_radius %>% mutate(include = ifelse((new_cases_7_pp > 0) & (date == current_date) & 
                                                                              (`Major Command` == MAJCOMInput), TRUE, FALSE))
             }
         } else if (MAJNAFSelect=="NAF"){
@@ -128,19 +136,20 @@ HotspotPlot <- function(CovidConfirmedCases, CovidDeaths, BranchSelect,OpsSelect
     min_week_rate <- pmax(min(bases_radius %>% filter(date== current_date) %>% .$case_growth_week), -2) 
     max_week_rate <- pmin(max(bases_radius %>% filter(date== current_date) %>% .$case_growth_week), 2)
     max_deaths <- max(bases_radius %>% filter(date== current_date) %>% .$deaths_pp)
-    
+    print(c(min(bases_radius$deaths_pp), max(bases_radius$deaths_pp)-100))
     bases_radius %>%  # had to truncate cases at 10000 before since Mcguire was goin nuts 
         filter(include == TRUE) %>% # filter for "included" bases from IF statement above
         mutate(truncate_week_rate = pmin(case_growth_week, 2)) %>%
         ggplot(aes(size = new_cases_14_pp, x = new_cases_7_pp, fill = deaths_pp , y = truncate_week_rate)) + 
         geom_point(alpha = 1, shape = 21, stroke = 1) + scale_size_binned(range = c(0, 15), name="Cases (per 100,000) in Last 14 Days",
-                                                                          breaks=seq(0, max_new_14, round((max_new_14 - min_new_14)/3,-3)),
+                                                                          # n.breaks=4,
+                                                                          # nice.breaks = TRUE,
                                                                           limits = c(round(min_new_14, -3), max_new_14),
                                                                           #labels=c("2000","4000","6000","8000+"),
                                                                           guide=guide_legend(direction = "horizontal", title.position = "top")) + 
         scale_alpha(range = c(1, 1)) + #this line might not be needed. didn't want the alpha values to change based off of color/fill
         scale_fill_distiller(palette = "RdBu", na.value = "#b2182b", "Cumulative Deaths (per 100,000)", 
-                             limits = c(min(bases_radius$deaths_pp), max(bases_radius$deaths_pp)-100), #,
+                             limits = c(min(bases_radius$deaths_pp), max(bases_radius$deaths_pp)), #,
                              guide=guide_colorsteps(title.position = "top")) +
         #scale_x_log10() + 
         scale_y_continuous(breaks = seq(min_week_rate,max_week_rate,.5),labels = scales::percent) + 
