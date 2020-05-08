@@ -65,7 +65,7 @@ HotspotPlot <- function(CovidConfirmedCases, CovidDeaths, BranchSelect,OpsSelect
         dplyr::summarise(cumulative_cases = sum(cumulative_cases),  new_cases_1 = sum(new_cases_1),
                           new_cases_3_days = sum(new_cases_3_days),new_cases_7_days = sum(new_cases_7_days),
                           new_cases_14_days = sum(new_cases_14_days),new_cases_30_days = sum(new_cases_30_days),
-                          cumulative_deaths = sum(cumulative_deaths), Population = sum(Population),
+                          cumulative_deaths = sum(cumulative_deaths), Population = sum(Population)
                           ) %>% 
          mutate(cases_pp = cumulative_cases/Population,
                 new_cases_1_pp = new_cases_1/Population*100000, new_cases_3_pp = new_cases_3_days/Population*100000,
@@ -95,7 +95,7 @@ HotspotPlot <- function(CovidConfirmedCases, CovidDeaths, BranchSelect,OpsSelect
             bases_radius<-dplyr::filter(bases_radius,Operational %in% OpsSelect)
         }
         bases_radius <- bases_radius %>% 
-            mutate(include = ifelse((new_cases_7_pp > 1800) & (date == current_date), TRUE, FALSE))
+            mutate(include = ifelse((new_cases_7_pp > 500) & (date == current_date), TRUE, FALSE))
         
     } else if (BranchSelect=="Air Force"){
         if (OpsSelect != "All"){ 
@@ -104,7 +104,7 @@ HotspotPlot <- function(CovidConfirmedCases, CovidDeaths, BranchSelect,OpsSelect
         if (MAJNAFSelect=="MAJCOM"){
             if (MAJCOMInput == "All"){ 
                 bases_radius <- bases_radius %>% 
-                    mutate(include = ifelse((new_cases_7_pp > 1800) & (date == current_date), TRUE, FALSE))
+                    mutate(include = ifelse((new_cases_7_pp > 100) & (date == current_date), TRUE, FALSE))
             }
             # else if (MAJCOMInput == "Active Duty"){
             #     bases_radius <- bases_radius %>% 
@@ -129,7 +129,7 @@ HotspotPlot <- function(CovidConfirmedCases, CovidDeaths, BranchSelect,OpsSelect
                 forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE) 
                 bases_radius<-dplyr::filter(bases_radius,base %in% forecastbaselist) 
                 bases_radius <- bases_radius %>% 
-                    mutate(include = ifelse((new_cases_7_pp > 1800) & (date == current_date), TRUE, FALSE))
+                    mutate(include = ifelse((new_cases_7_pp > 500) & (date == current_date), TRUE, FALSE))
             } else {
                 forecastbaselist<-dplyr::filter(AFWings,Wing %in% WingChoice) 
                 if (GroupChoice!="All") {                
@@ -138,7 +138,7 @@ HotspotPlot <- function(CovidConfirmedCases, CovidDeaths, BranchSelect,OpsSelect
                 forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE) 
                 bases_radius<-dplyr::filter(bases_radius,base %in% forecastbaselist)       
                 bases_radius <- bases_radius %>% 
-                    mutate(include = ifelse((new_cases_7_pp > 1800) & (date == current_date), TRUE, FALSE))
+                    mutate(include = ifelse((new_cases_7_pp > 500) & (date == current_date), TRUE, FALSE))
             }            
         }            
     } 
@@ -146,8 +146,8 @@ HotspotPlot <- function(CovidConfirmedCases, CovidDeaths, BranchSelect,OpsSelect
     
     min_new_14 <- min(bases_radius %>% filter(date == current_date) %>% .$new_cases_14_pp)
     max_new_14 <- pmin(max(bases_radius %>% filter(date == current_date) %>% .$new_cases_14_pp), 10000)
-    min_week_rate <- pmax(min(bases_radius %>% filter(date== current_date) %>% .$case_growth_week), -2) 
-    max_week_rate <- pmin(max(bases_radius %>% filter(date== current_date) %>% .$case_growth_week), 2)
+    min_week_rate <- pmax(min(bases_radius %>% filter(date== current_date) %>% .$case_growth_week, na.rm = TRUE), -2) 
+    max_week_rate <- pmin(max(bases_radius %>% filter(date== current_date) %>% .$case_growth_week, na.rm = TRUE), 2)
     max_deaths <- max(bases_radius %>% filter(date== current_date) %>% .$deaths_pp)
                                    
     bases_radius %>%  # had to truncate cases at 10000 before since Mcguire was goin nuts 
@@ -196,6 +196,7 @@ HotspotPlot <- function(CovidConfirmedCases, CovidDeaths, BranchSelect,OpsSelect
     # MAJCOMInput = "ANG"
     
 }
+
 
 #### Old Code ####
 #### Old Growth Chart ####  
