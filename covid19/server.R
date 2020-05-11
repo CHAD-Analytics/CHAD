@@ -953,7 +953,7 @@ server <- function(input, output,session) {
       MAJCOMList <- sort(unique(MAJCOMList$'Major Command'), decreasing = FALSE)
       MAJCOMList <- c("All",MAJCOMList)
     })
-    observe(updateSelectInput(session,"WingInput",choices = WingList()))  
+    observe(updateSelectInput(session,"MAJCOMInput",choices = MAJCOMList()))  
     
     
     WingList<- reactive({
@@ -979,114 +979,68 @@ server <- function(input, output,session) {
     observeEvent(input$WingInput,{updateSelectInput(session,"GroupInput",choices = GroupList())})  
     
 
-    output$ForecastDataTable<-DT::renderDataTable({
+    output$ForecastDataTableOut<-DT::renderDT({
 
       forecastbaselist<-dplyr::filter(AFBaseLocations,Branch %in% input$Branch)                        
       forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE) 
-      ForecastDataTableCases<-dplyr::filter(ForecastDataTableCases,Installation %in% forecastbaselist) 
-      ForecastDataTable<-dplyr::filter(ForecastDataTableCases,Installation %in% forecastbaselist)       
-
+      
+      if(input$SummaryStatistic == "Cases") {
+        FilteredDT<-dplyr::filter(ForecastDataTableCases,Installation %in% forecastbaselist)                        
+      } else if (input$SummaryStatistic == "Hospitalizations") {
+        FilteredDT<-dplyr::filter(ForecastDataTable,Installation %in% forecastbaselist)                        
+      }   
+      
       if(input$OperationalInput != "All") {
         forecastbaselist<-dplyr::filter(AFBaseLocations,Operational %in% input$OperationalInput)                        
         forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE)         
-        ForecastDataTableCases<-dplyr::filter(ForecastDataTableCases,Installation %in% forecastbaselist)
-        ForecastDataTable<-dplyr::filter(ForecastDataTable,Installation %in% forecastbaselist)                
+        FilteredDT<-dplyr::filter(FilteredDT,Installation %in% forecastbaselist)
       }      
 
       if (input$MAJCOMNAF == "MAJCOM") {
         if (input$MAJCOMInput == "All") {
-          if(input$SummaryStatistic == "Cases") {
-            ForecastDataTableCases<-FilterDataTable(ForecastDataTableCases,input$SummaryModelType,input$SummaryForecast)
-            FTPrint<-ForecastDataTableCases
-            dt<-DT::datatable(ForecastDataTableCases, rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))   
+            FilteredDT<-FilterDataTable(FilteredDT,input$SummaryModelType,input$SummaryForecast)
+            FTPrint<-FilteredDT
+            dt<-DT::datatable(FilteredDT, rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))
             dt
-          } else {
-            ForecastDataTable<-FilterDataTable(ForecastDataTable,input$SummaryModelType,input$SummaryForecast)
-            FTPrint<-ForecastDataTableCases
-            dt<-DT::datatable(ForecastDataTable, rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))
+        } else {
+            FilteredDT<-FilterDataTable(FilteredDT,input$SummaryModelType,input$SummaryForecast)
+            FTPrint<-FilteredDT
+            dt<-DT::datatable(filter(FilteredDT, MAJCOM == input$MAJCOMInput), rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))
             dt
-          }
-        } else if(input$OperationalInput=="Active"){
-          if(input$SummaryStatistic == "Cases") {
-            ForecastDataTableCases<-FilterDataTable(ForecastDataTableCases,input$SummaryModelType,input$SummaryForecast)
-            FTPrint<-ForecastDataTableCases
-            dt<-DT::datatable(filter(ForecastDataTableCases, !MAJCOM %in% c("AFRC","ANG")), rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))
-            dt
-          } else {
-            ForecastDataTable<-FilterDataTable(ForecastDataTable,input$SummaryModelType,input$SummaryForecast)
-            FTPrint<-ForecastDataTable
-            dt<-DT::datatable(filter(ForecastDataTable, !MAJCOM %in% c("AFRC","ANG")), rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))
-            dt
-          }
-        }
-        else {
-          if(input$SummaryStatistic == "Cases") {
-            ForecastDataTableCases<-FilterDataTable(ForecastDataTableCases,input$SummaryModelType,input$SummaryForecast)
-            FTPrint<-ForecastDataTableCases
-            dt<-DT::datatable(filter(ForecastDataTableCases, MAJCOM == input$MAJCOMInput), rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))
-            dt
-          } else {
-            ForecastDataTable<-FilterDataTable(ForecastDataTable,input$SummaryModelType,input$SummaryForecast)
-            FTPrint<-ForecastDataTable                    
-            dt<-DT::datatable(filter(ForecastDataTable, MAJCOM == input$MAJCOMInput), rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))
-            dt
-          }
         }
       } else if (input$MAJCOMNAF == "NAF") {
         
         AFWings<-dplyr::filter(AFNAFS,NAF %in% NAFList)  # We do not allow for all NAFs to be selected, too many units                     
         colset<-c(1,3,2,14,15,16,4,6,7,8,9,10)
         
-        if (input$WingInput == "All") {                  # If all wings are selected
-          #AFWings<-dplyr::filter(AFWings,Wing %in% WingList)            
+        if (input$WingInput == "All") {               
           
           if (input$GroupInput == "All") {                
             GroupList<-sort(unique(AFWings$`Group`), decreasing = FALSE)
             forecastbaselist<-dplyr::filter(AFWings,Group %in% GroupList)                        
             forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE) 
-            ForecastDataTableCases<-dplyr::filter(ForecastDataTableCases,Installation %in% forecastbaselist) 
-            ForecastDataTable<-dplyr::filter(ForecastDataTable,Installation %in% forecastbaselist) 
-            
-            if(input$SummaryStatistic == "Cases") {  #if all groups are selected
-              ForecastDataTableCases<-FilterDataTable(ForecastDataTableCases,input$SummaryModelType,input$SummaryForecast)
-              ForecastDataTableCases<-merge(ForecastDataTableCases,AFNAFS, by.x = "Installation", by.y = "Base")
-              ForecastDataTableCases<-ForecastDataTableCases[, names(ForecastDataTableCases)[colset]]  
-              colnames(ForecastDataTableCases)[2]<-"State"
-              FTPrint<-ForecastDataTableCases                        
-              dt<-DT::datatable(ForecastDataTableCases, rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))   
-              dt
-            } else {                                 #if one group is selected
-              ForecastDataTable<-FilterDataTable(ForecastDataTable,input$SummaryModelType,input$SummaryForecast)
-              ForecastDataTable<-merge(ForecastDataTable,AFNAFS, by.x = "Installation", by.y = "Base")
-              ForecastDataTable<-ForecastDataTable[, names(ForecastDataTable)[colset]]  
-              colnames(ForecastDataTable)[2]<-"State"
-              FTPrint<-ForecastDataTable                        
-              dt<-DT::datatable(ForecastDataTable, rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))
-              dt
-            }
+            FilteredDT<-dplyr::filter(FilteredDT,Installation %in% forecastbaselist) 
+
+            FilteredDT<-FilterDataTable(FilteredDT,input$SummaryModelType,input$SummaryForecast)
+            FilteredDT<-merge(FilteredDT,AFNAFS, by.x = "Installation", by.y = "Base")
+            FilteredDT<-ForecastDataTableCases[, names(FilteredDT)[colset]]  
+            colnames(FilteredDT)[2]<-"State"
+            FTPrint<-FilteredDT                        
+            dt<-DT::datatable(FilteredDT, rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))   
+            dt
+
           } else {                                    
             forecastbaselist<-dplyr::filter(AFWings,Group %in% input$GroupInput)                        
             forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE) 
-            ForecastDataTableCases<-dplyr::filter(ForecastDataTableCases,Installation %in% forecastbaselist) 
-            ForecastDataTable<-dplyr::filter(ForecastDataTable,Installation %in% forecastbaselist)                     
+            FilteredDT<-dplyr::filter(ForecastDataTableCases,Installation %in% forecastbaselist) 
             
-            if(input$SummaryStatistic == "Cases") {  #if all groups are selected
-              ForecastDataTableCases<-FilterDataTable(ForecastDataTableCases,input$SummaryModelType,input$SummaryForecast)
-              ForecastDataTableCases<-merge(ForecastDataTableCases,AFNAFS, by.x = "Installation", by.y = "Base")
-              ForecastDataTableCases<-ForecastDataTableCases[, names(ForecastDataTableCases)[colset]]  
-              colnames(ForecastDataTableCases)[2]<-"State"
-              FTPrint<-ForecastDataTableCases                        
-              dt<-DT::datatable(ForecastDataTableCases, rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))   
-              dt
-            } else {                                 #if one group is selected
-              ForecastDataTable<-FilterDataTable(ForecastDataTable,input$SummaryModelType,input$SummaryForecast)
-              ForecastDataTable<-merge(ForecastDataTable,AFNAFS, by.x = "Installation", by.y = "Base")
-              ForecastDataTable<-ForecastDataTable[, names(ForecastDataTableCases)[colset]]
-              colnames(ForecastDataTable)[2]<-"State"
-              FTPrint<-ForecastDataTable
-              dt<-DT::datatable(ForecastDataTable, rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))
-              dt
-            }
+            FilteredDT<-FilterDataTable(FilteredDT,input$SummaryModelType,input$SummaryForecast)
+            FilteredDT<-merge(FilteredDT,AFNAFS, by.x = "Installation", by.y = "Base")
+            FilteredDT<-FilteredDT[, names(FilteredDT)[colset]]  
+            colnames(FilteredDT)[2]<-"State"
+            FTPrint<-FilteredDT                        
+            dt<-DT::datatable(ForecastDataTableCases, rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))   
+            dt
           }
         } else {      #If one wing is selected
           
@@ -1096,49 +1050,29 @@ server <- function(input, output,session) {
             GroupList<-sort(unique(AFWings$`Group`), decreasing = FALSE)
             forecastbaselist<-dplyr::filter(AFWings,Group %in% GroupList)                        
             forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE) 
-            ForecastDataTableCases<-dplyr::filter(ForecastDataTableCases,Installation %in% forecastbaselist) 
-            ForecastDataTable<-dplyr::filter(ForecastDataTable,Installation %in% forecastbaselist) 
-            
-            if(input$SummaryStatistic == "Cases") {  #if all groups are selected
-              ForecastDataTableCases<-FilterDataTable(ForecastDataTableCases,input$SummaryModelType,input$SummaryForecast)
-              ForecastDataTableCases<-merge(ForecastDataTableCases,AFNAFS, by.x = "Installation", by.y = "Base")
-              ForecastDataTableCases<-ForecastDataTableCases[, names(ForecastDataTableCases)[colset]]  
-              colnames(ForecastDataTableCases)[2]<-"State"
-              FTPrint<-ForecastDataTableCases                        
-              dt<-DT::datatable(ForecastDataTableCases, rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))   
-              dt
-            } else {                                 #if one group is selected
-              ForecastDataTable<-FilterDataTable(ForecastDataTable,input$SummaryModelType,input$SummaryForecast)
-              ForecastDataTable<-merge(ForecastDataTable,AFNAFS, by.x = "Installation", by.y = "Base")
-              ForecastDataTable<-ForecastDataTable[, names(ForecastDataTable)[colset]]  
-              colnames(ForecastDataTable)[2]<-"State"
-              FTPrint<-ForecastDataTable                        
-              dt<-DT::datatable(ForecastDataTable, rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))
-              dt
-            }
+            FilteredDT<-dplyr::filter(FilteredDT,Installation %in% forecastbaselist) 
+
+            FilteredDT<-FilterDataTable(FilteredDT,input$SummaryModelType,input$SummaryForecast)
+            FilteredDT<-merge(FilteredDT,AFNAFS, by.x = "Installation", by.y = "Base")
+            FilteredDT<-FilteredDT[, names(FilteredDT)[colset]]  
+            colnames(FilteredDT)[2]<-"State"
+            FTPrint<-FilteredDT                        
+            dt<-DT::datatable(FilteredDT, rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))   
+            dt
+
           } else {                                    
             forecastbaselist<-dplyr::filter(AFWings,Group %in% input$GroupInput)                        
             forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE) 
-            ForecastDataTableCases<-dplyr::filter(ForecastDataTableCases,Installation %in% forecastbaselist) 
-            ForecastDataTable<-dplyr::filter(ForecastDataTable,Installation %in% forecastbaselist)                     
-            
-            if(input$SummaryStatistic == "Cases") {  #if all groups are selected
-              ForecastDataTableCases<-FilterDataTable(ForecastDataTableCases,input$SummaryModelType,input$SummaryForecast)
-              ForecastDataTableCases<-merge(ForecastDataTableCases,AFNAFS, by.x = "Installation", by.y = "Base")
-              ForecastDataTableCases<-ForecastDataTableCases[, names(ForecastDataTableCases)[colset]]  
-              colnames(ForecastDataTableCases)[2]<-"State"
-              FTPrint<-ForecastDataTableCases                        
-              dt<-DT::datatable(ForecastDataTableCases, rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))   
-              dt
-            } else {                                 #if one group is selected
-              ForecastDataTable<-FilterDataTable(ForecastDataTable,input$SummaryModelType,input$SummaryForecast)
-              ForecastDataTable<-merge(ForecastDataTable,AFNAFS, by.x = "Installation", by.y = "Base")
-              ForecastDataTable<-ForecastDataTable[, names(ForecastDataTable)[colset]]  
-              colnames(ForecastDataTable)[2]<-"State"
-              FTPrint<-ForecastDataTable                        
-              dt<-DT::datatable(ForecastDataTable, rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))
-              dt
-            }
+            FilteredDT<-dplyr::filter(FilteredDT,Installation %in% forecastbaselist) 
+
+            FilteredDT<-FilterDataTable(FilteredDT,input$SummaryModelType,input$SummaryForecast)
+            FilteredDT<-merge(FilteredDT,AFNAFS, by.x = "Installation", by.y = "Base")
+            FilteredDT<-FilteredDT[, names(FilteredDT)[colset]]  
+            colnames(FilteredDT)[2]<-"State"
+            FTPrint<-FilteredDT                        
+            dt<-DT::datatable(FilteredDT, rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))   
+            dt
+
           }
         }
       }

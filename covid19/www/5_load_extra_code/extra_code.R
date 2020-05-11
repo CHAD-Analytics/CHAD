@@ -108,10 +108,9 @@ for (i in 2:AFrow){
   # Apply ratio's to IHME data
   IHME_Region <- IHME_State
   IHME_Region$allbed_mean = round(IHME_State$allbed_mean*PopRatio)
-  #IHME_Region$allbed_lower = round(IHME_State$allbed_lower*PopRatio)
-  #IHME_Region$allbed_upper = round(IHME_State$allbed_upper*PopRatio)
-  IHME_Region<-data.frame(IHME_Region$date, IHME_Region$allbed_mean) #, IHME_Region$allbed_lower, IHME_Region$allbed_upper)
-  colnames(IHME_Region)<-c("ForecastDate", "Expected Hospitalizations") #, "Lower Bound Hospitalizations","Upper Bound Hospitalizations")
+  IHME_Region$confirmed_infections = round(IHME_State$est_infections_mean*PopRatio)  
+  IHME_Region<-data.frame(IHME_Region$date, IHME_Region$allbed_mean, IHME_Region$est_infections_mean)
+  colnames(IHME_Region)<-c("ForecastDate", "Expected Hospitalizations","Expected Cases")
   IHME_Region<- dplyr::filter(IHME_Region, ForecastDate >= Sys.Date())
   
   IHME_Region$ForecastDate<-as.Date(IHME_Region$ForecastDate)
@@ -197,11 +196,15 @@ for (i in 2:AFrow){
                                icurate,ventilatorrate,hospitaltime,icutime,ventilatortime,daysforecasted,Ro,.5)
     MyDates<-seq(Sys.Date()-(length(CovidCounties)-80), length=daysforecasted, by="1 day")
     DailyData<-data.frame(MyDates, SEIARProj$sir$hos_add)
+    DailyDataCases<-data.frame(MyDates, SEIARProj$sir$Id)    
     TotalData<-data.frame(MyDates, SEIARProj$sir$hos_cum)
     colnames(DailyData)<-c("ForecastDate","Expected Hospitalizations")
+    colnames(DailyDataCases)<-c("ForecastDate","Expected Cases")    
     colnames(TotalData)<-c("ForecastDate", "Total Daily Cases")
     DailyData<-DailyData[-1,]
     DailyData<- dplyr::filter(DailyData, ForecastDate > Sys.Date())
+    DailyDataCases<-DailyDataCases[-1,]
+    DailyDataCases<- dplyr::filter(DailyDataCases, ForecastDate > Sys.Date())    
     ########################################################################################
     SevDayVal<-round(DailyData$`Expected Hospitalizations`[7])
     FourteenDayVal<-round(DailyData$`Expected Hospitalizations`[14])
@@ -219,7 +222,6 @@ for (i in 2:AFrow){
     PeakDateFourteenDayVal<-format(DailyData$ForecastDate[PeakDateFourteenDayVal], format="%b-%d")
     PeakDateThirtyDayVal<-format(DailyData$ForecastDate[PeakDateThirtyDayVal], format="%b-%d")
     PeakDateSixtyDayVal<-format(DailyData$ForecastDate[PeakDateSixtyDayVal], format="%b-%d")
-    
     
     #BEGIN IHME CALCS
     I1 = round(IHME_Region$`Expected Hospitalizations`[7])
@@ -248,6 +250,56 @@ for (i in 2:AFrow){
     PID4<-IHME_Region[PeakDate,1]
     PID4<-format(PID4, format="%b-%d")
     
+    ########################################################################################
+    #All of the case information from the CHIME model
+    SevDayValCases<-round(DailyDataCases$`Expected Cases`[7])
+    FourteenDayValCases<-round(DailyDataCases$`Expected Cases`[14])
+    ThirtyDayValCases<-round(DailyDataCases$`Expected Cases`[21])
+    SixtyDayValCases<-round(DailyDataCases$`Expected Cases`[30])
+    PeakSevDayValCases<-round(max(DailyDataCases$`Expected Cases`[1:7]))
+    PeakFourteenDayValCases<-round(max(DailyDataCases$`Expected Cases`[1:14]))
+    PeakThirtyDayValCases<-round(max(DailyDataCases$`Expected Cases`[1:21]))
+    PeakSixtyDayValCases<-round(max(DailyDataCases$`Expected Cases`[1:30]))
+    PeakDateSevDayValCases<-which.max(DailyDataCases$`Expected Cases`[1:7])
+    PeakDateFourteenDayValCases<-which.max(DailyDataCases$`Expected Cases`[1:14])
+    PeakDateThirtyDayValCases<-which.max(DailyDataCases$`Expected Cases`[1:21])
+    PeakDateSixtyDayValCases<-which.max(DailyDataCases$`Expected Cases`[1:30])
+    PeakDateSevDayValCases<-format(DailyDataCases$ForecastDate[PeakDateSevDayValCases], format="%b-%d")
+    PeakDateFourteenDayValCases<-format(DailyDataCases$ForecastDate[PeakDateFourteenDayValCases], format="%b-%d")
+    PeakDateThirtyDayValCases<-format(DailyDataCases$ForecastDate[PeakDateThirtyDayValCases], format="%b-%d")
+    PeakDateSixtyDayValCases<-format(DailyDataCases$ForecastDate[PeakDateSixtyDayValCases], format="%b-%d")
+    
+    #BEGIN IHME CALCS for CASES
+    I1Cases = round(IHME_Region$`Expected Cases`[7])
+    I2Cases = round(IHME_Region$`Expected Cases`[14])
+    I3Cases = round(IHME_Region$`Expected Cases`[21])
+    I4Cases = round(IHME_Region$`Expected Cases`[30])
+    
+    PeakDate<-which.max(IHME_Region$`Expected Cases`[1:7])
+    Peak<-IHME_Region[PeakDate,2]
+    PI1Cases<-round(Peak)
+    PID1Cases<-IHME_Region[PeakDate,1]
+    PID1Cases<-format(PID1, format="%b-%d")
+    
+    PeakDate<-which.max(IHME_Region$`Expected Cases`[1:14])
+    Peak<-IHME_Region[PeakDate,2]
+    PI2Cases<-round(Peak)
+    PID2Cases<-IHME_Region[PeakDate,1]
+    PID2Cases<-format(PID2, format="%b-%d")
+    
+    PeakDate<-which.max(IHME_Region$`Expected Cases`[1:21])
+    Peak<-IHME_Region[PeakDate,2]
+    PI3Cases<-round(Peak)
+    PID3Cases<-IHME_Region[PeakDate,1]
+    PID3Cases<-format(PID3, format="%b-%d")
+    
+    PeakDate<-which.max(IHME_Region$`Expected Cases`[1:30])
+    Peak<-IHME_Region[PeakDate,2]
+    PI4Cases<-round(Peak)
+    PID4Cases<-IHME_Region[PeakDate,1]
+    PID4Cases<-format(PID4, format="%b-%d")
+    ########################################################################################
+    
     NewDF <- data.frame(AFBaseLocations$Base[i],AFBaseLocations$`Major Command`[i],AFBaseLocations$State[i],round(TotalBedsCounty*(1-baseUtlz)), HospitalizationsPer100000, HospitalizationsPer10000, NewHospitalizations,
                         I1,PI1,PID1,SevDayVal,PeakSevDayVal,PeakDateSevDayVal,
                         I2,PI2,PID2,FourteenDayVal,PeakFourteenDayVal,PeakDateFourteenDayVal,
@@ -261,10 +313,10 @@ for (i in 2:AFrow){
     ForecastDataTable <- rbind(ForecastDataTable,NewDF)
     
     NewDFCases <- data.frame(AFBaseLocations$Base[i],AFBaseLocations$`Major Command`[i],AFBaseLocations$State[i],round(TotalBedsCounty*(1-baseUtlz)), CasesPer100000, CasesPer10000, NewCases,TotalCases,
-                             I1/.2,PI1/.2,PID1,SevDayVal/.2,PeakSevDayVal/.2,PeakDateSevDayVal,
-                             I2/.2,PI2/.2,PID2,FourteenDayVal/.2,PeakFourteenDayVal/.2,PeakDateFourteenDayVal,
-                             I3/.2,PI3/.2,PID3,ThirtyDayVal/.2,PeakThirtyDayVal/.2,PeakDateThirtyDayVal,
-                             I4/.2,PI4/.2,PID4,SixtyDayVal/.2,PeakSixtyDayVal/.2,PeakDateSixtyDayVal) 
+                             I1Cases,PI1Cases,PID1Cases,SevDayValCases,PeakSevDayValCases,PeakDateSevDayValCases,
+                             I2Cases,PI2Cases,PID2Cases,FourteenDayValCases,PeakFourteenDayValCases,PeakDateFourteenDayValCases,
+                             I3Cases,PI3Cases,PID3Cases,ThirtyDayValCases,PeakThirtyDayValCases,PeakDateThirtyDayValCases,
+                             I4Cases,PI4Cases,PID4Cases,SixtyDayValCases,PeakSixtyDayValCases,PeakDateSixtyDayValCases) 
     names(NewDFCases) <- c("Installation","MAJCOM","State","Available Beds", "Cases Per 100,000", "Cases Per 10,000","New Cases","Total Cases",
                            "7D IHME Forecast","7D IHME Peak","7D IHME Peak Date","7D SEIAR Forecast","7D SEIAR Peak","7D SEIAR Peak Date",
                            "14D IHME Forecast","14D IHME Peak","14D IHME Peak Date","14D SEIAR Forecast","14D SEIAR Peak","14D SEIAR Peak Date",
@@ -318,7 +370,7 @@ ForecastDataTableCasesOneMile <- setNames(data.frame(matrix(ncol = 32, nrow = 0)
 ##Repeat the above process to generate all of the same information for the single county the base is in (SG request)
 for (i in 2:AFrow){
   #Create Number of current cases and cases per 100,000 in a local area
-  radius<-5
+  radius<-20
   baseDF = dplyr::filter(AFBaseLocations, Base == AFBaseLocations$Base[i])
   CountyInfo$DistanceMiles = cimd[,AFBaseLocations$Base[i]]
   MyCounties<-dplyr::filter(CountyInfo, DistanceMiles <= radius | FIPS == baseDF$FIPS)
@@ -384,10 +436,9 @@ for (i in 2:AFrow){
   # Apply ratio's to IHME data
   IHME_Region <- IHME_State
   IHME_Region$allbed_mean = round(IHME_State$allbed_mean*PopRatio)
-  #IHME_Region$allbed_lower = round(IHME_State$allbed_lower*PopRatio)
-  #IHME_Region$allbed_upper = round(IHME_State$allbed_upper*PopRatio)
-  IHME_Region<-data.frame(IHME_Region$date, IHME_Region$allbed_mean) #, IHME_Region$allbed_lower, IHME_Region$allbed_upper)
-  colnames(IHME_Region)<-c("ForecastDate", "Expected Hospitalizations") #, "Lower Bound Hospitalizations","Upper Bound Hospitalizations")
+  IHME_Region$confirmed_infections = round(IHME_State$est_infections_mean*PopRatio)  
+  IHME_Region<-data.frame(IHME_Region$date, IHME_Region$allbed_mean, IHME_Region$est_infections_mean)
+  colnames(IHME_Region)<-c("ForecastDate", "Expected Hospitalizations","Expected Cases")
   IHME_Region<- dplyr::filter(IHME_Region, ForecastDate >= Sys.Date())
   
   IHME_Region$ForecastDate<-as.Date(IHME_Region$ForecastDate)
@@ -473,11 +524,15 @@ for (i in 2:AFrow){
                                icurate,ventilatorrate,hospitaltime,icutime,ventilatortime,daysforecasted,Ro,.5)
     MyDates<-seq(Sys.Date()-(length(CovidCounties)-80), length=daysforecasted, by="1 day")
     DailyData<-data.frame(MyDates, SEIARProj$sir$hos_add)
+    DailyDataCases<-data.frame(MyDates, SEIARProj$sir$Id)    
     TotalData<-data.frame(MyDates, SEIARProj$sir$hos_cum)
     colnames(DailyData)<-c("ForecastDate","Expected Hospitalizations")
+    colnames(DailyDataCases)<-c("ForecastDate","Expected Cases")    
     colnames(TotalData)<-c("ForecastDate", "Total Daily Cases")
     DailyData<-DailyData[-1,]
     DailyData<- dplyr::filter(DailyData, ForecastDate > Sys.Date())
+    DailyDataCases<-DailyDataCases[-1,]
+    DailyDataCases<- dplyr::filter(DailyDataCases, ForecastDate > Sys.Date())    
     ########################################################################################
     SevDayVal<-round(DailyData$`Expected Hospitalizations`[7])
     FourteenDayVal<-round(DailyData$`Expected Hospitalizations`[14])
@@ -495,7 +550,6 @@ for (i in 2:AFrow){
     PeakDateFourteenDayVal<-format(DailyData$ForecastDate[PeakDateFourteenDayVal], format="%b-%d")
     PeakDateThirtyDayVal<-format(DailyData$ForecastDate[PeakDateThirtyDayVal], format="%b-%d")
     PeakDateSixtyDayVal<-format(DailyData$ForecastDate[PeakDateSixtyDayVal], format="%b-%d")
-    
     
     #BEGIN IHME CALCS
     I1 = round(IHME_Region$`Expected Hospitalizations`[7])
@@ -523,6 +577,56 @@ for (i in 2:AFrow){
     PI4<-round(Peak)
     PID4<-IHME_Region[PeakDate,1]
     PID4<-format(PID4, format="%b-%d")
+
+    ########################################################################################
+    #All of the case information from the CHIME model
+    SevDayValCases<-round(DailyDataCases$`Expected Cases`[7])
+    FourteenDayValCases<-round(DailyDataCases$`Expected Cases`[14])
+    ThirtyDayValCases<-round(DailyDataCases$`Expected Cases`[21])
+    SixtyDayValCases<-round(DailyDataCases$`Expected Cases`[30])
+    PeakSevDayValCases<-round(max(DailyDataCases$`Expected Cases`[1:7]))
+    PeakFourteenDayValCases<-round(max(DailyDataCases$`Expected Cases`[1:14]))
+    PeakThirtyDayValCases<-round(max(DailyDataCases$`Expected Cases`[1:21]))
+    PeakSixtyDayValCases<-round(max(DailyDataCases$`Expected Cases`[1:30]))
+    PeakDateSevDayValCases<-which.max(DailyDataCases$`Expected Cases`[1:7])
+    PeakDateFourteenDayValCases<-which.max(DailyDataCases$`Expected Cases`[1:14])
+    PeakDateThirtyDayValCases<-which.max(DailyDataCases$`Expected Cases`[1:21])
+    PeakDateSixtyDayValCases<-which.max(DailyDataCases$`Expected Cases`[1:30])
+    PeakDateSevDayValCases<-format(DailyDataCases$ForecastDate[PeakDateSevDayValCases], format="%b-%d")
+    PeakDateFourteenDayValCases<-format(DailyDataCases$ForecastDate[PeakDateFourteenDayValCases], format="%b-%d")
+    PeakDateThirtyDayValCases<-format(DailyDataCases$ForecastDate[PeakDateThirtyDayValCases], format="%b-%d")
+    PeakDateSixtyDayValCases<-format(DailyDataCases$ForecastDate[PeakDateSixtyDayValCases], format="%b-%d")
+    
+    #BEGIN IHME CALCS for CASES
+    I1Cases = round(IHME_Region$`Expected Cases`[7])
+    I2Cases = round(IHME_Region$`Expected Cases`[14])
+    I3Cases = round(IHME_Region$`Expected Cases`[21])
+    I4Cases = round(IHME_Region$`Expected Cases`[30])
+    
+    PeakDate<-which.max(IHME_Region$`Expected Cases`[1:7])
+    Peak<-IHME_Region[PeakDate,2]
+    PI1Cases<-round(Peak)
+    PID1Cases<-IHME_Region[PeakDate,1]
+    PID1Cases<-format(PID1, format="%b-%d")
+
+    PeakDate<-which.max(IHME_Region$`Expected Cases`[1:14])
+    Peak<-IHME_Region[PeakDate,2]
+    PI2Cases<-round(Peak)
+    PID2Cases<-IHME_Region[PeakDate,1]
+    PID2Cases<-format(PID2, format="%b-%d")
+
+    PeakDate<-which.max(IHME_Region$`Expected Cases`[1:21])
+    Peak<-IHME_Region[PeakDate,2]
+    PI3Cases<-round(Peak)
+    PID3Cases<-IHME_Region[PeakDate,1]
+    PID3Cases<-format(PID3, format="%b-%d")
+
+    PeakDate<-which.max(IHME_Region$`Expected Cases`[1:30])
+    Peak<-IHME_Region[PeakDate,2]
+    PI4Cases<-round(Peak)
+    PID4Cases<-IHME_Region[PeakDate,1]
+    PID4Cases<-format(PID4, format="%b-%d")
+    ########################################################################################
     
     NewDF <- data.frame(AFBaseLocations$Base[i],AFBaseLocations$`Major Command`[i],AFBaseLocations$State[i],round(TotalBedsCounty*(1-baseUtlz)), HospitalizationsPer100000, HospitalizationsPer10000, NewHospitalizations,
                         I1,PI1,PID1,SevDayVal,PeakSevDayVal,PeakDateSevDayVal,
@@ -537,10 +641,10 @@ for (i in 2:AFrow){
     ForecastDataTableOneMile <- rbind(ForecastDataTableOneMile,NewDF)
     
     NewDFCases <- data.frame(AFBaseLocations$Base[i],AFBaseLocations$`Major Command`[i],AFBaseLocations$State[i],round(TotalBedsCounty*(1-baseUtlz)), CasesPer100000, CasesPer10000, NewCases,TotalCases,
-                             I1/.2,PI1/.2,PID1,SevDayVal/.2,PeakSevDayVal/.2,PeakDateSevDayVal,
-                             I2/.2,PI2/.2,PID2,FourteenDayVal/.2,PeakFourteenDayVal/.2,PeakDateFourteenDayVal,
-                             I3/.2,PI3/.2,PID3,ThirtyDayVal/.2,PeakThirtyDayVal/.2,PeakDateThirtyDayVal,
-                             I4/.2,PI4/.2,PID4,SixtyDayVal/.2,PeakSixtyDayVal/.2,PeakDateSixtyDayVal) 
+                             I1Cases,PI1Cases,PID1Cases,SevDayValCases,PeakSevDayValCases,PeakDateSevDayValCases,
+                             I2Cases,PI2Cases,PID2Cases,FourteenDayValCases,PeakFourteenDayValCases,PeakDateFourteenDayValCases,
+                             I3Cases,PI3Cases,PID3Cases,ThirtyDayValCases,PeakThirtyDayValCases,PeakDateThirtyDayValCases,
+                             I4Cases,PI4Cases,PID4Cases,SixtyDayValCases,PeakSixtyDayValCases,PeakDateSixtyDayValCases) 
     names(NewDFCases) <- c("Installation","MAJCOM","State","Available Beds", "Cases Per 100,000", "Cases Per 10,000","New Cases","Total Cases",
                            "7D IHME Forecast","7D IHME Peak","7D IHME Peak Date","7D SEIAR Forecast","7D SEIAR Peak","7D SEIAR Peak Date",
                            "14D IHME Forecast","14D IHME Peak","14D IHME Peak Date","14D SEIAR Forecast","14D SEIAR Peak","14D SEIAR Peak Date",

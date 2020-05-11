@@ -38,6 +38,7 @@
 # write.csv(cimd,"C:/Users/taylo/Documents/CHAD/covid19/www/4_load_external_data/data_files/cimd.csv", row.names = FALSE)
 # write.csv(himd,"C:/Users/taylo/Documents/CHAD/covid19/www/4_load_external_data/data_files/himd.csv", row.names = FALSE)
 # write.csv(AFBaseLocations,"C:/Users/taylo/Documents/CHAD/covid19/www/4_load_external_data/data_files/AFBaseLocations.csv", row.names = FALSE)
+# write.csv(GlobalData,"C:/Users/taylo/Documents/CHAD/covid19/www/4_load_external_data/data_files/GlobalData.csv", row.names = FALSE)
 # 
 # setwd("C:/Users/taylo/Documents/CHAD/covid19/www/3_load_local_data/")
 # save(cimd, file = "cimd.rda")
