@@ -21,7 +21,7 @@ SEIAR_Model_Run<-function(num_init_cases,
                           icu_dur, 
                           ventilated_dur, 
                           n_days, 
-                          secondary_cases = 2.5, 
+                          secondary_cases, 
                           distribution_e_to_a = 0.5){
     
     ###DEFINING COMPARTMENTS OF THE MODEL

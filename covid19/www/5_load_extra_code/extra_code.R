@@ -178,6 +178,14 @@ for (i in 2:AFrow){
                            "30D IHME Forecast","30D IHME Peak","30D IHME Peak Date","30D SEIAR Forecast","30D SEIAR Peak","30D SEIAR Peak Date")    
     ForecastDataTable <- rbind(ForecastDataTable,NewDF)
   }else{ 
+    # doubling<-CaseDblRate(MyCounties)
+    # Ro<-Estimate_Rt(MyCounties)
+    # if (Ro == "Undefined for Region"){
+    #   Ro<-1
+    # } else if (Ro < 1){
+    #   Ro<-1
+    # }
+    
     incubationtime<-5
     latenttime<-2
     doubling<-8 
@@ -370,7 +378,7 @@ ForecastDataTableCasesOneMile <- setNames(data.frame(matrix(ncol = 32, nrow = 0)
 ##Repeat the above process to generate all of the same information for the single county the base is in (SG request)
 for (i in 2:AFrow){
   #Create Number of current cases and cases per 100,000 in a local area
-  radius<-20
+  radius<-10
   baseDF = dplyr::filter(AFBaseLocations, Base == AFBaseLocations$Base[i])
   CountyInfo$DistanceMiles = cimd[,AFBaseLocations$Base[i]]
   MyCounties<-dplyr::filter(CountyInfo, DistanceMiles <= radius | FIPS == baseDF$FIPS)
@@ -506,6 +514,14 @@ for (i in 2:AFrow){
                            "30D IHME Forecast","30D IHME Peak","30D IHME Peak Date","30D SEIAR Forecast","30D SEIAR Peak","30D SEIAR Peak Date")    
     ForecastDataTableOneMile <- rbind(ForecastDataTableOneMile,NewDF)
   }else{ 
+    # doubling<-CaseDblRate(MyCounties)
+    # Ro<-Estimate_Rt(MyCounties)
+    # if (Ro == "Undefined for Region"){
+    #   Ro<-1
+    # } else if (Ro < 1){
+    #   Ro<-1
+    # }
+    
     incubationtime<-5
     latenttime<-2
     doubling<-8 
@@ -518,6 +534,7 @@ for (i in 2:AFrow){
     icutime<-4
     ventilatortime<-7
     Ro<-2.5
+    
     
     daysforecasted<-60
     SEIARProj<-SEIAR_Model_Run(cases,pop,incubationtime,latenttime,doubling,recoverydays,socialdistancing,hospitalizationrate,

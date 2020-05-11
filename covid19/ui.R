@@ -28,7 +28,13 @@ ui <- tagList(
                 ###################################################################################################################################################
                 dashboardHeader(title = div(img(src=base64enc::dataURI(file="www/7_other_resources/Logo.png", mime="image/png") ,height = '50',width = '150')),
                                 titleWidth = 300,
-                                #actionButton("show","v0.9.5 Updates"),
+                                dropdownMenu( 
+                                  icon = tags$div(HTML('<font size = "5" color = "blue" font-weight:"bold" >Current Upates</font>  <i class="fa fa-flag fa-2x" style = "font-size:18px;"></i> <body style="background-color:green;"></body>')),
+                                  #icon = tags$div(HTML('<a class="btn btn-lg btn-success" href="#"> <i class="fa fa-flag fa-2x pull-left"></i> Current Updates<br>Version 0.9.5</a>)),
+                                  #headerText = "Want to know more?",
+                                  badgeStatus = "primary",
+                                  tags$li(actionLink("UpdateInfo", label = "Update Information", icon = icon("globe")),class = "dropdown")
+                                ),
                                 dropdownMenu( 
                                   icon = tags$div(HTML('<font size = "5" color = "blue" font-weight:"bold" >More Information</font>  <i class="fa fa-info-circle" style = "font-size:18px;"></i> <body style="background-color:powderblue;"></body>')),
                                   headerText = "Want to know more?",
