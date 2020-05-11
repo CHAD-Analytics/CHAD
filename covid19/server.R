@@ -994,6 +994,8 @@ server <- function(input, output,session) {
         forecastbaselist<-dplyr::filter(AFBaseLocations,Operational %in% input$OperationalInput)                        
         forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE)         
         FilteredDT<-dplyr::filter(FilteredDT,Installation %in% forecastbaselist)
+        ForecastDataTableCases<-dplyr::filter(ForecastDataTableCases,Installation %in% forecastbaselist)
+        ForecastDataTable<-dplyr::filter(ForecastDataTable,Installation %in% forecastbaselist)     
       }      
 
       if (input$MAJCOMNAF == "MAJCOM") {
@@ -1039,7 +1041,7 @@ server <- function(input, output,session) {
             FilteredDT<-FilteredDT[, names(FilteredDT)[colset]]  
             colnames(FilteredDT)[2]<-"State"
             FTPrint<-FilteredDT                        
-            dt<-DT::datatable(ForecastDataTableCases, rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))   
+            dt<-DT::datatable(FilteredDT, rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))   
             dt
           }
         } else {      #If one wing is selected

@@ -5,7 +5,7 @@ FilterDataTable<-function(dt,ModelType,ForecastType){
   #All selections should include first 8 columns
   if (ModelType == "IHME") {
     if (ForecastType == "Today"){
-      cols<-c(1:7)
+      cols<-c(1:8)
     } else if(ForecastType == "Seven"){
       cols<-c(1:11)
     } else if(ForecastType == "Fourteen"){
@@ -18,9 +18,11 @@ FilterDataTable<-function(dt,ModelType,ForecastType){
     dt[, names(dt)[cols]]    
   } else {
     if (ForecastType == "Today"){
-      cols<-c(1:7)
+      cols<-c(1:8)
     } else if(ForecastType == "Seven"){
       cols<-c(1:7,12,13,14)
+    } else if(ForecastType == "Seven"){
+      cols<-c(1:8,12,13,14)
     } else if(ForecastType == "Fourteen"){
       cols<-c(1:7,18,19,20)  
     } else if(ForecastType == "Twenty-One"){            
