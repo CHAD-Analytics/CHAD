@@ -953,7 +953,7 @@ server <- function(input, output,session) {
       MAJCOMList <- sort(unique(MAJCOMList$'Major Command'), decreasing = FALSE)
       MAJCOMList <- c("All",MAJCOMList)
     })
-    observe(updateSelectInput(session,"WingInput",choices = WingList()))  
+    observe(updateSelectInput(session,"MAJCOMInput",choices = MAJCOMList()))  
     
     
     WingList<- reactive({
@@ -990,7 +990,7 @@ server <- function(input, output,session) {
         forecastbaselist<-dplyr::filter(AFBaseLocations,Operational %in% input$OperationalInput)                        
         forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE)         
         ForecastDataTableCases<-dplyr::filter(ForecastDataTableCases,Installation %in% forecastbaselist)
-        ForecastDataTable<-dplyr::filter(ForecastDataTable,Installation %in% forecastbaselist)                
+        ForecastDataTable<-dplyr::filter(ForecastDataTable,Installation %in% forecastbaselist)     
       }      
 
       if (input$MAJCOMNAF == "MAJCOM") {
@@ -1000,32 +1000,33 @@ server <- function(input, output,session) {
             FTPrint<-ForecastDataTableCases
             dt<-DT::datatable(ForecastDataTableCases, rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))   
             dt
-          } else {
+          } else if (input$SummaryStatistic == "Hospitalizations") {
             ForecastDataTable<-FilterDataTable(ForecastDataTable,input$SummaryModelType,input$SummaryForecast)
             FTPrint<-ForecastDataTableCases
             dt<-DT::datatable(ForecastDataTable, rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))
             dt
           }
-        } else if(input$OperationalInput=="Active"){
-          if(input$SummaryStatistic == "Cases") {
-            ForecastDataTableCases<-FilterDataTable(ForecastDataTableCases,input$SummaryModelType,input$SummaryForecast)
-            FTPrint<-ForecastDataTableCases
-            dt<-DT::datatable(filter(ForecastDataTableCases, !MAJCOM %in% c("AFRC","ANG")), rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))
-            dt
-          } else {
-            ForecastDataTable<-FilterDataTable(ForecastDataTable,input$SummaryModelType,input$SummaryForecast)
-            FTPrint<-ForecastDataTable
-            dt<-DT::datatable(filter(ForecastDataTable, !MAJCOM %in% c("AFRC","ANG")), rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))
-            dt
-          }
-        }
+        } 
+        # else if(input$OperationalInput=="Active"){
+        #   if(input$SummaryStatistic == "Cases") {
+        #     ForecastDataTableCases<-FilterDataTable(ForecastDataTableCases,input$SummaryModelType,input$SummaryForecast)
+        #     FTPrint<-ForecastDataTableCases
+        #     dt<-DT::datatable(filter(ForecastDataTableCases, !MAJCOM %in% c("AFRC","ANG")), rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))
+        #     dt
+        #   } else {
+        #     ForecastDataTable<-FilterDataTable(ForecastDataTable,input$SummaryModelType,input$SummaryForecast)
+        #     FTPrint<-ForecastDataTable
+        #     dt<-DT::datatable(filter(ForecastDataTable, !MAJCOM %in% c("AFRC","ANG")), rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))
+        #     dt
+        #   }
+        # }
         else {
           if(input$SummaryStatistic == "Cases") {
             ForecastDataTableCases<-FilterDataTable(ForecastDataTableCases,input$SummaryModelType,input$SummaryForecast)
             FTPrint<-ForecastDataTableCases
             dt<-DT::datatable(filter(ForecastDataTableCases, MAJCOM == input$MAJCOMInput), rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))
             dt
-          } else {
+          } else if (input$SummaryStatistic == "Hospitalizations") {
             ForecastDataTable<-FilterDataTable(ForecastDataTable,input$SummaryModelType,input$SummaryForecast)
             FTPrint<-ForecastDataTable                    
             dt<-DT::datatable(filter(ForecastDataTable, MAJCOM == input$MAJCOMInput), rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))
@@ -1055,7 +1056,7 @@ server <- function(input, output,session) {
               FTPrint<-ForecastDataTableCases                        
               dt<-DT::datatable(ForecastDataTableCases, rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))   
               dt
-            } else {                                 #if one group is selected
+            } else if (input$SummaryStatistic == "Hospitalizations") {                                 #if one group is selected
               ForecastDataTable<-FilterDataTable(ForecastDataTable,input$SummaryModelType,input$SummaryForecast)
               ForecastDataTable<-merge(ForecastDataTable,AFNAFS, by.x = "Installation", by.y = "Base")
               ForecastDataTable<-ForecastDataTable[, names(ForecastDataTable)[colset]]  

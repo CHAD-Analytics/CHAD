@@ -26,7 +26,7 @@ ui <- tagList(
                 
                 # Step One - Header
                 ###################################################################################################################################################
-                dashboardHeader(title = div(img(src=base64enc::dataURI(file="www/7_other_resources/Logo.png", mime="image/png") ,height = '75',width = '100')),
+                dashboardHeader(title = div(img(src=base64enc::dataURI(file="www/7_other_resources/Logo.png", mime="image/png") ,height = '50',width = '150')),
                                 titleWidth = 300,
                                 dropdownMenu( 
                                   icon = tags$div(HTML('<font size = "5" color = "blue" font-weight:"bold" >More Information</font>  <i class="fa fa-info-circle" style = "font-size:18px;"></i> <body style="background-color:powderblue;"></body>')),
