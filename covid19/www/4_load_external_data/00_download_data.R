@@ -24,21 +24,21 @@ if(test_date < Sys.Date()) {
   #                       overwrite = T)
   GlobalData = as.data.frame(data.table::fread("https://open-covid-19.github.io/data/data.csv"))
   
-  shaman.lab.json = jsonlite::fromJSON("https://api.github.com/repos/shaman-lab/COVID-19Projection/contents?per_page=100")
-  shaman.lab.path = get.shaman.lab.path()
-
-  R.utils::downloadFile(paste0("https://raw.githubusercontent.com/shaman-lab/COVID-19Projection/master/",shaman.lab.path,"/bed_80contact1x10p.csv"),
-                        filename = "www/4_load_external_data/data_files/bed_80contact1x10p.csv",
-                        overwrite = T)
-  R.utils::downloadFile(paste0(" https://raw.githubusercontent.com/shaman-lab/COVID-19Projection/master/Projection_May10/bed_80contact1x5p.csv"), 
-                        filename = "www/4_load_external_data/data_files/bed_80contact1x5p.csv", 
-                        overwrite = T)  
-  R.utils::downloadFile(paste0("https://raw.githubusercontent.com/shaman-lab/COVID-19Projection/master/",shaman.lab.path,"/bed_80contact1w10p.csv"),
-                        filename = "www/4_load_external_data/data_files/bed_80contactw10p.csv",
-                        overwrite = T)
-  R.utils::downloadFile(paste0("https://raw.githubusercontent.com/shaman-lab/COVID-19Projection/master/",shaman.lab.path,"/bed_80contact1w5p.csv"), 
-                        filename = "www/4_load_external_data/data_files/bed_80contactw5p.csv", 
-                        overwrite = T)  
+  # shaman.lab.json = jsonlite::fromJSON("https://api.github.com/repos/shaman-lab/COVID-19Projection/contents?per_page=100")
+  # shaman.lab.path = get.shaman.lab.path()
+  # 
+  # R.utils::downloadFile(paste0("https://raw.githubusercontent.com/shaman-lab/COVID-19Projection/master/",shaman.lab.path,"/bed_80contact1x10p.csv"),
+  #                       filename = "www/4_load_external_data/data_files/bed_80contact1x10p.csv",
+  #                       overwrite = T)
+  # R.utils::downloadFile(paste0(" https://raw.githubusercontent.com/shaman-lab/COVID-19Projection/master/Projection_May10/bed_80contact1x5p.csv"), 
+  #                       filename = "www/4_load_external_data/data_files/bed_80contact1x5p.csv", 
+  #                       overwrite = T)  
+  # R.utils::downloadFile(paste0("https://raw.githubusercontent.com/shaman-lab/COVID-19Projection/master/",shaman.lab.path,"/bed_80contact1w10p.csv"),
+  #                       filename = "www/4_load_external_data/data_files/bed_80contactw10p.csv",
+  #                       overwrite = T)
+  # R.utils::downloadFile(paste0("https://raw.githubusercontent.com/shaman-lab/COVID-19Projection/master/",shaman.lab.path,"/bed_80contact1w5p.csv"), 
+  #                       filename = "www/4_load_external_data/data_files/bed_80contactw5p.csv", 
+  #                       overwrite = T)  
     
   # YYG.json = jsonlite::fromJSON("https://api.github.com/repos/youyanggu/COVID-19Projection/contents?per_page=100")
   # YYG.path = get_YYG_path()
