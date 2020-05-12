@@ -178,17 +178,22 @@ for (i in 2:AFrow){
                            "30D IHME Forecast","30D IHME Peak","30D IHME Peak Date","30D SEIAR Forecast","30D SEIAR Peak","30D SEIAR Peak Date")    
     ForecastDataTable <- rbind(ForecastDataTable,NewDF)
   }else{ 
-    # doubling<-CaseDblRate(MyCounties)
-    # Ro<-Estimate_Rt(MyCounties)
-    # if (Ro == "Undefined for Region"){
-    #   Ro<-1
-    # } else if (Ro < 1){
-    #   Ro<-1
-    # }
+    
+    doubling<-as.integer(CaseDblRate(MyCounties))
+    if (doubling == 0) {
+      doubling <- as.integer(40)      
+    }
+    
+    Ro<-Estimate_Rt(MyCounties)
+    if (Ro == "Undefined for Region"){
+      Ro<-as.integer(1)
+    } else if (Ro < 1){
+      Ro<-as.integer(1)
+    }
     
     incubationtime<-5
     latenttime<-2
-    doubling<-8 
+    #doubling<-8 
     recoverydays<-14
     socialdistancing<-15
     hospitalizationrate<-5
@@ -197,7 +202,7 @@ for (i in 2:AFrow){
     hospitaltime<-3.5
     icutime<-4
     ventilatortime<-7
-    Ro<-2.5
+    #Ro<-2.5
     
     daysforecasted<-60
     SEIARProj<-SEIAR_Model_Run(cases,pop,incubationtime,latenttime,doubling,recoverydays,socialdistancing,hospitalizationrate,
@@ -514,17 +519,21 @@ for (i in 2:AFrow){
                            "30D IHME Forecast","30D IHME Peak","30D IHME Peak Date","30D SEIAR Forecast","30D SEIAR Peak","30D SEIAR Peak Date")    
     ForecastDataTableOneMile <- rbind(ForecastDataTableOneMile,NewDF)
   }else{ 
-    # doubling<-CaseDblRate(MyCounties)
-    # Ro<-Estimate_Rt(MyCounties)
-    # if (Ro == "Undefined for Region"){
-    #   Ro<-1
-    # } else if (Ro < 1){
-    #   Ro<-1
-    # }
+    doubling<-as.integer(CaseDblRate(MyCounties))
+    if (doubling == 0) {
+      doubling <- as.integer(40)      
+    }
+
+    Ro<-Estimate_Rt(MyCounties)
+    if (Ro == "Undefined for Region"){
+      Ro<-as.integer(1)
+    } else if (Ro < 1){
+      Ro<-as.integer(1)
+    }
     
     incubationtime<-5
     latenttime<-2
-    doubling<-8 
+    #doubling<-8 
     recoverydays<-14
     socialdistancing<-15
     hospitalizationrate<-5
@@ -533,7 +542,8 @@ for (i in 2:AFrow){
     hospitaltime<-3.5
     icutime<-4
     ventilatortime<-7
-    Ro<-2.5
+    #Ro<-2.5
+    
     
     
     daysforecasted<-60
