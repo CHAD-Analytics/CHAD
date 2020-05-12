@@ -101,35 +101,49 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
       LANL_Region$'Lower Estimate'<-c(LANL_Region$'Lower Estimate'[1],diff(LANL_Region$'Lower Estimate'))
       LANL_Region$'Upper Estimate'<-c(LANL_Region$'Upper Estimate'[1],diff(LANL_Region$'Upper Estimate'))      
       
-      CU40_State<-dplyr::filter(CU40PSD,fips %in% IncludedCounties$FIPS)
-      CU30_State<-dplyr::filter(CU30PSD,fips %in% IncludedCounties$FIPS)
-      CU20_State<-dplyr::filter(CU20PSD,fips %in% IncludedCounties$FIPS)
-      CU40_State<-subset(CU40_State, select=-c(County,State,death_25,death_50,death_75))
-      CU30_State<-subset(CU30_State, select=-c(County,State,death_25,death_50,death_75))
-      CU20_State<-subset(CU20_State, select=-c(County,State,death_25,death_50,death_75))    
+      CU20x10PSD_State<-dplyr::filter(CU20_1x10PSD,fips %in% IncludedCounties$FIPS)
+      CU20x5PSD_State<-dplyr::filter(CU20_1x5PSD,fips %in% IncludedCounties$FIPS)
+      CU20w10PSD_State<-dplyr::filter(CU20_w10PSD,fips %in% IncludedCounties$FIPS)
+      CU20w5PSD_State<-dplyr::filter(CU20_w5PSD,fips %in% IncludedCounties$FIPS) 
       
-      CU40_State$Date <- as.Date(CU40_State$Date, "%m/%d/%y")
-      CU30_State$Date <- as.Date(CU30_State$Date, "%m/%d/%y")
-      CU20_State$Date <- as.Date(CU20_State$Date, "%m/%d/%y")
-      CU40_State<-dplyr::filter(CU40_State,Date >= Sys.Date())
-      CU30_State<-dplyr::filter(CU30_State,Date >= Sys.Date())
-      CU20_State<-dplyr::filter(CU20_State,Date >= Sys.Date())      
-      CU40_State<-aggregate(CU40_State[,sapply(CU40_State,is.numeric)],CU40_State["Date"],sum)
-      CU30_State<-aggregate(CU30_State[,sapply(CU30_State,is.numeric)],CU30_State["Date"],sum)
-      CU20_State<-aggregate(CU20_State[,sapply(CU20_State,is.numeric)],CU20_State["Date"],sum)
-      CU40_State<-CU40_State[1:DaysProjected,]      
-      CU30_State<-CU30_State[1:DaysProjected,]
-      CU20_State<-CU20_State[1:DaysProjected,]
-      CU40_State <- data.frame(CU40_State$Date,CU40_State$hosp_need_50,CU40_State$hosp_need_25,CU40_State$hosp_need_75)
-      CU30_State <- data.frame(CU30_State$Date,CU30_State$hosp_need_50,CU30_State$hosp_need_25,CU30_State$hosp_need_75)
-      CU20_State <- data.frame(CU20_State$Date,CU20_State$hosp_need_50,CU20_State$hosp_need_25,CU20_State$hosp_need_75)
+      CU20x10PSD_State<-subset(CU20x10PSD_State, select=-c(County,State,death_25,death_50,death_75))
+      CU20x5PSD_State<-subset(CU20x5PSD_State, select=-c(County,State,death_25,death_50,death_75))    
+      CU20w10PSD_State<-subset(CU20w10PSD_State, select=-c(County,State,death_25,death_50,death_75))
+      CU20w5PSD_State<-subset(CU20w5PSD_State, select=-c(County,State,death_25,death_50,death_75))    
       
-      colnames(CU40_State)<-c("ForecastDate","Expected Hospitalizations","Lower Estimate","Upper Estimate")
-      CU40_State$ID<-rep("CU_40%_SD",nrow(CU40_State))
-      colnames(CU30_State)<-c("ForecastDate","Expected Hospitalizations","Lower Estimate","Upper Estimate")
-      CU30_State$ID<-rep("CU_30%_SD",nrow(CU30_State))
-      colnames(CU20_State)<-c("ForecastDate","Expected Hospitalizations","Lower Estimate","Upper Estimate")
-      CU20_State$ID<-rep("CU_20%_SD",nrow(CU20_State))
+      CU20x10PSD_State$Date <- as.Date(CU20x10PSD_State$Date, "%m/%d/%y")
+      CU20x5PSD_State$Date <- as.Date(CU20x5PSD_State$Date, "%m/%d/%y")
+      CU20w10PSD_State$Date <- as.Date(CU20w10PSD_State$Date, "%m/%d/%y")
+      CU20w5PSD_State$Date <- as.Date(CU20w5PSD_State$Date, "%m/%d/%y") 
+      
+      CU20x10PSD_State<-dplyr::filter(CU20x10PSD_State,Date >= Sys.Date())
+      CU20x5PSD_State<-dplyr::filter(CU20x5PSD_State,Date >= Sys.Date())      
+      CU20w10PSD_State<-dplyr::filter(CU20w10PSD_State,Date >= Sys.Date())
+      CU20w5PSD_State<-dplyr::filter(CU20w5PSD_State,Date >= Sys.Date())
+
+      CU20x10PSD_State<-aggregate(CU20x10PSD_State[,sapply(CU20x10PSD_State,is.numeric)],CU20x10PSD_State["Date"],sum)
+      CU20x5PSD_State<-aggregate(CU20x5PSD_State[,sapply(CU20x5PSD_State,is.numeric)],CU20x5PSD_State["Date"],sum)
+      CU20w10PSD_State<-aggregate(CU20w10PSD_State[,sapply(CU20w10PSD_State,is.numeric)],CU20w10PSD_State["Date"],sum)
+      CU20w5PSD_State<-aggregate(CU20w5PSD_State[,sapply(CU20w5PSD_State,is.numeric)],CU20w5PSD_State["Date"],sum)  
+      
+      CU20x10PSD_State<-CU20x10PSD_State[1:DaysProjected,]
+      CU20x5PSD_State<-CU20x5PSD_State[1:DaysProjected,]
+      CU20w10PSD_State<-CU20w10PSD_State[1:DaysProjected,]
+      CU20w5PSD_State<-CU20w5PSD_State[1:DaysProjected,]
+      
+      CU20x10PSD_State <- data.frame(CU20x10PSD_State$Date,CU20x10PSD_State$hosp_need_50,CU20x10PSD_State$hosp_need_25,CU20x10PSD_State$hosp_need_75)
+      CU20x5PSD_State <- data.frame(CU20x5PSD_State$Date,CU20x5PSD_State$hosp_need_50,CU20x5PSD_State$hosp_need_25,CU20x5PSD_State$hosp_need_75)
+      CU20w10PSD_State <- data.frame(CU20w10PSD_State$Date,CU20w10PSD_State$hosp_need_50,CU20w10PSD_State$hosp_need_25,CU20w10PSD_State$hosp_need_75)
+      CU20w5PSD_State <- data.frame(CU20w5PSD_State$Date,CU20w5PSD_State$hosp_need_50,CU20w5PSD_State$hosp_need_25,CU20w5PSD_State$hosp_need_75)      
+
+      colnames(CU20x10PSD_State)<-c("ForecastDate","Expected Hospitalizations","Lower Estimate","Upper Estimate")
+      CU20x10PSD_State$ID<-rep("CU20SCx10",nrow(CU20x10PSD_State))
+      colnames(CU20x5PSD_State)<-c("ForecastDate","Expected Hospitalizations","Lower Estimate","Upper Estimate")
+      CU20x5PSD_State$ID<-rep("CU20SCx5",nrow(CU20x5PSD_State))
+      colnames(CU20w10PSD_State)<-c("ForecastDate","Expected Hospitalizations","Lower Estimate","Upper Estimate")
+      CU20w10PSD_State$ID<-rep("CU20SCw10",nrow(CU20w10PSD_State))
+      colnames(CU20w5PSD_State)<-c("ForecastDate","Expected Hospitalizations","Lower Estimate","Upper Estimate")
+      CU20w5PSD_State$ID<-rep("CU20SCw5",nrow(CU20w5PSD_State))      
 
       DeathCounties<-subset(CovidDeaths, CountyFIPS %in% IncludedCounties$FIPS)
       CaseRate <- subset(CovidConfirmedCasesRate, CountyFIPS %in% IncludedCounties$FIPS)
@@ -154,9 +168,10 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
       OverlayData<-rbind(IHME_Data,LANL_Region)
       OverlayData<-rbind(OverlayData,YYG_Data)
       OverlayData<-rbind(OverlayData,UT_Data)      
-      OverlayData<-rbind(OverlayData,CU40_State)
-      OverlayData<-rbind(OverlayData,CU30_State)
-      OverlayData<-rbind(OverlayData,CU20_State)
+      OverlayData<-rbind(OverlayData,CU20x10PSD_State)
+      OverlayData<-rbind(OverlayData,CU20x5PSD_State)
+      OverlayData<-rbind(OverlayData,CU20w10PSD_State)
+      OverlayData<-rbind(OverlayData,CU20w5PSD_State)
       
       #Calculate IHME Peak date, create data table of peak dates for hospitalizations 
       PeakDate<-which.max(IHME_Data$IHME_Region.allbed_mean)
@@ -165,17 +180,18 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
       UTPeak<-round(UT_Data[PeakDate,2])      
       PeakDate<-which.max(LANL_Region$'Expected Hospitalizations')
       LANLPeak<-round(UT_Data[PeakDate,2])        
-      PeakDate<-which.max(CU40_State$hosp_need_50)
-      CU40Peak<-round(CU40_State[PeakDate,2])      
-      PeakDate<-which.max(CU30_State$hosp_need_50)
-      CU30Peak<-round(CU30_State[PeakDate,2])      
-      PeakDate<-which.max(CU20_State$hosp_need_50)
-      CU20Peak<-round(CU20_State[PeakDate,2])
+      # PeakDate<-which.max(CU40_State$hosp_need_50)
+      # CU40Peak<-round(CU40_State[PeakDate,2])      
+      # PeakDate<-which.max(CU30_State$hosp_need_50)
+      # CU30Peak<-round(CU30_State[PeakDate,2])      
+      # PeakDate<-which.max(CU20_State$hosp_need_50)
+      # CU20Peak<-round(CU20_State[PeakDate,2])
       PeakData<-rbind(IHMEPeak,LANLPeak)
       PeakData<-rbind(PeakData,UTPeak)      
-      PeakData<-rbind(PeakData,CU40Peak)
-      PeakData<-rbind(PeakData,CU30Peak)
-      PeakData<-rbind(PeakData,CU20Peak)
+      # PeakData<-rbind(PeakData,CU40Peak)
+      # PeakData<-rbind(PeakData,CU30Peak)
+      # PeakData<-rbind(PeakData,CU20Peak)
+      
 
       #Next we use the calculated values, along with estimated values from the Estimated Values. 
       #The only input we want from the user is the social distancing rate. For this example, we just use 0.5
@@ -383,38 +399,51 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
     LANL_Data$'Expected Hospitalizations'<-c(LANL_Data$'Expected Hospitalizations'[1],diff(LANL_Data$'Expected Hospitalizations'))
     LANL_Data$'Lower Estimate'<-c(LANL_Data$'Lower Estimate'[1],diff(LANL_Data$'Lower Estimate'))
     LANL_Data$'Upper Estimate'<-c(LANL_Data$'Upper Estimate'[1],diff(LANL_Data$'Upper Estimate'))  
-  
-    CU40_State<-dplyr::filter(CU40PSD,fips %in% IncludedCounties$FIPS)
-    CU30_State<-dplyr::filter(CU30PSD,fips %in% IncludedCounties$FIPS)
-    CU20_State<-dplyr::filter(CU20PSD,fips %in% IncludedCounties$FIPS)
-    CU40_State<-subset(CU40_State, select=-c(hosp_need_25,hosp_need_50,hosp_need_75))
-    CU30_State<-subset(CU30_State, select=-c(hosp_need_25,hosp_need_50,hosp_need_75))
-    CU20_State<-subset(CU20_State, select=-c(hosp_need_25,hosp_need_50,hosp_need_75))
+
+    CU20x10PSD_State<-dplyr::filter(CU20_1x10PSD,fips %in% IncludedCounties$FIPS)
+    CU20x5PSD_State<-dplyr::filter(CU20_1x5PSD,fips %in% IncludedCounties$FIPS)
+    CU20w10PSD_State<-dplyr::filter(CU20_w10PSD,fips %in% IncludedCounties$FIPS)
+    CU20w5PSD_State<-dplyr::filter(CU20_w5PSD,fips %in% IncludedCounties$FIPS) 
     
-    CU40_State$Date <- as.Date(CU40_State$Date, "%m/%d/%y")
-    CU30_State$Date <- as.Date(CU30_State$Date, "%m/%d/%y")
-    CU20_State$Date <- as.Date(CU20_State$Date, "%m/%d/%y")
-    CU40_State<-dplyr::filter(CU40_State,Date >= Sys.Date())
-    CU30_State<-dplyr::filter(CU30_State,Date >= Sys.Date())
-    CU20_State<-dplyr::filter(CU20_State,Date >= Sys.Date())
-    CU40_State<-aggregate(CU40_State[,sapply(CU40_State,is.numeric)],CU40_State["Date"],sum)
-    CU30_State<-aggregate(CU30_State[,sapply(CU30_State,is.numeric)],CU30_State["Date"],sum)
-    CU20_State<-aggregate(CU20_State[,sapply(CU20_State,is.numeric)],CU20_State["Date"],sum)
-    CU40_State<-CU40_State[1:DaysProjected,]      
-    CU30_State<-CU30_State[1:DaysProjected,]
-    CU20_State<-CU20_State[1:DaysProjected,]
-
-    CU40_State <- data.frame(CU40_State$Date,CU40_State$death_50,CU40_State$death_25,CU40_State$death_75)
-    CU30_State <- data.frame(CU30_State$Date,CU30_State$death_50,CU30_State$death_25,CU30_State$death_75)
-    CU20_State <- data.frame(CU20_State$Date,CU20_State$death_50,CU20_State$death_25,CU20_State$death_75)
-
-    colnames(CU40_State)<-c("ForecastDate","Expected Fatalities","Lower Estimate","Upper Estimate")
-    CU40_State$ID<-rep("CU_40%_SD",nrow(CU40_State))
-    colnames(CU30_State)<-c("ForecastDate","Expected Fatalities","Lower Estimate","Upper Estimate")
-    CU30_State$ID<-rep("CU_30%_SD",nrow(CU30_State))
-    colnames(CU20_State)<-c("ForecastDate","Expected Fatalities","Lower Estimate","Upper Estimate")
-    CU20_State$ID<-rep("CU_20%_SD",nrow(CU20_State))
-
+    CU20x10PSD_State<-subset(CU20x10PSD_State, select=-c(hosp_need_25,hosp_need_50,hosp_need_75))
+    CU20x5PSD_State<-subset(CU20x5PSD_State, select=-c(hosp_need_25,hosp_need_50,hosp_need_75))   
+    CU20w10PSD_State<-subset(CU20w10PSD_State, select=-c(hosp_need_25,hosp_need_50,hosp_need_75))
+    CU20w5PSD_State<-subset(CU20w5PSD_State, select=-c(hosp_need_25,hosp_need_50,hosp_need_75))   
+    
+    CU20x10PSD_State$Date <- as.Date(CU20x10PSD_State$Date, "%m/%d/%y")
+    CU20x5PSD_State$Date <- as.Date(CU20x5PSD_State$Date, "%m/%d/%y")
+    CU20w10PSD_State$Date <- as.Date(CU20w10PSD_State$Date, "%m/%d/%y")
+    CU20w5PSD_State$Date <- as.Date(CU20w5PSD_State$Date, "%m/%d/%y") 
+    
+    CU20x10PSD_State<-dplyr::filter(CU20x10PSD_State,Date >= Sys.Date())
+    CU20x5PSD_State<-dplyr::filter(CU20x5PSD_State,Date >= Sys.Date())      
+    CU20w10PSD_State<-dplyr::filter(CU20w10PSD_State,Date >= Sys.Date())
+    CU20w5PSD_State<-dplyr::filter(CU20w5PSD_State,Date >= Sys.Date())
+    
+    CU20x10PSD_State<-aggregate(CU20x10PSD_State[,sapply(CU20x10PSD_State,is.numeric)],CU20x10PSD_State["Date"],sum)
+    CU20x5PSD_State<-aggregate(CU20x5PSD_State[,sapply(CU20x5PSD_State,is.numeric)],CU20x5PSD_State["Date"],sum)
+    CU20w10PSD_State<-aggregate(CU20w10PSD_State[,sapply(CU20w10PSD_State,is.numeric)],CU20w10PSD_State["Date"],sum)
+    CU20w5PSD_State<-aggregate(CU20w5PSD_State[,sapply(CU20w5PSD_State,is.numeric)],CU20w5PSD_State["Date"],sum)  
+    
+    CU20x10PSD_State<-CU20x10PSD_State[1:DaysProjected,]
+    CU20x5PSD_State<-CU20x5PSD_State[1:DaysProjected,]
+    CU20w10PSD_State<-CU20w10PSD_State[1:DaysProjected,]
+    CU20w5PSD_State<-CU20w5PSD_State[1:DaysProjected,]
+    
+    CU20x10PSD_State <- data.frame(CU20x10PSD_State$Date,CU20x10PSD_State$death_50,CU20x10PSD_State$death_25,CU20x10PSD_State$death_75)
+    CU20x5PSD_State <- data.frame(CU20x5PSD_State$Date,CU20x5PSD_State$death_50,CU20x5PSD_State$death_25,CU20x5PSD_State$death_75)
+    CU20w10PSD_State <- data.frame(CU20w10PSD_State$Date,CU20w10PSD_State$death_50,CU20w10PSD_State$death_25,CU20w10PSD_State$death_75)
+    CU20w5PSD_State <- data.frame(CU20w5PSD_State$Date,CU20w5PSD_State$death_50,CU20w5PSD_State$death_25,CU20w5PSD_State$death_75)      
+    
+    colnames(CU20x10PSD_State)<-c("ForecastDate","Expected Fatalities","Lower Estimate","Upper Estimate")
+    CU20x10PSD_State$ID<-rep("CU20SCx10",nrow(CU20x10PSD_State))
+    colnames(CU20x5PSD_State)<-c("ForecastDate","Expected Fatalities","Lower Estimate","Upper Estimate")
+    CU20x5PSD_State$ID<-rep("CU20SCx5",nrow(CU20x5PSD_State))
+    colnames(CU20w10PSD_State)<-c("ForecastDate","Expected Fatalities","Lower Estimate","Upper Estimate")
+    CU20w10PSD_State$ID<-rep("CU20SCw10",nrow(CU20w10PSD_State))
+    colnames(CU20w5PSD_State)<-c("ForecastDate","Expected Fatalities","Lower Estimate","Upper Estimate")
+    CU20w5PSD_State$ID<-rep("CU20SCw5",nrow(CU20w5PSD_State))      
+    
     DeathCounties<-subset(CovidDeaths, CountyFIPS %in% IncludedCounties$FIPS)
     CaseRate <- subset(CovidConfirmedCasesRate, CountyFIPS %in% IncludedCounties$FIPS)
     CountyDataTable<-cbind(IncludedCounties,rev(CovidCounties)[,1],rev(DeathCounties)[,1],rev(CaseRate)[,1])
@@ -438,9 +467,10 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
     OverlayData<-rbind(IHME_Data,LANL_Data)
     OverlayData<-rbind(OverlayData,YYG_Data)
     OverlayData<-rbind(OverlayData,UT_Data)    
-    OverlayData<-rbind(OverlayData,CU40_State)
-    OverlayData<-rbind(OverlayData,CU30_State)
-    OverlayData<-rbind(OverlayData,CU20_State)
+    OverlayData<-rbind(OverlayData,CU20x10PSD_State)
+    OverlayData<-rbind(OverlayData,CU20x5PSD_State)
+    OverlayData<-rbind(OverlayData,CU20w10PSD_State)
+    OverlayData<-rbind(OverlayData,CU20w5PSD_State)
 
     #Next we use the calculated values, along with estimated values from the Estimated Values. 
     #The only input we want from the user is the social distancing rate. For this example, we just use 0.5

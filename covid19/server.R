@@ -810,9 +810,10 @@ server <- function(input, output,session) {
                                                                                                 "CHIME: SC"="CHIME7",
                                                                                                 "Los Alamos National Labs (LANL)"="LANL",
                                                                                                 "University of Texas"="UT",
-                                                                                                "Columbia University: 20% SC Reduction"="CU20SC",
-                                                                                                "Columbia University: 30% SC Reduction"="CU30SC",
-                                                                                                "Columbia University: 40% SC Reduction"="CU40SC"))
+                                                                                                "Columbia University: 20% SC Reduction with one time 10% increase in contact "="CU20SCx10",
+                                                                                                "Columbia University: 20% SC Reduction with one time 5% increase in contact"="CU20SCx5",
+                                                                                                "Columbia University: 20% SC Reduction with weekly 10% increase in contact"="CU20SCw10",                                                                
+                                                                                                "Columbia University: 20% SC Reduction with weekly 5% increase in contact"="CU20SCw5"))                                                                                                                                                                                                
     }
     else
     {
@@ -827,9 +828,11 @@ server <- function(input, output,session) {
                                                                                                "CHIME: SC"="CHIME7",
                                                                                                "Los Alamos National Labs (LANL)"="LANL",
                                                                                                "University of Texas"="UT",
-                                                                                               "Columbia University: 20% SC Reduction"="CU20SC",
-                                                                                               "Columbia University: 30% SC Reduction"="CU30SC",
-                                                                                               "Columbia University: 40% SC Reduction"="CU40SC"),
+                                                                                               "Columbia University: 20% SC Reduction with one time 10% increase in contact "="CU20SCx10",
+                                                                                               "Columbia University: 20% SC Reduction with one time 5% increase in contact"="CU20SCx5",
+                                                                                               "Columbia University: 20% SC Reduction with weekly 10% increase in contact"="CU20SCw10",                                                                
+                                                                                               "Columbia University: 20% SC Reduction with weekly 5% increase in contact"="CU20SCw5"),                                                                                               
+
                                selected=c("IHME (University of Washinton)"="IHME",
                                           "Youyang Gu - Independent (YYG) Model"="YYG",
                                           "CHIME (University of Pennsylvania): SC+NE+SD"="CHIME1",
@@ -841,9 +844,10 @@ server <- function(input, output,session) {
                                           "CHIME: SC"="CHIME7",
                                           "Los Alamos National Labs (LANL)"="LANL",
                                           "University of Texas"="UT",
-                                          "Columbia University: 20% SC Reduction"="CU20SC",
-                                          "Columbia University: 30% SC Reduction"="CU30SC",
-                                          "Columbia University: 40% SC Reduction"="CU40SC"))
+                                          "Columbia University: 20% SC Reduction with one time 10% increase in contact "="CU20SCx10",
+                                          "Columbia University: 20% SC Reduction with one time 5% increase in contact"="CU20SCx5",
+                                          "Columbia University: 20% SC Reduction with weekly 10% increase in contact"="CU20SCw10",                                                                
+                                          "Columbia University: 20% SC Reduction with weekly 5% increase in contact"="CU20SCw5"))                                                                                    
     }
   })
   
@@ -866,30 +870,11 @@ server <- function(input, output,session) {
     if ("CHIME3" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CHIME_19%_SD")}
     if ("CHIME2" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CHIME_23%_SD")}
     if ("CHIME1" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CHIME_27%_SD")}
-    if ("CU20SC" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CU_20%_SD")}
-    if ("CU30SC" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CU_30%_SD")}
-    if ("CU40SC" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CU_40%_SD")}
+    if ("CU20SCx10" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CU20SCx10")}
+    if ("CU20SCx5" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CU20SCx5")}
+    if ("CU20SCw10" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CU20SCw10")}
+    if ("CU20SCw5" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CU20SCw5")}
     
-    # CS  <- "CS" %in% input$SocialDistanceValue
-    # CB  <- "CB" %in% input$SocialDistanceValue
-    # SD  <- "SD" %in% input$SocialDistanceValue
-    #
-    # if (CS & CB & SD){
-    #     social_dist <- 27
-    # } else if (CS & CB){
-    #     social_dist <- 12
-    # } else if (CS & SD){
-    #     social_dist <-19
-    # } else if (SD & CB){
-    #     social_dist <-23
-    # } else if (CS) {
-    #     social_dist <- 4
-    # }  else if (CB) {
-    #     social_dist <- 8
-    # }  else if (SD) {
-    #     social_dist <- 15
-    # }
-    #MyCounties<-GetCounties(input$Base,input$Radius)
     MyHospitals<-GetHospitals(input$Base,input$Radius)
     PlotOverlay(input$Base, MyCounties(), MyHospitals,ModelID,input$proj_days,input$StatisticType)
   })
@@ -958,11 +943,11 @@ server <- function(input, output,session) {
     
     WingList<- reactive({
       #Once add additional NAFS, change NAFList to input$NAFInput
-      AFWings<-dplyr::filter(AFNAFS,NAF %in% NAFList)
+      AFWings<-dplyr::filter(AFNAFS,NAF %in% input$NAFInput)
       WingList <- sort(unique(AFWings$Wing), decreasing = FALSE)
       WingList <- c("All",WingList)
     })
-    observe(updateSelectInput(session,"WingInput",choices = WingList()))  
+    observeEvent(input$NAFInput,{updateSelectInput(session,"WingInput",choices = WingList())})  
     
       
     GroupList <- reactive({
@@ -975,7 +960,6 @@ server <- function(input, output,session) {
         GroupList<-c("All",GroupList)
       }
     })
-    # #observe(updateSelectInput(session,"GroupInput",choices = GroupList())) 
     observeEvent(input$WingInput,{updateSelectInput(session,"GroupInput",choices = GroupList())})  
     
 
@@ -1333,6 +1317,14 @@ server <- function(input, output,session) {
     ###################################################################################################################################################
     
     #Step three provides input information for annotation of the overall app such as inputs, sources, and calculations.
+    observeEvent(input$UpdateInfo, {
+      showModal(
+        modalDialog(
+          size = "l",fade = TRUE, easyClose = TRUE, title = "VERSION UPDATES",
+          UpdateLink)
+      )
+    })
+    
     observeEvent(input$overviewInfo, {
       showModal(
         modalDialog(

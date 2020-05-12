@@ -178,9 +178,10 @@ ui <- tagList(
                                                                 "CHIME: SC"="CHIME7",
                                                                 "Los Alamos National Labs (LANL)"="LANL",
                                                                 "University of Texas"="UT",
-                                                                "Columbia University: 20% SC Reduction"="CU20SC",
-                                                                "Columbia University: 30% SC Reduction"="CU30SC",
-                                                                "Columbia University: 40% SC Reduction"="CU40SC"),
+                                                                "Columbia University: 20% SC Reduction with one time 10% increase in contact "="CU20SCx10",
+                                                                "Columbia University: 20% SC Reduction with one time 5% increase in contact"="CU20SCx5",
+                                                                "Columbia University: 20% SC Reduction with weekly 10% increase in contact"="CU20SCw10",                                                                
+                                                                "Columbia University: 20% SC Reduction with weekly 5% increase in contact"="CU20SCw5"),
                                                                 selected = c("IHME","CHIME1")),
                                            actionLink("selectall","Select All")
                                        ),
