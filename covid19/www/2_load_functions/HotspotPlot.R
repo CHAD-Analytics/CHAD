@@ -13,7 +13,8 @@ HotspotPlot <- function(CovidConfirmedCases, CovidDeaths, BranchSelect,OpsSelect
                       new_cases_7_days = cumulative_cases - lag(cumulative_cases,7),
                       new_cases_14_days = cumulative_cases - lag(cumulative_cases,14),
                       case_growth_week = ifelse(is.nan(new_cases_7_days/(new_cases_14_days - new_cases_7_days)), 0,
-                                                (new_cases_7_days/(new_cases_14_days  - new_cases_7_days)))) %>%
+                                                ifelse(is.infinite(new_cases_7_days/(new_cases_14_days  - new_cases_7_days)),0,
+                                                       new_cases_7_days/(new_cases_14_days  - new_cases_7_days)))) %>%
                       replace(is.na(.),0)
     
     tempDeaths = CovidDeaths %>% select(-State, -stateFIPS) %>%
@@ -71,8 +72,12 @@ HotspotPlot <- function(CovidConfirmedCases, CovidDeaths, BranchSelect,OpsSelect
                 new_cases_1_pp = new_cases_1/Population*100000, new_cases_3_pp = new_cases_3_days/Population*100000,
                 new_cases_7_pp = new_cases_7_days/Population*100000, new_cases_14_pp = new_cases_14_days/Population*100000,
                 new_cases_30_pp = new_cases_30_days/Population*100000, deaths_pp = cumulative_deaths/Population*100000,
-                case_growth = new_cases_3_pp/(new_cases_30_pp),
-                case_growth_week = ((new_cases_7_pp - (new_cases_14_pp-new_cases_7_pp)) / (new_cases_14_pp-new_cases_7_pp))
+                case_growth = ifelse(is.nan(new_cases_3_pp/(new_cases_3_pp + new_cases_30_pp)), 0,
+                                    ifelse(is.infinite(new_cases_3_pp/(new_cases_3_pp +new_cases_30_pp)),0,
+                                           new_cases_3_pp/(new_cases_3_pp +new_cases_30_pp))),
+                case_growth_week = ifelse(is.nan(new_cases_7_pp/(new_cases_14_pp - new_cases_7_pp)), 0,
+                                         ifelse(is.infinite(new_cases_7_pp/(new_cases_14_pp  - new_cases_7_pp)),0,
+                                                new_cases_7_pp/(new_cases_14_pp  - new_cases_7_pp)))
         )
 
     bases_radius = bases_radius %>% left_join(AFBaseLocations %>% select(Base,Branch,Operational,'Major Command'), by = c("base" = "Base"))
