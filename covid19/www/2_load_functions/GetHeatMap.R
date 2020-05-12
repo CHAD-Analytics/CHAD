@@ -61,7 +61,7 @@ GetHeatMap<-function(BranchSelect,OpsSelect,MAJNAFSelect,MAJCOMChoice,NAFChoice,
       countrycolor = toRGB("white")
     )
     
-    legend.sizes = seq(min(HeatMap$IHME),max(HeatMap$IHME), round(max(HeatMap$IHME)/8, -1))
+    legend.sizes = seq(min(HeatMap$IHME),max(HeatMap$IHME), ceiling(max(HeatMap$IHME)/8))
     ax = list(zeroline = FALSE, showline = FALSE, showticklabels = FALSE, showgrid = FALSE)
     mk = list(sizeref=0.15, sizemode="area", symbol="circle-open", color="black")
      
@@ -101,7 +101,7 @@ GetHeatMap<-function(BranchSelect,OpsSelect,MAJNAFSelect,MAJCOMChoice,NAFChoice,
       countrycolor = toRGB("white")
     )
 
-    legend.sizes = seq(min(HeatMap$CHIME), max(HeatMap$CHIME), round(max(HeatMap$CHIME)/8,-2))  
+    legend.sizes = seq(min(HeatMap$CHIME), max(HeatMap$CHIME), ceiling(max(HeatMap$CHIME)/8))  
     ax = list(zeroline = FALSE, showline = FALSE, showticklabels = FALSE, showgrid = FALSE)
     mk = list(sizeref=0.15, sizemode="area", symbol="circle-open", color="black") 
     
