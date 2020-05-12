@@ -97,6 +97,7 @@ ui <- tagList(
                                                                                  "Group:",
                                                                                  choices=NULL,
                                                                                  selectize = FALSE))),  
+                                                             actionButton("FilterBases", "Select"),
                                                              radioButtons("SummaryModelType",
                                                                           "Summary Plot Model: ",
                                                                           c("IHME"="IHME","CHIME"="CHIME"),
