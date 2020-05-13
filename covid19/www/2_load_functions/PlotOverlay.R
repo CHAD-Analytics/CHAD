@@ -53,8 +53,8 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
   DPT2<-aggregate(DPT2[,sapply(DPT2,is.numeric)],DPT2["ForecastDate"],sum)
   DPT1<-DPT1[1:DaysProjected,]
   DPT2<-DPT2[1:DaysProjected,]
-  DPT1$ID<-rep("DTRA - Relaxed SD",nrow(DPT1))
-  DPT2$ID<-rep("DTRA - Improved Testing",nrow(DPT2))
+  DPT1$ID<-rep("DTRA1",nrow(DPT1))
+  DPT2$ID<-rep("DTRA2",nrow(DPT2))
 
   if (StatisticType == "Hospitalizations") {
       LANL_State <- dplyr::filter(LANLC_Data, State == toString(BaseState$State[1])) 
@@ -111,8 +111,8 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
       LANL_Region$ForecastDate<-as.Date(LANL_Region$ForecastDate)
       
       #For DTRA Data, multiply number of cases by projected hospitalization rate
-      DPT1<-data.frame(DPT1$ForecastData,DPT1$'Expected Hospitalizations'*.055,DPT1$'Lower Estimate'*.055,DPT1$'Upper Estimate'*.055,DPT1$ID)
-      DPT2<-data.frame(DPT2$ForecastData,DPT2$'Expected Hospitalizations'*.055,DPT2$'Lower Estimate'*.055,DPT2$'Upper Estimate'*.055,DPT2$ID)      
+      DPT1_Data<-data.frame(DPT1$ForecastDate,DPT1$'Expected Hospitalizations'*.055,DPT1$'Lower Estimate'*.055,DPT1$'Upper Estimate'*.055,DPT1$ID)
+      DPT2_Data<-data.frame(DPT2$ForecastDate,DPT2$'Expected Hospitalizations'*.055,DPT2$'Lower Estimate'*.055,DPT2$'Upper Estimate'*.055,DPT2$ID)      
 
       LANL_Region<-LANL_Region[order(as.Date(LANL_Region$ForecastDate, format="%Y/%m/%d")),]
       LANL_Region$'Expected Hospitalizations'<-c(LANL_Region$'Expected Hospitalizations'[1],diff(LANL_Region$'Expected Hospitalizations'))
@@ -190,8 +190,8 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
       OverlayData<-rbind(OverlayData,CU20x5PSD_State)
       OverlayData<-rbind(OverlayData,CU20w10PSD_State)
       OverlayData<-rbind(OverlayData,CU20w5PSD_State)
-      OverlayData<-rbind(OverlayData,DPT1)
-      OverlayData<-rbind(OverlayData,DPT2)
+      OverlayData<-rbind(OverlayData,DPT1_Data)
+      OverlayData<-rbind(OverlayData,DPT2_Data)
       
       #Calculate IHME Peak date, create data table of peak dates for hospitalizations 
       PeakDate<-which.max(IHME_Data$IHME_Region.allbed_mean)
@@ -421,8 +421,8 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
     LANL_Data$'Upper Estimate'<-c(LANL_Data$'Upper Estimate'[1],diff(LANL_Data$'Upper Estimate'))  
     
     #For DTRA Data, multiply number of cases by projected hospitalization rate
-    DPT1<-data.frame(DPT1$ForecastData,DPT1$'Expected Hospitalizations'*.0025,DPT1$'Lower Estimate'*.0025,DPT1$'Upper Estimate'*.0025,DPT1$ID)
-    DPT2<-data.frame(DPT2$ForecastData,DPT2$'Expected Hospitalizations'*.0025,DPT2$'Lower Estimate'*.0025,DPT2$'Upper Estimate'*.0025,DPT2$ID)       
+    DPT1_Data<-data.frame(DPT1$ForecastDate,DPT1$'Expected Hospitalizations'*.0025,DPT1$'Lower Estimate'*.0025,DPT1$'Upper Estimate'*.0025,DPT1$ID)
+    DPT2_Data<-data.frame(DPT2$ForecastDate,DPT2$'Expected Hospitalizations'*.0025,DPT2$'Lower Estimate'*.0025,DPT2$'Upper Estimate'*.0025,DPT2$ID)       
     colnames(DPT1)<-c("ForecastDate", "Expected Fatalities", "Lower Estimate","Upper Estimate","ID")
     colnames(DPT2)<-c("ForecastDate", "Expected Fatalities", "Lower Estimate","Upper Estimate","ID")    
     
@@ -497,8 +497,8 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
     OverlayData<-rbind(OverlayData,CU20x5PSD_State)
     OverlayData<-rbind(OverlayData,CU20w10PSD_State)
     OverlayData<-rbind(OverlayData,CU20w5PSD_State)
-    OverlayData<-rbind(OverlayData,DPT1)
-    OverlayData<-rbind(OverlayData,DPT2)    
+    OverlayData<-rbind(OverlayData,DPT1_Data)
+    OverlayData<-rbind(OverlayData,DPT2_Data)    
 
     #Next we use the calculated values, along with estimated values from the Estimated Values. 
     #The only input we want from the user is the social distancing rate. For this example, we just use 0.5
