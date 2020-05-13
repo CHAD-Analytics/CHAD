@@ -53,8 +53,8 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
   DPT2<-aggregate(DPT2[,sapply(DPT2,is.numeric)],DPT2["ForecastDate"],sum)
   DPT1<-DPT1[1:DaysProjected,]
   DPT2<-DPT2[1:DaysProjected,]
-  DPT1$ID<-rep("DTRA - Relaxed SD",nrow(DPT1))
-  DPT2$ID<-rep("DTRA - Improved Testing",nrow(DPT2))
+  DPT1$ID<-rep("DTRA1",nrow(DPT1))
+  DPT2$ID<-rep("DTRA2",nrow(DPT2))
 
   if (StatisticType == "Hospitalizations") {
       LANL_State <- dplyr::filter(LANLC_Data, State == toString(BaseState$State[1])) 
