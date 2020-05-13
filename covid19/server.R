@@ -356,7 +356,7 @@ server <- function(input, output,session) {
     plotDaily <- plotDaily %>% layout(legend = list(orientation = "h",   # show entries horizontally
                                                     xanchor = "center",  # use center of legend as anchor
                                                     x = 0.5,
-                                                    y = 1.2)) %>% config(displayModeBar = FALSE)
+                                                    y = 1.2)) #%>% config(displayModeBar = FALSE)
     plotDaily
   })
   
@@ -390,7 +390,7 @@ server <- function(input, output,session) {
     plotDaily <- plotDaily %>% layout(legend = list(orientation = "h",   # show entries horizontally
                                                     xanchor = "center",  # use center of legend as anchor
                                                     x = 0.5,
-                                                    y = 1.2)) %>% config(displayModeBar = FALSE)
+                                                    y = 1.2)) #%>% config(displayModeBar = FALSE)
     plotDaily
   })
   
@@ -433,7 +433,7 @@ server <- function(input, output,session) {
     plotDaily <- plotDaily %>% layout(legend = list(orientation = "h",   # show entries horizontally
                                                     xanchor = "center",  # use center of legend as anchor
                                                     x = 0.5,
-                                                    y = 1.2)) %>% config(displayModeBar = FALSE)
+                                                    y = 1.2)) #%>% config(displayModeBar = FALSE)
     plotDaily
   })
   
@@ -467,7 +467,7 @@ server <- function(input, output,session) {
     plotTot <- plotTot %>% layout(legend = list(orientation = "h",   # show entries horizontally
                                                 xanchor = "center",  # use center of legend as anchor
                                                 x = 0.5,
-                                                y = 1.2)) %>% config(displayModeBar = FALSE)
+                                                y = 1.2)) #%>% config(displayModeBar = FALSE)
     plotTot
   })
   
@@ -604,9 +604,9 @@ server <- function(input, output,session) {
                                       xanchor = "center",
                                       x = 0.5,
                                       y = -0.5
-    )) %>% config(displayModeBar = FALSE)
+    )) #%>% config(displayModeBar = FALSE)
     p2 <- p2 %>% layout(xaxis = list(showgrid = F),
-                        yaxis = list(gridcolor = "lightgray"),margin = list(t = 50), title=baseUsed) %>% config(displayModeBar = FALSE)
+                        yaxis = list(gridcolor = "lightgray"),margin = list(t = 50), title=baseUsed)# %>% config(displayModeBar = FALSE)
     p2
     
   })

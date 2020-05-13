@@ -343,7 +343,7 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
       
       
       projections <- ggplotly(projections)
-      projections <- projections %>% config(displayModeBar = FALSE)
+      #projections <- projections %>% config(displayModeBar = FALSE)
       projections
     
   } else {
@@ -610,7 +610,7 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
     
     
     projections <- ggplotly(projections)
-    projections <- projections %>% config(displayModeBar = FALSE)
+    #projections <- projections %>% config(displayModeBar = FALSE)
     projections
   }
   

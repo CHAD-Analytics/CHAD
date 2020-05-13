@@ -334,7 +334,7 @@ ui <- tagList(
                     # fluidRow(
                     #     box(plotlyOutput("IHME_State_Hosp",height = 400)),
                     #     box(plotlyOutput("SEIARProjection"),height = 400)),
-                    box(plotlyOutput("OverlayPlots",height=700, width=1500))
+                    box(plotlyOutput("OverlayPlots"),height=700, width=1500))
                   ),
                   ####### END PROJECTION TAB #######
                   
