@@ -1,7 +1,7 @@
 # CHAD
-The **current** app is hosted on shiny web servers and can be used by following the link here: https://covid19dash.shinyapps.io/covid19/.
+The **current** app is hosted on shiny web servers and can be used by following the link here: https://afit.shinyapps.io/covid19/.
 
-There is also a **test server** which host new features to the application that are undergoing testing at: https://covid19dash.shinyapps.io/CHAD-Test/
+There is also a **test server** which host new features to the application that are undergoing testing at: https://afit.shinyapps.io/CHAD-Test/
 
 ## Getting Started
 The most up to date app is located in the covid19 folder. This folder contains a global.R, server.R, and ui.R file. 
