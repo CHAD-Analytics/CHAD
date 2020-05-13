@@ -4,19 +4,19 @@
 #'          need the data.frame from overlay in the report
 PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDList, DaysProjected, StatisticType){
   
-  # #####Uncomment to test plot function without running the app
-  # #i<-80
-  # #ChosenBase = AFBaseLocations$Base[i]
-  # ChosenBase = "Vandenberg Space Force Base"
-  # SocialDistance = 15
-  # DaysProjected = 30
-  # HospitalInfo$DistanceMiles = himd[,as.character(ChosenBase)]
-  # IncludedHospitals<-dplyr::filter(HospitalInfo, (DistanceMiles <= 50))
-  # IncludedHospitals<-dplyr::filter(IncludedHospitals, (TYPE=="GENERAL ACUTE CARE") | (TYPE=="CRITICAL ACCESS"))
-  # CountyInfo$DistanceMiles = cimd[,as.character(ChosenBase)]
-  # IncludedCounties<-dplyr::filter(CountyInfo, DistanceMiles <= 50)
-  # #####
-  # #####
+  #####Uncomment to test plot function without running the app
+  #i<-80
+  #ChosenBase = AFBaseLocations$Base[i]
+  ChosenBase = "Vandenberg Space Force Base"
+  SocialDistance = 15
+  DaysProjected = 30
+  HospitalInfo$DistanceMiles = himd[,as.character(ChosenBase)]
+  IncludedHospitals<-dplyr::filter(HospitalInfo, (DistanceMiles <= 50))
+  IncludedHospitals<-dplyr::filter(IncludedHospitals, (TYPE=="GENERAL ACUTE CARE") | (TYPE=="CRITICAL ACCESS"))
+  CountyInfo$DistanceMiles = cimd[,as.character(ChosenBase)]
+  IncludedCounties<-dplyr::filter(CountyInfo, DistanceMiles <= 50)
+  #####
+  #####
   
   #Establish initial inputs such as base, counties, and filter IHME model
   BaseState<-dplyr::filter(AFBaseLocations, Base == toString(ChosenBase))
