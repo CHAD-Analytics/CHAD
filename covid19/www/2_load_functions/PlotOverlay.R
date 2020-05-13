@@ -4,19 +4,19 @@
 #'          need the data.frame from overlay in the report
 PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDList, DaysProjected, StatisticType){
   
-  #####Uncomment to test plot function without running the app
-  #i<-80
-  #ChosenBase = AFBaseLocations$Base[i]
-  ChosenBase = "Vandenberg Space Force Base"
-  SocialDistance = 15
-  DaysProjected = 30
-  HospitalInfo$DistanceMiles = himd[,as.character(ChosenBase)]
-  IncludedHospitals<-dplyr::filter(HospitalInfo, (DistanceMiles <= 50))
-  IncludedHospitals<-dplyr::filter(IncludedHospitals, (TYPE=="GENERAL ACUTE CARE") | (TYPE=="CRITICAL ACCESS"))
-  CountyInfo$DistanceMiles = cimd[,as.character(ChosenBase)]
-  IncludedCounties<-dplyr::filter(CountyInfo, DistanceMiles <= 50)
-  #####
-  #####
+  # #####Uncomment to test plot function without running the app
+  # #i<-80
+  # #ChosenBase = AFBaseLocations$Base[i]
+  # ChosenBase = "Vandenberg Space Force Base"
+  # SocialDistance = 15
+  # DaysProjected = 30
+  # HospitalInfo$DistanceMiles = himd[,as.character(ChosenBase)]
+  # IncludedHospitals<-dplyr::filter(HospitalInfo, (DistanceMiles <= 50))
+  # IncludedHospitals<-dplyr::filter(IncludedHospitals, (TYPE=="GENERAL ACUTE CARE") | (TYPE=="CRITICAL ACCESS"))
+  # CountyInfo$DistanceMiles = cimd[,as.character(ChosenBase)]
+  # IncludedCounties<-dplyr::filter(CountyInfo, DistanceMiles <= 50)
+  # #####
+  # #####
   
   #Establish initial inputs such as base, counties, and filter IHME model
   BaseState<-dplyr::filter(AFBaseLocations, Base == toString(ChosenBase))
@@ -421,10 +421,10 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
     LANL_Data$'Upper Estimate'<-c(LANL_Data$'Upper Estimate'[1],diff(LANL_Data$'Upper Estimate'))  
     
     #For DTRA Data, multiply number of cases by projected hospitalization rate
-    DPT1<-data.frame(DPT1$ForecastData,DPT1$'Expected Hospitalizations'*.0025,DPT1$'Lower Estimate'*.0025,DPT1$'Upper Estimate'*.0025)
-    DPT2<-data.frame(DPT2$ForecastData,DPT2$'Expected Hospitalizations'*.0025,DPT2$'Lower Estimate'*.0025,DPT2$'Upper Estimate'*.0025)       
-    colnames(DPT1)<-c("ForecastDate", "Expected Fatalities", "Lower Estimate","Upper Estimate")
-    colnames(DPT2)<-c("ForecastDate", "Expected Fatalities", "Lower Estimate","Upper Estimate")    
+    DPT1<-data.frame(DPT1$ForecastData,DPT1$'Expected Hospitalizations'*.0025,DPT1$'Lower Estimate'*.0025,DPT1$'Upper Estimate'*.0025,DPT1$ID)
+    DPT2<-data.frame(DPT2$ForecastData,DPT2$'Expected Hospitalizations'*.0025,DPT2$'Lower Estimate'*.0025,DPT2$'Upper Estimate'*.0025,DPT2$ID)       
+    colnames(DPT1)<-c("ForecastDate", "Expected Fatalities", "Lower Estimate","Upper Estimate","ID")
+    colnames(DPT2)<-c("ForecastDate", "Expected Fatalities", "Lower Estimate","Upper Estimate","ID")    
     
     CU20x10PSD_State<-dplyr::filter(CU20_1x10PSD,fips %in% IncludedCounties$FIPS)
     CU20x5PSD_State<-dplyr::filter(CU20_1x5PSD,fips %in% IncludedCounties$FIPS)
