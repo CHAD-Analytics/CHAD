@@ -111,8 +111,10 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
       LANL_Region$ForecastDate<-as.Date(LANL_Region$ForecastDate)
       
       #For DTRA Data, multiply number of cases by projected hospitalization rate
-      DPT1<-data.frame(DPT1$ForecastData,DPT1$'Expected Hospitalizations'*.055,DPT1$'Lower Estimate'*.055,DPT1$'Upper Estimate'*.055,DPT1$ID)
-      DPT2<-data.frame(DPT2$ForecastData,DPT2$'Expected Hospitalizations'*.055,DPT2$'Lower Estimate'*.055,DPT2$'Upper Estimate'*.055,DPT2$ID)      
+      DPT1<-data.frame(DPT1$ForecastDate,DPT1$'Expected Hospitalizations'*.055,DPT1$'Lower Estimate'*.055,DPT1$'Upper Estimate'*.055,DPT1$ID)
+      DPT2<-data.frame(DPT2$ForecastDate,DPT2$'Expected Hospitalizations'*.055,DPT2$'Lower Estimate'*.055,DPT2$'Upper Estimate'*.055,DPT2$ID)  
+      colnames(DPT1)<-c("ForecastDate", "Expected Hospitalizations", "Lower Estimate","Upper Estimate", "ID")
+      colnames(DPT2)<-c("ForecastDate", "Expected Hospitalizations", "Lower Estimate","Upper Estimate", "ID")
 
       LANL_Region<-LANL_Region[order(as.Date(LANL_Region$ForecastDate, format="%Y/%m/%d")),]
       LANL_Region$'Expected Hospitalizations'<-c(LANL_Region$'Expected Hospitalizations'[1],diff(LANL_Region$'Expected Hospitalizations'))
@@ -182,7 +184,9 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
       colnames(UT_Data)<-c("ForecastDate", "Expected Hospitalizations", "Lower Estimate","Upper Estimate")
       UT_Data$ID<-rep("UT",nrow(UT_Data))
       YYG_Data$ID<-rep("YYG",nrow(YYG_Data)) 
-      LANL_Region$ID<-rep("LANL",nrow(LANL_Region))      
+      LANL_Region$ID<-rep("LANL",nrow(LANL_Region))   
+      DPT1$ID <- rep("DTRA1",nrow(DPT1)) 
+      DPT2$ID <- rep("DTRA2",nrow(DPT2)) 
       OverlayData<-rbind(IHME_Data,LANL_Region)
       OverlayData<-rbind(OverlayData,YYG_Data)
       OverlayData<-rbind(OverlayData,UT_Data)      
@@ -421,8 +425,8 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
     LANL_Data$'Upper Estimate'<-c(LANL_Data$'Upper Estimate'[1],diff(LANL_Data$'Upper Estimate'))  
     
     #For DTRA Data, multiply number of cases by projected hospitalization rate
-    DPT1<-data.frame(DPT1$ForecastData,DPT1$'Expected Hospitalizations'*.0025,DPT1$'Lower Estimate'*.0025,DPT1$'Upper Estimate'*.0025,DPT1$ID)
-    DPT2<-data.frame(DPT2$ForecastData,DPT2$'Expected Hospitalizations'*.0025,DPT2$'Lower Estimate'*.0025,DPT2$'Upper Estimate'*.0025,DPT2$ID)       
+    DPT1<-data.frame(DPT1$ForecastDate,DPT1$'Expected Hospitalizations'*.0025,DPT1$'Lower Estimate'*.0025,DPT1$'Upper Estimate'*.0025,DPT1$ID)
+    DPT2<-data.frame(DPT2$ForecastDate,DPT2$'Expected Hospitalizations'*.0025,DPT2$'Lower Estimate'*.0025,DPT2$'Upper Estimate'*.0025,DPT2$ID)       
     colnames(DPT1)<-c("ForecastDate", "Expected Fatalities", "Lower Estimate","Upper Estimate","ID")
     colnames(DPT2)<-c("ForecastDate", "Expected Fatalities", "Lower Estimate","Upper Estimate","ID")    
     
