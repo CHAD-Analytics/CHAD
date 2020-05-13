@@ -614,7 +614,7 @@ server <- function(input, output,session) {
   
   output$ProjPeakInfDate<-renderValueBox({
     
-    baseUsed = input$Base
+    baseUsed = input$AMClist
     
     df <- AMC_model
     
@@ -642,7 +642,7 @@ server <- function(input, output,session) {
   
   output$ProjTotInf<-renderValueBox({
     
-    baseUsed = input$Base
+    baseUsed = input$AMClist
     
     df <- AMC_model
     
@@ -672,7 +672,7 @@ server <- function(input, output,session) {
   
   output$ProjTotDeaths<-renderValueBox({
     
-    baseUsed = input$Base
+    baseUsed = input$AMClist
     
     df <- AMC_model
     
@@ -801,6 +801,8 @@ server <- function(input, output,session) {
     {
       updateCheckboxGroupInput(session,"ModelSelectionValue","Forecasting Model(s): ",choices=c("IHME (University of Washington)"="IHME",
                                                                                                 "Youyang Gu - Independent (YYG) Model"="YYG",
+                                                                                                "DTRA 1 - Relaxed SD"="DTRA1",
+                                                                                                "DTRA 2 - Relaxed SD w/ Testing"="DTRA2",                                                                                                  
                                                                                                 "CHIME (University of Pennsylvania): SC+NE+SD"="CHIME1",
                                                                                                 "CHIME: NE+SD"="CHIME2",
                                                                                                 "CHIME: SC+SD"="CHIME3",                                                                
@@ -819,6 +821,8 @@ server <- function(input, output,session) {
     {
       updateCheckboxGroupInput(session,"ModelSelectionValue","Forecasting Model(s):",choices=c("IHME (University of Washinton)"="IHME",
                                                                                                "Youyang Gu - Independent (YYG) Model"="YYG",
+                                                                                               "DTRA 1 - Relaxed SD"="DTRA1",
+                                                                                               "DTRA 2 - Relaxed SD w/ Testing"="DTRA2",                                                                                                 
                                                                                                "CHIME (University of Pennsylvania): SC+NE+SD"="CHIME1",
                                                                                                "CHIME: NE+SD"="CHIME2",
                                                                                                "CHIME: SC+SD"="CHIME3",                                                                
@@ -832,9 +836,11 @@ server <- function(input, output,session) {
                                                                                                "Columbia University: 20% SC Reduction with one time 5% increase in contact"="CU20SCx5",
                                                                                                "Columbia University: 20% SC Reduction with weekly 10% increase in contact"="CU20SCw10",                                                                
                                                                                                "Columbia University: 20% SC Reduction with weekly 5% increase in contact"="CU20SCw5"),                                                                                               
-
+                               
                                selected=c("IHME (University of Washinton)"="IHME",
                                           "Youyang Gu - Independent (YYG) Model"="YYG",
+                                          "DTRA 1 - Relaxed SD"="DTRA1",
+                                          "DTRA 2 - Relaxed SD w/ Testing"="DTRA2",                                            
                                           "CHIME (University of Pennsylvania): SC+NE+SD"="CHIME1",
                                           "CHIME: NE+SD"="CHIME2",
                                           "CHIME: SC+SD"="CHIME3",                                                                
@@ -861,6 +867,8 @@ server <- function(input, output,session) {
     
     if ("IHME" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"IHME")}
     if ("YYG" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"YYG")}
+    if ("DTRA1" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"DTRA1")}
+    if ("DTRA2" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"DTRA2")}    
     if ("LANL" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"LANL")}
     if ("UT" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"UT")}
     if ("CHIME7" %in% input$ModelSelectionValue){ModelID<-cbind(ModelID,"CHIME_4%_SD")}
