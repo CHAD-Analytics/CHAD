@@ -43,8 +43,10 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
   
   DPT1<-dplyr::filter(DP1,FIPS %in% IncludedCounties$FIPS)
   DPT2<-dplyr::filter(DP2,FIPS %in% IncludedCounties$FIPS)
-  DPT1$ForecastDate<-as.Date(DPT1$ForecastDate, "%m-%d-%Y")
-  DPT2$ForecastDate<-as.Date(DPT2$ForecastDate, "%m-%d-%Y")
+  DPT1$ForecastDate <- strptime(as.character(DPT1$ForecastDate), "%m/%d/%Y")
+  DPT2$ForecastDate <- strptime(as.character(DPT2$ForecastDate), "%m/%d/%Y")  
+  DPT1$ForecastDate<-as.Date(DPT1$ForecastDate, "%Y-%m-%d")
+  DPT2$ForecastDate<-as.Date(DPT2$ForecastDate, "%Y-%m-%d")
   DPT1<-dplyr::filter(DPT1,(ForecastDate >= (Sys.Date()-5)))        
   DPT2<-dplyr::filter(DPT2,(ForecastDate >= (Sys.Date()-5)))        
   DPT1<-aggregate(DPT1[,sapply(DPT1,is.numeric)],DPT1["ForecastDate"],sum)
@@ -109,8 +111,8 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
       LANL_Region$ForecastDate<-as.Date(LANL_Region$ForecastDate)
       
       #For DTRA Data, multiply number of cases by projected hospitalization rate
-      DPT1<-data.frame(DPT1$ForecastData,DPT1$'Expected Hospitalizations'*.055,DPT1$'Lower Estimate'*.055,DPT1$'Upper Estimate'*.055)
-      DPT2<-data.frame(DPT2$ForecastData,DPT2$'Expected Hospitalizations'*.055,DPT2$'Lower Estimate'*.055,DPT2$'Upper Estimate'*.055)      
+      DPT1<-data.frame(DPT1$ForecastData,DPT1$'Expected Hospitalizations'*.055,DPT1$'Lower Estimate'*.055,DPT1$'Upper Estimate'*.055,DPT1$ID)
+      DPT2<-data.frame(DPT2$ForecastData,DPT2$'Expected Hospitalizations'*.055,DPT2$'Lower Estimate'*.055,DPT2$'Upper Estimate'*.055,DPT2$ID)      
 
       LANL_Region<-LANL_Region[order(as.Date(LANL_Region$ForecastDate, format="%Y/%m/%d")),]
       LANL_Region$'Expected Hospitalizations'<-c(LANL_Region$'Expected Hospitalizations'[1],diff(LANL_Region$'Expected Hospitalizations'))
