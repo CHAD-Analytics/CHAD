@@ -21,3 +21,6 @@ colnames(AMC_model)[1] <- "DataDate"
 colnames(AMC_model)[2] <- "DataType"
 
 AMC_model$DataDate <- as.Date(AMC_model$DataDate)
+
+AMC_model_BaseList = colnames(AMC_model)[-c(1,2)]
+AMC_model_BaseList = sort(AMC_model_BaseList)

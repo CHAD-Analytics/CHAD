@@ -549,7 +549,7 @@ server <- function(input, output,session) {
   # Output AMC Analysis
   output$ProjectedEpidemicTable<-renderPlotly({
     
-    baseUsed = input$Base
+    baseUsed = input$AMClist
     
     # Read the json file and convert it to data.frame
     #myList <- fromJSON("data/shinyjson.json")
