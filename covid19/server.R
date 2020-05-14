@@ -911,9 +911,9 @@ server <- function(input, output,session) {
       #Once select service, select active, guard, reserve
       OperationalListP <- dplyr::filter(AFBaseLocations,Branch  %in% input$BranchP)
       OperationalListP <- sort(unique(OperationalListP$Operational), decreasing = FALSE)
-      OperationalListP <- c("All",OperationalListP)
+      OperationalListP <- c(OperationalListP)
     })
-    observe(updateSelectInput(session,"OperationalInputP",choices = OperationalListP()))  
+  observeEvent(input$BranchP,{updateSelectInput(session,"OperationalInputP",choices = OperationalListP())})  
     
     BaseListP<- reactive({
       #Once select service, select active, guard, reserve
@@ -922,7 +922,7 @@ server <- function(input, output,session) {
       BaseList <- sort(unique(Bases$Base), decreasing = FALSE)
       BaseList <- c(BaseList)
     })
-    observe(updateSelectInput(session,"Base",choices = BaseListP()))
+    observeEvent(input$OperationalInputP,{updateSelectInput(session,"Base",choices = BaseListP())})
     ###################################################################
 
         
@@ -1099,11 +1099,17 @@ server <- function(input, output,session) {
     
     output$downloadData <- downloadHandler(
       filename = function() { 
-        paste("SummaryDataset-", Sys.Date(), ".csv", sep="")
+        if(input$SummaryStatistic == "Cases") {
+          PrintDT<-ForecastDataTableCases 
+          FName<-"Cases"
+        } else if (input$SummaryStatistic == "Hospitalizations") {
+          PrintDT<-ForecastDataTable
+          FName<-"Hospitalizations"
+        } 
+        paste("SummaryDataset-",FName,"-",Sys.Date(), ".csv", sep="")
       },
       content = function(file) {
-        write.csv(ForecastDataTable, file)
-        
+        write.csv(PrintDT, file)
       })
     
     output$downloadFilteredData <- downloadHandler(

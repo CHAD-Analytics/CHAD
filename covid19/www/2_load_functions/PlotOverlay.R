@@ -198,6 +198,22 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
       OverlayData<-rbind(OverlayData,DPT2)
       
       #Calculate IHME Peak date, create data table of peak dates for hospitalizations 
+      # PeakSevDayVal<-round(max(DailyData$`Expected Hospitalizations`[1:7]))
+      # PeakFourteenDayVal<-round(max(DailyData$`Expected Hospitalizations`[1:14]))
+      # PeakTwentyOneDayVal<-round(max(DailyData$`Expected Hospitalizations`[1:21]))
+      # PeakThirtyDayVal<-round(max(DailyData$`Expected Hospitalizations`[1:30]))
+      # PeakSixtyDayVal<-round(max(DailyData$`Expected Hospitalizations`[1:60]))    
+      # PeakDateSevDayVal<-which.max(DailyData$`Expected Hospitalizations`[1:7])
+      # PeakDateFourteenDayVal<-which.max(DailyData$`Expected Hospitalizations`[1:14])
+      # PeakDateTwentyOneDayVal<-which.max(DailyData$`Expected Hospitalizations`[1:21])
+      # PeakDateThirtyDayVal<-which.max(DailyData$`Expected Hospitalizations`[1:30])
+      # PeakDateSixtyDayVal<-which.max(DailyData$`Expected Hospitalizations`[1:60])    
+      # PeakDateSevDayVal<-format(DailyData$ForecastDate[PeakDateSevDayVal], format="%b-%d")
+      # PeakDateFourteenDayVal<-format(DailyData$ForecastDate[PeakDateFourteenDayVal], format="%b-%d")
+      # PeakDateTwentyOneDayVal<-format(DailyData$ForecastDate[PeakDateTwentyOneDayVal], format="%b-%d")
+      # PeakDateThirtyDayVal<-format(DailyData$ForecastDate[PeakDateThirtyDayVal], format="%b-%d")
+      # PeakDateSixtyDayVal<-format(DailyData$ForecastDate[PeakDateSixtyDayVal], format="%b-%d")
+      
       PeakDate<-which.max(IHME_Data$IHME_Region.allbed_mean)
       IHMEPeak<-round(IHME_Data[PeakDate,2])      
       PeakDate<-which.max(UT_Data$daily_deaths_est)
@@ -221,7 +237,6 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
       #The only input we want from the user is the social distancing rate. For this example, we just use 0.5
       cases<-SIRinputs$cases
       pop<-SIRinputs$pop
-      doubling<-8
       
       SD <- c(27,23,19,15,12,8,4)
       sdrow<-length(SD)
@@ -232,17 +247,30 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
         ####################################################################################
         #Mean Estimate
         #Established Variables at the start for every county or populations
-        Ro<-2.5
+
+        doubling<-as.integer(CaseDblRate(MyCounties))
+        if (doubling == 0) {
+          doubling <- as.integer(40)      
+        }
+        
+        Ro<-Estimate_Rt(MyCounties)
+        if (Ro == "Undefined for Region"){
+          Ro<-as.integer(1)
+        } else if (Ro < 1){
+          Ro<-as.integer(1)
+        }
+        
         incubationtime<-5
         latenttime<-2
         recoverydays<-14
-        hospitalizationrate<-14
+        hospitalizationrate<-5
         icurate<-6
         ventilatorrate<-3
-        hospitaltime<-5
+        hospitaltime<-3.5
         icutime<-4
         ventilatortime<-7
-        daysforecasted<-120
+        #doubling<-8
+        #Ro<-2.5        
         
         #Now we throw the values above into the SEIAR model, and we create dates for the number of days we decided to forecast as well (place holder for now).
         #With the outputs, we grab the daily hospitalized people and the cumulative hospitalizations. Then we name the columns
@@ -262,17 +290,11 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
         ####################################################################################
         #Lower Estimate
         #Established Variables at the start for every county or populations
-        Ro<-2.3
-        incubationtime<-5
-        latenttime<-2
-        recoverydays<-14
-        hospitalizationrate<-11
-        icurate<-6
-        ventilatorrate<-3
-        hospitaltime<-3.5
-        icutime<-4
-        ventilatortime<-7
-        
+        doubling<-doubling*.75
+        Ro<-Ro*.75
+        hospitalizationrate<-hospitalizationrate*.75
+        hospitaltime<-hospitalizationrate*.75
+
         #Now we throw the values above into the SEIAR model, and we create dates for the number of days we decided to forecast as well (place holder for now).
         #With the outputs, we grab the daily hospitalized people and the cumulative hospitalizations. Then we name the columns
         SEIARProj<-SEIAR_Model_Run(cases, pop, incubationtime, latenttime,doubling,recoverydays, 
@@ -287,16 +309,10 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
         ####################################################################################
         #Upper Estimate
         #Established Variables at the start for every county or populations
-        Ro<-2.6
-        incubationtime<-5
-        latenttime<-2
-        recoverydays<-14
-        hospitalizationrate<-17
-        icurate<-6
-        ventilatorrate<-3
-        hospitaltime<-7
-        icutime<-4
-        ventilatortime<-7        
+        doubling<-doubling*1.25
+        Ro<-Ro*1.25
+        hospitalizationrate<-hospitalizationrate*1.25
+        hospitaltime<-hospitalizationrate*1.25
         #Next we use the calculated values, along with estimated values from the Estimated Values. 
         #Now we throw the values above into the SEIAR model, and we create dates for the number of days we decided to forecast as well (place holder for now).
         #With the outputs, we grab the daily hospitalized people and the cumulative hospitalizations. Then we name the columns

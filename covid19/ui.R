@@ -124,7 +124,7 @@ ui <- tagList(
                                              conditionalPanel(condition="input.tabselected == 3 || input.tabselected == 4",
                                                               selectInput("BranchP",
                                                                           "Service Branch:", 
-                                                                          list(`Branch` = BranchList ),
+                                                                          list(`Branch` = BranchList),
                                                                           selected = c("Air Force")),
                                                               selectInput("OperationalInputP",
                                                                           "Operational Status:", 
@@ -132,7 +132,7 @@ ui <- tagList(
                                                                           selected = c("Active")),
                                                               selectInput("Base",
                                                                           "Choose your base:",
-                                                                          list(`Base` = BaseListP),
+                                                                          list(`Status` = BaseListP),
                                                                           selected = c("Eglin Air Force Base")),
                                                               sliderInput("Radius",
                                                                           "Choose your local radius (miles):",
@@ -340,7 +340,7 @@ ui <- tagList(
                     # fluidRow(
                     #     box(plotlyOutput("IHME_State_Hosp",height = 400)),
                     #     box(plotlyOutput("SEIARProjection"),height = 400)),
-                    box(plotlyOutput("OverlayPlots"),height=700, width=1500)
+                    box(plotlyOutput("OverlayPlots"),height=800, width=1500)
                     ),
                   ####### END PROJECTION TAB #######
                   
