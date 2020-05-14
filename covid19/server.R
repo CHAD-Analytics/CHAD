@@ -915,6 +915,16 @@ server <- function(input, output,session) {
     })
   observeEvent(input$BranchP,{updateSelectInput(session,"OperationalInputP",choices = OperationalListP())})  
     
+  BaseListP<- reactive({
+    #Once select service, select active, guard, reserve
+    Bases <- dplyr::filter(AFBaseLocations,Branch %in% input$BranchP)
+    Bases <- dplyr::filter(Bases,Operational %in% input$OperationalInputP)    
+    BaseList <- sort(unique(Bases$Base), decreasing = FALSE)
+    BaseList <- c(BaseList)
+  })
+  observeEvent(input$BranchP,{updateSelectInput(session,"Base",choices = BaseListP())})  
+  
+  
     BaseListP<- reactive({
       #Once select service, select active, guard, reserve
       Bases <- dplyr::filter(AFBaseLocations,Branch %in% input$BranchP)
