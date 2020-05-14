@@ -1098,11 +1098,18 @@ server <- function(input, output,session) {
     # })
     
     output$downloadData <- downloadHandler(
+      if(input$SummaryStatistic == "Cases") {
+        PrintDT<-ForecastDataTableCases 
+        FName<-"Cases"
+      } else if (input$SummaryStatistic == "Hospitalizations") {
+        PrintDT<-ForecastDataTable
+        FName<-"Hospitalizations"
+      }        
       filename = function() { 
-        paste("SummaryDataset-", Sys.Date(), ".csv", sep="")
+        paste("SummaryDataset-",FName,"-",Sys.Date(), ".csv", sep="")
       },
       content = function(file) {
-        write.csv(ForecastDataTable, file)
+        write.csv(PrintDT, file)
         
       })
     
