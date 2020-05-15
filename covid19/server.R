@@ -913,18 +913,8 @@ server <- function(input, output,session) {
       OperationalListP <- sort(unique(OperationalListP$Operational), decreasing = FALSE)
       OperationalListP <- c(OperationalListP)
     })
-  observeEvent(input$BranchP,{updateSelectInput(session,"OperationalInputP",choices = OperationalListP())})  
-    
-  BaseListP<- reactive({
-    #Once select service, select active, guard, reserve
-    Bases <- dplyr::filter(AFBaseLocations,Branch %in% input$BranchP)
-    Bases <- dplyr::filter(Bases,Operational %in% input$OperationalInputP)    
-    BaseList <- sort(unique(Bases$Base), decreasing = FALSE)
-    BaseList <- c(BaseList)
-  })
-  observeEvent(input$BranchP,{updateSelectInput(session,"Base",choices = BaseListP())})  
-  
-  
+    observeEvent(input$BranchP,{updateSelectInput(session,"OperationalInputP",choices = OperationalListP())})  
+
     BaseListP<- reactive({
       #Once select service, select active, guard, reserve
       Bases <- dplyr::filter(AFBaseLocations,Branch %in% input$BranchP)
@@ -932,6 +922,7 @@ server <- function(input, output,session) {
       BaseList <- sort(unique(Bases$Base), decreasing = FALSE)
       BaseList <- c(BaseList)
     })
+    observeEvent(input$BranchP,{updateSelectInput(session,"Base",choices = BaseListP())})  
     observeEvent(input$OperationalInputP,{updateSelectInput(session,"Base",choices = BaseListP())})
     ###################################################################
 
@@ -950,44 +941,78 @@ server <- function(input, output,session) {
     ######
     
     MAJCOMList<- reactive({
-      #Once add additional NAFS, change NAFList to input$NAFInput
       MAJCOMList <- dplyr::filter(AFBaseLocations,Branch %in% input$Branch)
-      MAJCOMList <- dplyr::filter(MAJCOMList,Operational %in% input$OperationalInput) 
-      MAJCOMList <- sort(unique(MAJCOMList$'Major Command'), decreasing = FALSE)
-      MAJCOMList <- c("All",MAJCOMList)
+      # MAJCOMList <- dplyr::filter(MAJCOMList,Operational %in% input$OperationalInput) 
+      # MAJCOMList <- sort(unique(MAJCOMList$'Major Command'), decreasing = FALSE)
+      # MAJCOMList <- c("All",MAJCOMList)
+      if (input$OperationalInput == "Active") {
+        MAJCOMList <- dplyr::filter(MAJCOMList,Operational %in% input$OperationalInput)         
+        MAJCOMList <- sort(unique(MAJCOMList$'Major Command'), decreasing = FALSE)
+        MAJCOMList <- c("All",MAJCOMList)
+      } else if ((input$OperationalInput == "Reserve")||(input$OperationalInput == "Guard")){
+        MAJCOMList <- dplyr::filter(MAJCOMList,Operational %in% input$OperationalInput)         
+        MAJCOMList <- sort(unique(MAJCOMList$'Major Command'), decreasing = FALSE)
+        MAJCOMList <- c(MAJCOMList)
+      }else {
+        MAJCOMList <- sort(unique(AFBases$'Major Command'), decreasing = FALSE)
+        MAJCOMList<-c("All",MAJCOMList)               
+      }   
     })
     observeEvent(input$OperationalInput,{updateSelectInput(session,"MAJCOMInput",choices = MAJCOMList())})  
 
-    NAFList<- reactive({
-      NAFList <- dplyr::filter(AFBaseLocations,Branch %in% input$Branch)
-      NAFList <- dplyr::filter(NAFList,Operational %in% input$OperationalInput) 
-      NAFList <- sort(unique(NAFList$'NAF'), decreasing = FALSE)
-      NAFList <- c(NAFList)
-    })
-    observeEvent(input$OperationalInput,{updateSelectInput(session,"NAFInput",choices = NAFList())})  
-            
+    # NAFList<- reactive({
+    #     NAFList <- sort(unique(AFNAFS$NAF), decreasing = FALSE)
+    #     NAFList <- c(NAFList)             
+    #   }         
+    #   
+    # })
+    # observeEvent(input$OperationalInput,{updateSelectInput(session,"NAFInput",choices = NAFList())})  
     
     WingList<- reactive({
-      #Once add additional NAFS, change NAFList to input$NAFInput
-      AFWings<-dplyr::filter(AFNAFS,NAF %in% input$NAFInput)
-      WingList <- sort(unique(AFWings$Wing), decreasing = FALSE)
-      WingList <- c("All",WingList)
-    })
-    observeEvent(input$NAFInput,{updateSelectInput(session,"WingInput",choices = WingList())})  
-    
-      
-    GroupList <- reactive({
-      if (input$WingInput != "All") {
-        GroupList<-dplyr::filter(AFWings,Wing %in% input$WingInput)
-        GroupList<-sort(unique(GroupList$`Group`), decreasing = FALSE)
-        GroupList<-c("All",GroupList)
-      }else {
-        GroupList<-sort(unique(AFWings$`Group`), decreasing = FALSE)
-        GroupList<-c("All",GroupList)
+      if (input$NAFInput != "All"){
+        #Once add additional NAFS, change NAFList to input$NAFInput
+        AFWings<-dplyr::filter(AFNAFS,NAF %in% input$NAFInput)
+        WingList <- sort(unique(AFWings$Wing), decreasing = FALSE)
+        WingList <- c("All",WingList)
+      } else {  
+        AFWings<-dplyr::filter(AFNAFS,NAF %in% NAFList)
+        WingList <- sort(unique(AFWings$Wing), decreasing = FALSE)
+        WingList <- c("All",WingList)      
       }
     })
-    observeEvent(input$WingInput,{updateSelectInput(session,"GroupInput",choices = GroupList())})  
-    
+    observeEvent(input$NAFInput,{updateSelectInput(session,"WingInput",choices = WingList())})  
+
+
+    GroupList <- reactive({
+      if (input$NAFInput != "All"){
+        if (input$WingInput != "All") {
+          AFWings<-dplyr::filter(AFNAFS,NAF %in% input$NAFInput)        
+          GroupList<-dplyr::filter(AFWings,Wing %in% input$WingInput)
+          GroupList<-sort(unique(GroupList$`Group`), decreasing = FALSE)
+          GroupList<-c("All",GroupList)
+        }else {
+          AFWings<-dplyr::filter(AFNAFS,NAF %in% input$NAFInput) 
+          GroupList<-sort(unique(AFWings$`Group`), decreasing = FALSE)
+          GroupList<-c("All",GroupList)
+        }
+      } else {
+        if (input$WingInput != "All") {
+          AFWings<-dplyr::filter(AFNAFS,NAF %in% NAFList)        
+          GroupList<-dplyr::filter(AFWings,Wing %in% input$WingInput)
+          GroupList<-sort(unique(GroupList$`Group`), decreasing = FALSE)
+          GroupList<-c("All",GroupList)
+        }else {
+          AFWings<-dplyr::filter(AFNAFS,NAF %in% NAFList)  
+          GroupList<-sort(unique(AFWings$`Group`), decreasing = FALSE)
+          GroupList<-c("All",GroupList)
+        }        
+      }
+      
+    })
+    observeEvent(input$NAFInput,{updateSelectInput(session,"GroupInput",choices = GroupList())})      
+    observeEvent(input$WingInput,{updateSelectInput(session,"GroupInput",choices = GroupList())})          
+
+
     
     #Choice between cases heat map or hospitalizations heat map
     output$SummaryTabChoro<-renderPlotly({

@@ -32,6 +32,11 @@ dashboard for their AF installation.*
     local radius selected. The local area data being displayed
     throughout the dashboard only incorporates these counties. These
     counties are portrayed in the bottom right table of this tab.
+    **NOTE:** The radius is centered on the base of interest and includes
+    counties whose centroid falls within the radius. County locations that have 
+    non-symmetrical boundaries may or may not be included in te local health 
+    calculations. You can select/deselect counties on the local health tab
+    to include or exclude counties in the calculations.
 
 -   Selecting *State* portrays all counties from any state that resides
     within the local radius selected.  

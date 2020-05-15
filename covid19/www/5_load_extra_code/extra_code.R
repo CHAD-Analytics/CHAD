@@ -1,4 +1,5 @@
 NAFList <- sort(unique(AFNAFS$NAF), decreasing = FALSE)
+NAFList <- c(NAFList) 
 AFWings<-dplyr::filter(AFNAFS,NAF %in% NAFList)
 WingList <- sort(unique(AFWings$Wing), decreasing = FALSE)
 WingList <- c("All",WingList)

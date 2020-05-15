@@ -88,7 +88,7 @@ ui <- tagList(
                                                                              selectInput("NAFInput",
                                                                                  "Numbered Air Forces:", 
                                                                                  choices=NAFList,
-                                                                                 selectize = FALSE),
+                                                                                 selected = c("All")),
                                                                              selectInput("WingInput",
                                                                                  "Wing:", 
                                                                                  list(`Wings` = WingList),

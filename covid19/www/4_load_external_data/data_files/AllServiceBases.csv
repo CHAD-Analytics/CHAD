@@ -439,7 +439,7 @@ Rome Laboratory,Rome,US,United States,NY,New York,Air Force,AFMC,43.2229,-75.408
 Griffiss International Airport,Rome,US,United States,NY,New York,Air Force,ANG,43.23055556,-75.40944444,Oneida,36065,Guard,,
 Syracuse Hancock International Airport,Syracuse,US,United States,NY,Ndudu,Air Force,ANG,43.11138889,-76.12361111,Onondaga,36067,Guard,N/A,
 Syracuse MCRC,Syracuse,US,United States,NY,New York,Marine Corps,Marine Corps,43.047934,-76.17792,Onondaga ,,Reserve,N/A,13204
-March Joint Air Reserve Base,Riverside,US,United States,CA,California,Air Force,AFRC,33.88055556,-117.2594444,Orange,6059,Reserve,N/A,24510
+March Joint Air Reserve Base,Riverside,US,United States,CA,California,Air Force,AFRC,33.88055556,-117.2594444,Riverside ,6059,Reserve,N/A,24510
 Stewart International Airport,Newburgh,US,United States,NY,New York,Air Force,ANG,41.50416667,-74.10472222,Orange,36071,Guard,N/A,11530
 Naval Support Activity Orlando,Orlando,US,United States,FL,Florida,Navy,Navy,28.545179,-81.373291,Orange ,,Active,N/A,32801
 ALF Orange,Orange,US,United States,TX,Texas,Navy,Navy,30.071743,-93.864976,Orange ,,Active,N/A,77630
@@ -585,7 +585,7 @@ Ozol Defense Fuel Support Point,Peanut,US,United States,CA,California,Air Force,
 Sewage Evaporation Pond,Peanut,US,United States,CA,California,Navy,Navy,40.467923,-123.168637,Trinity ,,Active,N/A,96041
 Youngstown-Warren Regional Airport,Youngstown,US,United States,OH,Ohio,Air Force,AFRC,41.26055556,-80.67888889,Trumbull,39155,Reserve,N/A,44501
 Tulsa International Airport,Tulsa,US,United States,OK,Oklahoma,Air Force,ANG,36.19833333,-95.88805556,Tulsa,40143,Guard,N/A,74101
-Robins Air Force Base,Warner Robins,US,United States,GA,Georgia,Air Force,AFMC,32.64,-83.59166667,Twiggs,13289,Active,N/A,13289
+Robins Air Force Base,Warner Robins,US,United States,GA,Georgia,Air Force,AFMC,32.64,-83.59166667,Houston,13289,Active,N/A,13289
 Umatilla Chemical Depot,Umatilla,US,United States,OR,Oregon,Army,Army,45.917965,-119.287426,Umatilla ,,Active,Joint,97882
 Haarp Research Station,Gakona ,US,United States,AK,Alaska,Air Force,N/A,63.346191,-152.837069,Valdez-Cordova,,Active,Joint,
 Channel Islands Air National Guard Station,Oxnard,US,United States,CA,California,Air Force,ANG,34.115,-119.1102778,Ventura,6111,Guard,N/A,95440

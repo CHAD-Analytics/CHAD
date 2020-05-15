@@ -33,7 +33,11 @@ GetHeatMap<-function(BranchSelect,OpsSelect,MAJNAFSelect,MAJCOMChoice,NAFChoice,
               filter(MAJCOM == MAJCOMChoice & Days == ForecastChoice)
           }
         }else{  # if NAF is 
-          AFWings<-dplyr::filter(AFNAFS,NAF %in% NAFChoice)
+          if (NAFChoice == "All"){
+            AFWings<-dplyr::filter(AFNAFS,NAF %in% NAFList)
+          } else {
+            AFWings<-dplyr::filter(AFNAFS,NAF %in% NAFChoice)
+          }
           if (WingChoice=="All") {
             forecastbaselist<-dplyr::filter(AFWings,Wing %in% WingList)            
             forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE) 
@@ -48,6 +52,33 @@ GetHeatMap<-function(BranchSelect,OpsSelect,MAJNAFSelect,MAJCOMChoice,NAFChoice,
         }
   }
 
+  
+#Consider Group Filtering
+  # if (WingChoice=="All") {
+  #   forecastbaselist<-dplyr::filter(AFWings,Wing %in% WingList)
+  #   if (GroupChoice!="All") {                
+  #     forecastbaselist<-dplyr::filter(forecastbaselist,Group %in% GroupChoice)                 
+  #   } else {
+  #     forecastbaselist<-dplyr::filter(forecastbaselist,Group %in% GroupList)                     
+  #   }
+  #   forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE) 
+  #   basesRadius<-dplyr::filter(basesRadius,base %in% forecastbaselist) 
+  #   basesRadius <- basesRadius %>% 
+  #     mutate(include = ifelse((new_cases_7_pp > 500) & (date == current_date), TRUE, FALSE))
+  # } else {
+  #   forecastbaselist<-dplyr::filter(AFWings,Wing %in% WingChoice) 
+  #   if (GroupChoice!="All") {                
+  #     forecastbaselist<-dplyr::filter(forecastbaselist,Group %in% GroupChoice)                 
+  #   } else {
+  #     forecastbaselist<-dplyr::filter(forecastbaselist,Group %in% GroupList)                     
+  #   }                
+  #   forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE) 
+  #   basesRadius<-dplyr::filter(basesRadius,base %in% forecastbaselist)       
+  #   basesRadius <- basesRadius %>% 
+  #     mutate(include = ifelse((new_cases_7_pp > 500) & (date == current_date), TRUE, FALSE))
+  # }            
+
+  
   if (ModelChoice=="IHME") {
     
     g <- list(

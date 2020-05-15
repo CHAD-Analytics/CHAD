@@ -22,10 +22,10 @@ HotspotPlot <- function(BranchSelect,OpsSelect,MAJNAFSelect,MAJCOMInput,NAFChoic
             mutate(include = ifelse((new_cases_7_pp > 100) & (date == current_date), TRUE, FALSE))
         
     } else if (BranchSelect=="Air Force"){
-        if (OpsSelect != "All"){ 
-            basesRadius<-dplyr::filter(basesRadius,Operational %in% OpsSelect)
-        }
         if (MAJNAFSelect=="MAJCOM"){
+            if (OpsSelect != "All"){ 
+                basesRadius<-dplyr::filter(basesRadius,Operational %in% OpsSelect)
+            }
             if (MAJCOMInput == "All"){ 
                 basesRadius <- basesRadius %>% 
                     mutate(include = ifelse((new_cases_7_pp > 100) & (date == current_date), TRUE, FALSE))
@@ -44,21 +44,34 @@ HotspotPlot <- function(BranchSelect,OpsSelect,MAJNAFSelect,MAJCOMInput,NAFChoic
                                                                              (`Major Command` == MAJCOMInput), TRUE, FALSE))
             }
         } else if (MAJNAFSelect=="NAF"){
-            AFWings<-dplyr::filter(AFNAFS,NAF %in% NAFChoice)
+            if (NAFChoice == "All"){
+                AFWngs<-dplyr::filter(AFNAFS,NAF %in% NAFList)
+            } else {
+                AFWngs<-dplyr::filter(AFNAFS,NAF %in% NAFChoice)
+            }
             if (WingChoice=="All") {
-                forecastbaselist<-dplyr::filter(AFWings,Wing %in% WingList)
-                if (GroupChoice!="All") {                
-                    forecastbaselist<-dplyr::filter(forecastbaselist,Group %in% GroupChoice)                 
-                }
+                WingList2 <- sort(unique(AFWngs$Wing), decreasing = FALSE)
+                forecastbaselist<-dplyr::filter(AFWngs,Wing %in% WingList2)
+                # if (GroupChoice!="All") {                
+                #     forecastbaselist<-dplyr::filter(forecastbaselist,Group %in% GroupChoice)                 
+                # } else {
+                #     AFGrps<-dplyr::filter(AFWings,Wing %in% WingList)
+                #     GroupList <- sort(unique(AFGrps$Group), decreasing = FALSE)
+                #     forecastbaselist<-dplyr::filter(forecastbaselist,Group %in% GroupList)                        
+                # }
                 forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE) 
                 basesRadius<-dplyr::filter(basesRadius,base %in% forecastbaselist) 
                 basesRadius <- basesRadius %>% 
                     mutate(include = ifelse((new_cases_7_pp > 500) & (date == current_date), TRUE, FALSE))
             } else {
-                forecastbaselist<-dplyr::filter(AFWings,Wing %in% WingChoice) 
-                if (GroupChoice!="All") {                
-                    forecastbaselist<-dplyr::filter(forecastbaselist,Group %in% GroupChoice)                 
-                }                
+                forecastbaselist<-dplyr::filter(AFWngs,Wing %in% WingChoice) 
+                # if (GroupChoice!="All") {                
+                #     forecastbaselist<-dplyr::filter(forecastbaselist,Group %in% GroupChoice)                 
+                # } else {
+                #     AFGrps<-dplyr::filter(AFWings,Wing %in% WingChoice)
+                #     GroupList <- sort(unique(AFGrps$Group), decreasing = FALSE)
+                #     forecastbaselist<-dplyr::filter(forecastbaselist,Group %in% GroupList)                     
+                # }                
                 forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE) 
                 basesRadius<-dplyr::filter(basesRadius,base %in% forecastbaselist)       
                 basesRadius <- basesRadius %>% 
