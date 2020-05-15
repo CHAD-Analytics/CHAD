@@ -384,7 +384,9 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
       
       projections <- ggplotly(projections)
       # projections <- projections %>% config(displayModeBar = FALSE)
-      projections
+      projections <- projections %>% config(toImageButtonOptions = list(format = "png",
+                                                                        width = 1100,
+                                                                        height = 500))
     
   } else {
     
@@ -659,7 +661,9 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
     
     projections <- ggplotly(projections)
     # projections <- projections %>% config(displayModeBar = FALSE)
-    projections
+    projections <- projections %>% config(toImageButtonOptions = list(format = "png",
+                                                                      width = 1100,
+                                                                      height = 500))
   }
   
 }
