@@ -8,7 +8,7 @@
 get_lanl_data <- function(front = 'https://covid-19.bsvgateway.org/forecast/us/files',
                           middle1 = '/confirmed/',middle2 = '/deaths/',
                           end1 = '_confirmed_quantiles_us.csv',end2 = '_deaths_quantiles_us.csv',
-                          date = Sys.Date()-4)
+                          date = Sys.Date()-2)
 {
   
   LANLC_Data<-vroom::vroom(paste0(Front,Date,Middle1,date,End1))

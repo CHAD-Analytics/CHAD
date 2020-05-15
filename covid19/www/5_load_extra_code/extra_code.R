@@ -1,5 +1,7 @@
 NAFList <- sort(unique(AFNAFS$NAF), decreasing = FALSE)
 NAFList <- c(NAFList) 
+NAFID <- sort(unique(AFNAFS$ID), decreasing = FALSE)
+NAFID <- c(NAFID) 
 AFWings<-dplyr::filter(AFNAFS,NAF %in% NAFList)
 WingList <- sort(unique(AFWings$Wing), decreasing = FALSE)
 WingList <- c("All",WingList)
@@ -748,35 +750,37 @@ rm(TruncatedReport2)
 
 ######################## Summary Tab Heat Map
 HeatMapForecast<-merge(AFBaseLocations, ForecastDataTable, by.x = c("Base","State","Major Command"), by.y = c("Installation","State","MAJCOM"))
-HeatMapForecast<-data.frame(HeatMapForecast$Base, HeatMapForecast$City,HeatMapForecast$State,HeatMapForecast$Branch,HeatMapForecast$Operational,HeatMapForecast$`Major Command`, 
+HeatMapForecast<-data.frame(HeatMapForecast$Base,HeatMapForecast$State,HeatMapForecast$Branch,HeatMapForecast$Operational,HeatMapForecast$`Major Command`, 
                             HeatMapForecast$Lat, HeatMapForecast$Long,HeatMapForecast$`Available Beds`,HeatMapForecast$`Hopitalization Per 100,000`,HeatMapForecast$`Hopitalization Per 10,000`,
                             HeatMapForecast$`New Hospitalizations`,HeatMapForecast$`New Hospitalizations`,HeatMapForecast$`7D SEIAR Forecast`, HeatMapForecast$`7D IHME Forecast`,
                             HeatMapForecast$`14D SEIAR Forecast`,HeatMapForecast$`14D IHME Forecast`,  HeatMapForecast$`21D SEIAR Forecast`, HeatMapForecast$`21D IHME Forecast`, 
-                            HeatMapForecast$`30D SEIAR Forecast`, HeatMapForecast$`30D IHME Forecast`)
-colnames(HeatMapForecast)<-c("Base","City","State","Branch","Operational","MAJCOM","Lat","Long","Beds","Hospitalizations Per 100,000","Hospitalizations Per 10,000","Today.CHIME","Today.IHME", "Seven.IHME","Seven.CHIME","Fourteen.IHME","Fourteen.CHIME","Twenty-One.IHME","Twenty-One.CHIME", "Thirty.IHME","Thirty.CHIME")
+                            HeatMapForecast$`30D SEIAR Forecast`, HeatMapForecast$`30D IHME Forecast`,HeatMapForecast$ID)
+colnames(HeatMapForecast)<-c("Base","State","Branch","Operational","MAJCOM","Lat","Long","Beds","Hospitalizations Per 100,000","Hospitalizations Per 10,000","Today.CHIME","Today.IHME", "Seven.IHME","Seven.CHIME",
+                            "Fourteen.IHME","Fourteen.CHIME","Twenty-One.IHME","Twenty-One.CHIME", "Thirty.IHME","Thirty.CHIME","ID")
 HeatMapForecast<-reshape(HeatMapForecast, direction='long', 
                          varying=c('Today.CHIME','Today.IHME','Seven.IHME','Seven.CHIME','Fourteen.IHME','Fourteen.CHIME','Twenty-One.IHME','Twenty-One.CHIME','Thirty.IHME','Thirty.CHIME'), 
                          timevar='Days',
                          times=c('Today','Seven', 'Fourteen',"Twenty-One","Thirty"),
                          v.names=c('CHIME', 'IHME'),
-                         idvar=c("Base","City","State","Branch","Operational","MAJCOM","Lat","Long","Beds","Hospitalizations Per 100,000","Hospitalizations Per 10,000"))
+                         idvar=c("Base","State","Branch","Operational","MAJCOM","Lat","Long","Beds","Hospitalizations Per 100,000","Hospitalizations Per 10,000","ID"))
 HeatMapForecast<-transform(HeatMapForecast,IHMEID=ifelse((Beds)>=IHME,"Under Capacity","Over Capacity"))
 HeatMapForecast<-transform(HeatMapForecast,CHIMEID=ifelse((Beds)>=CHIME,"Under Capacity","Over Capacity"))
 
 
 HeatMapForecastCases<-merge(AFBaseLocations, ForecastDataTableCases, by.x = c("Base","State","Major Command"), by.y = c("Installation","State","MAJCOM"))
-HeatMapForecastCases<-data.frame(HeatMapForecastCases$Base, HeatMapForecastCases$City, HeatMapForecastCases$State,HeatMapForecastCases$Branch,HeatMapForecastCases$Operational,HeatMapForecastCases$`Major Command`,
+HeatMapForecastCases<-data.frame(HeatMapForecastCases$Base, HeatMapForecastCases$State,HeatMapForecastCases$Branch,HeatMapForecastCases$Operational,HeatMapForecastCases$`Major Command`,
                                  HeatMapForecastCases$Lat, HeatMapForecastCases$Long,HeatMapForecastCases$`Available Beds`,HeatMapForecastCases$`Cases Per 100,000`,HeatMapForecastCases$`Cases Per 10,000`,
                                  HeatMapForecastCases$`New Cases`,HeatMapForecastCases$`New Cases`,HeatMapForecastCases$`7D SEIAR Forecast`, HeatMapForecastCases$`7D IHME Forecast`,
                                  HeatMapForecastCases$`14D SEIAR Forecast`,  HeatMapForecastCases$`14D IHME Forecast`,  HeatMapForecastCases$`21D SEIAR Forecast`, HeatMapForecastCases$`21D IHME Forecast`, 
-                                 HeatMapForecastCases$`30D SEIAR Forecast`, HeatMapForecastCases$`30D IHME Forecast`)
-colnames(HeatMapForecastCases)<-c("Base","City","State","Branch","Operational","MAJCOM","Lat","Long","Beds","Cases Per 100,000","Cases_Per_10000","Today.CHIME","Today.IHME", "Seven.IHME","Seven.CHIME","Fourteen.IHME","Fourteen.CHIME","Twenty-One.IHME","Twenty-One.CHIME","Thirty.IHME","Thirty.CHIME")
+                                 HeatMapForecastCases$`30D SEIAR Forecast`, HeatMapForecastCases$`30D IHME Forecast`,HeatMapForecastCases$ID)
+colnames(HeatMapForecastCases)<-c("Base","State","Branch","Operational","MAJCOM","Lat","Long","Beds","Cases Per 100,000","Cases_Per_10000","Today.CHIME","Today.IHME", "Seven.IHME","Seven.CHIME",
+                                  "Fourteen.IHME","Fourteen.CHIME","Twenty-One.IHME","Twenty-One.CHIME","Thirty.IHME","Thirty.CHIME","ID")
 HeatMapForecastCases<-reshape(HeatMapForecastCases, direction='long', 
                               varying=c('Today.CHIME','Today.IHME','Seven.IHME', 'Seven.CHIME', 'Fourteen.IHME', 'Fourteen.CHIME','Twenty-One.IHME','Twenty-One.CHIME','Thirty.IHME','Thirty.CHIME'), 
                               timevar='Days',
                               times=c('Today','Seven', 'Fourteen',"Twenty-One","Thirty"),
                               v.names=c('CHIME', 'IHME'),
-                              idvar=c('Base','City','State','Branch','Operational','MAJCOM','Lat','Long','Beds',"Cases Per 100,000","Cases_Per_10000"))
+                              idvar=c('Base','State','Branch','Operational','MAJCOM','Lat','Long','Beds',"Cases Per 100,000","Cases_Per_10000","ID"))
 HeatMapForecastCases<-transform(HeatMapForecastCases,IHMEID=ifelse((Cases_Per_10000*10000*.05)>=IHME,"Under 5% Population","Over 5% Population"))
 HeatMapForecastCases<-transform(HeatMapForecastCases,CHIMEID=ifelse((Cases_Per_10000*10000*.05)>=CHIME,"Under 5% Population","Over 5% Population"))
 

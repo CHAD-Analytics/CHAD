@@ -53,7 +53,7 @@ if(test_date < Sys.Date()) {
                         overwrite = T)
   
   bsv_metadata<-jsonlite::fromJSON("www/4_load_external_data/data_files/forecast_metadata.json")
-  
+
   Front<-'https://covid-19.bsvgateway.org/forecast/us/files/'
   Middle1<-'/confirmed/'
   End1<-'_confirmed_quantiles_us_website.csv'
