@@ -44,11 +44,7 @@ HotspotPlot <- function(BranchSelect,OpsSelect,MAJNAFSelect,MAJCOMInput,NAFChoic
                                                                              (`Major Command` == MAJCOMInput), TRUE, FALSE))
             }
         } else if (MAJNAFSelect=="NAF"){
-            if (NAFChoice == "All"){
-                AFWngs<-dplyr::filter(AFNAFS,NAF %in% NAFList)
-            } else {
-                AFWngs<-dplyr::filter(AFNAFS,NAF %in% NAFChoice)
-            }
+            AFWngs<-dplyr::filter(AFNAFS,NAF %in% NAFChoice)
             if (WingChoice=="All") {
                 WingList2 <- sort(unique(AFWngs$Wing), decreasing = FALSE)
                 forecastbaselist<-dplyr::filter(AFWngs,Wing %in% WingList2)
