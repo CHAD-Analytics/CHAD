@@ -9,7 +9,7 @@
 # WingList <- c("All",WingList)
 
 #Constructing the cimdtest and himdtest matrices
-AFBaseLocations2 = vroom::vroom("C:/Users/taylo/Documents/CHAD/covid19/www/4_load_external_data/data_files/AllBaseList.csv")
+AFBaseLocations2 = vroom::vroom("www/4_load_external_data/data_files/AllBaseList.csv")
 AFBaseLocations2<-data.frame(AFBaseLocations2)
 AFBaseLocations2$Lat <- as.numeric(AFBaseLocations2$Lat)
 AFBaseLocations2$Long <- as.numeric(AFBaseLocations2$Long)
