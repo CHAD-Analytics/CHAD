@@ -49,7 +49,10 @@
 # cimd<-vroom::vroom("www/4_load_external_data/data_files/cimd.csv")
 # himd<-vroom::vroom("www/4_load_external_data/data_files/himd.csv")
 # AFBaseLocations<-vroom::vroom("www/4_load_external_data/data_files/AFBaseLocations.csv")
-AFNAFS<-vroom::vroom("www/4_load_external_data/data_files/NAF_ID.csv")
+# AFNAFS<-vroom::vroom("www/4_load_external_data/data_files/NAF_ID.csv") 
+
+# AF NAF list is being loaded in local files now
+
 # 
 # setwd("C:/Users/taylo/Documents/CHAD/covid19/www/3_load_local_data/")
 # save(cimd, file = "cimd.rda")
