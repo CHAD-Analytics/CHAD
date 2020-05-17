@@ -873,3 +873,31 @@ bases_radius <- Bases50 %>% left_join(Growth, by = c("FIPS" = "CountyFIPS")) %>%
   )
 
 bases_radius = bases_radius %>% left_join(AFBaseLocations %>% select(Base,Branch,Operational,'Major Command'), by = c("base" = "Base"))
+
+
+
+
+
+
+###############################################################################################
+############################### Establish Choropleth Plot for Local ###########################
+###############################################################################################
+
+
+choroplethObj = st_as_sf(county_df)
+choroplethObj = st_transform(choroplethObj, crs = 4326)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
