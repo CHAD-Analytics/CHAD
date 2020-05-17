@@ -886,3 +886,5 @@ bases_radius = bases_radius %>% left_join(AFBaseLocations %>% select(Base,Branch
 
 choroplethObj = st_as_sf(county_df)
 choroplethObj = st_transform(choroplethObj, crs = 4326)
+choroplethObj = st_transform(choroplethObj, crs = 4326)
+
