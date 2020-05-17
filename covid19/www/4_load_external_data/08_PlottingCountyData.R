@@ -1,4 +1,5 @@
-PlottingCountyData = vroom::vroom("www/4_load_external_data/data_files/time_series_covid19_confirmed_US.csv")
+PlottingCountyData = as.data.frame(data.table::fread("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_US.csv"))
+
 
 PlottingCountyData = PlottingCountyData[colSums(!is.na(PlottingCountyData)) > 0]
 
