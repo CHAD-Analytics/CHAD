@@ -1086,22 +1086,22 @@ server <- function(input, output,session) {
             FilteredDT<-dplyr::filter(FilteredDT,Installation %in% forecastbaselist) 
             
             FilteredDT<-FilterDataTable(FilteredDT,input$SummaryModelType,input$SummaryForecast,input$SummaryStatistic)
-            FilteredDT<-merge(FilteredDT,AFNAFS, by.x = "Installation", by.y = "Base")
-            FilteredDT<-FilteredDT[, names(FilteredDT)[colset]]  
-            colnames(FilteredDT)[2]<-"State"
+            # FilteredDT<-merge(FilteredDT,AFWings, by.x = "Installation", by.y = "Base")
+            # FilteredDT<-FilteredDT[, names(FilteredDT)[colset]]  
+            # colnames(FilteredDT)[2]<-"State"
             FTPrint<-FilteredDT                        
             dt<-DT::datatable(FilteredDT, rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))   
             dt
             
           } else {                                    
-            forecastbaselist<-dplyr::filter(AFWings,Group %in% input$GroupInput)                        
-            forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE) 
+            forecastbaselistG<-dplyr::filter(AFWings,Group %in% input$GroupInput)                        
+            forecastbaselist<-sort(unique(forecastbaselistG$Base), decreasing = FALSE) 
             FilteredDT<-dplyr::filter(ForecastDataTableCases,Installation %in% forecastbaselist) 
             
             FilteredDT<-FilterDataTable(FilteredDT,input$SummaryModelType,input$SummaryForecast,input$SummaryStatistic)
-            FilteredDT<-merge(FilteredDT,AFNAFS, by.x = "Installation", by.y = "Base")
-            FilteredDT<-FilteredDT[, names(FilteredDT)[colset]]  
-            colnames(FilteredDT)[2]<-"State"
+            # FilteredDT<-merge(FilteredDT,forecastbaselistG, by.x = "Installation", by.y = "Base")
+            # FilteredDT<-FilteredDT[, names(FilteredDT)[colset]]  
+            # colnames(FilteredDT)[2]<-"State"
             FTPrint<-FilteredDT                        
             dt<-DT::datatable(FilteredDT, rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))   
             dt
@@ -1112,27 +1112,27 @@ server <- function(input, output,session) {
           
           if (input$GroupInput == "All") {
             GroupList<-sort(unique(AFWings$`Group`), decreasing = FALSE)
-            forecastbaselist<-dplyr::filter(AFWings,Group %in% GroupList)                        
-            forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE) 
+            forecastbaselistG<-dplyr::filter(AFWings,Group %in% GroupList)                        
+            forecastbaselist<-sort(unique(forecastbaselistG$Base), decreasing = FALSE) 
             FilteredDT<-dplyr::filter(FilteredDT,Installation %in% forecastbaselist) 
             
             FilteredDT<-FilterDataTable(FilteredDT,input$SummaryModelType,input$SummaryForecast,input$SummaryStatistic)
-            FilteredDT<-merge(FilteredDT,AFNAFS, by.x = "Installation", by.y = "Base")
-            FilteredDT<-FilteredDT[, names(FilteredDT)[colset]]  
-            colnames(FilteredDT)[2]<-"State"
+            # FilteredDT<-merge(FilteredDT,forecastbaselistG, by.x = "Installation", by.y = "Base")
+            # FilteredDT<-FilteredDT[, names(FilteredDT)[colset]]  
+            # colnames(FilteredDT)[2]<-"State"
             FTPrint<-FilteredDT                        
             dt<-DT::datatable(FilteredDT, rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))   
             dt
             
           } else {                                    
-            forecastbaselist<-dplyr::filter(AFWings,Group %in% input$GroupInput)                        
-            forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE) 
+            forecastbaselistG<-dplyr::filter(AFWings,Group %in% input$GroupInput)                        
+            forecastbaselist<-sort(unique(forecastbaselistG$Base), decreasing = FALSE) 
             FilteredDT<-dplyr::filter(FilteredDT,Installation %in% forecastbaselist) 
             
             FilteredDT<-FilterDataTable(FilteredDT,input$SummaryModelType,input$SummaryForecast,input$SummaryStatistic)
-            FilteredDT<-merge(FilteredDT,AFNAFS, by.x = "Installation", by.y = "Base")
-            FilteredDT<-FilteredDT[, names(FilteredDT)[colset]]  
-            colnames(FilteredDT)[2]<-"State"
+            # FilteredDT<-merge(FilteredDT,forecastbaselistG, by.x = "Installation", by.y = "Base")
+            # FilteredDT<-FilteredDT[, names(FilteredDT)[colset]]  
+            # colnames(FilteredDT)[2]<-"State"
             FTPrint<-FilteredDT                        
             dt<-DT::datatable(FilteredDT, rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))   
             dt
