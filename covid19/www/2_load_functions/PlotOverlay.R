@@ -2,7 +2,7 @@
 #' @details EXTRA EXTRA Need to find a better way later to replace this 
 #'          probably have the overlay function return a list with two objects. 
 #'          need the data.frame from overlay in the report
-PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDList, DaysProjected, StatisticType){
+PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDList, DaysProjected, StatisticType,HUtil){
   
   # #####Uncomment to test plot function without running the app
   # #i<-80
@@ -357,17 +357,20 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
     baseUtlz <- totalUsedBeds/TotalBeds
     bcap = TotalBeds * (1-baseUtlz)
     
+    # if (HUtil=="True"){
+    #   bcap = TotalBeds * (1-baseUtlz)
+    #   lcolor = "red"
+    # } else {
+    #   bcap = 0
+    #   lcolor = "black"
+    # }
     projections <-  ggplot(OverlayData, aes(x=ForecastDate, y=`Expected Hospitalizations`, color = ID, fill = ID, linetype = ID)) +
       geom_line(aes(linetype = ID, color = ID)) + 
       geom_ribbon(aes(ymin = `Lower Estimate`, ymax = `Upper Estimate`),alpha = .2) +
       #scale_colour_manual(values=c("tan", "blue", "black","red"))+
       #scale_fill_manual(values = c("tan4", "cadetblue", "gray","red"))+
       #scale_linetype_manual(values=c("dashed", "solid", "dashed", "solid"))+
-      
-      geom_hline(aes(yintercept = bcap,
-                     linetype = "Estimated COVID Patient Bed Capacity"),colour = "red") +
-      ggtitle("Projected Daily Hospital Bed Utilization")+
-      ylab("Daily Beds Needed")+
+
       theme_bw() + 
       theme(plot.title = element_text(face = "bold", size = 15, family = "sans"),
             axis.title = element_text(face = "bold", size = 11, family = "sans"),
@@ -380,6 +383,14 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
             panel.border = element_blank()) +
       scale_x_date(date_breaks = "1 week")+
       labs(color = "ID")
+    
+    if(HUtil=="True") {
+      projections +       
+        geom_hline(aes(yintercept = bcap,linetype = "Estimated COVID Patient Bed Capacity"),colour = "red") +
+        ggtitle("Projected Daily Hospital Bed Utilization")+
+        ylab("Daily Beds Needed")+
+        theme_bw()
+    }
     
     
     projections <- ggplotly(projections)

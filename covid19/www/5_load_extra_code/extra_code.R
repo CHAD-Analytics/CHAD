@@ -354,7 +354,7 @@ for (i in 2:AFrow){
                       "21D IHME Forecast","21D IHME Peak","21D IHME Peak Date","21D SEIAR Forecast","21D SEIAR Peak","21D SEIAR Peak Date",
                       "30D IHME Forecast","30D IHME Peak","30D IHME Peak Date","30D SEIAR Forecast","30D SEIAR Peak","30D SEIAR Peak Date",
                       "60D IHME Forecast","60D IHME Peak","60D IHME Peak Date","60D SEIAR Forecast","60D SEIAR Peak","60D SEIAR Peak Date")
-
+    
     ForecastDataTable <- rbind(ForecastDataTable,NewDF)
     
     NewDFCases <- data.frame(AFBaseLocations$Base[i],AFBaseLocations$`Major Command`[i],AFBaseLocations$State[i],round(TotalBedsCounty*(1-baseUtlz)), CasesPer100000, CasesPer10000, NewCases,TotalCases,
@@ -409,16 +409,16 @@ rm(TruncatedReport2)
 # Create data tables for analysis ---------------------------------------------------------------------------------------------------------------------------------------------------
 AFrow = nrow(AFBaseLocations)
 ForecastDataTableOneMile <- setNames(data.frame(matrix(ncol = 31, nrow = 0)),c("Installation","MAJCOM","State","Available Beds","Hopitalization Per 100,000", "Hopitalization Per 10,000", "New Hospitalizations",
-                                                                        "7D IHME Forecast","7D IHME Peak","7D IHME Peak Date","7D SEIAR Forecast","7D SEIAR Peak","7D SEIAR Peak Date",
-                                                                        "14D IHME Forecast","14D IHME Peak","14D IHME Peak Date","14D SEIAR Forecast","14D SEIAR Peak","14D SEIAR Peak Date",
-                                                                        "21D IHME Forecast","21D IHME Peak","21D IHME Peak Date","21D SEIAR Forecast","21D SEIAR Peak","21D SEIAR Peak Date",
-                                                                        "30D IHME Forecast","30D IHME Peak","30D IHME Peak Date","30D SEIAR Forecast","30D SEIAR Peak","30D SEIAR Peak Date"))
+                                                                               "7D IHME Forecast","7D IHME Peak","7D IHME Peak Date","7D SEIAR Forecast","7D SEIAR Peak","7D SEIAR Peak Date",
+                                                                               "14D IHME Forecast","14D IHME Peak","14D IHME Peak Date","14D SEIAR Forecast","14D SEIAR Peak","14D SEIAR Peak Date",
+                                                                               "21D IHME Forecast","21D IHME Peak","21D IHME Peak Date","21D SEIAR Forecast","21D SEIAR Peak","21D SEIAR Peak Date",
+                                                                               "30D IHME Forecast","30D IHME Peak","30D IHME Peak Date","30D SEIAR Forecast","30D SEIAR Peak","30D SEIAR Peak Date"))
 
 ForecastDataTableCasesOneMile <- setNames(data.frame(matrix(ncol = 32, nrow = 0)),c("Installation","MAJCOM","State","Available Beds","Cases Per 100,000", "Cases Per 10,000", "New Cases","Total Cases",
-                                                                             "7D IHME Forecast","7D IHME Peak","7D IHME Peak Date","7D SEIAR Forecast","7D SEIAR Peak","7D SEIAR Peak Date",
-                                                                             "14D IHME Forecast","14D IHME Peak","14D IHME Peak Date","14D SEIAR Forecast","14D SEIAR Peak","14D SEIAR Peak Date",
-                                                                             "21D IHME Forecast","21D IHME Peak","21D IHME Peak Date","21D SEIAR Forecast","21D SEIAR Peak","21D SEIAR Peak Date",
-                                                                             "30D IHME Forecast","30D IHME Peak","30D IHME Peak Date","30D SEIAR Forecast","30D SEIAR Peak","30D SEIAR Peak Date"))
+                                                                                    "7D IHME Forecast","7D IHME Peak","7D IHME Peak Date","7D SEIAR Forecast","7D SEIAR Peak","7D SEIAR Peak Date",
+                                                                                    "14D IHME Forecast","14D IHME Peak","14D IHME Peak Date","14D SEIAR Forecast","14D SEIAR Peak","14D SEIAR Peak Date",
+                                                                                    "21D IHME Forecast","21D IHME Peak","21D IHME Peak Date","21D SEIAR Forecast","21D SEIAR Peak","21D SEIAR Peak Date",
+                                                                                    "30D IHME Forecast","30D IHME Peak","30D IHME Peak Date","30D SEIAR Forecast","30D SEIAR Peak","30D SEIAR Peak Date"))
 ##Repeat the above process to generate all of the same information for the single county the base is in (SG request)
 for (i in 2:AFrow){
   #Create Number of current cases and cases per 100,000 in a local area
@@ -499,22 +499,22 @@ for (i in 2:AFrow){
   DeathCounties<-subset(CovidDeaths, CountyFIPS %in% MyCounties$FIPS)
   CaseRate <- subset(CovidConfirmedCasesRate, CountyFIPS %in% MyCounties$FIPS)
   if (nrow(CovidCounties)<nrow(MyCounties)){
-      diff1<-setdiff(MyCounties$FIPS, CovidCounties$CountyFIPS) 
-      r<-which(MyCounties$FIPS == diff1)
-      CovidCounties[seq(r+1,nrow(CovidCounties)+1),] <- CovidCounties[seq(r,nrow(CovidCounties)),]
-      CovidCounties[r,] <- 0
+    diff1<-setdiff(MyCounties$FIPS, CovidCounties$CountyFIPS) 
+    r<-which(MyCounties$FIPS == diff1)
+    CovidCounties[seq(r+1,nrow(CovidCounties)+1),] <- CovidCounties[seq(r,nrow(CovidCounties)),]
+    CovidCounties[r,] <- 0
   }
   if (nrow(DeathCounties)<nrow(MyCounties)){
-      diff2<-setdiff(MyCounties$FIPS, DeathCounties$CountyFIPS)
-      r<-which(MyCounties$FIPS == diff1)
-      DeathCounties[seq(r+1,nrow(DeathCounties)+1),] <- DeathCounties[seq(r,nrow(DeathCounties)),]
-      DeathCounties[r,] <- 0
+    diff2<-setdiff(MyCounties$FIPS, DeathCounties$CountyFIPS)
+    r<-which(MyCounties$FIPS == diff1)
+    DeathCounties[seq(r+1,nrow(DeathCounties)+1),] <- DeathCounties[seq(r,nrow(DeathCounties)),]
+    DeathCounties[r,] <- 0
   }  
   if (nrow(CaseRate)<nrow(MyCounties)){
-      diff3<-setdiff(MyCounties$FIPS, CaseRate$CountyFIPS)
-      r<-which(MyCounties$FIPS == diff1)
-      CaseRate[seq(r+1,nrow(CaseRate)+1),] <- CaseRate[seq(r,nrow(CaseRate)),]
-      CaseRate[r,] <- 0
+    diff3<-setdiff(MyCounties$FIPS, CaseRate$CountyFIPS)
+    r<-which(MyCounties$FIPS == diff1)
+    CaseRate[seq(r+1,nrow(CaseRate)+1),] <- CaseRate[seq(r,nrow(CaseRate)),]
+    CaseRate[r,] <- 0
   }
   CountyDataTable<-cbind(MyCounties,rev(CovidCounties)[,1],rev(DeathCounties)[,1],rev(CaseRate)[,1])
   CountyDataTable<-data.frame(CountyDataTable$State,CountyDataTable$County,CountyDataTable$Population, rev(CountyDataTable)[,3], rev(CountyDataTable)[,2],rev(CountyDataTable)[,1])
@@ -562,7 +562,7 @@ for (i in 2:AFrow){
     if (doubling == 0) {
       doubling <- as.integer(40)      
     }
-
+    
     Ro<-Estimate_Rt(MyCounties)
     if (Ro == "Undefined for Region"){
       Ro<-as.integer(1)
@@ -643,7 +643,7 @@ for (i in 2:AFrow){
     PI4<-round(Peak)
     PID4<-IHME_Region[PeakDate,1]
     PID4<-format(PID4, format="%b-%d")
-
+    
     ########################################################################################
     #All of the case information from the CHIME model
     SevDayValCases<-round(DailyDataCases$`Expected Cases`[7])
@@ -674,19 +674,19 @@ for (i in 2:AFrow){
     PI1Cases<-round(Peak)
     PID1Cases<-IHME_Region[PeakDate,1]
     PID1Cases<-format(PID1, format="%b-%d")
-
+    
     PeakDate<-which.max(IHME_Region$`Expected Cases`[1:14])
     Peak<-IHME_Region[PeakDate,2]
     PI2Cases<-round(Peak)
     PID2Cases<-IHME_Region[PeakDate,1]
     PID2Cases<-format(PID2, format="%b-%d")
-
+    
     PeakDate<-which.max(IHME_Region$`Expected Cases`[1:21])
     Peak<-IHME_Region[PeakDate,2]
     PI3Cases<-round(Peak)
     PID3Cases<-IHME_Region[PeakDate,1]
     PID3Cases<-format(PID3, format="%b-%d")
-
+    
     PeakDate<-which.max(IHME_Region$`Expected Cases`[1:30])
     Peak<-IHME_Region[PeakDate,2]
     PI4Cases<-round(Peak)
@@ -756,7 +756,7 @@ HeatMapForecast<-data.frame(HeatMapForecast$Base,HeatMapForecast$State,HeatMapFo
                             HeatMapForecast$`14D SEIAR Forecast`,HeatMapForecast$`14D IHME Forecast`,  HeatMapForecast$`21D SEIAR Forecast`, HeatMapForecast$`21D IHME Forecast`, 
                             HeatMapForecast$`30D SEIAR Forecast`, HeatMapForecast$`30D IHME Forecast`,HeatMapForecast$ID)
 colnames(HeatMapForecast)<-c("Base","State","Branch","Operational","MAJCOM","Lat","Long","Beds","Hospitalizations Per 100,000","Hospitalizations Per 10,000","Today.CHIME","Today.IHME", "Seven.IHME","Seven.CHIME",
-                            "Fourteen.IHME","Fourteen.CHIME","Twenty-One.IHME","Twenty-One.CHIME", "Thirty.IHME","Thirty.CHIME","ID")
+                             "Fourteen.IHME","Fourteen.CHIME","Twenty-One.IHME","Twenty-One.CHIME", "Thirty.IHME","Thirty.CHIME","ID")
 HeatMapForecast<-reshape(HeatMapForecast, direction='long', 
                          varying=c('Today.CHIME','Today.IHME','Seven.IHME','Seven.CHIME','Fourteen.IHME','Fourteen.CHIME','Twenty-One.IHME','Twenty-One.CHIME','Thirty.IHME','Thirty.CHIME'), 
                          timevar='Days',
@@ -873,3 +873,16 @@ bases_radius <- Bases50 %>% left_join(Growth, by = c("FIPS" = "CountyFIPS")) %>%
   )
 
 bases_radius = bases_radius %>% left_join(AFBaseLocations %>% select(Base,Branch,Operational,'Major Command'), by = c("base" = "Base"))
+
+
+
+
+
+
+###############################################################################################
+############################### Establish Choropleth Plot for Local ###########################
+###############################################################################################
+
+
+choroplethObj = st_as_sf(county_df)
+choroplethObj = st_transform(choroplethObj, crs = 4326)
