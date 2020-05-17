@@ -42,8 +42,9 @@ PlotLocalChoro<-function(IncludedCounties, ChosenBase, TypofPlot){
     
     # Build grey counties in the plot
     
-    choroplethall <- st_as_sf(county_df)
-    choroplethall <- st_transform(choroplethall, crs = 4326)
+    # choroplethall <- st_as_sf(county_df)
+    # choroplethall <- st_transform(choroplethall, crs = 4326)
+    choroplethall = choroplethObj
     choroplethall<-choroplethall %>% 
       mutate(STATEFP = fips_codes$state[match(as.numeric(STATEFP), as.numeric(fips_codes$state_code))])
     choroplethall<-choroplethall %>% 
@@ -60,8 +61,9 @@ PlotLocalChoro<-function(IncludedCounties, ChosenBase, TypofPlot){
     
     
     # Build contties to color and display based on radius selected by user
-    choropleth <- st_as_sf(county_df)
-    choropleth <- st_transform(choropleth, crs = 4326)
+    # choropleth <- st_as_sf(county_df)
+    # choropleth <- st_transform(choropleth, crs = 4326)
+    choropleth = choroplethObj
     choropleth<-choropleth %>% 
       mutate(STATEFP = fips_codes$state[match(as.numeric(STATEFP), as.numeric(fips_codes$state_code))])
     choropleth<-choropleth %>% 
@@ -168,8 +170,9 @@ PlotLocalChoro<-function(IncludedCounties, ChosenBase, TypofPlot){
     # PlotCovidLocal
     
     # Build grey counties in the plot for any state within 100 miloes of location selected
-    choroplethall <- st_as_sf(county_df)
-    choroplethall <- st_transform(choroplethall, crs = 4326)
+    # choroplethall <- st_as_sf(county_df)
+    # choroplethall <- st_transform(choroplethall, crs = 4326)
+    choroplethall = choroplethObj
     choroplethall<-choroplethall %>% 
       mutate(STATEFP = fips_codes$state[match(as.numeric(STATEFP), as.numeric(fips_codes$state_code))])
     choroplethall<-choroplethall %>% 
@@ -183,8 +186,9 @@ PlotLocalChoro<-function(IncludedCounties, ChosenBase, TypofPlot){
     allcountiesnum<-nrow(choroplethall)    
     
     # Build contties to color and display based on radius selected by user
-    choropleth <- st_as_sf(county_df)
-    choropleth <- st_transform(choropleth, crs = 4326)
+    # choropleth <- st_as_sf(county_df)
+    # choropleth <- st_transform(choropleth, crs = 4326)
+    choropleth = choroplethObj
     choropleth<-choropleth %>% 
       mutate(STATEFP = fips_codes$state[match(as.numeric(STATEFP), as.numeric(fips_codes$state_code))])
     choropleth<-choropleth %>% 
