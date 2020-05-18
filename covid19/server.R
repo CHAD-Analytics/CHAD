@@ -928,7 +928,7 @@ server <- function(input, output,session) {
       PlotOverlay(input$Base, MyCounties(), MyHospitals,ModelID,input$proj_days,input$StatisticType)
 
     }, error = function(err) {
-      empty_plot("Chart Unavailable At This Time")
+      #empty_plot("Chart Unavailable At This Time")
     })
     
   })

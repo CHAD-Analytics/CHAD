@@ -111,15 +111,13 @@ ui <- tagList(
                                                    ),
                                              
                                              conditionalPanel(condition="input.tabselected==2",
-                                                              "National Summary",
+                                                              "International/National Summary",
                                                               icon = icon("sliders-h"),
                                                               div(id = "single", style="display: none;", numericInput("tckt", "Ticket Number : ", 12345,  width = 300)),
                                                               radioButtons("MapView",
                                                                            "Map Selection: ",
-                                                                           c("US"="US",
-                                                                             "Europe"="Europe",
-                                                                             "Asia"="Asia"))
-                                             ),
+                                                                           c("Asia"="Asia","Europe"="Europe","US"="US"),
+                                                                           selected = "Asia")),
                                              
                                              conditionalPanel(condition="input.tabselected == 3 || input.tabselected == 4",
                                                               selectInput("BranchP",
@@ -284,9 +282,16 @@ ui <- tagList(
                   tabPanel(
                     value = 2,
                     title = "National Summary",
-                    
-                    box(title = "National Impact Map",solidHeader = T, align = "center", htmlOutput("SummaryPlot"),height=700,width=1200),
-                    box(title = "National Statistics", solidHeader=T, align = "left", column(width = 12, DT::dataTableOutput("NationalDataTable1"), style = "height:400px;overflow-y: scroll;overflow-x:scroll"),width = 13, height = 500)
+                        tabBox(
+                            tabPanel("National Impact Map - Log Scale",
+                               box(title = "National Impact Map",solidHeader = T, align = "center", htmlOutput("SummaryPlot"),height=700,width=1200)
+                            ),
+                            tabPanel("National Impact Map - Cases per 100,000",
+                               box(title = "National Impact Map",solidHeader = T, align = "center", htmlOutput("SummaryPlot"),height=700,width=1200)
+                            )
+                            ,height=700,width=1200),
+                    box(title = "National Statistics", solidHeader=T, align = "left", column(width = 12, DT::dataTableOutput("NationalDataTable1"), 
+                                                                      style = "height:400px;overflow-y: scroll;overflow-x:scroll"),width = 13, height = 500)
                     
                   ),
                   ####### END SUMMARY TAB #######
@@ -398,10 +403,10 @@ ui <- tagList(
                       )
                     )
                   )
-      )
+      ) #close tabset panel
                   
       ) #close dash body
       
-    )
-  )
+    ) #Close Dashboard Page
+  ) #close ui taglist
 #)
