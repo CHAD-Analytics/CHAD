@@ -903,7 +903,7 @@ server <- function(input, output,session) {
     # PlotOverlay(input$Base, MyCounties(), MyHospitals,ModelID,input$proj_days,input$StatisticType)
     
     
-    #p = tryCatch({
+    p = tryCatch({
       # if ("HUtil" %in% input$Utilization){HospUtil<="Yes"}
       ModelID <- "Past Data"
       if ("IHME" %in% input$ModelSelectionValue1){ModelID<-cbind(ModelID,"IHME")}
@@ -927,9 +927,9 @@ server <- function(input, output,session) {
       MyHospitals<-GetHospitals(input$Base,input$Radius)
       PlotOverlay(input$Base, MyCounties(), MyHospitals,ModelID,input$proj_days,input$StatisticType)
 
-    #}, error = function(err) {
-      #empty_plot(paste(input$Utilization))
-    #})
+    }, error = function(err) {
+    empty_plot(paste(input$Utilization))
+    })
     
   })
   
