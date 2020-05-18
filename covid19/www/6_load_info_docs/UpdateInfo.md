@@ -1,6 +1,6 @@
 ### What's new in CHAD
 
-**CHAD Version 0.9.5** includes these additional features:
+**CHAD Version 0.9.7** includes these additional features:
 
 -   Added installations representing all service branches
 -   Added additional filtering for Active Duty, Reserve, and National Guard installations
