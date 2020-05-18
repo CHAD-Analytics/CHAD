@@ -383,9 +383,8 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
       projections <-  ggplot(OverlayData, aes(x=ForecastDate, y=`Expected Hospitalizations`, color = ID, fill = ID, linetype = ID)) +
         geom_line(aes(linetype = ID, color = ID)) + 
         geom_ribbon(aes(ymin = `Lower Estimate`, ymax = `Upper Estimate`),alpha = .2) +
-        #scale_colour_manual(values=c("tan", "blue", "black","red"))+
-        #scale_fill_manual(values = c("tan4", "cadetblue", "gray","red"))+
-        #scale_linetype_manual(values=c("dashed", "solid", "dashed", "solid"))+
+        ggtitle("Projected Daily Hospital Bed Utilization")+
+        ylab("Daily Beds Needed")+
         theme_bw() + 
         theme(plot.title = element_text(face = "bold", size = 15, family = "sans"),
               axis.title = element_text(face = "bold", size = 11, family = "sans"),

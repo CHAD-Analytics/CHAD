@@ -29,7 +29,6 @@ local_data_files <- list.files("www/3_load_local_data",
                                pattern = "\\.rda$",
                                full.names = T)
 purrr::map(local_data_files, load, envir = environment())
-
 # Step 4: load external data sets from their respective URL's
 ext_data_files <- list.files("www/4_load_external_data", 
                              pattern = "\\.R$",

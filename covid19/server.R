@@ -876,7 +876,8 @@ server <- function(input, output,session) {
     #if (is.null(input$SocialDistanceValue)){social_dist<-1}
     #(4,8,12,15,19,23,27)
 
-    if ("Util" %in% input$Utilization){HospUtil<="Yes"} else {HospUtil<="No"}
+    HospUtil<="No"
+    if ("HUtil" %in% input$Utilization){HospUtil<="Yes"} else {HospUtil<="No"}
     ModelID<-"Past Data"
     if ("IHME" %in% input$ModelSelectionValue1){ModelID<-cbind(ModelID,"IHME")}
     if ("YYG" %in% input$ModelSelectionValue1){ModelID<-cbind(ModelID,"YYG")}
@@ -884,13 +885,13 @@ server <- function(input, output,session) {
     if ("DTRA2" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"DTRA2")}    
     if ("LANL" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"LANL")}
     if ("UT" %in% input$ModelSelectionValue1){ModelID<-cbind(ModelID,"UT")}
-    if ("CHIME7" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CHIME_4%_SD")}
+    if ("CHIME7" %in% input$ModelSelectionValue1){ModelID<-cbind(ModelID,"CHIME_4%_SD")}
     if ("CHIME6" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CHIME_8%_SD")}
     if ("CHIME5" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CHIME_12%_SD")}
     if ("CHIME4" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CHIME_15%_SD")}
     if ("CHIME3" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CHIME_19%_SD")}
     if ("CHIME2" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CHIME_23%_SD")}
-    if ("CHIME1" %in% input$ModelSelectionValue1){ModelID<-cbind(ModelID,"CHIME_27%_SD")}
+    if ("CHIME1" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CHIME_27%_SD")}
     if ("CU20SCx10" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CU20SCx10")}
     if ("CU20SCx5" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CU20SCx5")}
     if ("CU20SCw10" %in% input$ModelSelectionValue1){ModelID<-cbind(ModelID,"CU20SCw10")}
@@ -899,6 +900,9 @@ server <- function(input, output,session) {
     MyHospitals<-GetHospitals(input$Base,input$Radius)
     PlotOverlay(input$Base, MyCounties(), MyHospitals,ModelID,input$proj_days,input$StatisticType,HospUtil)
   })
+  
+  
+  output$helptext <- renderText({"I can trigger a shinyBS::bsModal() from here, but I want to place two buttons behind `Option_1` and     `Option_2`" })
   
   
   # Output any data tables ------------------------------------------------------------------------------------------------------------------------------------------------------
