@@ -903,9 +903,9 @@ server <- function(input, output,session) {
     # PlotOverlay(input$Base, MyCounties(), MyHospitals,ModelID,input$proj_days,input$StatisticType)
     
     
-    p = tryCatch({
-      #if ("HUtil" %in% input$Utilization){HospUtil<="Yes"} else {HospUtil<="No"}
-      ModelID<-"Past Data"
+    #p = tryCatch({
+      # if ("HUtil" %in% input$Utilization){HospUtil<="Yes"}
+      ModelID <- "Past Data"
       if ("IHME" %in% input$ModelSelectionValue1){ModelID<-cbind(ModelID,"IHME")}
       if ("YYG" %in% input$ModelSelectionValue1){ModelID<-cbind(ModelID,"YYG")}
       if ("DTRA1" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"DTRA1")}
@@ -927,9 +927,9 @@ server <- function(input, output,session) {
       MyHospitals<-GetHospitals(input$Base,input$Radius)
       PlotOverlay(input$Base, MyCounties(), MyHospitals,ModelID,input$proj_days,input$StatisticType)
 
-    }, error = function(err) {
-      empty_plot("Chart Unavailable At This Time")
-    })
+    #}, error = function(err) {
+      #empty_plot(paste(input$Utilization))
+    #})
     
   })
   

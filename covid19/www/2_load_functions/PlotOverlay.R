@@ -227,7 +227,7 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
     # PeakDate<-which.max(CU20_State$hosp_need_50)
     # CU20Peak<-round(CU20_State[PeakDate,2])
     PeakData<-rbind(IHMEPeak,LANLPeak)
-    PeakData<-rbind(PeakData,UTPeak)      
+    #PeakData<-rbind(PeakData,UTPeak)      
     # PeakData<-rbind(PeakData,CU40Peak)
     # PeakData<-rbind(PeakData,CU30Peak)
     # PeakData<-rbind(PeakData,CU20Peak)
@@ -364,6 +364,8 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
       #scale_fill_manual(values = c("tan4", "cadetblue", "gray","red"))+
       #scale_linetype_manual(values=c("dashed", "solid", "dashed", "solid"))+
       #geom_ribbon(aes(ymin = `Lower Estimate`, ymax = `Upper Estimate`),alpha = .2)+
+      geom_hline(aes(yintercept = bcap,
+                     linetype = "Estimated COVID Patient Bed Capacity"),colour = "red")+
       ggtitle("Projected Daily Hospital Bed Utilization")+
       ylab("Daily Beds Needed")+
       theme_bw() + 
@@ -380,8 +382,9 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
       labs(color = "ID")    
     
         
-    # if (HospUtil=="Yes") {
-    #   projections <- projections + geom_ribbon(aes(ymin = `Lower Estimate`, ymax = `Upper Estimate`),alpha = .2)
+    # if (HUtil == "Yes") {
+    #   projections <- projections + geom_hline(aes(yintercept = bcap,
+    #                                               linetype = "Estimated COVID Patient Bed Capacity"),colour = "red")
     # }
     
     projections <- ggplotly(projections)
