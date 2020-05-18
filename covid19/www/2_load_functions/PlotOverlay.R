@@ -2,7 +2,7 @@
 #' @details EXTRA EXTRA Need to find a better way later to replace this 
 #'          probably have the overlay function return a list with two objects. 
 #'          need the data.frame from overlay in the report
-PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDList, DaysProjected, StatisticType,HUtil){
+PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDList, DaysProjected, StatisticType,HospUtil){
   
   # #####Uncomment to test plot function without running the app
   # #i<-80
@@ -357,39 +357,47 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
     baseUtlz <- totalUsedBeds/TotalBeds
     bcap = TotalBeds * (1-baseUtlz)
     
-    # if (HUtil=="True"){
-    #   bcap = TotalBeds * (1-baseUtlz)
-    #   lcolor = "red"
-    # } else {
-    #   bcap = 0
-    #   lcolor = "black"
-    # }
-    projections <-  ggplot(OverlayData, aes(x=ForecastDate, y=`Expected Hospitalizations`, color = ID, fill = ID, linetype = ID)) +
-      geom_line(aes(linetype = ID, color = ID)) + 
-      geom_ribbon(aes(ymin = `Lower Estimate`, ymax = `Upper Estimate`),alpha = .2) +
-      #scale_colour_manual(values=c("tan", "blue", "black","red"))+
-      #scale_fill_manual(values = c("tan4", "cadetblue", "gray","red"))+
-      #scale_linetype_manual(values=c("dashed", "solid", "dashed", "solid"))+
-
-      theme_bw() + 
-      theme(plot.title = element_text(face = "bold", size = 15, family = "sans"),
-            axis.title = element_text(face = "bold", size = 11, family = "sans"),
-            axis.text.x = element_text(angle = 60, hjust = 1), 
-            axis.line = element_line(color = "black"),
-            legend.position = "top",
-            plot.background = element_blank(),
-            panel.grid.major = element_blank(),
-            panel.grid.minor = element_blank(),
-            panel.border = element_blank()) +
-      scale_x_date(date_breaks = "1 week")+
-      labs(color = "ID")
-    
-    if(HUtil=="True") {
-      projections +       
-        geom_hline(aes(yintercept = bcap,linetype = "Estimated COVID Patient Bed Capacity"),colour = "red") +
-        ggtitle("Projected Daily Hospital Bed Utilization")+
-        ylab("Daily Beds Needed")+
-        theme_bw()
+    if (HospUtil=="Yes") {
+        projections <-  ggplot(OverlayData, aes(x=ForecastDate, y=`Expected Hospitalizations`, color = ID, fill = ID, linetype = ID)) +
+          geom_line(aes(linetype = ID, color = ID)) + 
+          geom_ribbon(aes(ymin = `Lower Estimate`, ymax = `Upper Estimate`),alpha = .2) +
+          #scale_colour_manual(values=c("tan", "blue", "black","red"))+
+          #scale_fill_manual(values = c("tan4", "cadetblue", "gray","red"))+
+          #scale_linetype_manual(values=c("dashed", "solid", "dashed", "solid"))+
+          geom_hline(aes(yintercept = bcap,linetype = "Estimated COVID Patient Bed Capacity"),colour = "red") +
+          ggtitle("Projected Daily Hospital Bed Utilization")+
+          ylab("Daily Beds Needed")+
+          theme_bw() + 
+          theme(plot.title = element_text(face = "bold", size = 15, family = "sans"),
+                axis.title = element_text(face = "bold", size = 11, family = "sans"),
+                axis.text.x = element_text(angle = 60, hjust = 1), 
+                axis.line = element_line(color = "black"),
+                legend.position = "top",
+                plot.background = element_blank(),
+                panel.grid.major = element_blank(),
+                panel.grid.minor = element_blank(),
+                panel.border = element_blank()) +
+          scale_x_date(date_breaks = "1 week")+
+          labs(color = "ID")
+    } else if (HospUtil=="No") {
+      projections <-  ggplot(OverlayData, aes(x=ForecastDate, y=`Expected Hospitalizations`, color = ID, fill = ID, linetype = ID)) +
+        geom_line(aes(linetype = ID, color = ID)) + 
+        geom_ribbon(aes(ymin = `Lower Estimate`, ymax = `Upper Estimate`),alpha = .2) +
+        #scale_colour_manual(values=c("tan", "blue", "black","red"))+
+        #scale_fill_manual(values = c("tan4", "cadetblue", "gray","red"))+
+        #scale_linetype_manual(values=c("dashed", "solid", "dashed", "solid"))+
+        theme_bw() + 
+        theme(plot.title = element_text(face = "bold", size = 15, family = "sans"),
+              axis.title = element_text(face = "bold", size = 11, family = "sans"),
+              axis.text.x = element_text(angle = 60, hjust = 1), 
+              axis.line = element_line(color = "black"),
+              legend.position = "top",
+              plot.background = element_blank(),
+              panel.grid.major = element_blank(),
+              panel.grid.minor = element_blank(),
+              panel.border = element_blank()) +
+        scale_x_date(date_breaks = "1 week")+
+        labs(color = "ID")
     }
     
     
@@ -668,8 +676,7 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
             panel.border = element_blank()) +
       scale_x_date(date_breaks = "2 week")+
       labs(color = "ID")
-    
-    
+
     projections <- ggplotly(projections)
     # projections <- projections %>% config(displayModeBar = FALSE)
     projections <- projections %>% config(toImageButtonOptions = list(format = "png",

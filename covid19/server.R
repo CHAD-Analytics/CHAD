@@ -801,7 +801,7 @@ server <- function(input, output,session) {
     {
       updateCheckboxGroupInput(session,"ModelSelectionValue","Forecasting Model(s): ",choices=c("IHME (University of Washington)"="IHME",
                                                                                                 "Youyang Gu - Independent (YYG) Model"="YYG",
-                                                                                                "CHIME (University of Pennsylvania): SC+NE+SD"="CHIME1",
+                                                                                                "CHIME: SC"="CHIME7",
                                                                                                 "University of Texas"="UT",
                                                                                                 "Columbia University: 20% SC Reduction with weekly 10% increase in contact"="CU20SCw10"))
     }
@@ -809,13 +809,13 @@ server <- function(input, output,session) {
     {
       updateCheckboxGroupInput(session,"ModelSelectionValue","Forecasting Model(s):",choices=c("IHME (University of Washington)"="IHME",
                                                                                                "Youyang Gu - Independent (YYG) Model"="YYG",
-                                                                                               "CHIME (University of Pennsylvania): SC+NE+SD"="CHIME1",
+                                                                                               "CHIME: SC"="CHIME7",
                                                                                                "University of Texas"="UT",
                                                                                                "Columbia University: 20% SC Reduction with weekly 10% increase in contact"="CU20SCw10"),                                                                                               
                                
                                selected=c("IHME (University of Washington)"="IHME",
                                           "Youyang Gu - Independent (YYG) Model"="YYG",
-                                          "CHIME (University of Pennsylvania): SC+NE+SD"="CHIME1",
+                                          "CHIME: SC"="CHIME7",
                                           "University of Texas"="UT",
                                           "Columbia University: 20% SC Reduction with weekly 10% increase in contact"="CU20SCw10"))                                                                                    
     }
@@ -827,13 +827,13 @@ server <- function(input, output,session) {
     else if (input$selectall2%%2 == 0)
     {
       updateCheckboxGroupInput(session,"ModelSelectionValue","Forecasting Model(s): ",choices=c("DTRA 1 - Relaxed SD"="DTRA1",
-                                                                                                "DTRA 2 - Relaxed SD w/ Testing"="DTRA2",                                                                                                 
+                                                                                                "DTRA 2 - Relaxed SD w/ Testing"="DTRA2",
+                                                                                                "CHIME (University of Pennsylvania): SC+NE+SD"="CHIME1",
                                                                                                 "CHIME: NE+SD"="CHIME2",
                                                                                                 "CHIME: SC+SD"="CHIME3",                                                                
                                                                                                 "CHIME: SD"="CHIME4", 
                                                                                                 "CHIME: SC+NE"="CHIME5",
                                                                                                 "CHIME: NE"="CHIME6",
-                                                                                                "CHIME: SC"="CHIME7",
                                                                                                 "Los Alamos National Labs (LANL)"="LANL",
                                                                                                 "Columbia University: 20% SC Reduction with one time 10% increase in contact "="CU20SCx10",
                                                                                                 "Columbia University: 20% SC Reduction with one time 5% increase in contact"="CU20SCx5",
@@ -842,26 +842,26 @@ server <- function(input, output,session) {
     else
     {
       updateCheckboxGroupInput(session,"ModelSelectionValue","Forecasting Model(s):",choices=c("DTRA 1 - Relaxed SD"="DTRA1",
-                                                                                               "DTRA 2 - Relaxed SD w/ Testing"="DTRA2",                                                                                                 
+                                                                                               "DTRA 2 - Relaxed SD w/ Testing"="DTRA2", 
+                                                                                               "CHIME (University of Pennsylvania): SC+NE+SD"="CHIME1",
                                                                                                "CHIME: NE+SD"="CHIME2",
                                                                                                "CHIME: SC+SD"="CHIME3",                                                                
                                                                                                "CHIME: SD"="CHIME4", 
                                                                                                "CHIME: SC+NE"="CHIME5",
                                                                                                "CHIME: NE"="CHIME6",
-                                                                                               "CHIME: SC"="CHIME7",
                                                                                                "Los Alamos National Labs (LANL)"="LANL",
                                                                                                "Columbia University: 20% SC Reduction with one time 10% increase in contact "="CU20SCx10",
                                                                                                "Columbia University: 20% SC Reduction with one time 5% increase in contact"="CU20SCx5",
                                                                                                "Columbia University: 20% SC Reduction with weekly 5% increase in contact"="CU20SCw5"),                                                                                               
                                
                                selected=c("DTRA 1 - Relaxed SD"="DTRA1",
-                                          "DTRA 2 - Relaxed SD w/ Testing"="DTRA2",                                                                                                 
+                                          "DTRA 2 - Relaxed SD w/ Testing"="DTRA2", 
+                                          "CHIME (University of Pennsylvania): SC+NE+SD"="CHIME1",
                                           "CHIME: NE+SD"="CHIME2",
                                           "CHIME: SC+SD"="CHIME3",                                                                
                                           "CHIME: SD"="CHIME4", 
                                           "CHIME: SC+NE"="CHIME5",
                                           "CHIME: NE"="CHIME6",
-                                          "CHIME: SC"="CHIME7",
                                           "Los Alamos National Labs (LANL)"="LANL",
                                           "Columbia University: 20% SC Reduction with one time 10% increase in contact "="CU20SCx10",
                                           "Columbia University: 20% SC Reduction with one time 5% increase in contact"="CU20SCx5",
@@ -876,7 +876,7 @@ server <- function(input, output,session) {
     #if (is.null(input$SocialDistanceValue)){social_dist<-1}
     #(4,8,12,15,19,23,27)
 
-    if (input$Utilization == "Util"){HUtil<-"True"}
+    if ("Util" %in% input$Utilization){HospUtil<="Yes"} else {HospUtil<="No"}
     ModelID<-"Past Data"
     if ("IHME" %in% input$ModelSelectionValue1){ModelID<-cbind(ModelID,"IHME")}
     if ("YYG" %in% input$ModelSelectionValue1){ModelID<-cbind(ModelID,"YYG")}
@@ -897,7 +897,7 @@ server <- function(input, output,session) {
     if ("CU20SCw5" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CU20SCw5")}
     
     MyHospitals<-GetHospitals(input$Base,input$Radius)
-    PlotOverlay(input$Base, MyCounties(), MyHospitals,ModelID,input$proj_days,input$StatisticType,HUtil)
+    PlotOverlay(input$Base, MyCounties(), MyHospitals,ModelID,input$proj_days,input$StatisticType,HospUtil)
   })
   
   
