@@ -2,21 +2,21 @@
 #' @details EXTRA EXTRA Need to find a better way later to replace this 
 #'          probably have the overlay function return a list with two objects. 
 #'          need the data.frame from overlay in the report
-PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDList, DaysProjected, StatisticType,HospUtil){
+PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDList, DaysProjected, StatisticType){
   
-  # #####Uncomment to test plot function without running the app
-  # #i<-80
-  # #ChosenBase = AFBaseLocations$Base[i]
-  # ChosenBase = "Vandenberg Space Force Base"
-  # SocialDistance = 15
-  # DaysProjected = 30
-  # HospitalInfo$DistanceMiles = himd[,as.character(ChosenBase)]
-  # IncludedHospitals<-dplyr::filter(HospitalInfo, (DistanceMiles <= 50))
-  # IncludedHospitals<-dplyr::filter(IncludedHospitals, (TYPE=="GENERAL ACUTE CARE") | (TYPE=="CRITICAL ACCESS"))
-  # CountyInfo$DistanceMiles = cimd[,as.character(ChosenBase)]
-  # IncludedCounties<-dplyr::filter(CountyInfo, DistanceMiles <= 50)
-  # #####
-  # #####
+  #####Uncomment to test plot function without running the app
+  #i<-80
+  #ChosenBase = AFBaseLocations$Base[i]
+  ChosenBase = "Vandenberg Space Force Base"
+  SocialDistance = 15
+  DaysProjected = 30
+  HospitalInfo$DistanceMiles = himd[,as.character(ChosenBase)]
+  IncludedHospitals<-dplyr::filter(HospitalInfo, (DistanceMiles <= 50))
+  IncludedHospitals<-dplyr::filter(IncludedHospitals, (TYPE=="GENERAL ACUTE CARE") | (TYPE=="CRITICAL ACCESS"))
+  CountyInfo$DistanceMiles = cimd[,as.character(ChosenBase)]
+  IncludedCounties<-dplyr::filter(CountyInfo, DistanceMiles <= 50)
+  #####
+  #####
   
   #Establish initial inputs such as base, counties, and filter IHME model
   BaseState<-dplyr::filter(AFBaseLocations, Base == toString(ChosenBase))
@@ -87,10 +87,10 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
     # Multiple by 16 to reflect hospitalizations at 8% from death rate of 0.5%
     UT_Region <- UT_State
     UT_Region$daily_deaths_est = round(UT_State$daily_deaths_est*PopRatio*16)
-    UT_Region$daily_deaths_90CI_lower = round(UT_State$daily_deaths_90CI_lower*PopRatio*16)
-    UT_Region$daily_deaths_90CI_upper = round(UT_State$daily_deaths_90CI_upper*PopRatio*16)
-    UT_Data<-data.frame(UT_Region$date,UT_Region$daily_deaths_est, UT_Region$daily_deaths_90CI_lower, UT_Region$daily_deaths_90CI_upper)
-    
+    UT_Region$daily_deaths_90CI_lower = round(UT_State$daily_deaths_95CI_lower*PopRatio*16)
+    UT_Region$daily_deaths_90CI_upper = round(UT_State$daily_deaths_95CI_upper*PopRatio*16)
+    UT_Data<-data.frame(UT_Region$date,UT_Region$daily_deaths_est, UT_Region$daily_deaths_95CI_lower, UT_Region$daily_deaths_95CI_upper)
+
     # Apply ratio's to YYG Data
     # Multiple cases by 5.5% to estimate number of hospitalizations
     YYG_Region <- YYG_State
@@ -217,7 +217,7 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
     PeakDate<-which.max(IHME_Data$IHME_Region.allbed_mean)
     IHMEPeak<-round(IHME_Data[PeakDate,2])      
     PeakDate<-which.max(UT_Data$daily_deaths_est)
-    UTPeak<-round(UT_Data[PeakDate,2])      
+    #UTPeak<-round(UT_Data[PeakDate,2])      
     PeakDate<-which.max(LANL_Region$'Expected Hospitalizations')
     LANLPeak<-round(UT_Data[PeakDate,2])        
     # PeakDate<-which.max(CU40_State$hosp_need_50)
@@ -356,49 +356,33 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
     totalUsedBeds <- sum(hospCounty$bedsUsed)
     baseUtlz <- totalUsedBeds/TotalBeds
     bcap = TotalBeds * (1-baseUtlz)
+
+    projections <-  ggplot(OverlayData, aes(x=ForecastDate, y=`Expected Hospitalizations`, color = ID, fill = ID, linetype = ID)) +
+      geom_line(aes(linetype = ID, color = ID)) + 
+      geom_ribbon(aes(ymin = `Lower Estimate`, ymax = `Upper Estimate`),alpha = .2) +
+      #scale_colour_manual(values=c("tan", "blue", "black","red"))+
+      #scale_fill_manual(values = c("tan4", "cadetblue", "gray","red"))+
+      #scale_linetype_manual(values=c("dashed", "solid", "dashed", "solid"))+
+      #geom_ribbon(aes(ymin = `Lower Estimate`, ymax = `Upper Estimate`),alpha = .2)+
+      ggtitle("Projected Daily Hospital Bed Utilization")+
+      ylab("Daily Beds Needed")+
+      theme_bw() + 
+      theme(plot.title = element_text(face = "bold", size = 15, family = "sans"),
+            axis.title = element_text(face = "bold", size = 11, family = "sans"),
+            axis.text.x = element_text(angle = 60, hjust = 1), 
+            axis.line = element_line(color = "black"),
+            legend.position = "top",
+            plot.background = element_blank(),
+            panel.grid.major = element_blank(),
+            panel.grid.minor = element_blank(),
+            panel.border = element_blank()) +
+      scale_x_date(date_breaks = "1 week")+
+      labs(color = "ID")    
     
-    if (HospUtil=="Yes") {
-        projections <-  ggplot(OverlayData, aes(x=ForecastDate, y=`Expected Hospitalizations`, color = ID, fill = ID, linetype = ID)) +
-          geom_line(aes(linetype = ID, color = ID)) + 
-          geom_ribbon(aes(ymin = `Lower Estimate`, ymax = `Upper Estimate`),alpha = .2) +
-          #scale_colour_manual(values=c("tan", "blue", "black","red"))+
-          #scale_fill_manual(values = c("tan4", "cadetblue", "gray","red"))+
-          #scale_linetype_manual(values=c("dashed", "solid", "dashed", "solid"))+
-          geom_hline(aes(yintercept = bcap,linetype = "Estimated COVID Patient Bed Capacity"),colour = "red") +
-          ggtitle("Projected Daily Hospital Bed Utilization")+
-          ylab("Daily Beds Needed")+
-          theme_bw() + 
-          theme(plot.title = element_text(face = "bold", size = 15, family = "sans"),
-                axis.title = element_text(face = "bold", size = 11, family = "sans"),
-                axis.text.x = element_text(angle = 60, hjust = 1), 
-                axis.line = element_line(color = "black"),
-                legend.position = "top",
-                plot.background = element_blank(),
-                panel.grid.major = element_blank(),
-                panel.grid.minor = element_blank(),
-                panel.border = element_blank()) +
-          scale_x_date(date_breaks = "1 week")+
-          labs(color = "ID")
-    } else if (HospUtil=="No") {
-      projections <-  ggplot(OverlayData, aes(x=ForecastDate, y=`Expected Hospitalizations`, color = ID, fill = ID, linetype = ID)) +
-        geom_line(aes(linetype = ID, color = ID)) + 
-        geom_ribbon(aes(ymin = `Lower Estimate`, ymax = `Upper Estimate`),alpha = .2) +
-        ggtitle("Projected Daily Hospital Bed Utilization")+
-        ylab("Daily Beds Needed")+
-        theme_bw() + 
-        theme(plot.title = element_text(face = "bold", size = 15, family = "sans"),
-              axis.title = element_text(face = "bold", size = 11, family = "sans"),
-              axis.text.x = element_text(angle = 60, hjust = 1), 
-              axis.line = element_line(color = "black"),
-              legend.position = "top",
-              plot.background = element_blank(),
-              panel.grid.major = element_blank(),
-              panel.grid.minor = element_blank(),
-              panel.border = element_blank()) +
-        scale_x_date(date_breaks = "1 week")+
-        labs(color = "ID")
-    }
-    
+        
+    # if (HospUtil=="Yes") {
+    #   projections <- projections + geom_ribbon(aes(ymin = `Lower Estimate`, ymax = `Upper Estimate`),alpha = .2)
+    # }
     
     projections <- ggplotly(projections)
     # projections <- projections %>% config(displayModeBar = FALSE)
@@ -428,9 +412,9 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
     # Apply ratio's to UT data
     UT_Region <- UT_State
     UT_Region$daily_deaths_est = round(UT_State$daily_deaths_est*PopRatio)
-    UT_Region$daily_deaths_90CI_lower = round(UT_State$daily_deaths_90CI_lower*PopRatio)
-    UT_Region$daily_deaths_90CI_upper = round(UT_State$daily_deaths_90CI_upper*PopRatio)
-    UT_Data<-data.frame(UT_Region$date,UT_Region$daily_deaths_est, UT_Region$daily_deaths_90CI_lower, UT_Region$daily_deaths_90CI_upper)    
+    UT_Region$daily_deaths_90CI_lower = round(UT_State$daily_deaths_95CI_lower*PopRatio)
+    UT_Region$daily_deaths_90CI_upper = round(UT_State$daily_deaths_95CI_upper*PopRatio)
+    UT_Data<-data.frame(UT_Region$date,UT_Region$daily_deaths_est, UT_Region$daily_deaths_95CI_lower, UT_Region$daily_deaths_95CI_upper)
     
     # Apply ratio's to YYG Data
     # Multiple cases by 5.5% to estimate number of hospitalizations

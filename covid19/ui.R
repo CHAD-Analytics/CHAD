@@ -163,9 +163,9 @@ ui <- tagList(
                                                                           max = 30,
                                                                           value = 14),
 
-                                                              checkboxGroupInput("Utilization","COVID-19 Bed Utilization",
-                                                                                 c("Hospital Utilization Line"="HUtil"),                                                                
-                                                                                 selected = c("HUtil")),
+                                                              #checkboxGroupInput("Utilization","COVID-19 Bed Utilization",
+                                                              #                   c("Hospital Utilization Line"="HUtil"),                                                                
+                                                              #                   selected = c("HUtil")),
                                                               checkboxGroupInput("ModelSelectionValue1","Forecasting Model(s): ",
                                                                                  c("IHME (U. of Washinton)"="IHME",
                                                                                    "Youyang Gu (YYG) Model"="YYG",
@@ -174,8 +174,7 @@ ui <- tagList(
                                                                                    "Columbia University: 20% SC Reduction with weekly 10% increase in contact"="CU20SCw10"),                                                                
                                                                                  selected = c("IHME","CHIME7")),
                                                               actionLink("selectall1","Select All"),
-                                                              makeCheckboxButton("Option_1", "modalbt", "?", size = "extra-small", style = "inverse"),
-                                                              
+
                                                               checkboxGroupInput("AdditionalModels","Additional Forecasting Model(s): ",
                                                                                  c("Show All"="ShowAll"),
                                                                                  selected = c("")),                                            

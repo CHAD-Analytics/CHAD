@@ -1,4 +1,3 @@
-
 #' Get counties within a specified radius 
 GetCounties<-function(base, radius, additionalCounties, excludedCounties ){
   
