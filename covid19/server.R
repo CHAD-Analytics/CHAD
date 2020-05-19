@@ -487,7 +487,12 @@ server <- function(input, output,session) {
                   #colors="['#e6e3e3','#85050a']", light red to dark red
                   width=1200,
                   height = 600,
-                  legend = "none"
+                  if (input$MapScale == "Log"){
+                    title='National Impact Map - Log Scale of Cases'
+                  } else {
+                    title='National Impact Map - Case Count'
+                  }
+                  #legend="none"
     ) 
     
     EUROlist = list(region="150",
@@ -495,7 +500,12 @@ server <- function(input, output,session) {
                     colors="['#52E74B','#85050a']", #green to dark red
                     width=1200,
                     height = 600,
-                    legend = "none"
+                    if (input$MapScale == "Log"){
+                      title='Europe Impact Map - Log Scale of Cases'
+                    } else {
+                      title='Europe Impact Map - Case Count'
+                    }                    
+                    #legend = "none"
     )
     
     ASIAlist = list(region="142",
@@ -503,7 +513,25 @@ server <- function(input, output,session) {
                     colors="['#52E74B','#85050a']", #green to dark red
                     width=1200,
                     height = 600,
-                    legend = "none"
+                    if (input$MapScale == "Log"){
+                      title='Asia Impact Map - Log Scale of Cases'
+                    } else {
+                      title='Asia Impact Map - Case Count'
+                    }                    
+                    #legend = "none"
+    )
+    
+    WORLDlist = list(region="world",
+                    displayMode = "province",
+                    colors="['#52E74B','#85050a']", #green to dark red
+                    width=1200,
+                    height = 600,
+                    if (input$MapScale == "Log"){
+                      title='Global Impact Map - Log Scale of Cases'
+                    } else {
+                      title='Global Impact Map - Case Count'
+                    }                    
+                    #legend = "none"
     )
     
     if (input$MapView == "Europe"){
@@ -512,17 +540,25 @@ server <- function(input, output,session) {
     }else if (input$MapView == "Asia"){
       MapChoice = ASIAlist
       MapFilter = "Asia"
-    }else {
+    }else if (input$MapView == "North America"){
       MapChoice = USlist
       MapFilter = "North America"
+    }else {
+      MapChoice = WORLDlist
+      MapFilter = "World"      
     }
     
-    
-    DF<-dplyr::filter(ContinentMap, Continent == MapFilter)
+    if (MapFilter != "World"){
+      DF<-dplyr::filter(ContinentMap, Continent == MapFilter)
+    } else {
+      DF<-ContinentMap
+      select <- DF$Continent == "North America"
+      DF$State[select] <- "United States"
+    }
     DF<-cbind.data.frame(DF$State, rev(DF)[,1], rev(DF)[,1])
     colnames(DF)<-c("state","Value","LogValue")
     ChlorData<-plyr::ddply(DF, "state", numcolwise(sum))
-    ChlorData<-transform(ChlorData, LogValue = round(log(LogValue, base=10),digits = 1))
+    if (input$MapScale == "Log"){ChlorData<-transform(ChlorData, LogValue = round(log(LogValue, base=10),digits = 1))}
     ChlorData <- transform(ChlorData, Value = as.character(format(Value,big.mark=",")))
     ChlorData<-ChlorData %>%
       mutate(state_name = state.name[match(state, state.abb)])
@@ -814,7 +850,7 @@ server <- function(input, output,session) {
     if(input$selectall1 == 0) return(NULL) 
     else if (input$selectall1%%2 == 0)
     {
-      updateCheckboxGroupInput(session,"ModelSelectionValue","Forecasting Model(s): ",choices=c("IHME (University of Washington)"="IHME",
+      updateCheckboxGroupInput(session,"ModelSelectionValue1","Forecasting Model(s): ",choices=c("IHME (University of Washington)"="IHME",
                                                                                                 "Youyang Gu - Independent (YYG) Model"="YYG",
                                                                                                 "CHIME: SC"="CHIME7",
                                                                                                 "University of Texas"="UT",
@@ -822,7 +858,7 @@ server <- function(input, output,session) {
     }
     else
     {
-      updateCheckboxGroupInput(session,"ModelSelectionValue","Forecasting Model(s):",choices=c("IHME (University of Washington)"="IHME",
+      updateCheckboxGroupInput(session,"ModelSelectionValue1","Forecasting Model(s):",choices=c("IHME (University of Washington)"="IHME",
                                                                                                "Youyang Gu - Independent (YYG) Model"="YYG",
                                                                                                "CHIME: SC"="CHIME7",
                                                                                                "University of Texas"="UT",
@@ -841,7 +877,7 @@ server <- function(input, output,session) {
     if(input$selectall2 == 0) return(NULL) 
     else if (input$selectall2%%2 == 0)
     {
-      updateCheckboxGroupInput(session,"ModelSelectionValue","Forecasting Model(s): ",choices=c("DTRA 1 - Relaxed SD"="DTRA1",
+      updateCheckboxGroupInput(session,"ModelSelectionValue2","Forecasting Model(s): ",choices=c("DTRA 1 - Relaxed SD"="DTRA1",
                                                                                                 "DTRA 2 - Relaxed SD w/ Testing"="DTRA2",
                                                                                                 "CHIME (University of Pennsylvania): SC+NE+SD"="CHIME1",
                                                                                                 "CHIME: NE+SD"="CHIME2",
@@ -856,7 +892,7 @@ server <- function(input, output,session) {
     }
     else
     {
-      updateCheckboxGroupInput(session,"ModelSelectionValue","Forecasting Model(s):",choices=c("DTRA 1 - Relaxed SD"="DTRA1",
+      updateCheckboxGroupInput(session,"ModelSelectionValue2","Forecasting Model(s):",choices=c("DTRA 1 - Relaxed SD"="DTRA1",
                                                                                                "DTRA 2 - Relaxed SD w/ Testing"="DTRA2", 
                                                                                                "CHIME (University of Pennsylvania): SC+NE+SD"="CHIME1",
                                                                                                "CHIME: NE+SD"="CHIME2",
@@ -888,31 +924,7 @@ server <- function(input, output,session) {
   
   #Overlay Projected Plots
   output$OverlayPlots<-renderPlotly({
-    
-    # #if ("HUtil" %in% input$Utilization){HospUtil<="Yes"} else {HospUtil<="No"}
-    # ModelID<-"Past Data"
-    # if ("IHME" %in% input$ModelSelectionValue1){ModelID<-cbind(ModelID,"IHME")}
-    # if ("YYG" %in% input$ModelSelectionValue1){ModelID<-cbind(ModelID,"YYG")}
-    # if ("DTRA1" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"DTRA1")}
-    # if ("DTRA2" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"DTRA2")}    
-    # if ("LANL" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"LANL")}
-    # if ("UT" %in% input$ModelSelectionValue1){ModelID<-cbind(ModelID,"UT")}
-    # if ("CHIME7" %in% input$ModelSelectionValue1){ModelID<-cbind(ModelID,"CHIME_4%_SD")}
-    # if ("CHIME6" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CHIME_8%_SD")}
-    # if ("CHIME5" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CHIME_12%_SD")}
-    # if ("CHIME4" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CHIME_15%_SD")}
-    # if ("CHIME3" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CHIME_19%_SD")}
-    # if ("CHIME2" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CHIME_23%_SD")}
-    # if ("CHIME1" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CHIME_27%_SD")}
-    # if ("CU20SCx10" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CU20SCx10")}
-    # if ("CU20SCx5" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CU20SCx5")}
-    # if ("CU20SCw10" %in% input$ModelSelectionValue1){ModelID<-cbind(ModelID,"CU20SCw10")}
-    # if ("CU20SCw5" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CU20SCw5")}
-    # 
-    # MyHospitals<-GetHospitals(input$Base,input$Radius)
-    # PlotOverlay(input$Base, MyCounties(), MyHospitals,ModelID,input$proj_days,input$StatisticType)
-    
-    
+
     p = tryCatch({
       # if ("HUtil" %in% input$Utilization){HospUtil<="Yes"}
       ModelID <- "Past Data"
