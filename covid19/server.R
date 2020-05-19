@@ -482,7 +482,8 @@ server <- function(input, output,session) {
     USlist = list(region="US",
                   displayMode = "regions",
                   resolution = "provinces",
-                  colors="['#e6e3e3', '#85050a']",
+                  colors="['#52E74B','#6754D8']",
+                  #colors="['#e6e3e3', '#85050a']",
                   width=1200,
                   height = 600
     ) 
@@ -928,11 +929,8 @@ server <- function(input, output,session) {
       PlotOverlay(input$Base, MyCounties(), MyHospitals,ModelID,input$proj_days,input$StatisticType)
 
     }, error = function(err) {
-<<<<<<< HEAD
       #empty_plot("Chart Unavailable At This Time")
-=======
-    empty_plot(paste(input$Utilization))
->>>>>>> 3068dc2818d19410643a24776b4790e693ef96f7
+      empty_plot(paste(input$Utilization))
     })
     
   })
