@@ -116,10 +116,17 @@ ui <- tagList(
                                                               div(id = "single", style="display: none;", numericInput("tckt", "Ticket Number : ", 12345,  width = 300)),
                                                               radioButtons("MapView",
                                                                            "Map Selection: ",
-                                                                           c("US"="North America",
-                                                                             "Europe"="Europe",
-                                                                             "Asia"="Asia"),
-                                                                           selected = "Asia")
+                                                                           c("World"="World",
+                                                                             "US"="North America",
+                                                                             "Asia"="Asia",
+                                                                             "Europe"="Europe"
+                                                                             ),
+                                                                           selected = "World"),
+                                                              radioButtons("MapScale",
+                                                                           "Scaling Selection: ",
+                                                                           c("Log"="Log",
+                                                                             "Linear"="Linear"),
+                                                                           selected = "Log")                                                              
                                              ),
 
                                              conditionalPanel(condition="input.tabselected == 3 || input.tabselected == 4",

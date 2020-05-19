@@ -487,23 +487,31 @@ server <- function(input, output,session) {
                   #colors="['#e6e3e3','#85050a']", light red to dark red
                   width=1200,
                   height = 600,
-                  legend = "none"
+                  legendtitle = "Number of Cases"
     ) 
     
     EUROlist = list(region="150",
                     displayMode = "regions",
                     colors="['#52E74B','#85050a']", #green to dark red
                     width=1200,
-                    height = 600,
-                    legend = "none"
+                    height = 600 #,
+                    #legend = "none"
     )
     
     ASIAlist = list(region="142",
                     displayMode = "regions",
                     colors="['#52E74B','#85050a']", #green to dark red
                     width=1200,
-                    height = 600,
-                    legend = "none"
+                    height = 600 #,
+                    #legend = "none"
+    )
+    
+    WORLDlist = list(region="world",
+                    displayMode = "province",
+                    colors="['#52E74B','#85050a']", #green to dark red
+                    width=1200,
+                    height = 600 #,
+                    #legend = "none"
     )
     
     if (input$MapView == "Europe"){
@@ -512,17 +520,25 @@ server <- function(input, output,session) {
     }else if (input$MapView == "Asia"){
       MapChoice = ASIAlist
       MapFilter = "Asia"
-    }else {
+    }else if (input$MapView == "North America"){
       MapChoice = USlist
       MapFilter = "North America"
+    }else {
+      MapChoice = WORLDlist
+      MapFilter = "World"      
     }
     
-    
-    DF<-dplyr::filter(ContinentMap, Continent == MapFilter)
+    if (MapFilter != "World"){
+      DF<-dplyr::filter(ContinentMap, Continent == MapFilter)
+    } else {
+      DF<-ContinentMap
+      select <- DF$Continent == "North America"
+      DF$State[select] <- "United States"
+    }
     DF<-cbind.data.frame(DF$State, rev(DF)[,1], rev(DF)[,1])
     colnames(DF)<-c("state","Value","LogValue")
     ChlorData<-plyr::ddply(DF, "state", numcolwise(sum))
-    ChlorData<-transform(ChlorData, LogValue = round(log(LogValue, base=10),digits = 1))
+    if (input$MapScale == "Log"){ChlorData<-transform(ChlorData, LogValue = round(log(LogValue, base=10),digits = 1))}
     ChlorData <- transform(ChlorData, Value = as.character(format(Value,big.mark=",")))
     ChlorData<-ChlorData %>%
       mutate(state_name = state.name[match(state, state.abb)])
