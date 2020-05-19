@@ -11,7 +11,7 @@
 #         There are 5 sub categories included: Common statistics, line plots, choropleth charts, projections, and data tables.
 # Third:  This creates the help settings in the app so that users can see documentation of inputs, sources, and calculations.
 ##############################################################################################################################################       
-
+# Test of git commit
 
 # Define server logic, within this all ouputs and reactive variables are generated. 
 server <- function(input, output,session) {
