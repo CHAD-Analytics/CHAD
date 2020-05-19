@@ -484,32 +484,40 @@ server <- function(input, output,session) {
                   resolution = "provinces",
                   colors="['#e6e3e3', '#85050a']",
                   width=1200,
-                  height = 600
+                  height = 600,
+                  legend = "none"
     ) 
     
     EUROlist = list(region="150",
                     displayMode = "regions",
                     colors="['#e6e3e3', '#85050a']",
                     width=1200,
-                    height = 600
+                    height = 600,
+                    legend = "none"
     )
     
     ASIAlist = list(region="142",
                     displayMode = "regions",
                     colors="['#e6e3e3', '#85050a']",
                     width=1200,
-                    height = 600
+                    height = 600,
+                    legend = "none"
     )
     
     if (input$MapView == "Europe"){
       MapChoice = EUROlist
+      MapFilter = "Europe"
     }else if (input$MapView == "Asia"){
       MapChoice = ASIAlist
+      MapFilter = "Asia"
     }else {
       MapChoice = USlist
+      MapFilter = "North America"
     }
     
-    DF<-cbind.data.frame(CovidConfirmedCases$State, rev(CovidConfirmedCases)[,1], rev(CovidConfirmedCases)[,1])
+    
+    DF<-dplyr::filter(ContinentMap, Continent == MapFilter)
+    DF<-cbind.data.frame(DF$State, rev(DF)[,1], rev(DF)[,1])
     colnames(DF)<-c("state","Value","LogValue")
     ChlorData<-plyr::ddply(DF, "state", numcolwise(sum))
     ChlorData<-transform(ChlorData, LogValue = round(log(LogValue, base=10),digits = 1))
@@ -942,14 +950,20 @@ server <- function(input, output,session) {
   
   #Render National Data Table on summary page
   output$NationalDataTable1<-DT::renderDataTable({
-    NationalDataTable <- DT::datatable(NationalDataTable,rownames = FALSE, options = list(dom = 'ft',ordering = F,"pageLength" = 250))
-    NationalDataTable
+    NationalDataTable1 = dplyr::filter(NationalDataTable, Continent == input$MapView)
+    NationalDataTable1 <- DT::datatable(NationalDataTable1,rownames = FALSE, options = list(fixedHeader = TRUE, 
+                                                                                            dom = 'ft',
+                                                                                            ordering = F,
+                                                                                            "pageLength" = 250))
+    NationalDataTable1
   })
   
   output$CountyDataTable1<-DT::renderDataTable({
     #MyCounties<-GetCounties(input$Base,input$Radius)
     dt<-GetLocalDataTable(MyCounties())
-    dt<-DT::datatable(dt, rownames = FALSE, options = list(dom = 't',ordering = F, "pageLength"=100))
+    dt<-DT::datatable(dt, rownames = FALSE, options = list(dom = 't',
+                                                           ordering = F, 
+                                                           "pageLength"=100))
     dt
   })
 

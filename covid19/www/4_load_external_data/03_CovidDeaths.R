@@ -62,3 +62,10 @@ cols<-names(CovidDeaths[5:length(CovidDeaths)])
 CovidDeaths[,cols]<-lapply(CovidDeaths[cols], as.numeric)
 
 CovidDeaths$CountyFIPS = as.numeric(CovidDeaths$CountyFIPS)
+
+
+tempTbld = left_join(CovidDeaths, CountyInfo, by = c("CountyFIPS" = "FIPS")) 
+
+labelsDFd = c(colnames(CovidDeaths)[1:4], "Continent", colnames(CovidDeaths)[5:ncol(CovidDeaths)])
+ContinentMapd = data.frame(tempTbld[1:4], tempTbld$Continent, tempTbld[5:ncol(CovidDeaths)])
+names(ContinentMapd) = labelsDFd

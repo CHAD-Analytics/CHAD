@@ -116,7 +116,7 @@ ui <- tagList(
                                                               div(id = "single", style="display: none;", numericInput("tckt", "Ticket Number : ", 12345,  width = 300)),
                                                               radioButtons("MapView",
                                                                            "Map Selection: ",
-                                                                           c("US"="US",
+                                                                           c("US"="North America",
                                                                              "Europe"="Europe",
                                                                              "Asia"="Asia"))
                                              ),
