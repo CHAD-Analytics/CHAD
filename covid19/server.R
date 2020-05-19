@@ -964,11 +964,19 @@ server <- function(input, output,session) {
   
   #Render National Data Table on summary page
   output$NationalDataTable1<-DT::renderDataTable({
-    NationalDataTable1 = dplyr::filter(NationalDataTable, Continent == input$MapView)
-    NationalDataTable1 <- DT::datatable(NationalDataTable1,rownames = FALSE, options = list(fixedHeader = TRUE, 
-                                                                                            dom = 'ft',
-                                                                                            ordering = F,
-                                                                                            "pageLength" = 250))
+    if (input$MapView == "World"){
+      NationalDataTable1 <- DT::datatable(NationalDataTable,rownames = FALSE, options = list(fixedHeader = TRUE, 
+                                                                                              dom = 'ft',
+                                                                                              ordering = F,
+                                                                                              "pageLength" = 250))
+    } else{
+    
+      NationalDataTable1 = dplyr::filter(NationalDataTable, Continent == input$MapView)
+      NationalDataTable1 <- DT::datatable(NationalDataTable1,rownames = FALSE, options = list(fixedHeader = TRUE, 
+                                                                                              dom = 'ft',
+                                                                                              ordering = F,
+                                                                                              "pageLength" = 250))
+    }
     NationalDataTable1
   })
   
