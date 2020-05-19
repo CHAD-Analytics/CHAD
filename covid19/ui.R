@@ -118,7 +118,7 @@ ui <- tagList(
                                                                            "Map Selection: ",
                                                                            c("Asia"="Asia","Europe"="Europe","US"="US"),
                                                                            selected = "Asia")),
-                                             
+
                                              conditionalPanel(condition="input.tabselected == 3 || input.tabselected == 4",
                                                               selectInput("BranchP",
                                                                           "Service Branch:", 
