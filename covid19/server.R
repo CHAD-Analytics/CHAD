@@ -850,7 +850,7 @@ server <- function(input, output,session) {
     if(input$selectall1 == 0) return(NULL) 
     else if (input$selectall1%%2 == 0)
     {
-      updateCheckboxGroupInput(session,"ModelSelectionValue","Forecasting Model(s): ",choices=c("IHME (University of Washington)"="IHME",
+      updateCheckboxGroupInput(session,"ModelSelectionValue1","Forecasting Model(s): ",choices=c("IHME (University of Washington)"="IHME",
                                                                                                 "Youyang Gu - Independent (YYG) Model"="YYG",
                                                                                                 "CHIME: SC"="CHIME7",
                                                                                                 "University of Texas"="UT",
@@ -858,7 +858,7 @@ server <- function(input, output,session) {
     }
     else
     {
-      updateCheckboxGroupInput(session,"ModelSelectionValue","Forecasting Model(s):",choices=c("IHME (University of Washington)"="IHME",
+      updateCheckboxGroupInput(session,"ModelSelectionValue1","Forecasting Model(s):",choices=c("IHME (University of Washington)"="IHME",
                                                                                                "Youyang Gu - Independent (YYG) Model"="YYG",
                                                                                                "CHIME: SC"="CHIME7",
                                                                                                "University of Texas"="UT",
@@ -877,7 +877,7 @@ server <- function(input, output,session) {
     if(input$selectall2 == 0) return(NULL) 
     else if (input$selectall2%%2 == 0)
     {
-      updateCheckboxGroupInput(session,"ModelSelectionValue","Forecasting Model(s): ",choices=c("DTRA 1 - Relaxed SD"="DTRA1",
+      updateCheckboxGroupInput(session,"ModelSelectionValue2","Forecasting Model(s): ",choices=c("DTRA 1 - Relaxed SD"="DTRA1",
                                                                                                 "DTRA 2 - Relaxed SD w/ Testing"="DTRA2",
                                                                                                 "CHIME (University of Pennsylvania): SC+NE+SD"="CHIME1",
                                                                                                 "CHIME: NE+SD"="CHIME2",
@@ -892,7 +892,7 @@ server <- function(input, output,session) {
     }
     else
     {
-      updateCheckboxGroupInput(session,"ModelSelectionValue","Forecasting Model(s):",choices=c("DTRA 1 - Relaxed SD"="DTRA1",
+      updateCheckboxGroupInput(session,"ModelSelectionValue2","Forecasting Model(s):",choices=c("DTRA 1 - Relaxed SD"="DTRA1",
                                                                                                "DTRA 2 - Relaxed SD w/ Testing"="DTRA2", 
                                                                                                "CHIME (University of Pennsylvania): SC+NE+SD"="CHIME1",
                                                                                                "CHIME: NE+SD"="CHIME2",
@@ -924,31 +924,7 @@ server <- function(input, output,session) {
   
   #Overlay Projected Plots
   output$OverlayPlots<-renderPlotly({
-    
-    # #if ("HUtil" %in% input$Utilization){HospUtil<="Yes"} else {HospUtil<="No"}
-    # ModelID<-"Past Data"
-    # if ("IHME" %in% input$ModelSelectionValue1){ModelID<-cbind(ModelID,"IHME")}
-    # if ("YYG" %in% input$ModelSelectionValue1){ModelID<-cbind(ModelID,"YYG")}
-    # if ("DTRA1" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"DTRA1")}
-    # if ("DTRA2" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"DTRA2")}    
-    # if ("LANL" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"LANL")}
-    # if ("UT" %in% input$ModelSelectionValue1){ModelID<-cbind(ModelID,"UT")}
-    # if ("CHIME7" %in% input$ModelSelectionValue1){ModelID<-cbind(ModelID,"CHIME_4%_SD")}
-    # if ("CHIME6" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CHIME_8%_SD")}
-    # if ("CHIME5" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CHIME_12%_SD")}
-    # if ("CHIME4" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CHIME_15%_SD")}
-    # if ("CHIME3" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CHIME_19%_SD")}
-    # if ("CHIME2" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CHIME_23%_SD")}
-    # if ("CHIME1" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CHIME_27%_SD")}
-    # if ("CU20SCx10" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CU20SCx10")}
-    # if ("CU20SCx5" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CU20SCx5")}
-    # if ("CU20SCw10" %in% input$ModelSelectionValue1){ModelID<-cbind(ModelID,"CU20SCw10")}
-    # if ("CU20SCw5" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CU20SCw5")}
-    # 
-    # MyHospitals<-GetHospitals(input$Base,input$Radius)
-    # PlotOverlay(input$Base, MyCounties(), MyHospitals,ModelID,input$proj_days,input$StatisticType)
-    
-    
+
     p = tryCatch({
       # if ("HUtil" %in% input$Utilization){HospUtil<="Yes"}
       ModelID <- "Past Data"
