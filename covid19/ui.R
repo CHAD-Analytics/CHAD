@@ -292,11 +292,7 @@ ui <- tagList(
                               tabPanel(
                                 value = 2,
                                 title = "International/National Summary",
-                                # tabsetPanel(
-                                #   tabPanel("National Impact Map Log Scale",htmlOutput("SummaryPlot")),
-                                #   tabPanel("National Impact Map Cases per 100,000",htmlOutput("SummaryPlot"))
-                                # ),
-                                box(title = "National Impact Map",solidHeader = T, align = "center", htmlOutput("SummaryPlot"),height=700,width=1200),
+                                box(title = "Impact Map", solidHeader = T, align = "center", htmlOutput("SummaryPlot"),height=700,width=1200),
                                 box(title = "National Statistics", solidHeader=T, align = "left", column(width = 12, DT::dataTableOutput("NationalDataTable1"), style = "height:400px;overflow-y: scroll;overflow-x:scroll"),width = 13, height = 500)
                                 
                               ),

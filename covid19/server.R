@@ -487,14 +487,24 @@ server <- function(input, output,session) {
                   #colors="['#e6e3e3','#85050a']", light red to dark red
                   width=1200,
                   height = 600,
-                  legendtitle = "Number of Cases"
+                  if (input$MapScale == "Log"){
+                    title='National Impact Map - Log Scale of Cases'
+                  } else {
+                    title='National Impact Map - Case Count'
+                  }
+                  #legend="none"
     ) 
     
     EUROlist = list(region="150",
                     displayMode = "regions",
                     colors="['#52E74B','#85050a']", #green to dark red
                     width=1200,
-                    height = 600 #,
+                    height = 600,
+                    if (input$MapScale == "Log"){
+                      title='Europe Impact Map - Log Scale of Cases'
+                    } else {
+                      title='Europe Impact Map - Case Count'
+                    }                    
                     #legend = "none"
     )
     
@@ -502,7 +512,12 @@ server <- function(input, output,session) {
                     displayMode = "regions",
                     colors="['#52E74B','#85050a']", #green to dark red
                     width=1200,
-                    height = 600 #,
+                    height = 600,
+                    if (input$MapScale == "Log"){
+                      title='Asia Impact Map - Log Scale of Cases'
+                    } else {
+                      title='Asia Impact Map - Case Count'
+                    }                    
                     #legend = "none"
     )
     
@@ -510,7 +525,12 @@ server <- function(input, output,session) {
                     displayMode = "province",
                     colors="['#52E74B','#85050a']", #green to dark red
                     width=1200,
-                    height = 600 #,
+                    height = 600,
+                    if (input$MapScale == "Log"){
+                      title='Global Impact Map - Log Scale of Cases'
+                    } else {
+                      title='Global Impact Map - Case Count'
+                    }                    
                     #legend = "none"
     )
     
