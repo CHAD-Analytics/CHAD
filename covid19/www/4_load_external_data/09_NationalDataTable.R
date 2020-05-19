@@ -7,6 +7,7 @@ StatePop = StatePop[,c("State","Population")]
 StatePop = aggregate(.~State,
                      StatePop,
                      sum)
+StatePop = StatePop[order(StatePop$State),]
 
 NationalDataTable = ContinentMap
 #NationalDataTable$State = as.factor(NationalDataTable$State)
@@ -57,7 +58,9 @@ colnames(NationalDataTable) = c("Continent",
                                 "Total Deaths",
                                 "Average New Deaths Per Day")
 
+NationalDataTable = NationalDataTable[order(NationalDataTable$State),]
+
 
 NationalDataTable$`Cases Per 100,000 People` = as.numeric(StatePop$Population)
 
-NationalDataTable$`Cases Per 100,000 People` = round(NationalDataTable$`Total Cases`/(NationalDataTable$`Cases Per 100,000 People`/100000))
+NationalDataTable$`Cases Per 100,000 People` = round((NationalDataTable$`Total Cases`/NationalDataTable$`Cases Per 100,000 People`)*100000)
