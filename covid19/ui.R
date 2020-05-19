@@ -161,8 +161,8 @@ ui <- tagList(
                                                                           max = 30,
                                                                           value = 14),
 
-                                                              #checkboxGroupInput("Utilization","COVID-19 Bed Utilization",
-                                                              #                   c("Hospital Utilization Line"="HUtil"),                                                                
+                                                              # checkboxGroupInput("Utilization","COVID-19 Bed Utilization",
+                                                              #                   c("Hospital Utilization Line"="HUtil"),
                                                               #                   selected = c("HUtil")),
                                                               checkboxGroupInput("ModelSelectionValue1","Forecasting Model(s): ",
                                                                                  c("IHME (U. of Washinton)"="IHME",
