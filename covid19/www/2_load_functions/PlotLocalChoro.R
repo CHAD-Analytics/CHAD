@@ -78,6 +78,7 @@ PlotLocalChoro<-function(IncludedCounties, ChosenBase, TypofPlot){
     
     # Build Base location point on graph
     BaseStats<-dplyr::filter(AFBaseLocations, Base == ChosenBase)
+    BaseStats = BaseStats[1,]
     Base_point<-st_point(c(BaseStats$Long, BaseStats$Lat)) #COrdinates for base
     Base_point<-st_sfc(Base_point, crs=4326)
     Base_point<-st_sf(BaseStats, geometry = Base_point)
@@ -202,6 +203,7 @@ PlotLocalChoro<-function(IncludedCounties, ChosenBase, TypofPlot){
     
     # Build Base location point on graph
     BaseStats<-dplyr::filter(AFBaseLocations, Base == ChosenBase)
+    BaseStats = BaseStats[1,]
     Base_point<-st_point(c(BaseStats$Long, BaseStats$Lat)) #COrdinates for base
     Base_point<-st_sfc(Base_point, crs=4326)
     Base_point<-st_sf(BaseStats, geometry = Base_point)

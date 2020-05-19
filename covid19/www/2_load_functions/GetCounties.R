@@ -3,6 +3,7 @@ GetCounties<-function(base, radius, additionalCounties, excludedCounties ){
   
   #Find counties in radius
   baseDF = dplyr::filter(AFBaseLocations, Base == base)
+  baseDF = baseDF[1,]
   CountyInfo$DistanceMiles = cimd[,as.character(base)]
   IncludedCounties<-dplyr::filter(CountyInfo, DistanceMiles <= radius | FIPS == baseDF$FIPS)
   if (is.null(additionalCounties)){}else{IncludedCounties<-rbind(IncludedCounties,additionalCounties)}
