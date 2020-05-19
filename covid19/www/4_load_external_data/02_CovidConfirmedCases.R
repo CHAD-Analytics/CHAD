@@ -44,9 +44,6 @@ GlobalCases<-GlobalCases %>% group_by(CountryName) %>% filter(duplicated(Country
 GlobalCases<- filter(GlobalCases, !(CountryName %in% "United States of America"))
 GlobalCases<-cbind(FIPS = c(1:nrow(GlobalCases)), GlobalCases)
 
-# Need to establish this now to get the right counties
-CountyMerge<-GlobalCases[,c(1,3:9)] #Need to establish this now to get the right counties
-#lengthdata<-length(CovidConfirmedCases)+23-4
 
 GlobalCases<-GlobalCases[,c(1,6,4,3,33:ncol(GlobalCases))] #Need the correct number of days now, otherwise rbind wont line up
 GlobalCases[,5][is.na(GlobalCases[,5])] <- 0
@@ -69,3 +66,10 @@ cols<-names(CovidConfirmedCases[5:length(CovidConfirmedCases)])
 CovidConfirmedCases[,cols]<-lapply(CovidConfirmedCases[cols], as.numeric)
 
 CovidConfirmedCases$CountyFIPS = as.numeric(CovidConfirmedCases$CountyFIPS)
+
+
+tempTbl = left_join(CovidConfirmedCases, CountyInfo, by = c("CountyFIPS" = "FIPS")) 
+
+labelsDF = c(colnames(CovidConfirmedCases)[1:4], "Continent", colnames(CovidConfirmedCases)[5:ncol(CovidConfirmedCases)])
+ContinentMap = data.frame(tempTbl[1:4], tempTbl$Continent, tempTbl[5:ncol(CovidConfirmedCases)])
+names(ContinentMap) = labelsDF

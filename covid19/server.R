@@ -482,8 +482,9 @@ server <- function(input, output,session) {
     USlist = list(region="US",
                   displayMode = "regions",
                   resolution = "provinces",
-                  colors="['#52E74B','#6754D8']",
-                  #colors="['#e6e3e3', '#85050a']",
+                  colors="['#52E74B','#85050a']", #green to dark red
+                  #colors="['#52E74B','#6754D8']", green to blue
+                  #colors="['#e6e3e3','#85050a']", light red to dark red
                   width=1200,
                   height = 600,
                   legend = "none"
@@ -491,7 +492,7 @@ server <- function(input, output,session) {
     
     EUROlist = list(region="150",
                     displayMode = "regions",
-                    colors="['#e6e3e3', '#85050a']",
+                    colors="['#52E74B','#85050a']", #green to dark red
                     width=1200,
                     height = 600,
                     legend = "none"
@@ -499,7 +500,7 @@ server <- function(input, output,session) {
     
     ASIAlist = list(region="142",
                     displayMode = "regions",
-                    colors="['#e6e3e3', '#85050a']",
+                    colors="['#52E74B','#85050a']", #green to dark red
                     width=1200,
                     height = 600,
                     legend = "none"
@@ -835,7 +836,7 @@ server <- function(input, output,session) {
     }
   })
   
-
+  
   observe({
     if(input$selectall2 == 0) return(NULL) 
     else if (input$selectall2%%2 == 0)
@@ -883,11 +884,11 @@ server <- function(input, output,session) {
     }
   })  
   
-    
+  
   
   #Overlay Projected Plots
   output$OverlayPlots<-renderPlotly({
-
+    
     # #if ("HUtil" %in% input$Utilization){HospUtil<="Yes"} else {HospUtil<="No"}
     # ModelID<-"Past Data"
     # if ("IHME" %in% input$ModelSelectionValue1){ModelID<-cbind(ModelID,"IHME")}
@@ -932,12 +933,11 @@ server <- function(input, output,session) {
       if ("CU20SCx5" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CU20SCx5")}
       if ("CU20SCw10" %in% input$ModelSelectionValue1){ModelID<-cbind(ModelID,"CU20SCw10")}
       if ("CU20SCw5" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CU20SCw5")}
-
+      
       MyHospitals<-GetHospitals(input$Base,input$Radius)
       PlotOverlay(input$Base, MyCounties(), MyHospitals,ModelID,input$proj_days,input$StatisticType)
-
+      
     }, error = function(err) {
-      #empty_plot("Chart Unavailable At This Time")
       empty_plot(paste(input$Utilization))
     })
     
@@ -968,195 +968,327 @@ server <- function(input, output,session) {
                                                            "pageLength"=100))
     dt
   })
-
   
-    ###### Filter installations by branch and operational status
-    ###### Filter works for local and projection tabs############
-    OperationalListP<- reactive({
-      #Once select service, select active, guard, reserve
-      OperationalListP <- dplyr::filter(AFBaseLocations,Branch  %in% input$BranchP)
-      OperationalListP <- sort(unique(OperationalListP$Operational), decreasing = FALSE)
-      OperationalListP <- c(OperationalListP)
-    })
-    observeEvent(input$BranchP,{updateSelectInput(session,"OperationalInputP",choices = OperationalListP())})  
-
-    BaseListP<- reactive({
-      #Once select service, select active, guard, reserve
-      Bases <- dplyr::filter(AFBaseLocations,Branch %in% input$BranchP)
-      Bases <- dplyr::filter(Bases,Operational %in% input$OperationalInputP)    
-      BaseList <- sort(unique(Bases$Base), decreasing = FALSE)
-      BaseList <- c(BaseList)
-    })
-    observeEvent(input$BranchP,{updateSelectInput(session,"Base",choices = BaseListP())})  
-    observeEvent(input$OperationalInputP,{updateSelectInput(session,"Base",choices = BaseListP())})
-    ###################################################################
-
-        
-    ####### Filter MAJCOM Summary Tab###############
-    OperationalList<- reactive({
-      #Once select service, select active, guard, reserve
-      OperationalList <- dplyr::filter(AFBaseLocations,Branch %in% input$Branch)
-      OperationalList <- sort(unique(OperationalList$Operational), decreasing = FALSE)
-      OperationalList <- c("All",OperationalList)
-    })
-    observe(updateSelectInput(session,"OperationalInput",choices = OperationalList()))  
   
-    ######
-    ######  Need to filter NAF and MAJCOM lists by operational status above
-    ######
-    
-    MAJCOMList<- reactive({
-      MAJCOMList <- dplyr::filter(AFBaseLocations,Branch %in% input$Branch)
-      # MAJCOMList <- dplyr::filter(MAJCOMList,Operational %in% input$OperationalInput) 
-      # MAJCOMList <- sort(unique(MAJCOMList$'Major Command'), decreasing = FALSE)
-      # MAJCOMList <- c("All",MAJCOMList)
-      if (input$OperationalInput == "Active") {
-        MAJCOMList <- dplyr::filter(MAJCOMList,Operational %in% input$OperationalInput)         
-        MAJCOMList <- sort(unique(MAJCOMList$'Major Command'), decreasing = FALSE)
-        MAJCOMList <- c("All",MAJCOMList)
-      } else if ((input$OperationalInput == "Reserve")||(input$OperationalInput == "Guard")){
-        MAJCOMList <- dplyr::filter(MAJCOMList,Operational %in% input$OperationalInput)         
-        MAJCOMList <- sort(unique(MAJCOMList$'Major Command'), decreasing = FALSE)
-        MAJCOMList <- c(MAJCOMList)
+  ###### Filter installations by branch and operational status
+  ###### Filter works for local and projection tabs############
+  OperationalListP<- reactive({
+    #Once select service, select active, guard, reserve
+    OperationalListP <- dplyr::filter(AFBaseLocations,Branch  %in% input$BranchP)
+    OperationalListP <- sort(unique(OperationalListP$Operational), decreasing = FALSE)
+    OperationalListP <- c(OperationalListP)
+  })
+  observeEvent(input$BranchP,{updateSelectInput(session,"OperationalInputP",choices = OperationalListP())})  
+  
+  BaseListP<- reactive({
+    #Once select service, select active, guard, reserve
+    Bases <- dplyr::filter(AFBaseLocations,Branch %in% input$BranchP)
+    Bases <- dplyr::filter(Bases,Operational %in% input$OperationalInputP)    
+    BaseList <- sort(unique(Bases$Base), decreasing = FALSE)
+    BaseList <- c(BaseList)
+  })
+  observeEvent(input$BranchP,{updateSelectInput(session,"Base",choices = BaseListP())})  
+  observeEvent(input$OperationalInputP,{updateSelectInput(session,"Base",choices = BaseListP())})
+  ###################################################################
+  
+  
+  ####### Filter MAJCOM Summary Tab###############
+  OperationalList<- reactive({
+    #Once select service, select active, guard, reserve
+    OperationalList <- dplyr::filter(AFBaseLocations,Branch %in% input$Branch)
+    OperationalList <- sort(unique(OperationalList$Operational), decreasing = FALSE)
+    OperationalList <- c("All",OperationalList)
+  })
+  observe(updateSelectInput(session,"OperationalInput",choices = OperationalList()))  
+  
+  ######
+  ######  Need to filter NAF and MAJCOM lists by operational status above
+  ######
+  
+  MAJCOMList<- reactive({
+    MAJCOMList <- dplyr::filter(AFBaseLocations,Branch %in% input$Branch)
+    # MAJCOMList <- dplyr::filter(MAJCOMList,Operational %in% input$OperationalInput) 
+    # MAJCOMList <- sort(unique(MAJCOMList$'Major Command'), decreasing = FALSE)
+    # MAJCOMList <- c("All",MAJCOMList)
+    if (input$OperationalInput == "Active") {
+      MAJCOMList <- dplyr::filter(MAJCOMList,Operational %in% input$OperationalInput)         
+      MAJCOMList <- sort(unique(MAJCOMList$'Major Command'), decreasing = FALSE)
+      MAJCOMList <- c("All",MAJCOMList)
+    } else if ((input$OperationalInput == "Reserve")||(input$OperationalInput == "Guard")){
+      MAJCOMList <- dplyr::filter(MAJCOMList,Operational %in% input$OperationalInput)         
+      MAJCOMList <- sort(unique(MAJCOMList$'Major Command'), decreasing = FALSE)
+      MAJCOMList <- c(MAJCOMList)
+    }else {
+      MAJCOMList <- sort(unique(AFBases$'Major Command'), decreasing = FALSE)
+      MAJCOMList<-c("All",MAJCOMList)               
+    }   
+  })
+  observeEvent(input$OperationalInput,{updateSelectInput(session,"MAJCOMInput",choices = MAJCOMList())})  
+  
+  # NAFList<- reactive({
+  #     NAFList <- sort(unique(AFNAFS$NAF), decreasing = FALSE)
+  #     NAFList <- c(NAFList)             
+  #   }         
+  #   
+  # })
+  # observeEvent(input$OperationalInput,{updateSelectInput(session,"NAFInput",choices = NAFList())})  
+  
+  WingList<- reactive({
+    if (input$NAFInput != "All"){
+      #Once add additional NAFS, change NAFList to input$NAFInput
+      AFWings<-dplyr::filter(AFNAFS,NAF %in% input$NAFInput)
+      WingList <- sort(unique(AFWings$Wing), decreasing = FALSE)
+      WingList <- c("All",WingList)
+    } else {  
+      AFWings<-dplyr::filter(AFNAFS,NAF %in% NAFList)
+      WingList <- sort(unique(AFWings$Wing), decreasing = FALSE)
+      WingList <- c("All",WingList)      
+    }
+  })
+  observeEvent(input$NAFInput,{updateSelectInput(session,"WingInput",choices = WingList())})  
+  
+  
+  GroupList <- reactive({
+    if (input$NAFInput != "All"){
+      if (input$WingInput != "All") {
+        AFWings<-dplyr::filter(AFNAFS,NAF %in% input$NAFInput)        
+        GroupList<-dplyr::filter(AFWings,Wing %in% input$WingInput)
+        GroupList<-sort(unique(GroupList$`Group`), decreasing = FALSE)
+        GroupList<-c("All",GroupList)
       }else {
-        MAJCOMList <- sort(unique(AFBases$'Major Command'), decreasing = FALSE)
-        MAJCOMList<-c("All",MAJCOMList)               
-      }   
-    })
-    observeEvent(input$OperationalInput,{updateSelectInput(session,"MAJCOMInput",choices = MAJCOMList())})  
-
-    # NAFList<- reactive({
-    #     NAFList <- sort(unique(AFNAFS$NAF), decreasing = FALSE)
-    #     NAFList <- c(NAFList)             
-    #   }         
-    #   
-    # })
-    # observeEvent(input$OperationalInput,{updateSelectInput(session,"NAFInput",choices = NAFList())})  
-    
-    WingList<- reactive({
-      if (input$NAFInput != "All"){
-        #Once add additional NAFS, change NAFList to input$NAFInput
-        AFWings<-dplyr::filter(AFNAFS,NAF %in% input$NAFInput)
-        WingList <- sort(unique(AFWings$Wing), decreasing = FALSE)
-        WingList <- c("All",WingList)
-      } else {  
-        AFWings<-dplyr::filter(AFNAFS,NAF %in% NAFList)
-        WingList <- sort(unique(AFWings$Wing), decreasing = FALSE)
-        WingList <- c("All",WingList)      
+        AFWings<-dplyr::filter(AFNAFS,NAF %in% input$NAFInput) 
+        GroupList<-sort(unique(AFWings$`Group`), decreasing = FALSE)
+        GroupList<-c("All",GroupList)
       }
-    })
-    observeEvent(input$NAFInput,{updateSelectInput(session,"WingInput",choices = WingList())})  
-
-
-    GroupList <- reactive({
-      if (input$NAFInput != "All"){
-        if (input$WingInput != "All") {
-          AFWings<-dplyr::filter(AFNAFS,NAF %in% input$NAFInput)        
-          GroupList<-dplyr::filter(AFWings,Wing %in% input$WingInput)
-          GroupList<-sort(unique(GroupList$`Group`), decreasing = FALSE)
-          GroupList<-c("All",GroupList)
-        }else {
-          AFWings<-dplyr::filter(AFNAFS,NAF %in% input$NAFInput) 
-          GroupList<-sort(unique(AFWings$`Group`), decreasing = FALSE)
-          GroupList<-c("All",GroupList)
-        }
+    } else {
+      if (input$WingInput != "All") {
+        AFWings<-dplyr::filter(AFNAFS,NAF %in% NAFList)        
+        GroupList<-dplyr::filter(AFWings,Wing %in% input$WingInput)
+        GroupList<-sort(unique(GroupList$`Group`), decreasing = FALSE)
+        GroupList<-c("All",GroupList)
+      }else {
+        AFWings<-dplyr::filter(AFNAFS,NAF %in% NAFList)  
+        GroupList<-sort(unique(AFWings$`Group`), decreasing = FALSE)
+        GroupList<-c("All",GroupList)
+      }        
+    }
+    
+  })
+  observeEvent(input$NAFInput,{updateSelectInput(session,"GroupInput",choices = GroupList())})      
+  observeEvent(input$WingInput,{updateSelectInput(session,"GroupInput",choices = GroupList())})          
+  
+  
+  
+  #Choice between cases heat map or hospitalizations heat map
+  output$SummaryTabChoro<-renderPlotly({
+    GetHeatMap(input$Branch,input$OperationalInput,input$MAJCOMNAF,input$MAJCOMInput,input$NAFInput,
+               input$WingInput, input$SummaryModelType, input$SummaryForecast, input$SummaryStatistic)
+  })
+  
+  
+  # output$HotSpot <- renderPlot({
+  #   BaseHotSpot()
+  # })
+  
+  
+  output$ForecastDataTableOut<-DT::renderDT({
+    forecastbaselist<-dplyr::filter(AFBaseLocations,Branch %in% input$Branch)                        
+    forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE) 
+    
+    if(input$SummaryStatistic == "Cases") {
+      FilteredDT<-dplyr::filter(ForecastDataTableCases,Installation %in% forecastbaselist)                        
+    } else if (input$SummaryStatistic == "Hospitalizations") {
+      FilteredDT<-dplyr::filter(ForecastDataTable,Installation %in% forecastbaselist)                        
+    }   
+    
+    if(input$OperationalInput != "All") {
+      forecastbaselist<-dplyr::filter(AFBaseLocations,Operational %in% input$OperationalInput)                        
+      forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE)         
+      FilteredDT<-dplyr::filter(FilteredDT,Installation %in% forecastbaselist)
+    }      
+    
+    if (input$MAJCOMNAF == "MAJCOM") {
+      if (input$MAJCOMInput == "All") {
+        FilteredDT<-FilterDataTable(FilteredDT,input$SummaryModelType,input$SummaryForecast,input$SummaryStatistic)
+        FTPrint<-FilteredDT
+        dt<-DT::datatable(FilteredDT, rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))
+        dt
       } else {
-        if (input$WingInput != "All") {
-          AFWings<-dplyr::filter(AFNAFS,NAF %in% NAFList)        
-          GroupList<-dplyr::filter(AFWings,Wing %in% input$WingInput)
-          GroupList<-sort(unique(GroupList$`Group`), decreasing = FALSE)
-          GroupList<-c("All",GroupList)
-        }else {
-          AFWings<-dplyr::filter(AFNAFS,NAF %in% NAFList)  
-          GroupList<-sort(unique(AFWings$`Group`), decreasing = FALSE)
-          GroupList<-c("All",GroupList)
-        }        
+        FilteredDT<-FilterDataTable(FilteredDT,input$SummaryModelType,input$SummaryForecast,input$SummaryStatistic)
+        FTPrint<-FilteredDT
+        dt<-DT::datatable(filter(FilteredDT, MAJCOM == input$MAJCOMInput), rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))
+        dt
       }
+    } else if (input$MAJCOMNAF == "NAF") {
       
-    })
-    observeEvent(input$NAFInput,{updateSelectInput(session,"GroupInput",choices = GroupList())})      
-    observeEvent(input$WingInput,{updateSelectInput(session,"GroupInput",choices = GroupList())})          
-
-
-    
-    #Choice between cases heat map or hospitalizations heat map
-    output$SummaryTabChoro<-renderPlotly({
-      GetHeatMap(input$Branch,input$OperationalInput,input$MAJCOMNAF,input$MAJCOMInput,input$NAFInput,
-                 input$WingInput, input$SummaryModelType, input$SummaryForecast, input$SummaryStatistic)
-    })
-    
-    
-    # output$HotSpot <- renderPlot({
-    #   BaseHotSpot()
-    # })
-    
-    
-    output$ForecastDataTableOut<-DT::renderDT({
-      forecastbaselist<-dplyr::filter(AFBaseLocations,Branch %in% input$Branch)                        
-      forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE) 
-      
+      AFWings<-dplyr::filter(AFNAFS,NAF %in% input$NAFInput)  # We do not allow for all NAFs to be selected, too many units 
       if(input$SummaryStatistic == "Cases") {
-        FilteredDT<-dplyr::filter(ForecastDataTableCases,Installation %in% forecastbaselist)                        
+        colset<-c(1,3,2,15,16,17,4,6,7,8,9,10,11)
       } else if (input$SummaryStatistic == "Hospitalizations") {
-        FilteredDT<-dplyr::filter(ForecastDataTable,Installation %in% forecastbaselist)                        
-      }   
+        colset<-c(1,3,2,14,15,16,4,6,7,8,9,10)
+      }  
       
-      if(input$OperationalInput != "All") {
-        forecastbaselist<-dplyr::filter(AFBaseLocations,Operational %in% input$OperationalInput)                        
-        forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE)         
-        FilteredDT<-dplyr::filter(FilteredDT,Installation %in% forecastbaselist)
-      }      
       
+      if (input$WingInput == "All") {               
+        
+        if (input$GroupInput == "All") {                
+          GroupList<-sort(unique(AFWings$`Group`), decreasing = FALSE)
+          forecastbaselist<-dplyr::filter(AFWings,Group %in% GroupList)                        
+          forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE) 
+          FilteredDT<-dplyr::filter(FilteredDT,Installation %in% forecastbaselist) 
+          
+          FilteredDT<-FilterDataTable(FilteredDT,input$SummaryModelType,input$SummaryForecast,input$SummaryStatistic)
+          # FilteredDT<-merge(FilteredDT,AFWings, by.x = "Installation", by.y = "Base")
+          # FilteredDT<-FilteredDT[, names(FilteredDT)[colset]]  
+          # colnames(FilteredDT)[2]<-"State"
+          FTPrint<-FilteredDT                        
+          dt<-DT::datatable(FilteredDT, rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))   
+          dt
+          
+        } else {                                    
+          forecastbaselistG<-dplyr::filter(AFWings,Group %in% input$GroupInput)                        
+          forecastbaselist<-sort(unique(forecastbaselistG$Base), decreasing = FALSE) 
+          FilteredDT<-dplyr::filter(ForecastDataTableCases,Installation %in% forecastbaselist) 
+          
+          FilteredDT<-FilterDataTable(FilteredDT,input$SummaryModelType,input$SummaryForecast,input$SummaryStatistic)
+          # FilteredDT<-merge(FilteredDT,forecastbaselistG, by.x = "Installation", by.y = "Base")
+          # FilteredDT<-FilteredDT[, names(FilteredDT)[colset]]  
+          # colnames(FilteredDT)[2]<-"State"
+          FTPrint<-FilteredDT                        
+          dt<-DT::datatable(FilteredDT, rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))   
+          dt
+        }
+      } else {      #If one wing is selected
+        
+        AFWings<-dplyr::filter(AFWings,Wing %in% input$WingInput)            
+        
+        if (input$GroupInput == "All") {
+          GroupList<-sort(unique(AFWings$`Group`), decreasing = FALSE)
+          forecastbaselistG<-dplyr::filter(AFWings,Group %in% GroupList)                        
+          forecastbaselist<-sort(unique(forecastbaselistG$Base), decreasing = FALSE) 
+          FilteredDT<-dplyr::filter(FilteredDT,Installation %in% forecastbaselist) 
+          
+          FilteredDT<-FilterDataTable(FilteredDT,input$SummaryModelType,input$SummaryForecast,input$SummaryStatistic)
+          # FilteredDT<-merge(FilteredDT,forecastbaselistG, by.x = "Installation", by.y = "Base")
+          # FilteredDT<-FilteredDT[, names(FilteredDT)[colset]]  
+          # colnames(FilteredDT)[2]<-"State"
+          FTPrint<-FilteredDT                        
+          dt<-DT::datatable(FilteredDT, rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))   
+          dt
+          
+        } else {                                    
+          forecastbaselistG<-dplyr::filter(AFWings,Group %in% input$GroupInput)                        
+          forecastbaselist<-sort(unique(forecastbaselistG$Base), decreasing = FALSE) 
+          FilteredDT<-dplyr::filter(FilteredDT,Installation %in% forecastbaselist) 
+          
+          FilteredDT<-FilterDataTable(FilteredDT,input$SummaryModelType,input$SummaryForecast,input$SummaryStatistic)
+          # FilteredDT<-merge(FilteredDT,forecastbaselistG, by.x = "Installation", by.y = "Base")
+          # FilteredDT<-FilteredDT[, names(FilteredDT)[colset]]  
+          # colnames(FilteredDT)[2]<-"State"
+          FTPrint<-FilteredDT                        
+          dt<-DT::datatable(FilteredDT, rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))   
+          dt
+          
+        }
+      }
+    }
+  })
+  
+  
+  # })
+  
+  output$downloadData <- downloadHandler(
+    filename = function() { 
+      if(input$SummaryStatistic == "Cases") {
+        PrintDT<-ForecastDataTableCases 
+        FName<-"Cases"
+      } else if (input$SummaryStatistic == "Hospitalizations") {
+        PrintDT<-ForecastDataTable
+        FName<-"Hospitalizations"
+      } 
+      paste("SummaryDataset-",FName,"-",Sys.Date(), ".csv", sep="")
+    },
+    content = function(file) {
+      write.csv(PrintDT, file)
+    })
+  
+  output$downloadFilteredData <- downloadHandler(
+    filename = function() { 
+      paste("FilteredSummaryDataset-", Sys.Date(), ".csv", sep="")
+    },
+    content = function(file) {
       if (input$MAJCOMNAF == "MAJCOM") {
         if (input$MAJCOMInput == "All") {
-          FilteredDT<-FilterDataTable(FilteredDT,input$SummaryModelType,input$SummaryForecast,input$SummaryStatistic)
-          FTPrint<-FilteredDT
-          dt<-DT::datatable(FilteredDT, rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))
-          dt
-        } else {
-          FilteredDT<-FilterDataTable(FilteredDT,input$SummaryModelType,input$SummaryForecast,input$SummaryStatistic)
-          FTPrint<-FilteredDT
-          dt<-DT::datatable(filter(FilteredDT, MAJCOM == input$MAJCOMInput), rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))
-          dt
+          if(input$SummaryStatistic == "Cases") {
+            ForecastDataTableCases<-FilterDataTable(ForecastDataTableCases,input$SummaryModelType,input$SummaryForecast,input$SummaryStatistic)
+            FTPrint<-ForecastDataTableCases
+          } else {
+            ForecastDataTable<-FilterDataTable(ForecastDataTable,input$SummaryModelType,input$SummaryForecast,input$SummaryStatistic)
+            FTPrint<-ForecastDataTableCases
+          }
+        } else if(input$MAJCOMInput=="Active Duty"){
+          if(input$SummaryStatistic == "Cases") {
+            ForecastDataTableCases<-FilterDataTable(ForecastDataTableCases,input$SummaryModelType,input$SummaryForecast,input$SummaryStatistic)
+            FTPrint<-ForecastDataTableCases
+          } else {
+            ForecastDataTable<-FilterDataTable(ForecastDataTable,input$SummaryModelType,input$SummaryForecast,input$SummaryStatistic)
+            FTPrint<-ForecastDataTable
+          }
+        }
+        else {
+          if(input$SummaryStatistic == "Cases") {
+            ForecastDataTableCases<-FilterDataTable(ForecastDataTableCases,input$SummaryModelType,input$SummaryForecast,input$SummaryStatistic)
+            FTPrint<-ForecastDataTableCases
+          } else {
+            ForecastDataTable<-FilterDataTable(ForecastDataTable,input$SummaryModelType,input$SummaryForecast,input$SummaryStatistic)
+            FTPrint<-ForecastDataTable                    
+          }
         }
       } else if (input$MAJCOMNAF == "NAF") {
+        AFWings<-dplyr::filter(AFNAFS,NAF %in% NAFList)  # We do not allow for all NAFs to be selected, too many units                     
+        colset<-c(1,3,2,14,15,16,4,6,7,8,9,10)
         
-        AFWings<-dplyr::filter(AFNAFS,NAF %in% input$NAFInput)  # We do not allow for all NAFs to be selected, too many units 
-        if(input$SummaryStatistic == "Cases") {
-          colset<-c(1,3,2,15,16,17,4,6,7,8,9,10,11)
-        } else if (input$SummaryStatistic == "Hospitalizations") {
-          colset<-c(1,3,2,14,15,16,4,6,7,8,9,10)
-        }  
-        
-        
-        if (input$WingInput == "All") {               
-          
+        if (input$WingInput == "All") {     
+          #AFWings<-dplyr::filter(AFWings,Wing %in% WingList)
           if (input$GroupInput == "All") {                
             GroupList<-sort(unique(AFWings$`Group`), decreasing = FALSE)
             forecastbaselist<-dplyr::filter(AFWings,Group %in% GroupList)                        
             forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE) 
-            FilteredDT<-dplyr::filter(FilteredDT,Installation %in% forecastbaselist) 
+            ForecastDataTableCases<-dplyr::filter(ForecastDataTableCases,Installation %in% forecastbaselist) 
+            ForecastDataTable<-dplyr::filter(ForecastDataTable,Installation %in% forecastbaselist) 
             
-            FilteredDT<-FilterDataTable(FilteredDT,input$SummaryModelType,input$SummaryForecast,input$SummaryStatistic)
-            # FilteredDT<-merge(FilteredDT,AFWings, by.x = "Installation", by.y = "Base")
-            # FilteredDT<-FilteredDT[, names(FilteredDT)[colset]]  
-            # colnames(FilteredDT)[2]<-"State"
-            FTPrint<-FilteredDT                        
-            dt<-DT::datatable(FilteredDT, rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))   
-            dt
-            
+            if(input$SummaryStatistic == "Cases") {  #if all groups are selected
+              ForecastDataTableCases<-FilterDataTable(ForecastDataTableCases,input$SummaryModelType,input$SummaryForecast,input$SummaryStatistic)
+              ForecastDataTableCases<-merge(ForecastDataTableCases,AFNAFS, by.x = "Installation", by.y = "Base")
+              ForecastDataTableCases<-ForecastDataTableCases[, names(ForecastDataTableCases)[colset]]  
+              colnames(ForecastDataTableCases)[2]<-"State"
+              FTPrint<-ForecastDataTableCases                        
+            } else {                                 #if one group is selected
+              ForecastDataTable<-FilterDataTable(ForecastDataTable,input$SummaryModelType,input$SummaryForecast,input$SummaryStatistic)
+              ForecastDataTable<-merge(ForecastDataTable,AFNAFS, by.x = "Installation", by.y = "Base")
+              ForecastDataTable<-ForecastDataTable[, names(ForecastDataTable)[colset]]  
+              colnames(ForecastDataTable)[2]<-"State"
+              FTPrint<-ForecastDataTable                        
+            }
           } else {                                    
-            forecastbaselistG<-dplyr::filter(AFWings,Group %in% input$GroupInput)                        
-            forecastbaselist<-sort(unique(forecastbaselistG$Base), decreasing = FALSE) 
-            FilteredDT<-dplyr::filter(ForecastDataTableCases,Installation %in% forecastbaselist) 
+            forecastbaselist<-dplyr::filter(AFWings,Group %in% input$GroupInput)                        
+            forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE) 
+            ForecastDataTableCases<-dplyr::filter(ForecastDataTableCases,Installation %in% forecastbaselist) 
+            ForecastDataTable<-dplyr::filter(ForecastDataTable,Installation %in% forecastbaselist)                     
             
-            FilteredDT<-FilterDataTable(FilteredDT,input$SummaryModelType,input$SummaryForecast,input$SummaryStatistic)
-            # FilteredDT<-merge(FilteredDT,forecastbaselistG, by.x = "Installation", by.y = "Base")
-            # FilteredDT<-FilteredDT[, names(FilteredDT)[colset]]  
-            # colnames(FilteredDT)[2]<-"State"
-            FTPrint<-FilteredDT                        
-            dt<-DT::datatable(FilteredDT, rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))   
-            dt
+            if(input$SummaryStatistic == "Cases") {  #if all groups are selected
+              ForecastDataTableCases<-FilterDataTable(ForecastDataTableCases,input$SummaryModelType,input$SummaryForecast,input$SummaryStatistic)
+              ForecastDataTableCases<-merge(ForecastDataTableCases,AFNAFS, by.x = "Installation", by.y = "Base")
+              ForecastDataTableCases<-ForecastDataTableCases[, names(ForecastDataTableCases)[colset]]  
+              colnames(ForecastDataTableCases)[2]<-"State"
+              FTPrint<-ForecastDataTableCases                        
+            } else {                                 #if one group is selected
+              ForecastDataTable<-FilterDataTable(ForecastDataTable,input$SummaryModelType,input$SummaryForecast,input$SummaryStatistic)
+              ForecastDataTable<-merge(ForecastDataTable,AFNAFS, by.x = "Installation", by.y = "Base")
+              ForecastDataTable<-ForecastDataTable[, names(ForecastDataTableCases)[colset]]
+              colnames(ForecastDataTable)[2]<-"State"
+              FTPrint<-ForecastDataTable
+            }
           }
         } else {      #If one wing is selected
           
@@ -1164,307 +1296,175 @@ server <- function(input, output,session) {
           
           if (input$GroupInput == "All") {
             GroupList<-sort(unique(AFWings$`Group`), decreasing = FALSE)
-            forecastbaselistG<-dplyr::filter(AFWings,Group %in% GroupList)                        
-            forecastbaselist<-sort(unique(forecastbaselistG$Base), decreasing = FALSE) 
-            FilteredDT<-dplyr::filter(FilteredDT,Installation %in% forecastbaselist) 
+            forecastbaselist<-dplyr::filter(AFWings,Group %in% GroupList)                        
+            forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE) 
+            ForecastDataTableCases<-dplyr::filter(ForecastDataTableCases,Installation %in% forecastbaselist) 
+            ForecastDataTable<-dplyr::filter(ForecastDataTable,Installation %in% forecastbaselist) 
             
-            FilteredDT<-FilterDataTable(FilteredDT,input$SummaryModelType,input$SummaryForecast,input$SummaryStatistic)
-            # FilteredDT<-merge(FilteredDT,forecastbaselistG, by.x = "Installation", by.y = "Base")
-            # FilteredDT<-FilteredDT[, names(FilteredDT)[colset]]  
-            # colnames(FilteredDT)[2]<-"State"
-            FTPrint<-FilteredDT                        
-            dt<-DT::datatable(FilteredDT, rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))   
-            dt
-            
+            if(input$SummaryStatistic == "Cases") {  #if all groups are selected
+              ForecastDataTableCases<-FilterDataTable(ForecastDataTableCases,input$SummaryModelType,input$SummaryForecast,input$SummaryStatistic)
+              ForecastDataTableCases<-merge(ForecastDataTableCases,AFNAFS, by.x = "Installation", by.y = "Base")
+              ForecastDataTableCases<-ForecastDataTableCases[, names(ForecastDataTableCases)[colset]]  
+              colnames(ForecastDataTableCases)[2]<-"State"
+              FTPrint<-ForecastDataTableCases                        
+            } else {                                 #if one group is selected
+              ForecastDataTable<-FilterDataTable(ForecastDataTable,input$SummaryModelType,input$SummaryForecast,input$SummaryStatistic)
+              ForecastDataTable<-merge(ForecastDataTable,AFNAFS, by.x = "Installation", by.y = "Base")
+              ForecastDataTable<-ForecastDataTable[, names(ForecastDataTable)[colset]]  
+              colnames(ForecastDataTable)[2]<-"State"
+              FTPrint<-ForecastDataTable                        
+            }
           } else {                                    
-            forecastbaselistG<-dplyr::filter(AFWings,Group %in% input$GroupInput)                        
-            forecastbaselist<-sort(unique(forecastbaselistG$Base), decreasing = FALSE) 
-            FilteredDT<-dplyr::filter(FilteredDT,Installation %in% forecastbaselist) 
+            forecastbaselist<-dplyr::filter(AFWings,Group %in% input$GroupInput)                        
+            forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE) 
+            ForecastDataTableCases<-dplyr::filter(ForecastDataTableCases,Installation %in% forecastbaselist) 
+            ForecastDataTable<-dplyr::filter(ForecastDataTable,Installation %in% forecastbaselist)                     
             
-            FilteredDT<-FilterDataTable(FilteredDT,input$SummaryModelType,input$SummaryForecast,input$SummaryStatistic)
-            # FilteredDT<-merge(FilteredDT,forecastbaselistG, by.x = "Installation", by.y = "Base")
-            # FilteredDT<-FilteredDT[, names(FilteredDT)[colset]]  
-            # colnames(FilteredDT)[2]<-"State"
-            FTPrint<-FilteredDT                        
-            dt<-DT::datatable(FilteredDT, rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))   
-            dt
-            
+            if(input$SummaryStatistic == "Cases") {  #if all groups are selected
+              ForecastDataTableCases<-FilterDataTable(ForecastDataTableCases,input$SummaryModelType,input$SummaryForecast,input$SummaryStatistic)
+              ForecastDataTableCases<-merge(ForecastDataTableCases,AFNAFS, by.x = "Installation", by.y = "Base")
+              ForecastDataTableCases<-ForecastDataTableCases[, names(ForecastDataTableCases)[colset]]  
+              colnames(ForecastDataTableCases)[2]<-"State"
+              FTPrint<-ForecastDataTableCases                        
+            } else {                                 #if one group is selected
+              ForecastDataTable<-FilterDataTable(ForecastDataTable,input$SummaryModelType,input$SummaryForecast,input$SummaryStatistic)
+              ForecastDataTable<-merge(ForecastDataTable,AFNAFS, by.x = "Installation", by.y = "Base")
+              ForecastDataTable<-ForecastDataTable[, names(ForecastDataTable)[colset]]  
+              colnames(ForecastDataTable)[2]<-"State"
+              FTPrint<-ForecastDataTable                        
+            }
           }
         }
-      }
+      }        
+      
+      
+      write.csv(FTPrint, file)
     })
-    
-    
-    # })
-    
-    output$downloadData <- downloadHandler(
-      filename = function() { 
-        if(input$SummaryStatistic == "Cases") {
-          PrintDT<-ForecastDataTableCases 
-          FName<-"Cases"
-        } else if (input$SummaryStatistic == "Hospitalizations") {
-          PrintDT<-ForecastDataTable
-          FName<-"Hospitalizations"
-        } 
-        paste("SummaryDataset-",FName,"-",Sys.Date(), ".csv", sep="")
-      },
-      content = function(file) {
-        write.csv(PrintDT, file)
-      })
-    
-    output$downloadFilteredData <- downloadHandler(
-      filename = function() { 
-        paste("FilteredSummaryDataset-", Sys.Date(), ".csv", sep="")
-      },
-      content = function(file) {
-        if (input$MAJCOMNAF == "MAJCOM") {
-          if (input$MAJCOMInput == "All") {
-            if(input$SummaryStatistic == "Cases") {
-              ForecastDataTableCases<-FilterDataTable(ForecastDataTableCases,input$SummaryModelType,input$SummaryForecast,input$SummaryStatistic)
-              FTPrint<-ForecastDataTableCases
-            } else {
-              ForecastDataTable<-FilterDataTable(ForecastDataTable,input$SummaryModelType,input$SummaryForecast,input$SummaryStatistic)
-              FTPrint<-ForecastDataTableCases
-            }
-          } else if(input$MAJCOMInput=="Active Duty"){
-            if(input$SummaryStatistic == "Cases") {
-              ForecastDataTableCases<-FilterDataTable(ForecastDataTableCases,input$SummaryModelType,input$SummaryForecast,input$SummaryStatistic)
-              FTPrint<-ForecastDataTableCases
-            } else {
-              ForecastDataTable<-FilterDataTable(ForecastDataTable,input$SummaryModelType,input$SummaryForecast,input$SummaryStatistic)
-              FTPrint<-ForecastDataTable
-            }
-          }
-          else {
-            if(input$SummaryStatistic == "Cases") {
-              ForecastDataTableCases<-FilterDataTable(ForecastDataTableCases,input$SummaryModelType,input$SummaryForecast,input$SummaryStatistic)
-              FTPrint<-ForecastDataTableCases
-            } else {
-              ForecastDataTable<-FilterDataTable(ForecastDataTable,input$SummaryModelType,input$SummaryForecast,input$SummaryStatistic)
-              FTPrint<-ForecastDataTable                    
-            }
-          }
-        } else if (input$MAJCOMNAF == "NAF") {
-          AFWings<-dplyr::filter(AFNAFS,NAF %in% NAFList)  # We do not allow for all NAFs to be selected, too many units                     
-          colset<-c(1,3,2,14,15,16,4,6,7,8,9,10)
-          
-          if (input$WingInput == "All") {     
-            #AFWings<-dplyr::filter(AFWings,Wing %in% WingList)
-            if (input$GroupInput == "All") {                
-              GroupList<-sort(unique(AFWings$`Group`), decreasing = FALSE)
-              forecastbaselist<-dplyr::filter(AFWings,Group %in% GroupList)                        
-              forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE) 
-              ForecastDataTableCases<-dplyr::filter(ForecastDataTableCases,Installation %in% forecastbaselist) 
-              ForecastDataTable<-dplyr::filter(ForecastDataTable,Installation %in% forecastbaselist) 
-              
-              if(input$SummaryStatistic == "Cases") {  #if all groups are selected
-                ForecastDataTableCases<-FilterDataTable(ForecastDataTableCases,input$SummaryModelType,input$SummaryForecast,input$SummaryStatistic)
-                ForecastDataTableCases<-merge(ForecastDataTableCases,AFNAFS, by.x = "Installation", by.y = "Base")
-                ForecastDataTableCases<-ForecastDataTableCases[, names(ForecastDataTableCases)[colset]]  
-                colnames(ForecastDataTableCases)[2]<-"State"
-                FTPrint<-ForecastDataTableCases                        
-              } else {                                 #if one group is selected
-                ForecastDataTable<-FilterDataTable(ForecastDataTable,input$SummaryModelType,input$SummaryForecast,input$SummaryStatistic)
-                ForecastDataTable<-merge(ForecastDataTable,AFNAFS, by.x = "Installation", by.y = "Base")
-                ForecastDataTable<-ForecastDataTable[, names(ForecastDataTable)[colset]]  
-                colnames(ForecastDataTable)[2]<-"State"
-                FTPrint<-ForecastDataTable                        
-              }
-            } else {                                    
-              forecastbaselist<-dplyr::filter(AFWings,Group %in% input$GroupInput)                        
-              forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE) 
-              ForecastDataTableCases<-dplyr::filter(ForecastDataTableCases,Installation %in% forecastbaselist) 
-              ForecastDataTable<-dplyr::filter(ForecastDataTable,Installation %in% forecastbaselist)                     
-              
-              if(input$SummaryStatistic == "Cases") {  #if all groups are selected
-                ForecastDataTableCases<-FilterDataTable(ForecastDataTableCases,input$SummaryModelType,input$SummaryForecast,input$SummaryStatistic)
-                ForecastDataTableCases<-merge(ForecastDataTableCases,AFNAFS, by.x = "Installation", by.y = "Base")
-                ForecastDataTableCases<-ForecastDataTableCases[, names(ForecastDataTableCases)[colset]]  
-                colnames(ForecastDataTableCases)[2]<-"State"
-                FTPrint<-ForecastDataTableCases                        
-              } else {                                 #if one group is selected
-                ForecastDataTable<-FilterDataTable(ForecastDataTable,input$SummaryModelType,input$SummaryForecast,input$SummaryStatistic)
-                ForecastDataTable<-merge(ForecastDataTable,AFNAFS, by.x = "Installation", by.y = "Base")
-                ForecastDataTable<-ForecastDataTable[, names(ForecastDataTableCases)[colset]]
-                colnames(ForecastDataTable)[2]<-"State"
-                FTPrint<-ForecastDataTable
-              }
-            }
-          } else {      #If one wing is selected
-            
-            AFWings<-dplyr::filter(AFWings,Wing %in% input$WingInput)            
-            
-            if (input$GroupInput == "All") {
-              GroupList<-sort(unique(AFWings$`Group`), decreasing = FALSE)
-              forecastbaselist<-dplyr::filter(AFWings,Group %in% GroupList)                        
-              forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE) 
-              ForecastDataTableCases<-dplyr::filter(ForecastDataTableCases,Installation %in% forecastbaselist) 
-              ForecastDataTable<-dplyr::filter(ForecastDataTable,Installation %in% forecastbaselist) 
-              
-              if(input$SummaryStatistic == "Cases") {  #if all groups are selected
-                ForecastDataTableCases<-FilterDataTable(ForecastDataTableCases,input$SummaryModelType,input$SummaryForecast,input$SummaryStatistic)
-                ForecastDataTableCases<-merge(ForecastDataTableCases,AFNAFS, by.x = "Installation", by.y = "Base")
-                ForecastDataTableCases<-ForecastDataTableCases[, names(ForecastDataTableCases)[colset]]  
-                colnames(ForecastDataTableCases)[2]<-"State"
-                FTPrint<-ForecastDataTableCases                        
-              } else {                                 #if one group is selected
-                ForecastDataTable<-FilterDataTable(ForecastDataTable,input$SummaryModelType,input$SummaryForecast,input$SummaryStatistic)
-                ForecastDataTable<-merge(ForecastDataTable,AFNAFS, by.x = "Installation", by.y = "Base")
-                ForecastDataTable<-ForecastDataTable[, names(ForecastDataTable)[colset]]  
-                colnames(ForecastDataTable)[2]<-"State"
-                FTPrint<-ForecastDataTable                        
-              }
-            } else {                                    
-              forecastbaselist<-dplyr::filter(AFWings,Group %in% input$GroupInput)                        
-              forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE) 
-              ForecastDataTableCases<-dplyr::filter(ForecastDataTableCases,Installation %in% forecastbaselist) 
-              ForecastDataTable<-dplyr::filter(ForecastDataTable,Installation %in% forecastbaselist)                     
-              
-              if(input$SummaryStatistic == "Cases") {  #if all groups are selected
-                ForecastDataTableCases<-FilterDataTable(ForecastDataTableCases,input$SummaryModelType,input$SummaryForecast,input$SummaryStatistic)
-                ForecastDataTableCases<-merge(ForecastDataTableCases,AFNAFS, by.x = "Installation", by.y = "Base")
-                ForecastDataTableCases<-ForecastDataTableCases[, names(ForecastDataTableCases)[colset]]  
-                colnames(ForecastDataTableCases)[2]<-"State"
-                FTPrint<-ForecastDataTableCases                        
-              } else {                                 #if one group is selected
-                ForecastDataTable<-FilterDataTable(ForecastDataTable,input$SummaryModelType,input$SummaryForecast,input$SummaryStatistic)
-                ForecastDataTable<-merge(ForecastDataTable,AFNAFS, by.x = "Installation", by.y = "Base")
-                ForecastDataTable<-ForecastDataTable[, names(ForecastDataTable)[colset]]  
-                colnames(ForecastDataTable)[2]<-"State"
-                FTPrint<-ForecastDataTable                        
-              }
-            }
-          }
-        }        
-        
-        
-        write.csv(FTPrint, file)
-      })
-    
-    output$HotSpotData <- downloadHandler(
-      filename = function() { 
-        paste("HotspotDataset-", Sys.Date(), ".csv", sep="")
-      },
-      content = function(file) {
-        write.csv(Top15Report, file)
-        
-      })    
-    
-    output$HotSpotDataOneMile <- downloadHandler(
-      filename = function() { 
-        paste("HotspotDatasetOneMile-", Sys.Date(), ".csv", sep="")
-      },
-      content = function(file) {
-        write.csv(Top15ReportOneMile, file)
-        
-      })    
-    
-    output$HotSpot <- renderPlot({
-      HotspotPlot(input$Branch,input$OperationalInput,input$MAJCOMNAF,
-                  input$MAJCOMInput,input$NAFInput,input$WingInput,input$GroupInput)
-    })
-    
-    # Output Report ------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    
-    
-    output$report <- downloadHandler(
-      # For PDF output, change this to "report.pdf"
-      filename = function(){
-        paste0('CHAD_report(',paste(Sys.Date(),sep = '_'),')','.html')
-      },
-      content = function(file) {
-        
-        # Copy the report file to a temporary directory before processing it, in
-        # case we don't have write permissions to the current working dir (which
-        # can happen when deployed).
-        
-        # tempReport <- file.path(tempdir(), "TestReport.Rmd")
-        # file.copy("TestReport.Rmd", tempReport, overwrite = TRUE)
-        
-        # src <- normalizePath("TestReport2.Rmd")
-        # owd <- setwd(tempdir())
-        # on.exit(setwd(owd))
-        # file.copy(src, "TestReport2.Rmd", overwrite = TRUE)
-        # out <- render("TestReport2.Rmd", html_document())
-        # file.rename(out, file)
-        
-        # # Set up parameters to pass to Rmd document
-        params <- list(radius = input$Radius,
-                       base = input$Base,
-                       pjDays = input$proj_days,
-                       socDis = input$SocialDistanceValue)
-        
-        # Knit the document, passing in the `params` list, and eval it in a
-        # child of the global environment (this isolates the code in the document
-        # from the code in this app).
-        rmarkdown::render("www/7_other_resources/TestReport.Rmd", output_file = file,
-                          params = params,
-                          envir = new.env(parent = globalenv())
-        )
-        
-      }
+  
+  output$HotSpotData <- downloadHandler(
+    filename = function() { 
+      paste("HotspotDataset-", Sys.Date(), ".csv", sep="")
+    },
+    content = function(file) {
+      write.csv(Top15Report, file)
+      
+    })    
+  
+  output$HotSpotDataOneMile <- downloadHandler(
+    filename = function() { 
+      paste("HotspotDatasetOneMile-", Sys.Date(), ".csv", sep="")
+    },
+    content = function(file) {
+      write.csv(Top15ReportOneMile, file)
+      
+    })    
+  
+  output$HotSpot <- renderPlot({
+    HotspotPlot(input$Branch,input$OperationalInput,input$MAJCOMNAF,
+                input$MAJCOMInput,input$NAFInput,input$WingInput,input$GroupInput)
+  })
+  
+  # Output Report ------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  
+  
+  output$report <- downloadHandler(
+    # For PDF output, change this to "report.pdf"
+    filename = function(){
+      paste0('CHAD_report(',paste(Sys.Date(),sep = '_'),')','.html')
+    },
+    content = function(file) {
+      
+      # Copy the report file to a temporary directory before processing it, in
+      # case we don't have write permissions to the current working dir (which
+      # can happen when deployed).
+      
+      # tempReport <- file.path(tempdir(), "TestReport.Rmd")
+      # file.copy("TestReport.Rmd", tempReport, overwrite = TRUE)
+      
+      # src <- normalizePath("TestReport2.Rmd")
+      # owd <- setwd(tempdir())
+      # on.exit(setwd(owd))
+      # file.copy(src, "TestReport2.Rmd", overwrite = TRUE)
+      # out <- render("TestReport2.Rmd", html_document())
+      # file.rename(out, file)
+      
+      # # Set up parameters to pass to Rmd document
+      params <- list(radius = input$Radius,
+                     base = input$Base,
+                     pjDays = input$proj_days,
+                     socDis = input$SocialDistanceValue)
+      
+      # Knit the document, passing in the `params` list, and eval it in a
+      # child of the global environment (this isolates the code in the document
+      # from the code in this app).
+      rmarkdown::render("www/7_other_resources/TestReport.Rmd", output_file = file,
+                        params = params,
+                        envir = new.env(parent = globalenv())
+      )
+      
+    }
+  )
+  
+  
+  
+  
+  # Step Three
+  ###################################################################################################################################################
+  
+  #Step three provides input information for annotation of the overall app such as inputs, sources, and calculations.
+  observeEvent(input$UpdateInfo, {
+    showModal(
+      modalDialog(
+        size = "l",fade = TRUE, easyClose = TRUE, title = "VERSION UPDATES",
+        UpdateLink)
     )
-    
-    
-    
-    
-    # Step Three
-    ###################################################################################################################################################
-    
-    #Step three provides input information for annotation of the overall app such as inputs, sources, and calculations.
-    observeEvent(input$UpdateInfo, {
-      showModal(
-        modalDialog(
-          size = "l",fade = TRUE, easyClose = TRUE, title = "VERSION UPDATES",
-          UpdateLink)
-      )
-    })
-    
-    observeEvent(input$overviewInfo, {
-      showModal(
-        modalDialog(
-          size = "l",fade = TRUE, easyClose = TRUE, title = "OVERVIEW",
-          OverviewLink)
-      )
-    })
-    
-    observeEvent(input$inputInfo, {
-      showModal(
-        modalDialog(
-          size = "l",fade = TRUE, easyClose = TRUE, title = "USER INPUTS",
-          InfoLink)
-      )
-    })
-    observeEvent(input$projInfo, {
-      showModal(
-        modalDialog(
-          size = "l",fade = TRUE, easyClose = TRUE, title = "PROJECTIONS",
-          ProjLink)
-      )
-    })
-    
-    observeEvent(input$calcInfo, {
-      showModal(
-        modalDialog(
-          size = "l",fade = TRUE, easyClose = TRUE, title = "CALCULATIONS",
-          CalcLink)
-      )
-    })
-    
-    observeEvent(input$sourceInfo, {
-      showModal(
-        modalDialog(
-          size = "l",fade = TRUE, easyClose = TRUE, title = "SOURCES",
-          SourceLink)
-      )
-    })
-    
-    
-    
-    
-    
-    
-    
-    
-    
+  })
+  
+  observeEvent(input$overviewInfo, {
+    showModal(
+      modalDialog(
+        size = "l",fade = TRUE, easyClose = TRUE, title = "OVERVIEW",
+        OverviewLink)
+    )
+  })
+  
+  observeEvent(input$inputInfo, {
+    showModal(
+      modalDialog(
+        size = "l",fade = TRUE, easyClose = TRUE, title = "USER INPUTS",
+        InfoLink)
+    )
+  })
+  observeEvent(input$projInfo, {
+    showModal(
+      modalDialog(
+        size = "l",fade = TRUE, easyClose = TRUE, title = "PROJECTIONS",
+        ProjLink)
+    )
+  })
+  
+  observeEvent(input$calcInfo, {
+    showModal(
+      modalDialog(
+        size = "l",fade = TRUE, easyClose = TRUE, title = "CALCULATIONS",
+        CalcLink)
+    )
+  })
+  
+  observeEvent(input$sourceInfo, {
+    showModal(
+      modalDialog(
+        size = "l",fade = TRUE, easyClose = TRUE, title = "SOURCES",
+        SourceLink)
+    )
+  })
+  
+  
+  
+  
+  
+  
+  
+  
+  
 }
