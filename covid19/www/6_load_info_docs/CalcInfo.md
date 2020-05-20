@@ -1,9 +1,9 @@
 ### Calculation Information
 
 *These reference the essential calculations used to conduct analysis and
-the assumptions made regarding the data*
+the assumptions made regarding the data. See Projections for information on projection models displayed in CHAD.*
 
-**Dynamic Elements**:
+**Distance Matrices**:
 
 1.  **Local Counties**: Counties included in the analysis are determined
     using geospatial coordinates (Latitude, Longitude) and determining
@@ -16,32 +16,29 @@ the assumptions made regarding the data*
     only include “General Acute Care” and “Critical Access” as these are the
     primary types of hospitals to supply beds and ventilators to
     COVID-19 patients.
+    
+**National/International Table**
 
-**Case Statistics**:
+1.  **Average New Cases/Deaths Per Day**: This metric is calculated using a 7 day-average of daily cases/deaths.
+
+**Local Health Statistics**:
 
 1.  **Confirmed Cases**: Confirmed COVID-19 cases and deaths are
-    reported daily and summed by state and local region, which is
+    reported daily and summed by state or local region, which is
     determined by the user.
 
 2.  **Hospital Bed Utilzation**: Hospital bed utilization is calculated using estimated historic utilization numbers
     along with estimated hospitalized patients. Using an average hospital length stay of 7 days for COVID-19 patients, the total       confirmed cases in the last 7 days are used to estimate the number of patients currently in the hospital. Assuming every       patient uses a staffed bed, this number is divided by the total number of hosital beds in the user selected region. This percentage is added to the estimated historic utilization percentage to determine an overall utilization percentage of hospital beds in the region. For further information on this calculation please reference the document below:
-    https://github.com/treypujats/CHAD/blob/master/Estimated%20Local%20Hospital%20Bed%20Utilization.docx?raw=true
+    https://github.com/CHAD-Analytics/CHAD/raw/master/covid19/www/7_other_resources/Estimated%20Local%20Hospital%20Bed%20Utilization.docx
 
 3.  **Case Doubling rate**: The case doubling rate is calculated for the current day. It involves counting the days since the confirmed case total was less than half of the current confirmed case total.
 
-4. **Estimated Reproduction rate**: Calculating R_t can be quite difficult since some of the parameters aren't directly captured by data. Consultation with a medical SME yielded a rough way to estimate R_t. This is done by dividing the 5 day case average by the 14 day case average. Values less than 1 indicate the possiblilty of slowing growth.  
+4. **Estimated Reproduction rate**: Calculating R_t can be quite difficult since some of the parameters aren't directly captured by data. Consultation with medical SMEs yielded a rough way to estimate R_t. This is done by dividing the 5 day case average by the 14 day case average. Values less than 1 indicate the possiblilty of slowing growth. 
 
-### Predictive Models:
+5. **3-Day Moving Average**: This chart is created from plotting the 3-day moving average of cases as opposed to each day's individual case number. The moving average is taken from the current day's cases and two days prior. This is done to help provide a smoothing function to the chart, and correct for some of the irregularities in county case reporting procedures.
 
-**IHME**: Developed by the University of Washington’s Institute for
-Health Metrics and Evaluation, this model uses data from state and
-national governments, hospital groups, and the World Health Organization
-to predict hospitalizations and ICU rates for planning purposes. Their model can be found at
-<a href="https://covid19.healthdata.org/united-states-of-america" class="uri">https://covid19.healthdata.org/united-states-of-america
+6. **Weekly Growth Chart**:
 
-**SEIAR**: This predictive model was pulled from the Army’s ACME Tool
-developed through collaborative efforts from Army Futures Command and
-the Army Public Health Center(APHC) COVID-19 Modeling Team. This model
-was inspired by Penn State University’s CHIME model. Detailed
-information about the CHIME model can be found at
-<a href="https://code-for-philly.gitbook.io/chime/" class="uri">https://code-for-philly.gitbook.io/chime/</a>.
+7. **Cases per 1,000/10,000/100,000**: This ratio is calculated the standard way. Total cases divided total population times your per captia number (1,000/10,000/100,000).
+
+8. **Estimated Recovered Line**: This calculation appears as a line on the total cases chart. This estimation assumes a 14 day period from reported case to recovered. Though it is known that many people are being tested well into the incubation period, it is not known how far in. It is therefore more conservative to start the 14-period from the day the case was reported to reduce the chance of overestimating the amount of recovered people. An assumpation is also made that fatalities occur 7 days after test
