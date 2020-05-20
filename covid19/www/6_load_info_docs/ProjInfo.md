@@ -20,7 +20,8 @@ http://www.healthdata.org/covid/faqs
 ### CHIME
 
 The COVID-19 Hospital Impact Model for Epidemics (CHIME) app was created by the Predictive Healthcare team at Penn Medicine, University of Pennsylvania. CHIME provides estimates of daily and cumulative cases, hospitalizations, ICU admissions, and patients
-requiring ventilators. It uses an adapation of the Susceptible-Infected-Recovered (SIR) model to generate estimates based on user inputs. There are many inputs to CHIME relative to the location of interest. In CHAD, majority of these are pre-filled in and are specfic to the location chosen and COVID-19 case data. Furthermore, the model in CHAD is an adaptation of CHIME that includes Exposed and Asympotmatic in addition to Susceptible, Infected, and Asympotmatic. This adaption was provided by US Army Futures Command
+requiring ventilators. It uses an adapation of the Susceptible-Infected-Recovered (SIR) model to generate estimates based on user inputs. There are many inputs to CHIME relative to the location of interest. In CHAD, majority of these are pre-filled in and are specfic to the location chosen and COVID-19 case data. Furthermore, the model in CHAD is an adaptation of CHIME that includes Exposed and Asympotmatic in addition to Susceptible, Infected, and Asympotmatic. This adaption came from the Army’s ACME Tool,
+developed through collaborative efforts from Army Futures Command and the Army Public Health Center(APHC) COVID-19 Modeling Team.
 
 **Live Model:**
 https://penn-chime.phl.io/
