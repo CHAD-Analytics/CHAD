@@ -1,9 +1,9 @@
-### Calculation Information
+## Calculation Information
 
 *These reference the essential calculations used to conduct analysis and
 the assumptions made regarding the data. See Projections for information on projection models displayed in CHAD.*
 
-**Distance Matrices**:
+### Distance Matrices
 
 1.  **Local Counties**: Counties included in the analysis are determined
     using geospatial coordinates (Latitude, Longitude) and determining
@@ -17,11 +17,11 @@ the assumptions made regarding the data. See Projections for information on proj
     primary types of hospitals to supply beds and ventilators to
     COVID-19 patients.
     
-**National/International Table**
+### National/International Table
 
 1.  **Average New Cases/Deaths Per Day**: This metric is calculated using a 7 day-average of daily cases/deaths.
 
-**Local Health Statistics**:
+### Local Health Statistics
 
 1.  **Confirmed Cases**: Confirmed COVID-19 cases and deaths are
     reported daily and summed by state or local region, which is
@@ -37,7 +37,7 @@ the assumptions made regarding the data. See Projections for information on proj
 
 5. **3-Day Moving Average**: This chart is created from plotting the 3-day moving average of cases as opposed to each day's individual case number. The moving average is taken from the current day's cases and two days prior. This is done to help provide a smoothing function to the chart, and correct for some of the irregularities in county case reporting procedures.
 
-6. **Weekly Growth Chart**:
+6. **Weekly Growth Chart**: This chart tracks the change in case growth per week. To do this, a rolling weekly case number can't be used since that would change the comparison every 6 days. Weekly total case counts are calculated from Monday-Sunday every week. The percent change from one week to the next is the weekly growth. To avoid instances of 4000% growth due to intial case increases, the threshold is set to total cases being greater than 30 before it starts counting weekly growth. This is why the dates on the chart may not start at the same week for each location. 
 
 7. **Cases per 1,000/10,000/100,000**: This ratio is calculated the standard way. Total cases divided total population times your per captia number (1,000/10,000/100,000).
 
