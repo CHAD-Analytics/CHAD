@@ -259,7 +259,7 @@ ui <- tagList(
                     '))),
                   tags$script(HTML('
                                    $(document).ready(function() {
-                                   $("header").find("nav").append(\'<span class="myClass"> COVID-19 Health Assessment Dashboard Beta v0.9.7</span>\');
+                                   $("header").find("nav").append(\'<span class="myClass"> COVID-19 Health Assessment Dashboard Beta v10.0</span>\');
                                    })
                                    ')),
                   tabsetPanel(id = "tabselected",
@@ -352,11 +352,14 @@ ui <- tagList(
                                 title = "Local Health Projections",
                                 fluidRow(
                                   valueBoxOutput("TotalPopulation")
-                                  #valueBoxOutput("IHMEPeakDate"),
-                                  #valueBoxOutput("CHIMEPeakDate")
-                                  #valueBoxOutput("TotalPopulation"),
-                                  #valueBoxOutput("IHMEMinMax"),
-                                  #valueBoxOutput("CHIMEMinMax")
+                                  # ,
+                                  # box(title = "Peak Values and Dates", 
+                                  #     solidHeader=T, align = "left", 
+                                  #     column(width = 12, 
+                                  #            DT::dataTableOutput("PlotForecastDT"), 
+                                  #            style = "height:240px;overflow-y: scroll"), 
+                                  #     height = 300)
+
                                 ),
                                 # fluidRow(
                                 #     box(plotlyOutput("IHME_State_Hosp",height = 400)),

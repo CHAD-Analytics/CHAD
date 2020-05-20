@@ -2,6 +2,7 @@
 #'              
 #' @source https://raw.githubusercontent.com/UT-Covid/USmortality/master/forecasts/
 #' 
+#' No global data, only state/county data
 
 #UT_Model<-vroom::vroom("www/4_load_external_data/data_files/UT-COVID19-states-forecast-latest.csv")
 

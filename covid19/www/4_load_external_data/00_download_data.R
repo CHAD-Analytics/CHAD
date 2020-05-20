@@ -48,6 +48,10 @@ if(test_date < Sys.Date()) {
   #                       overwrite = T)  
   
   
+  
+  ###Global case forecasts are coming from IHME/LANL/YYG/CHIME
+  ###IHME is the most difficult to translate because they don't have a separate country column
+  
   R.utils::downloadFile("https://covid-19.bsvgateway.org/forecast/forecast_metadata.json",
                         filename = "www/4_load_external_data/data_files/forecast_metadata.json",
                         overwrite = T)
@@ -70,7 +74,24 @@ if(test_date < Sys.Date()) {
   R.utils::downloadFile(ReadIn,
                         filename = LANL_file_name2,
                         overwrite = T)  
-  
+
+  Front<-'https://covid-19.bsvgateway.org/forecast/global/files/'
+  Middle1<-'/confirmed/'
+  End1<-'_confirmed_quantiles_global_website.csv'
+  Middle2<-'/deaths/'
+  End2<-'_deaths_quantiles_global_website.csv'  
+  Date<-bsv_metadata$us$most_recent_date
+  ReadIn<-paste0(Front,Date,Middle1,Date,End1)
+  LANL_file_name3 = paste0("www/4_load_external_data/data_files/",Date,End1)
+  R.utils::downloadFile(ReadIn,
+                        filename = LANL_file_name3,
+                        overwrite = T)
+  ReadIn<-paste0(Front,Date,Middle2,Date,End2)
+  LANL_file_name4 = paste0("www/4_load_external_data/data_files/",Date,End2)
+  R.utils::downloadFile(ReadIn,
+                        filename = LANL_file_name4,
+                        overwrite = T)    
+    
 } else {
   
   bsv_metadata<-jsonlite::fromJSON("www/4_load_external_data/data_files/forecast_metadata.json")
@@ -79,6 +100,12 @@ if(test_date < Sys.Date()) {
   Date<-bsv_metadata$us$most_recent_date
   LANL_file_name1 = paste0("www/4_load_external_data/data_files/",Date,End1)
   LANL_file_name2 = paste0("www/4_load_external_data/data_files/",Date,End2)  
+  End1<-'_confirmed_quantiles_global_website.csv'
+  End2<-'_deaths_quantiles_global_website.csv'    
+  Date<-bsv_metadata$us$most_recent_date
+  LANL_file_name3 = paste0("www/4_load_external_data/data_files/",Date,End1)
+  LANL_file_name4 = paste0("www/4_load_external_data/data_files/",Date,End2)    
+  
   print("data is current")
   
 }
