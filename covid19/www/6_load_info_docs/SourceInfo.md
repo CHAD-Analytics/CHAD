@@ -1,7 +1,7 @@
 ### Source Information
 
 *This section references the data collected, the sources of collection,
-and the data manipulation.*
+and the data manipulation. All information of included models can be found in the Projection Information.*
 
 **Data Collection**:
 
@@ -40,11 +40,8 @@ and the data manipulation.*
     
     <a href="https://www.census.gov/data/tables/time-series/demo/popest/2010s-counties-detail.html" class="uri">https://www.census.gov/data/tables/time-series/demo/popest/2010s-counties-detail.html</a>
 
-5.  **Institute for Health Metrics and Evaluation:** This website houses the data produced by the IHME model. Fatality and hospitalization projections are recorded for every state, and a large number of countries. Model updates occur typically 2-3 times a week.
-    
-    <a href="https://covid19.healthdata.org/projections" class="uri">https://covid19.healthdata.org/projections</a>
 
-6.  **CHAD Github Repository:** Loaded on this repository is public static data regarding Department of Air Force installations, and distance matrices between hospitals and bases as well as counties and bases.
+5.  **CHAD Github Repository:** Loaded on this repository is public static data regarding Department of Air Force installations, and distance matrices between hospitals and bases as well as counties and bases.
     
     <a href="https://github.com/CHAD-Analytics/CHAD" class="uri">https://github.com/CHAD-Analytics/CHAD</a>
 
