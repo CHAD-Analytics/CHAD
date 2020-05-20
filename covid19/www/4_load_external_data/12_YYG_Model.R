@@ -4,12 +4,11 @@
 #' 
 #YYG_Model<-vroom::vroom("www/4_load_external_data/data_files/YYG_projections.csv")
 
-Date<-Sys.Date() - 1
-#YYG_Model<-vroom::vroom(paste0("https://raw.githubusercontent.com/youyanggu/covid19_projections/master/projections/combined/",Date,"_us.csv"))
-
-#YYG_Model<-vroom::vroom("https://raw.githubusercontent.com/youyanggu/covid19_projections/master/projections/combined/latest_global.csv")
-YYG_Model<-vroom::vroom("https://raw.githubusercontent.com/youyanggu/covid19_projections/master/projections/combined/latest_us.csv")
-YYG_Model$date <- as.Date(YYG_Model$date, format = "%Y-%m-%d")
+YYG_ModelU<-vroom::vroom("https://raw.githubusercontent.com/youyanggu/covid19_projections/master/projections/combined/latest_us.csv")
+#YYG_ModelS<-vroom::vroom("https://raw.githubusercontent.com/youyanggu/covid19_projections/master/projections/combined/latest_subregion.csv")
+YYG_ModelG<-vroom::vroom("https://raw.githubusercontent.com/youyanggu/covid19_projections/master/projections/combined/latest_global.csv")
+YYG_ModelG$date <- as.Date(YYG_ModelG$date, format = "%Y-%m-%d")
+YYG_ModelU$date <- as.Date(YYG_ModelU$date, format = "%Y-%m-%d")
 #State abbreviation already included
 
 closeAllConnections()

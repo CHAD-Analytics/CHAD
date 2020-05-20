@@ -48,6 +48,10 @@ if(test_date < Sys.Date()) {
   #                       overwrite = T)  
   
   
+  
+  ###Global case forecasts are coming from IHME/LANL/YYG/CHIME
+  ###IHME is the most difficult to translate because they don't have a separate country column
+  
   R.utils::downloadFile("https://covid-19.bsvgateway.org/forecast/forecast_metadata.json",
                         filename = "www/4_load_external_data/data_files/forecast_metadata.json",
                         overwrite = T)
