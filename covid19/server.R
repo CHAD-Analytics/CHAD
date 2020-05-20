@@ -395,15 +395,15 @@ server <- function(input, output,session) {
   })
   
   
-  output$LocalHealthPlot14dayGrowth<-renderPlotly({
+  output$LocalHealthPlotWeeklyGrowth<-renderPlotly({
     
     #MyCounties<-GetCounties(input$Base,input$Radius)
-    DailyChart <- CovidCases14DayGrowthChart(MyCounties())
+    DailyChart <- CovidCasesWeeklyGrowth(MyCounties())
     
     plotDaily <- ggplot(DailyChart) + 
-      geom_col(aes(x=ForecastDate, 
-                   y=value-1, 
-                   fill = ifelse(value-1>0, 
+      geom_col(aes(x=`Forecast Date`, 
+                   y=value, 
+                   fill = ifelse(value>0, 
                                  "Growth Increase", 
                                  "Growth Decrease")), 
                size = 0.5) +
@@ -413,7 +413,7 @@ server <- function(input, output,session) {
                  colour = "black",
                  linetype = "dashed") +
       xlab('Date') +
-      ylab('14-Day Growth Rate') +
+      ylab('Weekly Growth Rate') +
       theme_bw() + 
       theme(plot.title = element_text(face = "bold", size = 15, family = "sans"),
             axis.title = element_text(face = "bold", size = 11, family = "sans"),
@@ -425,7 +425,7 @@ server <- function(input, output,session) {
             panel.grid.minor = element_blank(),
             panel.border = element_blank()) +
       scale_x_date(date_breaks = "1 week") +
-      scale_y_continuous(labels = function(y) paste0(y*100,"%")) +
+      scale_y_continuous(labels = scales::percent_format(accuracy = 1)) +
       #ylim(0,max(Chart1DataSub$value) * 1.1) +
       labs(color='')
     
@@ -438,7 +438,7 @@ server <- function(input, output,session) {
   })
   
   
-  #Create second plot of local health population 
+  #Create Plot of Total Cases
   output$LocalHealthPlot2<-renderPlotly({
     
     #MyCounties<-GetCounties(input$Base,input$Radius)

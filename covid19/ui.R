@@ -325,10 +325,10 @@ ui <- tagList(
                                     ),
                                     tabPanel("Moving 3-Day Average",
                                              plotlyOutput("LocalHealthPlot3day",height = 300)
+                                    ),
+                                    tabPanel("Weekly Growth Rate",
+                                             plotlyOutput("LocalHealthPlotWeeklyGrowth",height = 300)
                                     )
-                                    # tabPanel("14-day Growth Rate",
-                                    #          plotlyOutput("LocalHealthPlot14dayGrowth",height = 300)
-                                    # )
                                   ),
                                   #box(title = "Daily Reports",plotlyOutput("LocalHealthPlot1",height = 300)),
                                   box(title = "Total Reports",plotlyOutput("LocalHealthPlot2",height = 300))
