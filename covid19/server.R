@@ -491,8 +491,8 @@ server <- function(input, output,session) {
                     title='National Impact Map - Log Scale of Cases'
                   } else {
                     title='National Impact Map - Case Count'
-                  }
-                  #legend="none"
+                  },
+                  legendPosition='bottom'
     ) 
     
     EUROlist = list(region="150",
@@ -504,8 +504,8 @@ server <- function(input, output,session) {
                       title='Europe Impact Map - Log Scale of Cases'
                     } else {
                       title='Europe Impact Map - Case Count'
-                    }                    
-                    #legend = "none"
+                    },
+                    legendPosition='bottom'
     )
     
     ASIAlist = list(region="142",
@@ -517,8 +517,8 @@ server <- function(input, output,session) {
                       title='Asia Impact Map - Log Scale of Cases'
                     } else {
                       title='Asia Impact Map - Case Count'
-                    }                    
-                    #legend = "none"
+                    },
+                    legendPosition='bottom'
     )
     
     WORLDlist = list(region="world",
@@ -530,8 +530,8 @@ server <- function(input, output,session) {
                       title='Global Impact Map - Log Scale of Cases'
                     } else {
                       title='Global Impact Map - Case Count'
-                    }                    
-                    #legend = "none"
+                    },
+                    legendPosition='bottom'
     )
     
     if (input$MapView == "Europe"){
