@@ -974,17 +974,17 @@ server <- function(input, output,session) {
   #Render National Data Table on summary page
   output$NationalDataTable1<-DT::renderDataTable({
     if (input$MapView == "World"){
-      NationalDataTable1 <- DT::datatable(NationalDataTable,rownames = FALSE, options = list(fixedHeader = TRUE, 
-                                                                                              dom = 'ft',
-                                                                                              ordering = F,
-                                                                                              "pageLength" = 250))
+      NationalDataTable1 <- DT::datatable(NationalDataTable,
+                                          rownames = FALSE, 
+                                          options = list(order = list(1, "asc"),
+                                                         pageLength = 15))
     } else{
     
       NationalDataTable1 = dplyr::filter(NationalDataTable, Continent == input$MapView)
-      NationalDataTable1 <- DT::datatable(NationalDataTable1,rownames = FALSE, options = list(fixedHeader = TRUE, 
-                                                                                              dom = 'ft',
-                                                                                              ordering = F,
-                                                                                              "pageLength" = 250))
+      NationalDataTable1 <- DT::datatable(NationalDataTable1,
+                                          rownames = FALSE, 
+                                          options = list(order = list(1, "asc"),
+                                                         pageLength = 15))
     }
     NationalDataTable1
   })
