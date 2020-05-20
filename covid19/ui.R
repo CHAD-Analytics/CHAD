@@ -29,7 +29,7 @@ ui <- tagList(
                 dashboardHeader(title = div(img(src=base64enc::dataURI(file="www/7_other_resources/Logo.png", mime="image/png") ,height = '50',width = '150')),
                                 titleWidth = 300,
                                 dropdownMenu( 
-                                  icon = tags$div(HTML('<font size = "5" color = "blue" font-weight:"bold" >Current Upates</font>  <i class="fa fa-flag fa-2x" style = "font-size:18px;"></i> <body style="background-color:green;"></body>')),
+                                  icon = tags$div(HTML('<font size = "5" color = "blue" font-weight:"bold" >Current Updates</font>  <i class="fa fa-flag fa-2x" style = "font-size:18px;"></i> <body style="background-color:green;"></body>')),
                                   headerText = "",
                                   badgeStatus = "success",
                                   tags$li(actionLink("UpdateInfo", label = "Update Information", icon = icon("flag")),class = "dropdown")

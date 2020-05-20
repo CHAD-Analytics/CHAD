@@ -482,7 +482,7 @@ server <- function(input, output,session) {
     USlist = list(region="US",
                   displayMode = "regions",
                   resolution = "provinces",
-                  colors="['#52E74B','#85050a']", #green to dark red
+                  colors="['#52E74B','blue','#85050a']", #green to dark red
                   #colors="['#52E74B','#6754D8']", green to blue
                   #colors="['#e6e3e3','#85050a']", light red to dark red
                   width=1200,
@@ -497,7 +497,7 @@ server <- function(input, output,session) {
     
     EUROlist = list(region="150",
                     displayMode = "regions",
-                    colors="['#52E74B','#85050a']", #green to dark red
+                    colors="['#52E74B','blue','#85050a']", #green to dark red
                     width=1200,
                     height = 600,
                     if (input$MapScale == "Log"){
@@ -510,7 +510,7 @@ server <- function(input, output,session) {
     
     ASIAlist = list(region="142",
                     displayMode = "regions",
-                    colors="['#52E74B','#85050a']", #green to dark red
+                    colors="['#52E74B','blue','#85050a']", #green to dark red
                     width=1200,
                     height = 600,
                     if (input$MapScale == "Log"){
@@ -523,7 +523,7 @@ server <- function(input, output,session) {
     
     WORLDlist = list(region="world",
                     displayMode = "province",
-                    colors="['#52E74B','#85050a']", #green to dark red
+                    colors="['#52E74B','blue','#85050a']", #green to dark red
                     width=1200,
                     height = 600,
                     if (input$MapScale == "Log"){

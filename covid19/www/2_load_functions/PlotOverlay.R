@@ -198,28 +198,30 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
     OverlayData<-rbind(OverlayData,DPT2)
     
     #Calculate IHME Peak date, create data table of peak dates for hospitalizations 
-    # PeakSevDayVal<-round(max(DailyData$`Expected Hospitalizations`[1:7]))
-    # PeakFourteenDayVal<-round(max(DailyData$`Expected Hospitalizations`[1:14]))
-    # PeakTwentyOneDayVal<-round(max(DailyData$`Expected Hospitalizations`[1:21]))
-    # PeakThirtyDayVal<-round(max(DailyData$`Expected Hospitalizations`[1:30]))
-    # PeakSixtyDayVal<-round(max(DailyData$`Expected Hospitalizations`[1:60]))    
-    # PeakDateSevDayVal<-which.max(DailyData$`Expected Hospitalizations`[1:7])
-    # PeakDateFourteenDayVal<-which.max(DailyData$`Expected Hospitalizations`[1:14])
-    # PeakDateTwentyOneDayVal<-which.max(DailyData$`Expected Hospitalizations`[1:21])
-    # PeakDateThirtyDayVal<-which.max(DailyData$`Expected Hospitalizations`[1:30])
-    # PeakDateSixtyDayVal<-which.max(DailyData$`Expected Hospitalizations`[1:60])    
-    # PeakDateSevDayVal<-format(DailyData$ForecastDate[PeakDateSevDayVal], format="%b-%d")
-    # PeakDateFourteenDayVal<-format(DailyData$ForecastDate[PeakDateFourteenDayVal], format="%b-%d")
-    # PeakDateTwentyOneDayVal<-format(DailyData$ForecastDate[PeakDateTwentyOneDayVal], format="%b-%d")
-    # PeakDateThirtyDayVal<-format(DailyData$ForecastDate[PeakDateThirtyDayVal], format="%b-%d")
-    # PeakDateSixtyDayVal<-format(DailyData$ForecastDate[PeakDateSixtyDayVal], format="%b-%d")
-    
+
     PeakDate<-which.max(IHME_Data$IHME_Region.allbed_mean)
     IHMEPeak<-round(IHME_Data[PeakDate,2])      
     PeakDate<-which.max(UT_Data$daily_deaths_est)
-    #UTPeak<-round(UT_Data[PeakDate,2])      
+    UTPeak<-round(UT_Data[PeakDate,2])      
+    PeakDate<-which.max(YYG_Data$daily_deaths_est)
+    YYGPeak<-round(YYG_Data[PeakDate,2])          
     PeakDate<-which.max(LANL_Region$'Expected Hospitalizations')
     LANLPeak<-round(UT_Data[PeakDate,2])        
+    PeakDate<-which.max(CU20x10PSD_State$'Expected Hospitalizations')
+    CU1Peak<-round(CU20x10PSD_State[PeakDate,2])        
+    PeakDate<-which.max(CU20x5PSD_State$'Expected Hospitalizations')
+    CU2Peak<-round(CU20x5PSD_State[PeakDate,2])   
+    PeakDate<-which.max(CU20w10PSD_State$'Expected Hospitalizations')
+    CU3Peak<-round(CU20w10PSD_State[PeakDate,2])   
+    PeakDate<-which.max(CU20w5PSD_State$'Expected Hospitalizations')
+    CU4Peak<-round(CU20w5PSD_State[PeakDate,2])   
+
+    #CHIME
+    PeakVal<-round(max(DailyData$`Expected Hospitalizations`[1:DaysProjected]))
+    PeakDateVal<-which.max(DailyData$`Expected Hospitalizations`[1:DaysProjected])
+    PeakDateVal<-format(DailyData$ForecastDate[PeakDateVal], format="%b-%d")
+    
+        
     # PeakDate<-which.max(CU40_State$hosp_need_50)
     # CU40Peak<-round(CU40_State[PeakDate,2])      
     # PeakDate<-which.max(CU30_State$hosp_need_50)
