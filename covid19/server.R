@@ -949,6 +949,15 @@ server <- function(input, output,session) {
       MyHospitals<-GetHospitals(input$Base,input$Radius)
       PlotOverlay(input$Base, MyCounties(), MyHospitals,ModelID,input$proj_days,input$StatisticType)
       
+      # output$PlotForecastDT<-DT::renderDataTable({
+      #   PlotForecastDT <- DT::datatable(PeakValues,rownames = FALSE, options = list(fixedHeader = TRUE, 
+      #                                                                               dom = 'ft',
+      #                                                                               ordering = F,
+      #                                                                               "pageLength" = 250))
+      #   PlotForecastDT
+      # })
+      
+
     }, error = function(err) {
       empty_plot(paste(input$Utilization))
     })

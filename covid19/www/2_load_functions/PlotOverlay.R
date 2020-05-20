@@ -196,45 +196,47 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
     OverlayData<-rbind(OverlayData,CU20w5PSD_State)
     OverlayData<-rbind(OverlayData,DPT1)
     OverlayData<-rbind(OverlayData,DPT2)
-    
+                       
     #Calculate IHME Peak date, create data table of peak dates for hospitalizations 
+    IHMEPeak<-round(max(IHME_Data$`Expected Hospitalizations`[1:DaysProjected]))
+    IHMEDate<-which.max(IHME_Data$`Expected Hospitalizations`[1:DaysProjected])
+    IHMEDate<-format(IHME_Data$ForecastDate[IHMEDate], format="%b-%d")
+    UTPeak<-round(max(UT_Data$`Expected Hospitalizations`[1:DaysProjected]))
+    UTDate<-which.max(UT_Data$`Expected Hospitalizations`[1:DaysProjected])
+    UTDate<-format(UT_Data$ForecastDate[UTDate], format="%b-%d")    
+    PeakDates<-rbind(IHMEDate,UTDate)
+    PeakValues<-rbind(IHMEPeak,UTPeak)    
+    YYGPeak<-round(max(YYG_Data$`Expected Hospitalizations`[1:DaysProjected]))
+    PeakDate<-which.max(YYG_Data$`Expected Hospitalizations`[1:DaysProjected])
+    PeakDate<-format(YYG_Data$ForecastDate[PeakDate], format="%b-%d")    
+    PeakDates<-rbind(PeakDates,PeakDate)
+    PeakValues<-rbind(PeakValues,YYGPeak)
+    LANLPeak<-round(max(LANL_Region$`Expected Hospitalizations`[1:DaysProjected]))
+    PeakDate<-which.max(LANL_Region$`Expected Hospitalizations`[1:DaysProjected])
+    PeakDate<-format(LANL_Region$ForecastDate[PeakDate], format="%b-%d")        
+    PeakDates<-rbind(PeakDates,PeakDate)
+    PeakValues<-rbind(PeakValues,LANLPeak)    
+    CU1Peak<-round(max(CU20x10PSD_State$`Expected Hospitalizations`[1:DaysProjected]))
+    PeakDate<-which.max(CU20x10PSD_State$`Expected Hospitalizations`[1:DaysProjected])
+    PeakDate<-format(CU20x10PSD_State$ForecastDate[PeakDate], format="%b-%d")       
+    PeakDates<-rbind(PeakDates,PeakDate)
+    PeakValues<-rbind(PeakValues,CU1Peak)           
+    CU2Peak<-round(max(CU20x5PSD_State$`Expected Hospitalizations`[1:DaysProjected]))
+    PeakDate<-which.max(CU20x5PSD_State$`Expected Hospitalizations`[1:DaysProjected])
+    PeakDate<-format(CU20x5PSD_State$ForecastDate[PeakDate], format="%b-%d")         
+    PeakDates<-rbind(PeakDates,PeakDate)
+    PeakValues<-rbind(PeakValues,CU2Peak)          
+    CU3Peak<-round(max(CU20w10PSD_State$`Expected Hospitalizations`[1:DaysProjected]))
+    PeakDate<-which.max(CU20w10PSD_State$`Expected Hospitalizations`[1:DaysProjected])
+    PeakDate<-format(CU20w10PSD_State$ForecastDate[PeakDate], format="%b-%d")      
+    PeakDates<-rbind(PeakDates,PeakDate)
+    PeakValues<-rbind(PeakValues,CU3Peak)
+    CU4Peak<-round(max(CU20w5PSD_State$`Expected Hospitalizations`[1:DaysProjected]))
+    PeakDate<-which.max(CU20w5PSD_State$`Expected Hospitalizations`[1:DaysProjected])
+    PeakDate<-format(CU20w5PSD_State$ForecastDate[PeakDate], format="%b-%d")      
+    PeakDates<-rbind(PeakDates,PeakDate)
+    PeakValues<-rbind(PeakValues,CU4Peak)         
 
-    PeakDate<-which.max(IHME_Data$IHME_Region.allbed_mean)
-    IHMEPeak<-round(IHME_Data[PeakDate,2])      
-    PeakDate<-which.max(UT_Data$daily_deaths_est)
-    UTPeak<-round(UT_Data[PeakDate,2])      
-    PeakDate<-which.max(YYG_Data$daily_deaths_est)
-    YYGPeak<-round(YYG_Data[PeakDate,2])          
-    PeakDate<-which.max(LANL_Region$'Expected Hospitalizations')
-    LANLPeak<-round(UT_Data[PeakDate,2])        
-    PeakDate<-which.max(CU20x10PSD_State$'Expected Hospitalizations')
-    CU1Peak<-round(CU20x10PSD_State[PeakDate,2])        
-    PeakDate<-which.max(CU20x5PSD_State$'Expected Hospitalizations')
-    CU2Peak<-round(CU20x5PSD_State[PeakDate,2])   
-    PeakDate<-which.max(CU20w10PSD_State$'Expected Hospitalizations')
-    CU3Peak<-round(CU20w10PSD_State[PeakDate,2])   
-    PeakDate<-which.max(CU20w5PSD_State$'Expected Hospitalizations')
-    CU4Peak<-round(CU20w5PSD_State[PeakDate,2])   
-
-    #CHIME
-    PeakVal<-round(max(DailyData$`Expected Hospitalizations`[1:DaysProjected]))
-    PeakDateVal<-which.max(DailyData$`Expected Hospitalizations`[1:DaysProjected])
-    PeakDateVal<-format(DailyData$ForecastDate[PeakDateVal], format="%b-%d")
-    
-        
-    # PeakDate<-which.max(CU40_State$hosp_need_50)
-    # CU40Peak<-round(CU40_State[PeakDate,2])      
-    # PeakDate<-which.max(CU30_State$hosp_need_50)
-    # CU30Peak<-round(CU30_State[PeakDate,2])      
-    # PeakDate<-which.max(CU20_State$hosp_need_50)
-    # CU20Peak<-round(CU20_State[PeakDate,2])
-    PeakData<-rbind(IHMEPeak,LANLPeak)
-    #PeakData<-rbind(PeakData,UTPeak)      
-    # PeakData<-rbind(PeakData,CU40Peak)
-    # PeakData<-rbind(PeakData,CU30Peak)
-    # PeakData<-rbind(PeakData,CU20Peak)
-    
-    
     #Next we use the calculated values, along with estimated values from the Estimated Values. 
     #The only input we want from the user is the social distancing rate. For this example, we just use 0.5
     cases<-SIRinputs$cases
@@ -283,12 +285,14 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
       MyDates<-seq(Sys.Date()-(length(CovidCounties)-80), length=daysforecasted, by="1 day")
       DailyData<-data.frame(MyDates, SEIARProj$sir$hos_add)
       TotalData<-data.frame(MyDates, SEIARProj$sir$hos_cum)
-      colnames(DailyData)<-c("ForecastDate", "Expected Daily Cases")
+      colnames(DailyData)<-c("ForecastDate", "Expected Hospitalizations")
       colnames(TotalData)<-c("ForecastDate", "Total Daily Cases")
       
-      CHIMEPeak<-which.max(DailyData$`Expected Daily Cases`)
-      CHIMEPeak<-round(DailyData[Peak,2])
-      PeakData<-rbind(PeakData,CHIMEPeak)        
+      CHIMEPeak<-round(max(DailyData$`Expected Hospitalizations`[1:DaysProjected]))
+      PeakDate<-which.max(DailyData$`Expected Hospitalizations`[1:DaysProjected])
+      PeakDate<-format(DailyData$ForecastDate[PeakDate], format="%b-%d")      
+      PeakDates<-rbind(PeakDates,PeakDate)
+      PeakValues<-rbind(PeakValues,CHIMEPeak)          
       ####################################################################################
       #Lower Estimate
       #Established Variables at the start for every county or populations
@@ -337,6 +341,7 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
       OverlayData<-rbind(OverlayData,DailyData)
     }
     
+
     HistoricalData$ID<-rep("Past Data", nrow(HistoricalData))
     HistoricalData <- dplyr::filter(HistoricalData, ForecastDate >= as.Date("2020-01-27") + 30)
     OverlayData$ForecastDate<-as.Date(OverlayData$ForecastDate)

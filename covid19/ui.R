@@ -351,11 +351,14 @@ ui <- tagList(
                                 title = "Local Health Projections",
                                 fluidRow(
                                   valueBoxOutput("TotalPopulation")
-                                  #valueBoxOutput("IHMEPeakDate"),
-                                  #valueBoxOutput("CHIMEPeakDate")
-                                  #valueBoxOutput("TotalPopulation"),
-                                  #valueBoxOutput("IHMEMinMax"),
-                                  #valueBoxOutput("CHIMEMinMax")
+                                  # ,
+                                  # box(title = "Peak Values and Dates", 
+                                  #     solidHeader=T, align = "left", 
+                                  #     column(width = 12, 
+                                  #            DT::dataTableOutput("PlotForecastDT"), 
+                                  #            style = "height:240px;overflow-y: scroll"), 
+                                  #     height = 300)
+
                                 ),
                                 # fluidRow(
                                 #     box(plotlyOutput("IHME_State_Hosp",height = 400)),
