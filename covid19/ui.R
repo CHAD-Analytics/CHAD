@@ -293,7 +293,8 @@ ui <- tagList(
                                 value = 2,
                                 title = "International/National Summary",
                                 box(title = "Impact Map", solidHeader = T, align = "center", htmlOutput("SummaryPlot"),height=700,width=1200),
-                                box(title = "National Statistics", solidHeader=T, align = "left", column(width = 12, DT::dataTableOutput("NationalDataTable1"), style = "height:400px;overflow-y: scroll;overflow-x:scroll"),width = 13, height = 500)
+                                DT::dataTableOutput("NationalDataTable1")
+                                # box(title = "National Statistics", solidHeader=T, align = "left", column(width = 12, DT::dataTableOutput("NationalDataTable1"), style = "height:400px;overflow-y: scroll;overflow-x:scroll"),width = 13, height = 500)
                                 
                               ),
                               ####### END SUMMARY TAB #######
