@@ -7,14 +7,14 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
   #####Uncomment to test plot function without running the app
   #i<-80
   #ChosenBase = AFBaseLocations$Base[i]
-  ChosenBase = "Vandenberg Space Force Base"
-  SocialDistance = 15
-  DaysProjected = 30
-  HospitalInfo$DistanceMiles = himd[,as.character(ChosenBase)]
-  IncludedHospitals<-dplyr::filter(HospitalInfo, (DistanceMiles <= 50))
-  IncludedHospitals<-dplyr::filter(IncludedHospitals, (TYPE=="GENERAL ACUTE CARE") | (TYPE=="CRITICAL ACCESS"))
-  CountyInfo$DistanceMiles = cimd[,as.character(ChosenBase)]
-  IncludedCounties<-dplyr::filter(CountyInfo, DistanceMiles <= 50)
+  # ChosenBase = "Vandenberg Space Force Base"
+  # SocialDistance = 15
+  # DaysProjected = 30
+  # HospitalInfo$DistanceMiles = himd[,as.character(ChosenBase)]
+  # IncludedHospitals<-dplyr::filter(HospitalInfo, (DistanceMiles <= 50))
+  # IncludedHospitals<-dplyr::filter(IncludedHospitals, (TYPE=="GENERAL ACUTE CARE") | (TYPE=="CRITICAL ACCESS"))
+  # CountyInfo$DistanceMiles = cimd[,as.character(ChosenBase)]
+  # IncludedCounties<-dplyr::filter(CountyInfo, DistanceMiles <= 50)
   #####
   #####
   

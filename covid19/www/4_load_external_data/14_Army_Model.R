@@ -14,7 +14,7 @@ Army_Model$number <- str_count(Army_Model$FIPS, "/")
 Army_Model$number <- Army_Model$number+1
 Army_Model$Infected <- Army_Model$Infected/Army_Model$number
 Army_Model$Fatalities <- Army_Model$Fatalities/Army_Model$number
-Army_Model<-separate_rows(Army_Model,FIPS,County,convert = TRUE)
+Army_Model<-separate_rows(Army_Model,FIPS,Infected,convert = TRUE)
 Army_Model$County<-as.character(Army_Model$County)
 Army_Model$Location<-as.character(Army_Model$Location)
 Army_Model$State<-as.character(Army_Model$State)
