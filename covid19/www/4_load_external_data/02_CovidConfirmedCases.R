@@ -60,8 +60,8 @@ colnames(GlobalCases) = c(colnames(CovidConfirmedCases[1:4]),
 combNames = c(colnames(GlobalCases),colnames(CovidConfirmedCases))
 dupNames = combNames[duplicated(combNames)]
 
-GlobalCases = GlobalCases %>% select(dupNames)
-CovidConfirmedCases = CovidConfirmedCases %>% select(dupNames)
+GlobalCases = GlobalCases %>% select(all_of(dupNames))
+CovidConfirmedCases = CovidConfirmedCases %>% select(all_of(dupNames))
 CovidConfirmedCases<-rbind(CovidConfirmedCases,GlobalCases)
 
 cols<-names(CovidConfirmedCases[5:length(CovidConfirmedCases)])

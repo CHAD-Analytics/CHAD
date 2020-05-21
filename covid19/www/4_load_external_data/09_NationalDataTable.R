@@ -60,7 +60,10 @@ colnames(NationalDataTable) = c("Continent",
 
 NationalDataTable = NationalDataTable[order(NationalDataTable$State),]
 
+NationalDataTable<-merge(NationalDataTable, StatePop, by.x = "State", by.y = "State")
+#NationalDataTable$`Cases Per 100,000 People` = as.numeric(StatePop$Population)
 
-NationalDataTable$`Cases Per 100,000 People` = as.numeric(StatePop$Population)
+NationalDataTable$`Cases Per 100,000 People` = round((NationalDataTable$`Total Cases`/NationalDataTable$Population)*100000)
+NationalDataTable<-subset(NationalDataTable, select=-c(Population))   
 
-NationalDataTable$`Cases Per 100,000 People` = round((NationalDataTable$`Total Cases`/NationalDataTable$`Cases Per 100,000 People`)*100000)
+
