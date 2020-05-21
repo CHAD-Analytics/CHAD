@@ -1,5 +1,5 @@
-Army_Model <- vroom::vroom("C:/Users/taylo/Documents/CHADNew/covid19/www/4_load_external_data/data_files/para_R_abridged_2020-05-20_UnitedStates.csv")
-#Army_Model = vroom::vroom("www/4_load_external_data/data_files/para_R_abridged_2020-05-20_UnitedStates.csv")
+#Army_Model <- vroom::vroom("C:/Users/taylo/Documents/CHADNew/covid19/www/4_load_external_data/data_files/para_R_abridged_2020-05-20_UnitedStates.csv")
+Army_Model = vroom::vroom("www/4_load_external_data/data_files/para_R_abridged_2020-05-20_UnitedStates.csv")
 colset<-c(2,4,5,6,8,9,10,11,12)
 Army_Model<-Army_Model[, names(Army_Model)[colset]]  
 colnames(Army_Model)<-c("ForecastDate","FIPS","County","Location","Susceptible","Exposed","Infected","Removed","Fatalities")
