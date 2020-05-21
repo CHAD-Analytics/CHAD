@@ -548,29 +548,79 @@ server <- function(input, output,session) {
       MapFilter = "World"      
     }
     
+    # if (MapFilter != "World"){
+    #   DF<-dplyr::filter(ContinentMap, Continent == MapFilter)
+    # } else {
+    #   DF<-ContinentMap
+    #   select <- DF$Continent == "North America"
+    #   DF$State[select] <- "United States"
+    # }
+    # DF<-cbind.data.frame(DF$State, rev(DF)[,1], rev(DF)[,1])
+    # colnames(DF)<-c("state","Value","LogValue")
+    # ChlorData<-plyr::ddply(DF, "state", numcolwise(sum))
+    # if (input$MapScale == "Log"){ChlorData<-transform(ChlorData, LogValue = round(log(LogValue, base=10),digits = 1))}
+    # ChlorData <- transform(ChlorData, Value = as.character(format(Value,big.mark=",")))
+    # ChlorData<-ChlorData %>%
+    #   mutate(state_name = state.name[match(state, state.abb)])
+    # ChlorData$state_name <- ifelse(is.na(ChlorData$state_name), as.character(ChlorData$state), ChlorData$state_name)
+    # #ChlorData<-ChlorData[complete.cases(ChlorData$state_name), ]
+    # ChlorData <- transform(ChlorData, Value =paste(state_name, " Total Cases: ", Value))
+    # states <- data.frame(ChlorData$state_name, ChlorData$Value, ChlorData$LogValue)
+    # colnames(states)<-c("state_name","Cases","StateColor")
+    # states$StateColor = ifelse(is.infinite(states$StateColor), 0, states$StateColor)
+    # g = gvisGeoChart(states, locationvar = "state_name", hovervar = "Cases", colorvar = "StateColor", 
+    #                  options = MapChoice
+    # )
+    
+    # New code block to change cases to cases per 100K and add in multiple display values when hovering
     if (MapFilter != "World"){
-      DF<-dplyr::filter(ContinentMap, Continent == MapFilter)
+       DF<-dplyr::filter(ContinentMap, Continent == MapFilter)
+       DF<-cbind.data.frame(DF$State, rev(DF)[,1], rev(DF)[,1])
+       colnames(DF)<-c("state","Value","LogValue")
+       DF<-plyr::ddply(DF, "state", numcolwise(sum))
+       CF<-data.frame(CountyInfo$State,CountyInfo$Population)
+       CF<-plyr::ddply(CF,"CountyInfo.State", numcolwise(sum)) 
+       CD <- merge(DF,CF,by.x = names(DF)[1],by.y = names(CF)[1]) 
+       colnames(CD)[4]<-"Population"
+       ChlorData<-data.frame(CD$state,CD$Value,CD$Value,CD$LogValue,CD$Population) 
+       colnames(ChlorData)<-c("State","Value","CasesPer100K","LogValue","Population") 
     } else {
-      DF<-ContinentMap
-      select <- DF$Continent == "North America"
-      DF$State[select] <- "United States"
+       DF<-ContinentMap
+       DF<-cbind.data.frame(DF$State,DF$Continent, rev(DF)[,1], rev(DF)[,1])
+       colnames(DF)<-c("state","Continent","Value","LogValue")
+       DF$Continent[is.na(DF$Continent)] <- "North America"
+       CF<-data.frame(CountyInfo$State,CountyInfo$Population)
+       CF<-plyr::ddply(CF,"CountyInfo.State", numcolwise(sum)) 
+       CD <- merge(DF,CF,by.x = names(DF)[1],by.y = names(CF)[1])
+       colnames(CD)[5]<-"Population"
+       ChlorData<-data.frame(CD$state,CD$Continent,CD$Value,CD$Value,CD$LogValue,CD$Population,stringsAsFactors=FALSE)
+       colnames(ChlorData)<-c("State","Continent","Value","CasesPer100K","LogValue","Population") 
+       ChlorData$State <- as.character(ChlorData$State)
+       select <- which(ChlorData$Continent == "North America")
+       ChlorData$State[select]<-"United States"
+       ChlorData<-plyr::ddply(ChlorData, "State", numcolwise(sum))
     }
-    DF<-cbind.data.frame(DF$State, rev(DF)[,1], rev(DF)[,1])
-    colnames(DF)<-c("state","Value","LogValue")
-    ChlorData<-plyr::ddply(DF, "state", numcolwise(sum))
+    
+    ChlorData$CasesPer100K<-round(ChlorData$CasesPer100K/ChlorData$Population*100000)
+     
     if (input$MapScale == "Log"){ChlorData<-transform(ChlorData, LogValue = round(log(LogValue, base=10),digits = 1))}
-    ChlorData <- transform(ChlorData, Value = as.character(format(Value,big.mark=",")))
-    ChlorData<-ChlorData %>%
-      mutate(state_name = state.name[match(state, state.abb)])
-    ChlorData$state_name <- ifelse(is.na(ChlorData$state_name), as.character(ChlorData$state), ChlorData$state_name)
-    #ChlorData<-ChlorData[complete.cases(ChlorData$state_name), ]
-    ChlorData <- transform(ChlorData, Value =paste(state_name, " Total Cases: ", Value))
-    states <- data.frame(ChlorData$state_name, ChlorData$Value, ChlorData$LogValue)
-    colnames(states)<-c("state_name","Cases","StateColor")
-    states$StateColor = ifelse(is.infinite(states$StateColor), 0, states$StateColor)
-    g = gvisGeoChart(states, locationvar = "state_name", hovervar = "Cases", colorvar = "StateColor", 
-                     options = MapChoice
-    )
+    #else{ChlorData<-transform(ChlorData, LogValue = ChlorData$CasesPer100K)} #I don't like what this does to the color scheme
+     ChlorData <- transform(ChlorData, Value = as.character(format(Value,big.mark=",")))
+     ChlorData<-ChlorData %>%
+     mutate(state_name = state.name[match(State, state.abb)])
+     ChlorData$state_name <- ifelse(is.na(ChlorData$state_name), as.character(ChlorData$State), ChlorData$state_name)
+     #ChlorData<-ChlorData[complete.cases(ChlorData$state_name), ]
+     ChlorData <- transform(ChlorData, Value=paste(state_name," -- Total Cases: ",Value))
+     ChlorData <- transform(ChlorData, CasesPer100K=paste(" Cases Per 100k: ",CasesPer100K))
+     ChlorData <- transform(ChlorData, Population=paste(" Population: ",Population))     
+     ChlorData <- transform(ChlorData, Value=paste(Value,'||',CasesPer100K,'||',Population))  #Would prefer a line break, but I tried to use sep='\n' and several other things but nothing worked          
+     states <- data.frame(ChlorData$state_name,ChlorData$Value,ChlorData$LogValue)
+     colnames(states)<-c("state_name","Cases","State Value")
+     states$StateColor = ifelse(is.infinite(states$"State Value"), 0, states$"State Value")
+     g = gvisGeoChart(states, locationvar = "state_name", hovervar = c("Cases"), colorvar = "State Value", 
+                      options = MapChoice
+     )
+    
     
   })
   
@@ -851,20 +901,23 @@ server <- function(input, output,session) {
     else if (input$selectall1%%2 == 0)
     {
       updateCheckboxGroupInput(session,"ModelSelectionValue1","Forecasting Model(s): ",choices=c("IHME (University of Washington)"="IHME",
-                                                                                                "Youyang Gu - Independent (YYG) Model"="YYG",
-                                                                                                "CHIME: SC"="CHIME7",
-                                                                                                "University of Texas"="UT",
-                                                                                                "Columbia University: 20% SC Reduction with weekly 10% increase in contact"="CU20SCw10"))
+                                                                                                 "Center for Army Analysis"="CAA",
+                                                                                                 "Youyang Gu - Independent (YYG) Model"="YYG",
+                                                                                                 "CHIME: SC"="CHIME7",
+                                                                                                 "University of Texas"="UT",
+                                                                                                 "Columbia University: 20% SC Reduction with weekly 10% increase in contact"="CU20SCw10"))
     }
     else
     {
       updateCheckboxGroupInput(session,"ModelSelectionValue1","Forecasting Model(s):",choices=c("IHME (University of Washington)"="IHME",
-                                                                                               "Youyang Gu - Independent (YYG) Model"="YYG",
-                                                                                               "CHIME: SC"="CHIME7",
-                                                                                               "University of Texas"="UT",
-                                                                                               "Columbia University: 20% SC Reduction with weekly 10% increase in contact"="CU20SCw10"),                                                                                               
+                                                                                                "Center for Army Analysis"="CAA",
+                                                                                                "Youyang Gu - Independent (YYG) Model"="YYG",
+                                                                                                "CHIME: SC"="CHIME7",
+                                                                                                "University of Texas"="UT",
+                                                                                                "Columbia University: 20% SC Reduction with weekly 10% increase in contact"="CU20SCw10"),                                                                                               
                                
                                selected=c("IHME (University of Washington)"="IHME",
+                                          "Center for Army Analysis"="CAA",
                                           "Youyang Gu - Independent (YYG) Model"="YYG",
                                           "CHIME: SC"="CHIME7",
                                           "University of Texas"="UT",
@@ -929,6 +982,7 @@ server <- function(input, output,session) {
       # if ("HUtil" %in% input$Utilization){HospUtil<="Yes"}
       ModelID <- "Past Data"
       if ("IHME" %in% input$ModelSelectionValue1){ModelID<-cbind(ModelID,"IHME")}
+      if ("CAA" %in% input$ModelSelectionValue1){ModelID<-cbind(ModelID,"CAA")}      
       if ("YYG" %in% input$ModelSelectionValue1){ModelID<-cbind(ModelID,"YYG")}
       if ("DTRA1" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"DTRA1")}
       if ("DTRA2" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"DTRA2")}

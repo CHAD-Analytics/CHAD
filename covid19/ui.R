@@ -176,11 +176,12 @@ ui <- tagList(
                                                               #                   selected = c("HUtil")),
                                                               checkboxGroupInput("ModelSelectionValue1","Forecasting Model(s): ",
                                                                                  c("IHME (U. of Washinton)"="IHME",
+                                                                                   "Center for Army Analysis"="CAA",
                                                                                    "Youyang Gu (YYG) Model"="YYG",
                                                                                    "CHIME: SC"="CHIME7",
                                                                                    "University of Texas"="UT",
                                                                                    "Columbia University: 20% SC Reduction with weekly 10% increase in contact"="CU20SCw10"),                                                                
-                                                                                 selected = c("IHME","CHIME7")),
+                                                                                 selected = c("IHME","CAA","CHIME7")),
                                                               actionLink("selectall1","Select All"),
                                                               
                                                               checkboxGroupInput("AdditionalModels","Additional Forecasting Model(s): ",
