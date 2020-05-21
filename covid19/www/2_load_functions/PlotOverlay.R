@@ -22,7 +22,7 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
   BaseState<-dplyr::filter(AFBaseLocations, Base == toString(ChosenBase))
   IHME_State <- dplyr::filter(IHME_Model, State == toString(BaseState$State[1]))
   UT_State <- dplyr::filter(UT_Model, State == toString(BaseState$State[1]))  
-  YYG_State <- dplyr::filter(YYG_Model, region == toString(BaseState$State[1]))    
+  YYG_State <- dplyr::filter(YYG_ModelU, region == toString(BaseState$State[1]))    
   hospCounty <- subset(HospUtlzCounty, fips %in% IncludedCounties$FIPS)
   TTBCounty <- sum(IncludedHospitals$BEDS)
   

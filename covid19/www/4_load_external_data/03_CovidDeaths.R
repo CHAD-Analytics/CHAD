@@ -56,6 +56,7 @@ combNames = c(colnames(GlobalDeaths),colnames(CovidDeaths))
 dupNames = combNames[duplicated(combNames)]
 
 GlobalDeaths = GlobalDeaths %>% select(dupNames)
+CovidDeaths = CovidDeaths %>% select(dupNames)
 CovidDeaths<-rbind(CovidDeaths,GlobalDeaths)
 
 cols<-names(CovidDeaths[5:length(CovidDeaths)])
