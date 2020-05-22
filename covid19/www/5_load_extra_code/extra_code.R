@@ -31,6 +31,9 @@ currCount = 0
 # Create data tables for analysis ---------------------------------------------------------------------------------------------------------------------------------------------------
 
 AFrow = nrow(AFBaseLocations)
+
+MTFSummaryReport <- setNames(data.frame(matrix(ncol = 6, nrow = 0)),c("Installation","MAJCOM","State","50MileTotalCases","50MileCasesPer1000","50MileDblRate"))
+
 ForecastDataTable <- setNames(data.frame(matrix(ncol = 37, nrow = 0)),c("Installation","MAJCOM","State","Available Beds","Hopitalization Per 100,000", "Hopitalization Per 10,000", "New Hospitalizations",
                                                                         "7D IHME Forecast","7D IHME Peak","7D IHME Peak Date","7D SEIAR Forecast","7D SEIAR Peak","7D SEIAR Peak Date",
                                                                         "14D IHME Forecast","14D IHME Peak","14D IHME Peak Date","14D SEIAR Forecast","14D SEIAR Peak","14D SEIAR Peak Date",
@@ -59,6 +62,7 @@ for (i in 2:AFrow){
   TotalCases<-CalculateCovid(MyCounties)
   CasesPer100000<-round(TotalCases/TotalPop*100000)
   CasesPer10000<-round(TotalCases/TotalPop*10000)
+  CasesPer1000<-round(TotalCases/TotalPop*1000)  
   HospitalizationsPer100000<-round(CasesPer100000*.2)
   HospitalizationsPer10000<-round(HospitalizationsPer100000/10)
   
@@ -162,6 +166,10 @@ for (i in 2:AFrow){
   pop<-SIRinputs$pop
   
   if(nrow(IHME_Region) == 0 || pop == 0){
+    
+    MTFDF <- data.frame(AFBaseLocations$Base[i],AFBaseLocations$`Major Command`[i],AFBaseLocations$State[i],0,0,0)
+    names(MTFDF)<-c("Installation","MAJCOM","State","50MileTotalCases","50MileCasesPer1000","50MileDblRate")
+    
     NewDF <- data.frame(AFBaseLocations$Base[i],AFBaseLocations$`Major Command`[i],AFBaseLocations$State[i],0,0,0,0,0,0,0,0,0,0,
                         0,0,0,0,0,0,
                         0,0,0,0,0,0,
@@ -188,9 +196,9 @@ for (i in 2:AFrow){
     ForecastDataTable <- rbind(ForecastDataTable,NewDF)
   }else{ 
     
-    doubling<-as.integer(CaseDblRate(MyCounties))
+    doubling<-CaseDblRate(MyCounties)
     if (doubling == 0) {
-      doubling <- as.integer(40)      
+      doubling <- as.integer(50)      
     }
     
     Ro<-Estimate_Rt(MyCounties)
@@ -343,6 +351,10 @@ for (i in 2:AFrow){
     
     ########################################################################################
     
+    MTFDF <- data.frame(AFBaseLocations$Base[i],AFBaseLocations$`Major Command`[i],AFBaseLocations$State[i],TotalCases,CasesPer1000,doubling)
+    names(MTFDF)<-c("Installation","MAJCOM","State","50MileTotalCases","50MileCasesPer1000","50MileDblRate")
+    MTFSummaryReport <- rbind(MTFSummaryReport,MTFDF)    
+    
     NewDF <- data.frame(AFBaseLocations$Base[i],AFBaseLocations$`Major Command`[i],AFBaseLocations$State[i],round(TotalBedsCounty*(1-baseUtlz)), HospitalizationsPer100000, HospitalizationsPer10000, NewHospitalizations,
                         I1,PI1,PID1,SevDayVal,PeakSevDayVal,PeakDateSevDayVal,
                         I2,PI2,PID2,FourteenDayVal,PeakFourteenDayVal,PeakDateFourteenDayVal,
@@ -409,6 +421,8 @@ rm(TruncatedReport2)
 
 # Create data tables for analysis ---------------------------------------------------------------------------------------------------------------------------------------------------
 AFrow = nrow(AFBaseLocations)
+MTFSummaryReport2 <- setNames(data.frame(matrix(ncol = 5, nrow = 0)),c("Installation","MAJCOM","State","TotalCases","DblRate"))
+
 ForecastDataTableOneMile <- setNames(data.frame(matrix(ncol = 31, nrow = 0)),c("Installation","MAJCOM","State","Available Beds","Hopitalization Per 100,000", "Hopitalization Per 10,000", "New Hospitalizations",
                                                                                "7D IHME Forecast","7D IHME Peak","7D IHME Peak Date","7D SEIAR Forecast","7D SEIAR Peak","7D SEIAR Peak Date",
                                                                                "14D IHME Forecast","14D IHME Peak","14D IHME Peak Date","14D SEIAR Forecast","14D SEIAR Peak","14D SEIAR Peak Date",
@@ -538,6 +552,9 @@ for (i in 2:AFrow){
   pop<-SIRinputs$pop
   
   if(nrow(IHME_Region) == 0 || pop == 0){
+    MTFDF <- data.frame(AFBaseLocations$Base[i],AFBaseLocations$`Major Command`[i],AFBaseLocations$State[i],0,0)
+    names(MTFDF)<-c("Installation","MAJCOM","State","TotalCases","DblRate")
+    
     NewDF <- data.frame(AFBaseLocations$Base[i],AFBaseLocations$`Major Command`[i],AFBaseLocations$State[i],0,0,0,0,0,0,0,0,0,0,
                         0,0,0,0,0,0,
                         0,0,0,0,0,0,
@@ -694,7 +711,11 @@ for (i in 2:AFrow){
     PID4Cases<-IHME_Region[PeakDate,1]
     PID4Cases<-format(PID4, format="%b-%d")
     ########################################################################################
-    
+
+    MTFDF <- data.frame(AFBaseLocations$Base[i],AFBaseLocations$`Major Command`[i],AFBaseLocations$State[i],TotalCases,doubling)
+    names(MTFDF)<-c("Installation","MAJCOM","State","TotalCases","DblRate")
+    MTFSummaryReport2 <- rbind(MTFSummaryReport2,MTFDF)       
+        
     NewDF <- data.frame(AFBaseLocations$Base[i],AFBaseLocations$`Major Command`[i],AFBaseLocations$State[i],round(TotalBedsCounty*(1-baseUtlz)), HospitalizationsPer100000, HospitalizationsPer10000, NewHospitalizations,
                         I1,PI1,PID1,SevDayVal,PeakSevDayVal,PeakDateSevDayVal,
                         I2,PI2,PID2,FourteenDayVal,PeakFourteenDayVal,PeakDateFourteenDayVal,
@@ -747,6 +768,15 @@ rm(TruncatedReport)
 rm(TruncatedReport2)
 ##############################################################################################################
 
+
+######################## Summary MTF Report
+# MTFSummaryReport
+# Local to Each Base
+MTFSummaryReport <- merge(MTFSummaryReport2,
+                          MTFSummaryReport,  
+                          by=c("Installation","MAJCOM","State"))
+
+##############################################################################################################
 
 
 ######################## Summary Tab Heat Map
@@ -874,9 +904,6 @@ bases_radius <- Bases50 %>% left_join(Growth, by = c("FIPS" = "CountyFIPS")) %>%
   )
 
 bases_radius = bases_radius %>% left_join(AFBaseLocations %>% select(Base,Branch,Operational,'Major Command'), by = c("base" = "Base"))
-
-
-
 
 
 

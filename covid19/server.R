@@ -483,8 +483,6 @@ server <- function(input, output,session) {
                   displayMode = "regions",
                   resolution = "provinces",
                   colors="['#52E74B','blue','#85050a']", #green to dark red
-                  #colors="['#52E74B','#6754D8']", green to blue
-                  #colors="['#e6e3e3','#85050a']", light red to dark red
                   width=1200,
                   height = 600,
                   if (input$MapScale == "Log"){
@@ -494,7 +492,43 @@ server <- function(input, output,session) {
                   },
                   legendPosition='bottom'
     ) 
-    
+
+    NAlist = list(region="021",
+                    displayMode = "regions",
+                    colors="['#52E74B','blue','#85050a']", #green to dark red
+                    width=1200,
+                    height = 600,
+                    if (input$MapScale == "Log"){
+                      title='North America Impact Map - Log Scale of Cases'
+                    } else {
+                      title='North America Impact Map - Case Count'
+                    },
+                    legendPosition='bottom'
+    )    
+    CAlist = list(region="013",
+                  displayMode = "regions",
+                  colors="['#52E74B','blue','#85050a']", #green to dark red
+                  width=1200,
+                  height = 600,
+                  if (input$MapScale == "Log"){
+                    title='central America Impact Map - Log Scale of Cases'
+                  } else {
+                    title='Central America Impact Map - Case Count'
+                  },
+                  legendPosition='bottom'
+    )        
+    SAlist = list(region="005",
+                    displayMode = "regions",
+                    colors="['#52E74B','blue','#85050a']", #green to dark red
+                    width=1200,
+                    height = 600,
+                    if (input$MapScale == "Log"){
+                      title='South America Impact Map - Log Scale of Cases'
+                    } else {
+                      title='South America Impact Map - Case Count'
+                    },
+                    legendPosition='bottom'
+    )    
     EUROlist = list(region="150",
                     displayMode = "regions",
                     colors="['#52E74B','blue','#85050a']", #green to dark red
@@ -507,6 +541,30 @@ server <- function(input, output,session) {
                     },
                     legendPosition='bottom'
     )
+    MElist = list(region="145",
+                    displayMode = "regions",
+                    colors="['#52E74B','blue','#85050a']", #green to dark red
+                    width=1200,
+                    height = 600,
+                    if (input$MapScale == "Log"){
+                      title='Middle East Impact Map - Log Scale of Cases'
+                    } else {
+                      title='Middle East Impact Map - Case Count'
+                    },
+                    legendPosition='bottom'
+    )    
+    AFRICAlist = list(region="002",
+                    displayMode = "regions",
+                    colors="['#52E74B','blue','#85050a']", #green to dark red
+                    width=1200,
+                    height = 600,
+                    if (input$MapScale == "Log"){
+                      title='Europe Impact Map - Log Scale of Cases'
+                    } else {
+                      title='Europe Impact Map - Case Count'
+                    },
+                    legendPosition='bottom'
+    )    
     
     ASIAlist = list(region="142",
                     displayMode = "regions",
@@ -520,7 +578,18 @@ server <- function(input, output,session) {
                     },
                     legendPosition='bottom'
     )
-    
+    OCEANIAlist = list(region="009",
+                     displayMode = "province",
+                     colors="['#52E74B','blue','#85050a']", #green to dark red
+                     width=1200,
+                     height = 600,
+                     if (input$MapScale == "Log"){
+                       title='Oceania Impact Map - Log Scale of Cases'
+                     } else {
+                       title='Oceania Impact Map - Case Count'
+                     },
+                     legendPosition='bottom'
+    )    
     WORLDlist = list(region="world",
                     displayMode = "province",
                     colors="['#52E74B','blue','#85050a']", #green to dark red
@@ -537,12 +606,30 @@ server <- function(input, output,session) {
     if (input$MapView == "Europe"){
       MapChoice = EUROlist
       MapFilter = "Europe"
+    }else if (input$MapView == "Middle East"){
+      MapChoice = MElist
+      MapFilter = "Middle East"
     }else if (input$MapView == "Asia"){
       MapChoice = ASIAlist
       MapFilter = "Asia"
-    }else if (input$MapView == "North America"){
+    }else if (input$MapView == "US"){
       MapChoice = USlist
       MapFilter = "North America"
+    }else if (input$MapView == "Central America"){
+      MapChoice = CAlist
+      MapFilter = "Central America"
+    }else if (input$MapView == "South America"){
+      MapChoice = SAlist
+      MapFilter = "South America"
+    }else if (input$MapView == "North America"){
+      MapChoice = NAlist
+      MapFilter = "North America"
+    }else if (input$MapView == "Africa"){
+      MapChoice = AFRICAlist
+      MapFilter = "Africa"
+    }else if (input$MapView == "Oceania"){
+      MapChoice = OCEANIAlist
+      MapFilter = "Oceania"      
     }else {
       MapChoice = WORLDlist
       MapFilter = "World"      
@@ -584,7 +671,23 @@ server <- function(input, output,session) {
        colnames(CD)[4]<-"Population"
        ChlorData<-data.frame(CD$state,CD$Value,CD$Value,CD$LogValue,CD$Population) 
        colnames(ChlorData)<-c("State","Value","CasesPer100K","LogValue","Population") 
-    } else {
+    # } else if (MapFilter == "North America") {
+    #   DF<-ContinentMap
+    #   DF<-cbind.data.frame(DF$State,DF$Continent, rev(DF)[,1], rev(DF)[,1])
+    #   colnames(DF)<-c("state","Continent","Value","LogValue")
+    #   DF$Continent[is.na(DF$Continent)] <- "North America"
+    #   DF<-dplyr::filter(ContinentMap, Continent == MapFilter)
+    #   CF<-data.frame(CountyInfo$State,CountyInfo$Population)
+    #   CF<-plyr::ddply(CF,"CountyInfo.State", numcolwise(sum)) 
+    #   CD <- merge(DF,CF,by.x = names(DF)[1],by.y = names(CF)[1])
+    #   colnames(CD)[5]<-"Population"
+    #   ChlorData<-data.frame(CD$state,CD$Continent,CD$Value,CD$Value,CD$LogValue,CD$Population,stringsAsFactors=FALSE)
+    #   colnames(ChlorData)<-c("State","Continent","Value","CasesPer100K","LogValue","Population") 
+    #   ChlorData$State <- as.character(ChlorData$State)
+    #   select <- which(ChlorData$Continent == "North America")
+    #   ChlorData$State[select]<-"United States"
+    #   ChlorData<-plyr::ddply(ChlorData, "State", numcolwise(sum))
+    } else if (MapFilter == "World") {
        DF<-ContinentMap
        DF<-cbind.data.frame(DF$State,DF$Continent, rev(DF)[,1], rev(DF)[,1])
        colnames(DF)<-c("state","Continent","Value","LogValue")
@@ -1440,6 +1543,32 @@ server <- function(input, output,session) {
     content = function(file) {
       write.csv(Top15ReportOneMile, file)
       
+    })  
+  
+  output$MTFSummary <- downloadHandler(
+    filename = function() { 
+      paste("MTFSummary-", Sys.Date(), ".csv", sep="")
+    },
+    content = function(file) {
+      Stat<-"Cases"
+      forecastbaselist<-dplyr::filter(AFBaseLocations,Branch %in% input$Branch)                        
+      forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE) 
+
+      FilteredDT1<-dplyr::filter(MTFSummaryReport,Installation %in% forecastbaselist)                        
+
+      if(input$OperationalInput != "All") {
+        forecastbaselist<-dplyr::filter(AFBaseLocations,Operational %in% input$OperationalInput)                        
+        forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE)         
+        FilteredDT1<-dplyr::filter(FilteredDT1,Installation %in% forecastbaselist)
+      }      
+      
+      if (input$MAJCOMInput == "All") {
+        FTPrint<-FilteredDT1
+      } else {
+        FTPrint<-dplyr::filter(FilteredDT1,MAJCOM %in% input$MAJCOMInput)                        
+      }
+      
+      write.csv(FTPrint, file)
     })    
   
   output$HotSpot <- renderPlot({
