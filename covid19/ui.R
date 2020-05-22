@@ -117,9 +117,15 @@ ui <- tagList(
                                                               radioButtons("MapView",
                                                                            "Map Selection: ",
                                                                            c("World"="World",
-                                                                             "US"="North America",
+                                                                             "United States"="US",
+                                                                             #"North America"="North America", 
+                                                                             #"Central America"="Central America",
+                                                                             #"South America"="South America",
+                                                                             "Europe"="Europe",
+                                                                             #"Middle East"="Middle East",
+                                                                             "Africa"="Africa",
                                                                              "Asia"="Asia",
-                                                                             "Europe"="Europe"
+                                                                             "Oceania"="Oceania"                                                                             
                                                                              ),
                                                                            selected = "World"),
                                                               radioButtons("MapScale",
@@ -284,7 +290,8 @@ ui <- tagList(
                                     downloadButton('downloadData', 'Download Full Dataset'),
                                     downloadButton('downloadFilteredData', 'Download Filtered Dataset (Table Above)'),
                                     downloadButton('HotSpotData', 'Download Hotspot Dataset: 50 Mile Radius'),
-                                    downloadButton('HotSpotDataOneMile', 'Download Hotspot Dataset: Single County'))
+                                    downloadButton('HotSpotDataOneMile', 'Download Hotspot Dataset: Single County'),
+                                    downloadButton('MTFSummary', 'MTF Summary'))
                                 
                               ),
                               ####### END Mission Risk #######
