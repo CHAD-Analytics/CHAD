@@ -270,14 +270,12 @@ getNewCounty<- function(IncludedCounties, ChosenBase, rowNum) {
   choropleth<-choropleth[order(choropleth$County),]
   includedcountiesnum<-nrow(choropleth)
   if(rowNum<=allcountiesnum){
-    myFIPS<-choroplethall[rowNum,1]
-    myFIPS<-which(grepl(myFIPS[1,1], CountyInfo$FIPS))
-    myData<-CountyInfo[myFIPS,]
+    myFIPS<-choroplethall[[rowNum,1]]
+    myData<-CountyInfo[CountyInfo$FIPS==myFIPS,]
     myDataType<-1 #add a county to be colored
   }else{
-    myFIPS<-choropleth[rowNum-allcountiesnum,1]
-    myFIPS<-which(grepl(myFIPS[1,1], CountyInfo$FIPS))
-    myData<-CountyInfo[myFIPS,]
+    myFIPS<-choropleth[[rowNum-allcountiesnum,1]]
+    myData<-CountyInfo[CountyInfo$FIPS==myFIPS,]
     myDataType<-0 #deleted a colored county
   }
   newlist<-list(myData,myDataType)
