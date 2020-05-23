@@ -43,10 +43,14 @@ GlobalCases <- spread(GlobalCases, Date, Confirmed)
 GlobalCases<-GlobalCases %>% arrange(GlobalCases$CountryName)
 GlobalCases<-GlobalCases %>% group_by(CountryName) %>% filter(duplicated(CountryName) | n()==1)
 GlobalCases<- filter(GlobalCases, !(CountryName %in% "United States of America"))
-GlobalCases<-cbind(FIPS = c(1:nrow(GlobalCases)), GlobalCases)
+
+GlobalCases = inner_join(GlobalCases,CountyInfo, by = "Key")
+
+GlobalInfo = data.frame(GlobalCases$FIPS,GlobalCases$County,GlobalCases$State,GlobalCases$Key)
+GlobalCases = cbind(GlobalInfo,GlobalCases[,33:(ncol(GlobalCases)-ncol(CountyInfo)+1)])
 
 
-GlobalCases<-GlobalCases[,c(1,6,4,3,33:ncol(GlobalCases))] #Need the correct number of days now, otherwise rbind wont line up
+#GlobalCases<-GlobalCases[,c(1,6,4,3,33:ncol(GlobalCases))] #Need the correct number of days now, otherwise rbind wont line up
 GlobalCases[,5][is.na(GlobalCases[,5])] <- 0
 GlobalCases<- data.frame(t(apply(GlobalCases[,], 1, zoo::na.locf)))
 colnames(GlobalCases) = c(colnames(CovidConfirmedCases[1:4]),

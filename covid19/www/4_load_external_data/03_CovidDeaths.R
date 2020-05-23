@@ -38,10 +38,12 @@ GlobalDeaths <- spread(GlobalDeaths, Date, Deaths)
 GlobalDeaths<-GlobalDeaths%>% arrange(GlobalDeaths$CountryName)
 GlobalDeaths<-GlobalDeaths %>% group_by(CountryName) %>% filter(duplicated(CountryName) | n()==1)
 GlobalDeaths<- filter(GlobalDeaths, !(CountryName %in% "United States of America"))
-GlobalDeaths<-cbind(FIPS = c(1:nrow(GlobalDeaths)), GlobalDeaths)
 
+GlobalDeaths = inner_join(GlobalDeaths,CountyInfo, by = "Key")
 
-GlobalDeaths<-GlobalDeaths[,c(1,6,4,3,33:ncol(GlobalDeaths))] #Need the correct number of days now, otherwise rbind wont line up
+GlobalInfo = data.frame(GlobalDeaths$FIPS,GlobalDeaths$County,GlobalDeaths$State,GlobalDeaths$Key)
+GlobalDeaths = cbind(GlobalInfo,GlobalDeaths[,33:(ncol(GlobalDeaths)-ncol(CountyInfo)+1)])
+
 GlobalDeaths[,5][is.na(GlobalDeaths[,5])] <- 0
 GlobalDeaths<- data.frame(t(apply(GlobalDeaths[,], 1, zoo::na.locf)))
 
