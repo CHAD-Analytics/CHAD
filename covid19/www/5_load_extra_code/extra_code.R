@@ -50,12 +50,14 @@ ForecastDataTableCases <- setNames(data.frame(matrix(ncol = 38, nrow = 0)),c("In
 
 for (i in 2:AFrow){
   #Create Number of current cases and cases per 100,000 in a local area
+
   radius<-50
   baseDF = dplyr::filter(AFBaseLocations, Base == AFBaseLocations$Base[i])
   CountyInfo$DistanceMiles = cimd[,AFBaseLocations$Base[i]]
   MyCounties<-dplyr::filter(CountyInfo, DistanceMiles <= radius | FIPS == baseDF$FIPS)
   
   CovidDataCounties<-subset(CovidConfirmedCases, CountyFIPS %in% MyCounties$FIPS)
+  MyCounties<-dplyr::filter(MyCounties, FIPS %in% CovidDataCounties$CountyFIPS)
   NewCases<-sum(rev(CovidDataCounties)[,1]-rev(CovidDataCounties)[,2])
   NewHospitalizations<-round(NewCases*.2)
   TotalPop<-CalculateCounties(MyCounties)
@@ -92,9 +94,10 @@ for (i in 2:AFrow){
   #Get regional and state populations
   #MyCounties <- GetCounties()
   #GetCounties
-  CountyInfo$DistanceMiles = cimd[,as.character(AFBaseLocations$Base[i])]
-  MyCounties<-dplyr::filter(CountyInfo, DistanceMiles <= radius)
+
+  
   CovidCounties<-subset(CovidConfirmedCases, CountyFIPS %in% MyCounties$FIPS)
+  MyCounties<-dplyr::filter(MyCounties, FIPS %in% CovidCounties$CountyFIPS)
   HistoricalData<-colSums(CovidCounties[,5:length(CovidCounties)])
   HistoricalDates<-seq(as.Date("2020-01-22"), length=length(HistoricalData), by="1 day")
   HistoricalData<-data.frame(HistoricalDates, HistoricalData*.21) #, HistoricalData*.15, HistoricalData*.27)
@@ -127,24 +130,24 @@ for (i in 2:AFrow){
   
   DeathCounties<-subset(CovidDeaths, CountyFIPS %in% MyCounties$FIPS)
   CaseRate <- subset(CovidConfirmedCasesRate, CountyFIPS %in% MyCounties$FIPS)
-  if (nrow(CovidCounties)<nrow(MyCounties)){
-    diff1<-setdiff(MyCounties$FIPS, CovidCounties$CountyFIPS) 
-    r<-which(MyCounties$FIPS == diff1)
-    CovidCounties[seq(r+1,nrow(CovidCounties)+1),] <- CovidCounties[seq(r,nrow(CovidCounties)),]
-    CovidCounties[r,] <- 0
-  }
-  if (nrow(DeathCounties)<nrow(MyCounties)){
-    diff2<-setdiff(MyCounties$FIPS, DeathCounties$CountyFIPS)
-    r<-which(MyCounties$FIPS == diff1)
-    DeathCounties[seq(r+1,nrow(DeathCounties)+1),] <- DeathCounties[seq(r,nrow(DeathCounties)),]
-    DeathCounties[r,] <- 0
-  }  
-  if (nrow(CaseRate)<nrow(MyCounties)){
-    diff3<-setdiff(MyCounties$FIPS, CaseRate$CountyFIPS)
-    r<-which(MyCounties$FIPS == diff1)
-    CaseRate[seq(r+1,nrow(CaseRate)+1),] <- CaseRate[seq(r,nrow(CaseRate)),]
-    CaseRate[r,] <- 0
-  }  
+  # if (nrow(CovidCounties)<nrow(MyCounties)){
+  #   diff1<-setdiff(MyCounties$FIPS, CovidCounties$CountyFIPS) 
+  #   r<-which(MyCounties$FIPS == diff1)
+  #   CovidCounties[seq(r+1,nrow(CovidCounties)+1),] <- CovidCounties[seq(r,nrow(CovidCounties)),]
+  #   CovidCounties[r,] <- 0
+  # }
+  # if (nrow(DeathCounties)<nrow(MyCounties)){
+  #   diff2<-setdiff(MyCounties$FIPS, DeathCounties$CountyFIPS)
+  #   r<-which(MyCounties$FIPS == diff1)
+  #   DeathCounties[seq(r+1,nrow(DeathCounties)+1),] <- DeathCounties[seq(r,nrow(DeathCounties)),]
+  #   DeathCounties[r,] <- 0
+  # }  
+  # if (nrow(CaseRate)<nrow(MyCounties)){
+  #   diff3<-setdiff(MyCounties$FIPS, CaseRate$CountyFIPS)
+  #   r<-which(MyCounties$FIPS == diff1)
+  #   CaseRate[seq(r+1,nrow(CaseRate)+1),] <- CaseRate[seq(r,nrow(CaseRate)),]
+  #   CaseRate[r,] <- 0
+  # }  
   CountyDataTable<-cbind(MyCounties,rev(CovidCounties)[,1],rev(DeathCounties)[,1],rev(CaseRate)[,1])
   CountyDataTable<-data.frame(CountyDataTable$State,CountyDataTable$County,CountyDataTable$Population, rev(CountyDataTable)[,3], rev(CountyDataTable)[,2],rev(CountyDataTable)[,1])
   colnames(CountyDataTable)<-c("State","County","Population","Total Confirmed Cases","Total Fatalities", "Case Doubling Rate (days)" )
@@ -436,14 +439,17 @@ ForecastDataTableCasesOneMile <- setNames(data.frame(matrix(ncol = 32, nrow = 0)
                                                                                     "30D IHME Forecast","30D IHME Peak","30D IHME Peak Date","30D SEIAR Forecast","30D SEIAR Peak","30D SEIAR Peak Date"))
 ##Repeat the above process to generate all of the same information for the single county the base is in (SG request)
 for (i in 2:AFrow){
+  
+
   #Create Number of current cases and cases per 100,000 in a local area
   radius<-10
   baseDF = dplyr::filter(AFBaseLocations, Base == AFBaseLocations$Base[i])
   CountyInfo$DistanceMiles = cimd[,AFBaseLocations$Base[i]]
   MyCounties<-dplyr::filter(CountyInfo, DistanceMiles <= radius | FIPS == baseDF$FIPS)
   
-  CovidDataCounties<-subset(CovidConfirmedCases, CountyFIPS %in% MyCounties$FIPS)
-  NewCases<-sum(rev(CovidDataCounties)[,1]-rev(CovidDataCounties)[,2])
+  CovidCounties<-subset(CovidConfirmedCases, CountyFIPS %in% MyCounties$FIPS)
+  MyCounties<-dplyr::filter(MyCounties, FIPS %in% CovidCounties$CountyFIPS)
+  NewCases<-sum(rev(CovidCounties)[,1]-rev(CovidCounties)[,2])
   NewHospitalizations<-round(NewCases*.2)
   TotalPop<-CalculateCounties(MyCounties)
   TotalCases<-CalculateCovid(MyCounties)
@@ -478,13 +484,7 @@ for (i in 2:AFrow){
   #Get regional and state populations
   #MyCounties <- GetCounties()
   #GetCounties
-  CountyInfo$DistanceMiles = cimd[,as.character(AFBaseLocations$Base[i])]
-  MyCounties<-dplyr::filter(CountyInfo, DistanceMiles <= radius)
-  CovidCounties<-subset(CovidConfirmedCases, CountyFIPS %in% MyCounties$FIPS)
-  HistoricalData<-colSums(CovidCounties[,5:length(CovidCounties)])
-  HistoricalDates<-seq(as.Date("2020-01-22"), length=length(HistoricalData), by="1 day")
-  HistoricalData<-data.frame(HistoricalDates, HistoricalData*.21) #, HistoricalData*.15, HistoricalData*.27)
-  colnames(HistoricalData)<-c("ForecastDate", "Expected Hospitalizations") #, "Lower Bound Hospitalizations","Upper Bound Hospitalizations")
+
   
   StPopList <- dplyr::filter(CountyInfo, State == AFBaseLocations$State[i])
   RegPop <- sum(MyCounties$Population)

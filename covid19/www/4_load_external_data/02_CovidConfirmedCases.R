@@ -41,7 +41,7 @@ GlobalCases<- GlobalData[,-8]
 GlobalCases = GlobalCases[!duplicated(GlobalCases[c(1,2,3)]),]
 GlobalCases <- spread(GlobalCases, Date, Confirmed)
 GlobalCases<-GlobalCases %>% arrange(GlobalCases$CountryName)
-GlobalCases<-GlobalCases %>% group_by(CountryName) %>% filter(duplicated(CountryName) | n()==1)
+#GlobalCases<-GlobalCases %>% group_by(CountryName) %>% filter(duplicated(CountryName) | n()==1)
 GlobalCases<- filter(GlobalCases, !(CountryName %in% "United States of America"))
 
 GlobalCases = inner_join(GlobalCases,CountyInfo, by = "Key")
