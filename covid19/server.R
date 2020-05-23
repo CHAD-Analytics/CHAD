@@ -606,24 +606,24 @@ server <- function(input, output,session) {
     if (input$MapView == "Europe"){
       MapChoice = EUROlist
       MapFilter = "Europe"
-    }else if (input$MapView == "Middle East"){
-      MapChoice = MElist
-      MapFilter = "Middle East"
     }else if (input$MapView == "Asia"){
       MapChoice = ASIAlist
       MapFilter = "Asia"
     }else if (input$MapView == "US"){
       MapChoice = USlist
       MapFilter = "North America"
-    }else if (input$MapView == "Central America"){
-      MapChoice = CAlist
-      MapFilter = "Central America"
-    }else if (input$MapView == "South America"){
-      MapChoice = SAlist
-      MapFilter = "South America"
-    }else if (input$MapView == "North America"){
-      MapChoice = NAlist
-      MapFilter = "North America"
+    # }else if (input$MapView == "Middle East"){
+    #   MapChoice = MElist
+    #   MapFilter = "Middle East"      
+    # }else if (input$MapView == "Central America"){
+    #   MapChoice = CAlist
+    #   MapFilter = "Central America"
+    # }else if (input$MapView == "South America"){
+    #   MapChoice = SAlist
+    #   MapFilter = "South America"
+    # }else if (input$MapView == "North America"){
+    #   MapChoice = NAlist
+    #   MapFilter = "North America"
     }else if (input$MapView == "Africa"){
       MapChoice = AFRICAlist
       MapFilter = "Africa"
