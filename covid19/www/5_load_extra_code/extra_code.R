@@ -49,34 +49,39 @@ ForecastDataTableCases <- setNames(data.frame(matrix(ncol = 38, nrow = 0)),c("In
 
 for (i in 2:AFrow){
   #Create Number of current cases and cases per 100,000 in a local area
-
-  radius<-50
+  
+  radius = 50
+  
+  # Get Counties
   baseDF = dplyr::filter(AFBaseLocations, Base == AFBaseLocations$Base[i])
-  CountyInfo$DistanceMiles = cimd[,AFBaseLocations$Base[i]]
+  baseDF = baseDF[1,]
+  base = baseDF$Base
+  CountyInfo$DistanceMiles = cimd[,as.character(base)]
   MyCounties<-dplyr::filter(CountyInfo, DistanceMiles <= radius | FIPS == baseDF$FIPS)
   
-  CovidDataCounties<-subset(CovidConfirmedCases, CountyFIPS %in% MyCounties$FIPS)
-  MyCounties<-dplyr::filter(MyCounties, FIPS %in% CovidDataCounties$CountyFIPS)
-  NewCases<-sum(rev(CovidDataCounties)[,1]-rev(CovidDataCounties)[,2])
-  NewHospitalizations<-round(NewCases*.2)
+  # Get Covid Case Data
+  CovidCounties<-subset(CovidConfirmedCases, CountyFIPS %in% MyCounties$FIPS)
+  NewCases<-sum(rev(CovidCounties)[,1]-rev(CovidCounties)[,2])
+  CummCases = colSums(CovidCounties[,5:ncol(CovidCounties)])
+  currHosp = (rev(CummCases)[1] - rev(CummCases)[6])*0.055
+  TotPop = sum(MyCounties$Population)
+  
+  MyCounties<-dplyr::filter(MyCounties, FIPS %in% CovidCounties$CountyFIPS)
+  
+  NewHospitalizations<-round(NewCases*.055)
   TotalPop<-CalculateCounties(MyCounties)
   TotalCases<-CalculateCovid(MyCounties)
   CasesPer100000<-round(TotalCases/TotalPop*100000)
   CasesPer10000<-round(TotalCases/TotalPop*10000)
   CasesPer1000<-round(TotalCases/TotalPop*1000)  
-  HospitalizationsPer100000<-round(CasesPer100000*.2)
+  HospitalizationsPer100000<-round(CasesPer100000*.055)
   HospitalizationsPer10000<-round(HospitalizationsPer100000/10)
   
   
-  #Create a datatable with just the forecasted values for every installation
-  #Creating the stats and dataframes determined by the base we choose to look at.
-  #IHME_Model is the initial import data table from global.R
-  #BaseState<-AFBaseLocations$State[i] #dplyr::filter(AFBaseLocations, Base == baseinput)
-  #IncludedHospitals<-GetHospitals() 
-  #GetHospitals
-  HospitalInfo$DistanceMiles = himd[,as.character(AFBaseLocations$Base[i])]
+  HospitalInfo$DistanceMiles = himd[,as.character(base)]
   MyHospitals<-dplyr::filter(HospitalInfo, (DistanceMiles <= radius))
   MyHospitals<-dplyr::filter(MyHospitals, (TYPE=="GENERAL ACUTE CARE") | (TYPE=="CRITICAL ACCESS"))
+  
   
   IHME_State <- dplyr::filter(IHME_Model, State == AFBaseLocations$State[i])
   TotalBedsCounty <- sum(MyHospitals$BEDS)
@@ -90,17 +95,6 @@ for (i in 2:AFrow){
   totalUsedBeds <- sum(hospCounty$bedsUsed)
   baseUtlz <- totalUsedBeds/TotalBeds
   
-  #Get regional and state populations
-  #MyCounties <- GetCounties()
-  #GetCounties
-
-  
-  CovidCounties<-subset(CovidConfirmedCases, CountyFIPS %in% MyCounties$FIPS)
-  MyCounties<-dplyr::filter(MyCounties, FIPS %in% CovidCounties$CountyFIPS)
-  HistoricalData<-colSums(CovidCounties[,5:length(CovidCounties)])
-  HistoricalDates<-seq(as.Date("2020-01-22"), length=length(HistoricalData), by="1 day")
-  HistoricalData<-data.frame(HistoricalDates, HistoricalData*.21) #, HistoricalData*.15, HistoricalData*.27)
-  colnames(HistoricalData)<-c("ForecastDate", "Expected Hospitalizations") #, "Lower Bound Hospitalizations","Upper Bound Hospitalizations")
   
   StPopList <- dplyr::filter(CountyInfo, State == AFBaseLocations$State[i])
   RegPop <- sum(MyCounties$Population)
@@ -127,8 +121,7 @@ for (i in 2:AFrow){
   IHME_Region$ForecastDate<-as.Date(IHME_Region$ForecastDate)
   IHME_Region <- dplyr::arrange(IHME_Region,ForecastDate)
   
-  DeathCounties<-subset(CovidDeaths, CountyFIPS %in% MyCounties$FIPS)
-  CaseRate <- subset(CovidConfirmedCasesRate, CountyFIPS %in% MyCounties$FIPS)
+  
   # if (nrow(CovidCounties)<nrow(MyCounties)){
   #   diff1<-setdiff(MyCounties$FIPS, CovidCounties$CountyFIPS) 
   #   r<-which(MyCounties$FIPS == diff1)
@@ -147,27 +140,10 @@ for (i in 2:AFrow){
   #   CaseRate[seq(r+1,nrow(CaseRate)+1),] <- CaseRate[seq(r,nrow(CaseRate)),]
   #   CaseRate[r,] <- 0
   # }  
-  CountyDataTable<-cbind(MyCounties,rev(CovidCounties)[,1],rev(DeathCounties)[,1],rev(CaseRate)[,1])
-  CountyDataTable<-data.frame(CountyDataTable$State,CountyDataTable$County,CountyDataTable$Population, rev(CountyDataTable)[,3], rev(CountyDataTable)[,2],rev(CountyDataTable)[,1])
-  colnames(CountyDataTable)<-c("State","County","Population","Total Confirmed Cases","Total Fatalities", "Case Doubling Rate (days)" )
-  
+
   ####################################################################################
-  #Mean Estimate
   
-  #Next we use the calculated values, along with estimated values from the Estimated Values. 
-  #The only input we want from the user is the social distancing rate. For this example, we just use 0.5
-  #CovidCounties<-subset(CovidConfirmedCases, CountyFIPS %in% IncludedCounties$FIPS) 
-  ActiveCases<-rev(CovidCounties)[1:7]
-  ActiveCases<-data.frame(CovidCounties[,1:4],ActiveCases[,1],MyCounties$Population, CountyDataTable$`Case Doubling Rate (days)`)
-  colnames(ActiveCases)<-c("CountyFIPS","CountyName","State","StateFIPS","CurrentCases", "Population", "Doubling Rate")
-  SIRinputs<-data.frame(sum(ActiveCases$CurrentCases),sum(ActiveCases$Population), mean(ActiveCases$`Doubling Rate`)) 
-  colnames(SIRinputs)<-c("cases","pop","doubling")
-  
-  #Established Variables at the start for every county or populations 
-  cases<-SIRinputs$cases
-  pop<-SIRinputs$pop
-  
-  if(nrow(IHME_Region) == 0 || pop == 0){
+  if(nrow(IHME_Region) == 0 || TotPop == 0){
     
     MTFDF <- data.frame(AFBaseLocations$Base[i],AFBaseLocations$`Major Command`[i],AFBaseLocations$State[i],0,0,0)
     names(MTFDF)<-c("Installation","MAJCOM","State","50MileTotalCases","50MileCasesPer1000","50MileDblRate")
@@ -198,66 +174,31 @@ for (i in 2:AFrow){
     ForecastDataTable <- rbind(ForecastDataTable,NewDF)
   }else{ 
     
-    doubling<-CaseDblRate(MyCounties)
-    if (doubling == 0) {
-      doubling <- as.integer(50)      
-    }
     
-    Ro<-Estimate_Rt(MyCounties)
-    if (Ro == "Undefined for Region"){
-      Ro<-as.integer(1)
-    } else if (Ro < 1){
-      Ro<-as.integer(1)
-    }
+    CHIME_Local = dplyr::filter(CHIME_All, Base == base)
+    CHIME_Local = dplyr::filter(CHIME_Local, ForecastDate > Sys.Date())
     
-    incubationtime<-5
-    latenttime<-2
-    #doubling<-8 
-    recoverydays<-14
-    socialdistancing<-15
-    hospitalizationrate<-5
-    icurate<-6
-    ventilatorrate<-3
-    hospitaltime<-3.5
-    icutime<-4
-    ventilatortime<-7
-    #Ro<-2.5
-    
-    daysforecasted<-120
-    SEIARProj<-SEIAR_Model_Run(cases,pop,incubationtime,latenttime,doubling,recoverydays,socialdistancing,hospitalizationrate,
-                               icurate,ventilatorrate,hospitaltime,icutime,ventilatortime,daysforecasted,Ro,.5)
-    MyDates<-seq(Sys.Date()-(length(CovidCounties)-80), length=daysforecasted, by="1 day")
-    DailyData<-data.frame(MyDates, SEIARProj$sir$hos_add)
-    DailyDataCases<-data.frame(MyDates, SEIARProj$sir$Id)    
-    TotalData<-data.frame(MyDates, SEIARProj$sir$hos_cum)
-    colnames(DailyData)<-c("ForecastDate","Expected Hospitalizations")
-    colnames(DailyDataCases)<-c("ForecastDate","Expected Cases")    
-    colnames(TotalData)<-c("ForecastDate", "Total Daily Cases")
-    DailyData<-DailyData[-1,]
-    DailyData<- dplyr::filter(DailyData, ForecastDate > Sys.Date())
-    DailyDataCases<-DailyDataCases[-1,]
-    DailyDataCases<- dplyr::filter(DailyDataCases, ForecastDate > Sys.Date())    
     ########################################################################################
-    SevDayVal<-round(DailyData$`Expected Hospitalizations`[7])
-    FourteenDayVal<-round(DailyData$`Expected Hospitalizations`[14])
-    TwentyOneDayVal<-round(DailyData$`Expected Hospitalizations`[21])
-    ThirtyDayVal<-round(DailyData$`Expected Hospitalizations`[30])
-    SixtyDayVal<-round(DailyData$`Expected Hospitalizations`[60])    
-    PeakSevDayVal<-round(max(DailyData$`Expected Hospitalizations`[1:7]))
-    PeakFourteenDayVal<-round(max(DailyData$`Expected Hospitalizations`[1:14]))
-    PeakTwentyOneDayVal<-round(max(DailyData$`Expected Hospitalizations`[1:21]))
-    PeakThirtyDayVal<-round(max(DailyData$`Expected Hospitalizations`[1:30]))
-    PeakSixtyDayVal<-round(max(DailyData$`Expected Hospitalizations`[1:60]))    
-    PeakDateSevDayVal<-which.max(DailyData$`Expected Hospitalizations`[1:7])
-    PeakDateFourteenDayVal<-which.max(DailyData$`Expected Hospitalizations`[1:14])
-    PeakDateTwentyOneDayVal<-which.max(DailyData$`Expected Hospitalizations`[1:21])
-    PeakDateThirtyDayVal<-which.max(DailyData$`Expected Hospitalizations`[1:30])
-    PeakDateSixtyDayVal<-which.max(DailyData$`Expected Hospitalizations`[1:60])    
-    PeakDateSevDayVal<-format(DailyData$ForecastDate[PeakDateSevDayVal], format="%b-%d")
-    PeakDateFourteenDayVal<-format(DailyData$ForecastDate[PeakDateFourteenDayVal], format="%b-%d")
-    PeakDateTwentyOneDayVal<-format(DailyData$ForecastDate[PeakDateTwentyOneDayVal], format="%b-%d")
-    PeakDateThirtyDayVal<-format(DailyData$ForecastDate[PeakDateThirtyDayVal], format="%b-%d")
-    PeakDateSixtyDayVal<-format(DailyData$ForecastDate[PeakDateSixtyDayVal], format="%b-%d")
+    SevDayVal<-round(CHIME_Local$`Expected Hospitalizations`[7])
+    FourteenDayVal<-round(CHIME_Local$`Expected Hospitalizations`[14])
+    TwentyOneDayVal<-round(CHIME_Local$`Expected Hospitalizations`[21])
+    ThirtyDayVal<-round(CHIME_Local$`Expected Hospitalizations`[30])
+    SixtyDayVal<-round(CHIME_Local$`Expected Hospitalizations`[60])    
+    PeakSevDayVal<-round(max(CHIME_Local$`Expected Hospitalizations`[1:7]))
+    PeakFourteenDayVal<-round(max(CHIME_Local$`Expected Hospitalizations`[1:14]))
+    PeakTwentyOneDayVal<-round(max(CHIME_Local$`Expected Hospitalizations`[1:21]))
+    PeakThirtyDayVal<-round(max(CHIME_Local$`Expected Hospitalizations`[1:30]))
+    PeakSixtyDayVal<-round(max(CHIME_Local$`Expected Hospitalizations`[1:60]))    
+    PeakDateSevDayVal<-which.max(CHIME_Local$`Expected Hospitalizations`[1:7])
+    PeakDateFourteenDayVal<-which.max(CHIME_Local$`Expected Hospitalizations`[1:14])
+    PeakDateTwentyOneDayVal<-which.max(CHIME_Local$`Expected Hospitalizations`[1:21])
+    PeakDateThirtyDayVal<-which.max(CHIME_Local$`Expected Hospitalizations`[1:30])
+    PeakDateSixtyDayVal<-which.max(CHIME_Local$`Expected Hospitalizations`[1:60])    
+    PeakDateSevDayVal<-format(CHIME_Local$ForecastDate[PeakDateSevDayVal], format="%b-%d")
+    PeakDateFourteenDayVal<-format(CHIME_Local$ForecastDate[PeakDateFourteenDayVal], format="%b-%d")
+    PeakDateTwentyOneDayVal<-format(CHIME_Local$ForecastDate[PeakDateTwentyOneDayVal], format="%b-%d")
+    PeakDateThirtyDayVal<-format(CHIME_Local$ForecastDate[PeakDateThirtyDayVal], format="%b-%d")
+    PeakDateSixtyDayVal<-format(CHIME_Local$ForecastDate[PeakDateSixtyDayVal], format="%b-%d")
     
     #BEGIN IHME CALCS
     I1 = round(IHME_Region$`Expected Hospitalizations`[7])
@@ -293,26 +234,26 @@ for (i in 2:AFrow){
     PID5<-format(PID5, format="%b-%d")
     
     ########################################################################################
-    SevDayValCases<-round(DailyDataCases$`Expected Cases`[7])
-    FourteenDayValCases<-round(DailyDataCases$`Expected Cases`[14])
-    TwentyOneDayValCases<-round(DailyDataCases$`Expected Cases`[21])
-    ThirtyDayValCases<-round(DailyDataCases$`Expected Cases`[30])
-    SixtyDayValCases<-round(DailyDataCases$`Expected Cases`[60])    
-    PeakSevDayValCases<-round(max(DailyDataCases$`Expected Cases`[1:7]))
-    PeakFourteenDayValCases<-round(max(DailyDataCases$`Expected Cases`[1:14]))
-    PeakTwentyOneDayValCases<-round(max(DailyDataCases$`Expected Cases`[1:21]))
-    PeakThirtyDayValCases<-round(max(DailyDataCases$`Expected Cases`[1:30]))
-    PeakSixtyDayValCases<-round(max(DailyDataCases$`Expected Cases`[1:60]))    
-    PeakDateSevDayValCases<-which.max(DailyDataCases$`Expected Cases`[1:7])
-    PeakDateFourteenDayValCases<-which.max(DailyDataCases$`Expected Cases`[1:14])
-    PeakDateTwentyOneDayValCases<-which.max(DailyDataCases$`Expected Cases`[1:21])
-    PeakDateThirtyDayValCases<-which.max(DailyDataCases$`Expected Cases`[1:30])
-    PeakDateSixtyDayValCases<-which.max(DailyDataCases$`Expected Cases`[1:60])    
-    PeakDateSevDayValCases<-format(DailyDataCases$ForecastDate[PeakDateSevDayValCases], format="%b-%d")
-    PeakDateFourteenDayValCases<-format(DailyDataCases$ForecastDate[PeakDateFourteenDayValCases], format="%b-%d")
-    PeakDateTwentyOneDayValCases<-format(DailyDataCases$ForecastDate[PeakDateTwentyOneDayValCases], format="%b-%d")
-    PeakDateThirtyDayValCases<-format(DailyDataCases$ForecastDate[PeakDateThirtyDayValCases], format="%b-%d")
-    PeakDateSixtyDayValCases<-format(DailyDataCases$ForecastDate[PeakDateSixtyDayValCases], format="%b-%d")
+    SevDayValCases<-round(CHIME_Local$`Expected Infections`[7])
+    FourteenDayValCases<-round(CHIME_Local$`Expected Infections`[14])
+    TwentyOneDayValCases<-round(CHIME_Local$`Expected Infections`[21])
+    ThirtyDayValCases<-round(CHIME_Local$`Expected Infections`[30])
+    SixtyDayValCases<-round(CHIME_Local$`Expected Infections`[60])    
+    PeakSevDayValCases<-round(max(CHIME_Local$`Expected Infections`[1:7]))
+    PeakFourteenDayValCases<-round(max(CHIME_Local$`Expected Infections`[1:14]))
+    PeakTwentyOneDayValCases<-round(max(CHIME_Local$`Expected Infections`[1:21]))
+    PeakThirtyDayValCases<-round(max(CHIME_Local$`Expected Infections`[1:30]))
+    PeakSixtyDayValCases<-round(max(CHIME_Local$`Expected Infections`[1:60]))    
+    PeakDateSevDayValCases<-which.max(CHIME_Local$`Expected Infections`[1:7])
+    PeakDateFourteenDayValCases<-which.max(CHIME_Local$`Expected Infections`[1:14])
+    PeakDateTwentyOneDayValCases<-which.max(CHIME_Local$`Expected Infections`[1:21])
+    PeakDateThirtyDayValCases<-which.max(CHIME_Local$`Expected Infections`[1:30])
+    PeakDateSixtyDayValCases<-which.max(CHIME_Local$`Expected Infections`[1:60])    
+    PeakDateSevDayValCases<-format(CHIME_Local$ForecastDate[PeakDateSevDayValCases], format="%b-%d")
+    PeakDateFourteenDayValCases<-format(CHIME_Local$ForecastDate[PeakDateFourteenDayValCases], format="%b-%d")
+    PeakDateTwentyOneDayValCases<-format(CHIME_Local$ForecastDate[PeakDateTwentyOneDayValCases], format="%b-%d")
+    PeakDateThirtyDayValCases<-format(CHIME_Local$ForecastDate[PeakDateThirtyDayValCases], format="%b-%d")
+    PeakDateSixtyDayValCases<-format(CHIME_Local$ForecastDate[PeakDateSixtyDayValCases], format="%b-%d")
     
     #BEGIN IHME CALCS for CASES
     I1Cases = round(IHME_Region$`Expected Cases`[7])
@@ -353,8 +294,8 @@ for (i in 2:AFrow){
     
     ########################################################################################
     
-    MTFDF <- data.frame(AFBaseLocations$Base[i],AFBaseLocations$`Major Command`[i],AFBaseLocations$State[i],TotalCases,CasesPer1000,doubling)
-    names(MTFDF)<-c("Installation","MAJCOM","State","50MileTotalCases","50MileCasesPer1000","50MileDblRate")
+    MTFDF <- data.frame(AFBaseLocations$Base[i],AFBaseLocations$`Major Command`[i],AFBaseLocations$State[i],TotalCases,CasesPer1000)#,doubling)
+    names(MTFDF)<-c("Installation","MAJCOM","State","50MileTotalCases","50MileCasesPer1000")#,"50MileDblRate")
     MTFSummaryReport <- rbind(MTFSummaryReport,MTFDF)    
     
     NewDF <- data.frame(AFBaseLocations$Base[i],AFBaseLocations$`Major Command`[i],AFBaseLocations$State[i],round(TotalBedsCounty*(1-baseUtlz)), HospitalizationsPer100000, HospitalizationsPer10000, NewHospitalizations,
@@ -438,35 +379,38 @@ ForecastDataTableCasesOneMile <- setNames(data.frame(matrix(ncol = 32, nrow = 0)
                                                                                     "30D IHME Forecast","30D IHME Peak","30D IHME Peak Date","30D SEIAR Forecast","30D SEIAR Peak","30D SEIAR Peak Date"))
 ##Repeat the above process to generate all of the same information for the single county the base is in (SG request)
 for (i in 2:AFrow){
-  
+  radius = 10
 
-  #Create Number of current cases and cases per 100,000 in a local area
-  radius<-10
+  # Get Counties
   baseDF = dplyr::filter(AFBaseLocations, Base == AFBaseLocations$Base[i])
-  CountyInfo$DistanceMiles = cimd[,AFBaseLocations$Base[i]]
+  baseDF = baseDF[1,]
+  base = baseDF$Base
+  CountyInfo$DistanceMiles = cimd[,as.character(base)]
   MyCounties<-dplyr::filter(CountyInfo, DistanceMiles <= radius | FIPS == baseDF$FIPS)
   
+  # Get Covid Case Data
   CovidCounties<-subset(CovidConfirmedCases, CountyFIPS %in% MyCounties$FIPS)
-  MyCounties<-dplyr::filter(MyCounties, FIPS %in% CovidCounties$CountyFIPS)
   NewCases<-sum(rev(CovidCounties)[,1]-rev(CovidCounties)[,2])
-  NewHospitalizations<-round(NewCases*.2)
+  CummCases = colSums(CovidCounties[,5:ncol(CovidCounties)])
+  currHosp = (rev(CummCases)[1] - rev(CummCases)[6])*0.055
+  TotPop = sum(MyCounties$Population)
+  
+  MyCounties<-dplyr::filter(MyCounties, FIPS %in% CovidCounties$CountyFIPS)
+  
+  NewHospitalizations<-round(NewCases*.055)
   TotalPop<-CalculateCounties(MyCounties)
   TotalCases<-CalculateCovid(MyCounties)
   CasesPer100000<-round(TotalCases/TotalPop*100000)
   CasesPer10000<-round(TotalCases/TotalPop*10000)
-  HospitalizationsPer100000<-round(CasesPer100000*.2)
+  CasesPer1000<-round(TotalCases/TotalPop*1000)  
+  HospitalizationsPer100000<-round(CasesPer100000*.055)
   HospitalizationsPer10000<-round(HospitalizationsPer100000/10)
   
   
-  #Create a datatable with just the forecasted values for every installation
-  #Creating the stats and dataframes determined by the base we choose to look at.
-  #IHME_Model is the initial import data table from global.R
-  #BaseState<-AFBaseLocations$State[i] #dplyr::filter(AFBaseLocations, Base == baseinput)
-  #IncludedHospitals<-GetHospitals() 
-  #GetHospitals
-  HospitalInfo$DistanceMiles = himd[,as.character(AFBaseLocations$Base[i])]
+  HospitalInfo$DistanceMiles = himd[,as.character(base)]
   MyHospitals<-dplyr::filter(HospitalInfo, (DistanceMiles <= radius))
   MyHospitals<-dplyr::filter(MyHospitals, (TYPE=="GENERAL ACUTE CARE") | (TYPE=="CRITICAL ACCESS"))
+  
   
   IHME_State <- dplyr::filter(IHME_Model, State == AFBaseLocations$State[i])
   TotalBedsCounty <- sum(MyHospitals$BEDS)
@@ -480,10 +424,6 @@ for (i in 2:AFrow){
   totalUsedBeds <- sum(hospCounty$bedsUsed)
   baseUtlz <- totalUsedBeds/TotalBeds
   
-  #Get regional and state populations
-  #MyCounties <- GetCounties()
-  #GetCounties
-
   
   StPopList <- dplyr::filter(CountyInfo, State == AFBaseLocations$State[i])
   RegPop <- sum(MyCounties$Population)
@@ -510,47 +450,28 @@ for (i in 2:AFrow){
   IHME_Region$ForecastDate<-as.Date(IHME_Region$ForecastDate)
   IHME_Region <- dplyr::arrange(IHME_Region,ForecastDate)
   
-  DeathCounties<-subset(CovidDeaths, CountyFIPS %in% MyCounties$FIPS)
-  CaseRate <- subset(CovidConfirmedCasesRate, CountyFIPS %in% MyCounties$FIPS)
-  if (nrow(CovidCounties)<nrow(MyCounties)){
-    diff1<-setdiff(MyCounties$FIPS, CovidCounties$CountyFIPS) 
-    r<-which(MyCounties$FIPS == diff1)
-    CovidCounties[seq(r+1,nrow(CovidCounties)+1),] <- CovidCounties[seq(r,nrow(CovidCounties)),]
-    CovidCounties[r,] <- 0
-  }
-  if (nrow(DeathCounties)<nrow(MyCounties)){
-    diff2<-setdiff(MyCounties$FIPS, DeathCounties$CountyFIPS)
-    r<-which(MyCounties$FIPS == diff1)
-    DeathCounties[seq(r+1,nrow(DeathCounties)+1),] <- DeathCounties[seq(r,nrow(DeathCounties)),]
-    DeathCounties[r,] <- 0
-  }  
-  if (nrow(CaseRate)<nrow(MyCounties)){
-    diff3<-setdiff(MyCounties$FIPS, CaseRate$CountyFIPS)
-    r<-which(MyCounties$FIPS == diff1)
-    CaseRate[seq(r+1,nrow(CaseRate)+1),] <- CaseRate[seq(r,nrow(CaseRate)),]
-    CaseRate[r,] <- 0
-  }
-  CountyDataTable<-cbind(MyCounties,rev(CovidCounties)[,1],rev(DeathCounties)[,1],rev(CaseRate)[,1])
-  CountyDataTable<-data.frame(CountyDataTable$State,CountyDataTable$County,CountyDataTable$Population, rev(CountyDataTable)[,3], rev(CountyDataTable)[,2],rev(CountyDataTable)[,1])
-  colnames(CountyDataTable)<-c("State","County","Population","Total Confirmed Cases","Total Fatalities", "Case Doubling Rate (days)" )
+  # if (nrow(CovidCounties)<nrow(MyCounties)){
+  #   diff1<-setdiff(MyCounties$FIPS, CovidCounties$CountyFIPS) 
+  #   r<-which(MyCounties$FIPS == diff1)
+  #   CovidCounties[seq(r+1,nrow(CovidCounties)+1),] <- CovidCounties[seq(r,nrow(CovidCounties)),]
+  #   CovidCounties[r,] <- 0
+  # }
+  # if (nrow(DeathCounties)<nrow(MyCounties)){
+  #   diff2<-setdiff(MyCounties$FIPS, DeathCounties$CountyFIPS)
+  #   r<-which(MyCounties$FIPS == diff1)
+  #   DeathCounties[seq(r+1,nrow(DeathCounties)+1),] <- DeathCounties[seq(r,nrow(DeathCounties)),]
+  #   DeathCounties[r,] <- 0
+  # }  
+  # if (nrow(CaseRate)<nrow(MyCounties)){
+  #   diff3<-setdiff(MyCounties$FIPS, CaseRate$CountyFIPS)
+  #   r<-which(MyCounties$FIPS == diff1)
+  #   CaseRate[seq(r+1,nrow(CaseRate)+1),] <- CaseRate[seq(r,nrow(CaseRate)),]
+  #   CaseRate[r,] <- 0
+  # }
   
   ####################################################################################
-  #Mean Estimate
   
-  #Next we use the calculated values, along with estimated values from the Estimated Values. 
-  #The only input we want from the user is the social distancing rate. For this example, we just use 0.5
-  #CovidCounties<-subset(CovidConfirmedCases, CountyFIPS %in% IncludedCounties$FIPS) 
-  ActiveCases<-rev(CovidCounties)[1:7]
-  ActiveCases<-data.frame(CovidCounties[,1:4],ActiveCases[,1],MyCounties$Population, CountyDataTable$`Case Doubling Rate (days)`)
-  colnames(ActiveCases)<-c("CountyFIPS","CountyName","State","StateFIPS","CurrentCases", "Population", "Doubling Rate")
-  SIRinputs<-data.frame(sum(ActiveCases$CurrentCases),sum(ActiveCases$Population), mean(ActiveCases$`Doubling Rate`)) 
-  colnames(SIRinputs)<-c("cases","pop","doubling")
-  
-  #Established Variables at the start for every county or populations 
-  cases<-SIRinputs$cases
-  pop<-SIRinputs$pop
-  
-  if(nrow(IHME_Region) == 0 || pop == 0){
+  if(nrow(IHME_Region) == 0 || TotPop == 0){
     MTFDF <- data.frame(AFBaseLocations$Base[i],AFBaseLocations$`Major Command`[i],AFBaseLocations$State[i],0,0)
     names(MTFDF)<-c("Installation","MAJCOM","State","TotalCases","DblRate")
     
@@ -575,64 +496,27 @@ for (i in 2:AFrow){
                            "30D IHME Forecast","30D IHME Peak","30D IHME Peak Date","30D SEIAR Forecast","30D SEIAR Peak","30D SEIAR Peak Date")    
     ForecastDataTableOneMile <- rbind(ForecastDataTableOneMile,NewDF)
   }else{ 
-    doubling<-as.integer(CaseDblRate(MyCounties))
-    if (doubling == 0) {
-      doubling <- as.integer(40)      
-    }
     
-    Ro<-Estimate_Rt(MyCounties)
-    if (Ro == "Undefined for Region"){
-      Ro<-as.integer(1)
-    } else if (Ro < 1){
-      Ro<-as.integer(1)
-    }
-    
-    incubationtime<-5
-    latenttime<-2
-    #doubling<-8 
-    recoverydays<-14
-    socialdistancing<-15
-    hospitalizationrate<-5
-    icurate<-6
-    ventilatorrate<-3
-    hospitaltime<-3.5
-    icutime<-4
-    ventilatortime<-7
-    #Ro<-2.5
-    
-    
-    
-    daysforecasted<-60
-    SEIARProj<-SEIAR_Model_Run(cases,pop,incubationtime,latenttime,doubling,recoverydays,socialdistancing,hospitalizationrate,
-                               icurate,ventilatorrate,hospitaltime,icutime,ventilatortime,daysforecasted,Ro,.5)
-    MyDates<-seq(Sys.Date()-(length(CovidCounties)-80), length=daysforecasted, by="1 day")
-    DailyData<-data.frame(MyDates, SEIARProj$sir$hos_add)
-    DailyDataCases<-data.frame(MyDates, SEIARProj$sir$Id)    
-    TotalData<-data.frame(MyDates, SEIARProj$sir$hos_cum)
-    colnames(DailyData)<-c("ForecastDate","Expected Hospitalizations")
-    colnames(DailyDataCases)<-c("ForecastDate","Expected Cases")    
-    colnames(TotalData)<-c("ForecastDate", "Total Daily Cases")
-    DailyData<-DailyData[-1,]
-    DailyData<- dplyr::filter(DailyData, ForecastDate > Sys.Date())
-    DailyDataCases<-DailyDataCases[-1,]
-    DailyDataCases<- dplyr::filter(DailyDataCases, ForecastDate > Sys.Date())    
+    CHIME_Local = dplyr::filter(CHIME_All_1mile, Base == base)
+    CHIME_Local = dplyr::filter(CHIME_Local, ForecastDate > Sys.Date())
+       
     ########################################################################################
-    SevDayVal<-round(DailyData$`Expected Hospitalizations`[7])
-    FourteenDayVal<-round(DailyData$`Expected Hospitalizations`[14])
-    ThirtyDayVal<-round(DailyData$`Expected Hospitalizations`[21])
-    SixtyDayVal<-round(DailyData$`Expected Hospitalizations`[30])
-    PeakSevDayVal<-round(max(DailyData$`Expected Hospitalizations`[1:7]))
-    PeakFourteenDayVal<-round(max(DailyData$`Expected Hospitalizations`[1:14]))
-    PeakThirtyDayVal<-round(max(DailyData$`Expected Hospitalizations`[1:21]))
-    PeakSixtyDayVal<-round(max(DailyData$`Expected Hospitalizations`[1:30]))
-    PeakDateSevDayVal<-which.max(DailyData$`Expected Hospitalizations`[1:7])
-    PeakDateFourteenDayVal<-which.max(DailyData$`Expected Hospitalizations`[1:14])
-    PeakDateThirtyDayVal<-which.max(DailyData$`Expected Hospitalizations`[1:21])
-    PeakDateSixtyDayVal<-which.max(DailyData$`Expected Hospitalizations`[1:30])
-    PeakDateSevDayVal<-format(DailyData$ForecastDate[PeakDateSevDayVal], format="%b-%d")
-    PeakDateFourteenDayVal<-format(DailyData$ForecastDate[PeakDateFourteenDayVal], format="%b-%d")
-    PeakDateThirtyDayVal<-format(DailyData$ForecastDate[PeakDateThirtyDayVal], format="%b-%d")
-    PeakDateSixtyDayVal<-format(DailyData$ForecastDate[PeakDateSixtyDayVal], format="%b-%d")
+    SevDayVal<-round(CHIME_Local$`Expected Hospitalizations`[7])
+    FourteenDayVal<-round(CHIME_Local$`Expected Hospitalizations`[14])
+    ThirtyDayVal<-round(CHIME_Local$`Expected Hospitalizations`[21])
+    SixtyDayVal<-round(CHIME_Local$`Expected Hospitalizations`[30])
+    PeakSevDayVal<-round(max(CHIME_Local$`Expected Hospitalizations`[1:7]))
+    PeakFourteenDayVal<-round(max(CHIME_Local$`Expected Hospitalizations`[1:14]))
+    PeakThirtyDayVal<-round(max(CHIME_Local$`Expected Hospitalizations`[1:21]))
+    PeakSixtyDayVal<-round(max(CHIME_Local$`Expected Hospitalizations`[1:30]))
+    PeakDateSevDayVal<-which.max(CHIME_Local$`Expected Hospitalizations`[1:7])
+    PeakDateFourteenDayVal<-which.max(CHIME_Local$`Expected Hospitalizations`[1:14])
+    PeakDateThirtyDayVal<-which.max(CHIME_Local$`Expected Hospitalizations`[1:21])
+    PeakDateSixtyDayVal<-which.max(CHIME_Local$`Expected Hospitalizations`[1:30])
+    PeakDateSevDayVal<-format(CHIME_Local$ForecastDate[PeakDateSevDayVal], format="%b-%d")
+    PeakDateFourteenDayVal<-format(CHIME_Local$ForecastDate[PeakDateFourteenDayVal], format="%b-%d")
+    PeakDateThirtyDayVal<-format(CHIME_Local$ForecastDate[PeakDateThirtyDayVal], format="%b-%d")
+    PeakDateSixtyDayVal<-format(CHIME_Local$ForecastDate[PeakDateSixtyDayVal], format="%b-%d")
     
     #BEGIN IHME CALCS
     I1 = round(IHME_Region$`Expected Hospitalizations`[7])
@@ -663,22 +547,22 @@ for (i in 2:AFrow){
     
     ########################################################################################
     #All of the case information from the CHIME model
-    SevDayValCases<-round(DailyDataCases$`Expected Cases`[7])
-    FourteenDayValCases<-round(DailyDataCases$`Expected Cases`[14])
-    ThirtyDayValCases<-round(DailyDataCases$`Expected Cases`[21])
-    SixtyDayValCases<-round(DailyDataCases$`Expected Cases`[30])
-    PeakSevDayValCases<-round(max(DailyDataCases$`Expected Cases`[1:7]))
-    PeakFourteenDayValCases<-round(max(DailyDataCases$`Expected Cases`[1:14]))
-    PeakThirtyDayValCases<-round(max(DailyDataCases$`Expected Cases`[1:21]))
-    PeakSixtyDayValCases<-round(max(DailyDataCases$`Expected Cases`[1:30]))
-    PeakDateSevDayValCases<-which.max(DailyDataCases$`Expected Cases`[1:7])
-    PeakDateFourteenDayValCases<-which.max(DailyDataCases$`Expected Cases`[1:14])
-    PeakDateThirtyDayValCases<-which.max(DailyDataCases$`Expected Cases`[1:21])
-    PeakDateSixtyDayValCases<-which.max(DailyDataCases$`Expected Cases`[1:30])
-    PeakDateSevDayValCases<-format(DailyDataCases$ForecastDate[PeakDateSevDayValCases], format="%b-%d")
-    PeakDateFourteenDayValCases<-format(DailyDataCases$ForecastDate[PeakDateFourteenDayValCases], format="%b-%d")
-    PeakDateThirtyDayValCases<-format(DailyDataCases$ForecastDate[PeakDateThirtyDayValCases], format="%b-%d")
-    PeakDateSixtyDayValCases<-format(DailyDataCases$ForecastDate[PeakDateSixtyDayValCases], format="%b-%d")
+    SevDayValCases<-round(CHIME_Local$`Expected Infections`[7])
+    FourteenDayValCases<-round(CHIME_Local$`Expected Infections`[14])
+    ThirtyDayValCases<-round(CHIME_Local$`Expected Infections`[21])
+    SixtyDayValCases<-round(CHIME_Local$`Expected Infections`[30])
+    PeakSevDayValCases<-round(max(CHIME_Local$`Expected Infections`[1:7]))
+    PeakFourteenDayValCases<-round(max(CHIME_Local$`Expected Infections`[1:14]))
+    PeakThirtyDayValCases<-round(max(CHIME_Local$`Expected Infections`[1:21]))
+    PeakSixtyDayValCases<-round(max(CHIME_Local$`Expected Infections`[1:30]))
+    PeakDateSevDayValCases<-which.max(CHIME_Local$`Expected Infections`[1:7])
+    PeakDateFourteenDayValCases<-which.max(CHIME_Local$`Expected Infections`[1:14])
+    PeakDateThirtyDayValCases<-which.max(CHIME_Local$`Expected Infections`[1:21])
+    PeakDateSixtyDayValCases<-which.max(CHIME_Local$`Expected Infections`[1:30])
+    PeakDateSevDayValCases<-format(CHIME_Local$ForecastDate[PeakDateSevDayValCases], format="%b-%d")
+    PeakDateFourteenDayValCases<-format(CHIME_Local$ForecastDate[PeakDateFourteenDayValCases], format="%b-%d")
+    PeakDateThirtyDayValCases<-format(CHIME_Local$ForecastDate[PeakDateThirtyDayValCases], format="%b-%d")
+    PeakDateSixtyDayValCases<-format(CHIME_Local$ForecastDate[PeakDateSixtyDayValCases], format="%b-%d")
     
     #BEGIN IHME CALCS for CASES
     I1Cases = round(IHME_Region$`Expected Cases`[7])
@@ -711,8 +595,8 @@ for (i in 2:AFrow){
     PID4Cases<-format(PID4, format="%b-%d")
     ########################################################################################
 
-    MTFDF <- data.frame(AFBaseLocations$Base[i],AFBaseLocations$`Major Command`[i],AFBaseLocations$State[i],TotalCases,doubling)
-    names(MTFDF)<-c("Installation","MAJCOM","State","TotalCases","DblRate")
+    MTFDF <- data.frame(AFBaseLocations$Base[i],AFBaseLocations$`Major Command`[i],AFBaseLocations$State[i],TotalCases)#,doubling)
+    names(MTFDF)<-c("Installation","MAJCOM","State","TotalCases")#,"DblRate")
     MTFSummaryReport2 <- rbind(MTFSummaryReport2,MTFDF)       
         
     NewDF <- data.frame(AFBaseLocations$Base[i],AFBaseLocations$`Major Command`[i],AFBaseLocations$State[i],round(TotalBedsCounty*(1-baseUtlz)), HospitalizationsPer100000, HospitalizationsPer10000, NewHospitalizations,
