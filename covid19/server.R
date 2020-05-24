@@ -1082,6 +1082,7 @@ server <- function(input, output,session) {
   output$OverlayPlots<-renderPlotly({
 
     p = tryCatch({
+      #if ("HUtil" %in% input$Utilization){HospUtil<="Yes"}
       ModelID <- "Past Data"
       if ("IHME" %in% input$ModelSelectionValue1){ModelID<-cbind(ModelID,"IHME")}
       if ("CAA" %in% input$ModelSelectionValue1){ModelID<-cbind(ModelID,"CAA")}      
@@ -1103,7 +1104,7 @@ server <- function(input, output,session) {
       if ("CU20SCw5" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CU20SCw5")}
       
       MyHospitals<-GetHospitals(input$Base,input$Radius)
-      PlotOverlay(input$Base, MyCounties(), MyHospitals,ModelID,input$proj_days,input$StatisticType,input$Utilization,input$CONUSP)
+      PlotOverlay(input$Base, MyCounties(), MyHospitals,ModelID,input$proj_days,input$StatisticType,input$CONUSP)
       
       # output$PlotForecastDT<-DT::renderDataTable({
       #   PlotForecastDT <- DT::datatable(PeakValues,rownames = FALSE, options = list(fixedHeader = TRUE, 
@@ -1115,7 +1116,7 @@ server <- function(input, output,session) {
       
 
     }, error = function(err) {
-      empty_plot(paste(input$Utilization))
+      #empty_plot(paste(input$Utilization))
     })
     
   })

@@ -2,45 +2,51 @@
 #' @details EXTRA EXTRA Need to find a better way later to replace this 
 #'          probably have the overlay function return a list with two objects. 
 #'          need the data.frame from overlay in the report
-PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDList, DaysProjected, StatisticType,HospUtil,CONUSSelect){
+PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDList, DaysProjected, StatisticType,CONUSSelect){
   
   ####Uncomment to test plot function without running the app
   #i<-80
   #ChosenBase = AFBaseLocations$Base[i]
-  #ChosenBase = "Vandenberg Space Force Base"
-  ChosenBase = "Guatemala City"
-  SocialDistance = 15
-  DaysProjected = 30
-  HospitalInfo$DistanceMiles = himd[,as.character(ChosenBase)]
-  IncludedHospitals<-dplyr::filter(HospitalInfo, (DistanceMiles <= 50))
-  IncludedHospitals<-dplyr::filter(IncludedHospitals, (TYPE=="GENERAL ACUTE CARE") | (TYPE=="CRITICAL ACCESS"))
-  CountyInfo$DistanceMiles = cimd[,as.character(ChosenBase)]
-  IncludedCounties<-dplyr::filter(CountyInfo, DistanceMiles <= 50)
-  ####
+  # #ChosenBase = "Vandenberg Space Force Base"
+  # CONUSSelect <- "OCONUS"
+  # ChosenBase = "Kapaun ADM"
+  # SocialDistance = 15
+  # DaysProjected = 30
+  # #HospitalInfo$DistanceMiles = himd[,as.character(ChosenBase)]
+  # #IncludedHospitals<-dplyr::filter(HospitalInfo, (DistanceMiles <= 50))
+  # #IncludedHospitals<-dplyr::filter(IncludedHospitals, (TYPE=="GENERAL ACUTE CARE") | (TYPE=="CRITICAL ACCESS"))
+  # CountyInfo$DistanceMiles = cimd[,as.character(ChosenBase)]
+  # value = NULL
+  # IncludedCounties<-GetCounties(ChosenBase,50,value,value)  
+  # ####
   ####
   
   #Establish initial inputs such as base, counties, and filter IHME model
   BaseState<-dplyr::filter(AFBaseLocations, Base == toString(ChosenBase))
-  IHME_State <- dplyr::filter(IHME_Model, State == toString(BaseState$State[1]))
-  YYG_State <- dplyr::filter(YYG_ModelU, region == toString(BaseState$State[1])) 
- 
-  hospCounty <- subset(HospUtlzCounty, fips %in% IncludedCounties$FIPS)
-  TTBCounty <- sum(IncludedHospitals$BEDS)
-  
+  if (CONUSSelect == "CONUS"){
+      IHME_State <- dplyr::filter(IHME_Model, State == toString(BaseState$State[1]))
+      YYG_State <- dplyr::filter(YYG_ModelU, region == toString(BaseState$State[1])) 
+      hospCounty <- subset(HospUtlzCounty, fips %in% IncludedCounties$FIPS)
+      TTBCounty <- sum(IncludedHospitals$BEDS)
+      StPopList <- dplyr::filter(CountyInfo, State == toString(BaseState$State[1]))
+
+      # Get total hospital bed number across state
+      IncludedHospitalsST <- dplyr::filter(HospitalInfo, STATE == toString(BaseState$State[1]))
+      TotalBedsState <- sum(IncludedHospitalsST$BEDS)
+      # Calculate bed ratio
+      BedProp <- TotalBedsCounty/TotalBedsState    
+  } else {
+      IHME_State <- dplyr::filter(IHME_Model, location_name == toString(BaseState$County[1]))    
+      YYG_State <- dplyr::filter(YYG_ModelG, country == toString(BaseState$Country[1])) 
+      StPopList <- dplyr::filter(CountyInfo, State == toString(BaseState$Country[1]))
+  }
+
   #Get regional and state populations
-  StPopList <- dplyr::filter(CountyInfo, State == toString(BaseState$State[1]))
   RegPop <- sum(IncludedCounties$Population)
   StPop <- sum(StPopList$Population)
   
   # Use Population ratio to scale IHME
   PopRatio <- RegPop/StPop
-  
-  # Get total hospital bed number across state
-  IncludedHospitalsST <- dplyr::filter(HospitalInfo, STATE == toString(BaseState$State[1]))
-  TotalBedsState <- sum(IncludedHospitalsST$BEDS)
-  
-  # Calculate bed ratio
-  BedProp <- TotalBedsCounty/TotalBedsState
 
   if (CONUSSelect == "CONUS"){
       Army_State <- dplyr::filter(Army_Model, State == toString(BaseState$State[1]))  
@@ -59,24 +65,30 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
       DPT2<-DPT2[1:DaysProjected,]
       DPT1$ID<-rep("DTRA1",nrow(DPT1))
       DPT2$ID<-rep("DTRA2",nrow(DPT2))
-  }
+  } 
+
   
   if (StatisticType == "Hospitalizations") {
-    LANL_State <- dplyr::filter(LANLC_Data, State == toString(BaseState$State[1])) 
+    if (CONUSSelect == "CONUS"){
+        LANL_State <- dplyr::filter(LANLC_Data, State == toString(BaseState$State[1])) 
+    } else {
+        LANL_State <- dplyr::filter(LANLGC_Data, countries == toString(BaseState$Country[1])) 
+    }
     #Get covid cases and hospitalization rates for county
     CovidCounties<-subset(CovidConfirmedCases, CountyFIPS %in% IncludedCounties$FIPS)
     CovidCountiesHospRate <- subset(CountyHospRate, FIPS %in% IncludedCounties$FIPS)
-    
+
     #Get past data in daily hospital use
     #This will use a 5 day hospital stay as the average
-    HistoricalDataDaily <- CovidCounties[,(5+5):length(CovidCounties)] -
-      CovidCounties[,5:(length(CovidCounties)-5)]
-    HistoricalDataHosp<-colSums(HistoricalDataDaily*CovidCountiesHospRate$HospRate)
-    
-    #Create dataframe to hold daily hospitalizations
-    HistoricalDates<-seq(as.Date("2020-01-27"), length=length(HistoricalDataHosp), by="1 day")
-    HistoricalData<-data.frame(HistoricalDates, HistoricalDataHosp, HistoricalDataHosp*0.75, HistoricalDataHosp*1.25)
-    colnames(HistoricalData)<-c("ForecastDate", "Expected Hospitalizations", "Lower Estimate","Upper Estimate")
+    HistoricalDataDaily <- CovidCounties[,(5+5):length(CovidCounties)] - CovidCounties[,5:(length(CovidCounties)-5)]
+    if (nrow(CovidCountiesHospRate) != 0){
+        HistoricalDataHosp<-colSums(HistoricalDataDaily*CovidCountiesHospRate$HospRate)
+
+        #Create dataframe to hold daily hospitalizations
+        HistoricalDates<-seq(as.Date("2020-01-27"), length=length(HistoricalDataHosp), by="1 day")
+        HistoricalData<-data.frame(HistoricalDates, HistoricalDataHosp, HistoricalDataHosp*0.75, HistoricalDataHosp*1.25)
+        colnames(HistoricalData)<-c("ForecastDate", "Expected Hospitalizations", "Lower Estimate","Upper Estimate")
+        }
     
     currHosp = HistoricalData[nrow(HistoricalData),2]
     
@@ -388,6 +400,7 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
     baseUtlz <- totalUsedBeds/TotalBeds
     bcap = TotalBeds * (1-baseUtlz)
 
+ 
     projections <-  ggplot(OverlayData, aes(x=ForecastDate, y=`Expected Hospitalizations`, color = ID, fill = ID, linetype = ID)) +
       geom_line(aes(linetype = ID, color = ID)) + 
       geom_ribbon(aes(ymin = `Lower Estimate`, ymax = `Upper Estimate`),alpha = .2) +
@@ -396,7 +409,7 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
       #scale_linetype_manual(values=c("dashed", "solid", "dashed", "solid"))+
       #geom_ribbon(aes(ymin = `Lower Estimate`, ymax = `Upper Estimate`),alpha = .2)+
       
-      #geom_hline(aes(yintercept = bcap,linetype = "Estimated COVID Patient Bed Capacity"),colour = "red")+
+      geom_hline(aes(yintercept = bcap,linetype = "Estimated COVID Patient Bed Capacity"),colour = "red")+
       ggtitle("Projected Daily Hospital Bed Utilization")+
       ylab("Daily Beds Needed")+
       theme_bw() + 
@@ -410,12 +423,8 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
             panel.grid.minor = element_blank(),
             panel.border = element_blank()) +
       scale_x_date(date_breaks = "1 week")+
-      labs(color = "ID")    
-        
-    # if (HospUtil == "HUtil") {
-    #    projections <- projections + geom_hline(aes(yintercept = bcap,linetype = "Estimated COVID Patient Bed Capacity"),colour = "red")
-    # }
-    
+      labs(color = "ID")
+
     projections <- ggplotly(projections)
     # projections <- projections %>% config(displayModeBar = FALSE)
     projections <- projections %>% config(toImageButtonOptions = list(format = "png",
@@ -424,7 +433,13 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
     
   } else {
     
-    LANL_State <- dplyr::filter(LANLD_Data, State == toString(BaseState$State[1])) 
+    if (CONUSSelect == "CONUS"){
+      LANL_State <- dplyr::filter(LANLD_Data, State == toString(BaseState$State[1])) 
+    } else {
+      LANL_State <- dplyr::filter(LANLGD_Data, countries == toString(BaseState$Country[1])) 
+    }    
+    
+     
     #Get data for counties with covid cases. We want number of cases, the rate of the cases and maybe other data.
     #We include State, county, population in those counties, cases, fatalities, doubling rate
     CovidCounties<-subset(CovidConfirmedCases, CountyFIPS %in% IncludedCounties$FIPS)
