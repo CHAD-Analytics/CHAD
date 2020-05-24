@@ -36,7 +36,7 @@ GlobalDeaths<-GlobalData[,-7]
 GlobalDeaths = GlobalDeaths[!duplicated(GlobalDeaths[c(1,2,3)]),]
 GlobalDeaths <- spread(GlobalDeaths, Date, Deaths)
 GlobalDeaths<-GlobalDeaths%>% arrange(GlobalDeaths$CountryName)
-GlobalDeaths<-GlobalDeaths %>% group_by(CountryName) %>% filter(duplicated(CountryName) | n()==1)
+#GlobalDeaths<-GlobalDeaths %>% group_by(CountryName) %>% filter(duplicated(CountryName) | n()==1)
 GlobalDeaths<- filter(GlobalDeaths, !(CountryName %in% "United States of America"))
 
 GlobalDeaths = inner_join(GlobalDeaths,CountyInfo, by = "Key")
