@@ -1,7 +1,12 @@
 ### What's new in CHAD
 
-**CHAD Version 0.9.7** includes these additional features:
+**CHAD Version 10.1** includes these additional features:
 
+-   Added OCONUS projections from IHME, YYG, LANL, and CHIME models
+-   Inproved application load times
+-   Added additional continental mapping features
+
+Previous Updates
 -   Added installations representing all service branches
 -   Added additional filtering for Active Duty, Reserve, and National Guard installations
 -   Added Numbered Air Force filtering, including Wings and Groups

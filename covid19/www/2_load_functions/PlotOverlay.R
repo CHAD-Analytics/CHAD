@@ -7,18 +7,19 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
   ####Uncomment to test plot function without running the app
   #i<-80
   #ChosenBase = AFBaseLocations$Base[i]
-  # #ChosenBase = "Vandenberg Space Force Base"
+  #CONUSSelect <- "CONUS"
+  #ChosenBase = "Vandenberg Space Force Base"
   # CONUSSelect <- "OCONUS"
   # ChosenBase = "Kapaun ADM"
   # SocialDistance = 15
   # DaysProjected = 30
-  # #HospitalInfo$DistanceMiles = himd[,as.character(ChosenBase)]
-  # #IncludedHospitals<-dplyr::filter(HospitalInfo, (DistanceMiles <= 50))
-  # #IncludedHospitals<-dplyr::filter(IncludedHospitals, (TYPE=="GENERAL ACUTE CARE") | (TYPE=="CRITICAL ACCESS"))
+  # HospitalInfo$DistanceMiles = himd[,as.character(ChosenBase)]
+  # IncludedHospitals<-dplyr::filter(HospitalInfo, (DistanceMiles <= 50))
+  # IncludedHospitals<-dplyr::filter(IncludedHospitals, (TYPE=="GENERAL ACUTE CARE") | (TYPE=="CRITICAL ACCESS"))
   # CountyInfo$DistanceMiles = cimd[,as.character(ChosenBase)]
   # value = NULL
-  # IncludedCounties<-GetCounties(ChosenBase,50,value,value)  
-  # ####
+  # IncludedCounties<-GetCounties(ChosenBase,50,value,value)
+  ####
   ####
   
   #Establish initial inputs such as base, counties, and filter IHME model
@@ -69,6 +70,7 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
 
   
   if (StatisticType == "Hospitalizations") {
+
     if (CONUSSelect == "CONUS"){
         LANL_State <- dplyr::filter(LANLC_Data, State == toString(BaseState$State[1])) 
     } else {
@@ -88,7 +90,14 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
         HistoricalDates<-seq(as.Date("2020-01-27"), length=length(HistoricalDataHosp), by="1 day")
         HistoricalData<-data.frame(HistoricalDates, HistoricalDataHosp, HistoricalDataHosp*0.75, HistoricalDataHosp*1.25)
         colnames(HistoricalData)<-c("ForecastDate", "Expected Hospitalizations", "Lower Estimate","Upper Estimate")
-        }
+    } else {
+      HistoricalDataHosp<-colSums(HistoricalDataDaily*.055)
+      
+      #Create dataframe to hold daily hospitalizations
+      HistoricalDates<-seq(as.Date("2020-01-27"), length=length(HistoricalDataHosp), by="1 day")
+      HistoricalData<-data.frame(HistoricalDates, HistoricalDataHosp, HistoricalDataHosp*0.75, HistoricalDataHosp*1.25)
+      colnames(HistoricalData)<-c("ForecastDate", "Expected Hospitalizations", "Lower Estimate","Upper Estimate")      
+    }
     
     currHosp = HistoricalData[nrow(HistoricalData),2]
     
@@ -115,7 +124,7 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
     LANL_Region$q.25 = round(LANL_Region$q.25*PopRatio)
     LANL_Region$q.50 = round(LANL_Region$q.50*PopRatio)
     LANL_Region$q.75 = round(LANL_Region$q.75*PopRatio)
-    LANL_Region<-data.frame(LANL_Region$date,LANL_Region$q.50*.055,LANL_Region$q.25*.055,LANL_Region$q.75*.055)      
+    LANL_Region<-data.frame(LANL_Region$dates,LANL_Region$q.50*.055,LANL_Region$q.25*.055,LANL_Region$q.75*.055)      
     colnames(LANL_Region)<-c("ForecastDate", "Expected Hospitalizations", "Lower Estimate","Upper Estimate")
     LANL_Region$ForecastDate<-as.Date(LANL_Region$ForecastDate)
     
@@ -292,7 +301,8 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
       if (doubling == 0) {
         doubling <- as.integer(40)
       }
-
+      
+      #for the OCONUS locations, use the Rt from YYG files
       Ro<-Estimate_Rt(MyCounties)
       if (Ro == "Undefined for Region"){
         Ro<-as.integer(1)

@@ -1082,27 +1082,40 @@ server <- function(input, output,session) {
   output$OverlayPlots<-renderPlotly({
 
     p = tryCatch({
-      #if ("HUtil" %in% input$Utilization){HospUtil<="Yes"}
-      ModelID <- "Past Data"
-      if ("IHME" %in% input$ModelSelectionValue1){ModelID<-cbind(ModelID,"IHME")}
-      if ("CAA" %in% input$ModelSelectionValue1){ModelID<-cbind(ModelID,"CAA")}      
-      if ("YYG" %in% input$ModelSelectionValue1){ModelID<-cbind(ModelID,"YYG")}
-      if ("DTRA1" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"DTRA1")}
-      if ("DTRA2" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"DTRA2")}
-      if ("LANL" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"LANL")}
-      if ("UT" %in% input$ModelSelectionValue1){ModelID<-cbind(ModelID,"UT")}
-      if ("CHIME7" %in% input$ModelSelectionValue1){ModelID<-cbind(ModelID,"CHIME_4%_SD")}
-      if ("CHIME6" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CHIME_8%_SD")}
-      if ("CHIME5" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CHIME_12%_SD")}
-      if ("CHIME4" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CHIME_15%_SD")}
-      if ("CHIME3" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CHIME_19%_SD")}
-      if ("CHIME2" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CHIME_23%_SD")}
-      if ("CHIME1" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CHIME_27%_SD")}
-      if ("CU20SCx10" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CU20SCx10")}
-      if ("CU20SCx5" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CU20SCx5")}
-      if ("CU20SCw10" %in% input$ModelSelectionValue1){ModelID<-cbind(ModelID,"CU20SCw10")}
-      if ("CU20SCw5" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CU20SCw5")}
-      
+      if (input$CONUSP == "CONUS"){
+          #if ("HUtil" %in% input$Utilization){HospUtil<="Yes"}
+          ModelID <- "Past Data"
+          if ("IHME" %in% input$ModelSelectionValue1){ModelID<-cbind(ModelID,"IHME")}
+          if ("CAA" %in% input$ModelSelectionValue1){ModelID<-cbind(ModelID,"CAA")}      
+          if ("YYG" %in% input$ModelSelectionValue1){ModelID<-cbind(ModelID,"YYG")}
+          if ("DTRA1" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"DTRA1")}
+          if ("DTRA2" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"DTRA2")}
+          if ("LANL" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"LANL")}
+          if ("UT" %in% input$ModelSelectionValue1){ModelID<-cbind(ModelID,"UT")}
+          if ("CHIME7" %in% input$ModelSelectionValue1){ModelID<-cbind(ModelID,"CHIME_4%_SD")}
+          if ("CHIME6" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CHIME_8%_SD")}
+          if ("CHIME5" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CHIME_12%_SD")}
+          if ("CHIME4" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CHIME_15%_SD")}
+          if ("CHIME3" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CHIME_19%_SD")}
+          if ("CHIME2" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CHIME_23%_SD")}
+          if ("CHIME1" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CHIME_27%_SD")}
+          if ("CU20SCx10" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CU20SCx10")}
+          if ("CU20SCx5" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CU20SCx5")}
+          if ("CU20SCw10" %in% input$ModelSelectionValue1){ModelID<-cbind(ModelID,"CU20SCw10")}
+          if ("CU20SCw5" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CU20SCw5")}
+      } else if (input$CONUSP == "OCONUS"){
+          ModelID <- "Past Data"
+          if ("IHME" %in% input$ModelSelectionValue1){ModelID<-cbind(ModelID,"IHME")}
+          if ("YYG" %in% input$ModelSelectionValue1){ModelID<-cbind(ModelID,"YYG")}
+          if ("LANL" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"LANL")}
+          if ("CHIME7" %in% input$ModelSelectionValue1){ModelID<-cbind(ModelID,"CHIME_4%_SD")}
+          if ("CHIME6" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CHIME_8%_SD")}
+          if ("CHIME5" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CHIME_12%_SD")}
+          if ("CHIME4" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CHIME_15%_SD")}
+          if ("CHIME3" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CHIME_19%_SD")}
+          if ("CHIME2" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CHIME_23%_SD")}
+          if ("CHIME1" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CHIME_27%_SD")}
+      }
       MyHospitals<-GetHospitals(input$Base,input$Radius)
       PlotOverlay(input$Base, MyCounties(), MyHospitals,ModelID,input$proj_days,input$StatisticType,input$CONUSP)
       
