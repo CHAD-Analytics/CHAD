@@ -53,7 +53,7 @@ ui <- tagList(
                 
                 # Step Two - Sidebar
                 ###################################################################################################################################################
-                dashboardSidebar(width = 350,
+                dashboardSidebar(width = 300,
                                  sidebarMenu(id="tabs",
                                              tags$p(paste0("* Current as of ",format(Sys.Date(),format = "%d %B %Y")," at 0600 EST *")),
                                              
@@ -324,12 +324,14 @@ ui <- tagList(
                                 title = "Welcome",
                                  
                                 tags$div(style="text-align:center;font-size: 18px; font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; color: black",
-                                        "Welcome to the Air Force Institute of Technology (AFIT) COVID-19 Health Assessment Dashboard (CHAD)"),
-                                br(),br(),
+                                        "Welcome to the Air Force Institute of Technology (AFIT) and HAF/A9 COVID-19 Health Assessment Dashboard (CHAD)"),
+                                br(),
                                 tags$div(style="text-align:center; font-size=16px;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; color: black", 
                                          "Want to learn more?  Visit the links on the left for more information."),  
-                                br(),br(),
+                                br(),
                                 fluidPage(
+                                          tags$style('.container-fluid {
+                                          background-color: #fcfcfc;}'),
                                           uiOutput("Documentation")
                                 )
                               ),
