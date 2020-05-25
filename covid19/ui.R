@@ -33,22 +33,22 @@ ui <- tagList(
                                   headerText = "",
                                   badgeStatus = "success",
                                   tags$li(actionLink("UpdateInfo", label = "Update Information", icon = icon("flag")),class = "dropdown")
-                                ),
-                                dropdownMenu( 
-                                  icon = tags$div(HTML('<font size = "5" color = "blue" font-weight:"bold" >More Information</font>  <i class="fa fa-info-circle" style = "font-size:18px;"></i> <body style="background-color:powderblue;"></body>')),
-                                  headerText = "Want to know more?",
-                                  badgeStatus = "primary",
-                                  tags$li(actionLink("overviewInfo", label = "Overview", icon = icon("globe")),
-                                          class = "dropdown"),
-                                  tags$li(actionLink("inputInfo", label = "User Inputs", icon = icon("sliders-h")),
-                                          class = "dropdown"),
-                                  tags$li(actionLink("projInfo", label = "Projections", icon = icon("chart-line")),
-                                          class = "dropdown"),
-                                  tags$li(actionLink("calcInfo", label = "Calculations", icon = icon("calculator")),
-                                          class = "dropdown"),
-                                  tags$li(actionLink("sourceInfo", label = "Sources", icon = icon("user-secret")),
-                                          class = "dropdown")
                                 )
+                                # dropdownMenu( 
+                                #   icon = tags$div(HTML('<font size = "5" color = "blue" font-weight:"bold" >More Information</font>  <i class="fa fa-info-circle" style = "font-size:18px;"></i> <body style="background-color:powderblue;"></body>')),
+                                #   headerText = "Want to know more?",
+                                #   badgeStatus = "primary",
+                                #   tags$li(actionLink("overviewInfo", label = "Overview", icon = icon("globe")),
+                                #           class = "dropdown"),
+                                #   tags$li(actionLink("inputInfo", label = "User Inputs", icon = icon("sliders-h")),
+                                #           class = "dropdown"),
+                                #   tags$li(actionLink("projInfo", label = "Projections", icon = icon("chart-line")),
+                                #           class = "dropdown"),
+                                #   tags$li(actionLink("calcInfo", label = "Calculations", icon = icon("calculator")),
+                                #           class = "dropdown"),
+                                #   tags$li(actionLink("sourceInfo", label = "Sources", icon = icon("user-secret")),
+                                #           class = "dropdown")
+                                # )
                 ),
                 
                 # Step Two - Sidebar
@@ -157,7 +157,8 @@ ui <- tagList(
                                                                           "Choose your local radius (miles):",
                                                                           min = 10,
                                                                           max = 100,
-                                                                          value = 50)),
+                                                                          value = 50)
+                                              ),
                                              
                                              conditionalPanel(condition="input.tabselected==3",
                                                               "Current Local Health Inputs",
@@ -253,6 +254,19 @@ ui <- tagList(
                                                                           selected = c(""))
                                              ),
                                              
+                                             conditionalPanel(condition="input.tabselected == 6",
+                                                              br(),br(),br(),
+                                                              tags$div(style="text-align: center; font-size: 18px", actionLink("overviewInfo", label = "Overview", icon = icon("globe"))),
+                                                              br(),br(),br(),
+                                                              tags$div(style="text-align: center; font-size: 18px", actionLink("inputInfo", label = "User Inputs", icon = icon("sliders-h"))),
+                                                              br(),br(), br(),
+                                                              tags$div(style="text-align: center; font-size: 18px", actionLink("projInfo", label = "Projections", icon = icon("chart-line"))),
+                                                              br(),br(),br(),
+                                                              tags$div(style="text-align: center; font-size: 18px", actionLink("calcInfo", label = "Calculations", icon = icon("calculator"))),
+                                                              br(),br(),br(),
+                                                              tags$div(style="text-align: center; font-size: 18px", actionLink("sourceInfo", label = "Sources", icon = icon("user-secret")))
+                                             ),
+                                             
                                              br()
                                              
                                              # menuItem(
@@ -304,6 +318,23 @@ ui <- tagList(
                                    })
                                    ')),
                   tabsetPanel(id = "tabselected",
+                              
+                              tabPanel(
+                                value = 6,
+                                title = "Welcome",
+                                 
+                                tags$div(style="text-align:center;font-size: 18px; font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; color: black",
+                                        "Welcome to the Air Force Institute of Technology (AFIT) COVID-19 Health Assessment Dashboard (CHAD)"),
+                                br(),br(),
+                                tags$div(style="text-align:center; font-size=16px;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; color: black", 
+                                         "Want to learn more?  Visit the links on the left for more information."),  
+                                br(),br(),
+                                fluidPage(
+                                          uiOutput("Documentation")
+                                )
+                              ),
+                              
+                              
                               
                               ####### BEGIN SUMMARY TAB #########
                               # Mission Risk ------------------------------------------------------------

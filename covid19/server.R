@@ -1639,6 +1639,35 @@ server <- function(input, output,session) {
   ###################################################################################################################################################
   
   #Step three provides input information for annotation of the overall app such as inputs, sources, and calculations.
+  
+  DocDisplay <- reactiveValues(data = "www/6_load_info_docs/OverviewInfo.md")
+  
+  observeEvent(input$overviewInfo, {
+    DocDisplay$data <- "www/6_load_info_docs/OverviewInfo.md"
+  })
+  
+  observeEvent(input$inputInfo, {
+    DocDisplay$data <- "www/6_load_info_docs/InputsInfo.md"
+  })
+  
+  observeEvent(input$calcInfo, {
+    DocDisplay$data <- "www/6_load_info_docs/CalcInfo.md"
+  })
+  
+  observeEvent(input$projInfo, {
+    DocDisplay$data <- "www/6_load_info_docs/ProjInfo.md"
+  })
+  
+  observeEvent(input$sourceInfo, {
+    DocDisplay$data <- "www/6_load_info_docs/SourceInfo.md"
+  })
+  
+  
+  output$Documentation <- renderUI({
+    includeMarkdown(DocDisplay$data)
+  })
+  
+  
   observeEvent(input$UpdateInfo, {
     showModal(
       modalDialog(
@@ -1646,45 +1675,45 @@ server <- function(input, output,session) {
         UpdateLink)
     )
   })
-  
-  observeEvent(input$overviewInfo, {
-    showModal(
-      modalDialog(
-        size = "l",fade = TRUE, easyClose = TRUE, title = "OVERVIEW",
-        OverviewLink)
-    )
-  })
-  
-  observeEvent(input$inputInfo, {
-    showModal(
-      modalDialog(
-        size = "l",fade = TRUE, easyClose = TRUE, title = "USER INPUTS",
-        InfoLink)
-    )
-  })
-  observeEvent(input$projInfo, {
-    showModal(
-      modalDialog(
-        size = "l",fade = TRUE, easyClose = TRUE, title = "PROJECTIONS",
-        ProjLink)
-    )
-  })
-  
-  observeEvent(input$calcInfo, {
-    showModal(
-      modalDialog(
-        size = "l",fade = TRUE, easyClose = TRUE, title = "CALCULATIONS",
-        CalcLink)
-    )
-  })
-  
-  observeEvent(input$sourceInfo, {
-    showModal(
-      modalDialog(
-        size = "l",fade = TRUE, easyClose = TRUE, title = "SOURCES",
-        SourceLink)
-    )
-  })
+  # 
+  # observeEvent(input$overviewInfo, {
+  #   showModal(
+  #     modalDialog(
+  #       size = "l",fade = TRUE, easyClose = TRUE, title = "OVERVIEW",
+  #       OverviewLink)
+  #   )
+  # })
+  # 
+  # observeEvent(input$inputInfo, {
+  #   showModal(
+  #     modalDialog(
+  #       size = "l",fade = TRUE, easyClose = TRUE, title = "USER INPUTS",
+  #       InfoLink)
+  #   )
+  # })
+  # observeEvent(input$projInfo, {
+  #   showModal(
+  #     modalDialog(
+  #       size = "l",fade = TRUE, easyClose = TRUE, title = "PROJECTIONS",
+  #       ProjLink)
+  #   )
+  # })
+  # 
+  # observeEvent(input$calcInfo, {
+  #   showModal(
+  #     modalDialog(
+  #       size = "l",fade = TRUE, easyClose = TRUE, title = "CALCULATIONS",
+  #       CalcLink)
+  #   )
+  # })
+  # 
+  # observeEvent(input$sourceInfo, {
+  #   showModal(
+  #     modalDialog(
+  #       size = "l",fade = TRUE, easyClose = TRUE, title = "SOURCES",
+  #       SourceLink)
+  #   )
+  # })
   
   
   
