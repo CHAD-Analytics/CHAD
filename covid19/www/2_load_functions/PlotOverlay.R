@@ -286,7 +286,8 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
     #The only input we want from the user is the social distancing rate. For this example, we just use 0.5
     cases<-SIRinputs$cases
     pop<-SIRinputs$pop
-
+    daysforecasted<- 120
+    
     SD <- c(27,23,19,15,12,8,4)
     sdrow<-length(SD)
 
@@ -449,7 +450,25 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
       LANL_State <- dplyr::filter(LANLGD_Data, countries == toString(BaseState$Country[1])) 
     }    
     
-     
+
+    #Get data for counties with covid cases. We want number of cases, the rate of the cases and maybe other data.
+    #We include State, county, population in those counties, cases, fatalities, doubling rate
+    CovidCounties<-subset(CovidConfirmedCases, CountyFIPS %in% IncludedCounties$FIPS)
+    CovidDeathHist<-subset(CovidDeaths, CountyFIPS %in% IncludedCounties$FIPS)
+    if (nrow(CovidCountiesHospRate) != 0){
+      HistoricalData<-colSums(CovidDeathHist[,5:length(CovidDeathHist)])
+      HistoricalDates<-seq(as.Date("2020-01-22"), length=length(HistoricalData), by="1 day")
+      HistoricalData<-data.frame(HistoricalDates, HistoricalData, HistoricalData, HistoricalData)
+      colnames(HistoricalData)<-c("ForecastDate", "Expected Fatalities", "Lower Estimate","Upper Estimate")
+    } else {
+      HistoricalDataHosp<-colSums(HistoricalDataDaily*.0025)
+      #Create dataframe to hold daily hospitalizations
+      HistoricalDates<-seq(as.Date("2020-01-22"), length=length(HistoricalData), by="1 day")
+      HistoricalData<-data.frame(HistoricalDates, HistoricalData, HistoricalData, HistoricalData)
+      colnames(HistoricalData)<-c("ForecastDate", "Expected Fatalities", "Lower Estimate","Upper Estimate")
+    }    
+    
+         
     #Get data for counties with covid cases. We want number of cases, the rate of the cases and maybe other data.
     #We include State, county, population in those counties, cases, fatalities, doubling rate
     CovidCounties<-subset(CovidConfirmedCases, CountyFIPS %in% IncludedCounties$FIPS)
@@ -465,14 +484,7 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
     IHME_Region$deaths_lower = round(IHME_State$totdea_lower*PopRatio)
     IHME_Region$deaths_upper = round(IHME_State$totdea_upper*PopRatio)
     IHME_Data<-data.frame(IHME_Region$date,IHME_Region$deaths_mean, IHME_Region$deaths_lower, IHME_Region$deaths_upper)
-    
-    # Apply ratio's to UT data
-    UT_Region <- UT_State
-    UT_Region$daily_deaths_est = round(UT_State$daily_deaths_est*PopRatio)
-    UT_Region$daily_deaths_90CI_lower = round(UT_State$daily_deaths_95CI_lower*PopRatio)
-    UT_Region$daily_deaths_90CI_upper = round(UT_State$daily_deaths_95CI_upper*PopRatio)
-    UT_Data<-data.frame(UT_Region$date,UT_Region$daily_deaths_est, UT_Region$daily_deaths_95CI_lower, UT_Region$daily_deaths_95CI_upper)
-    
+
     # Apply ratio's to YYG Data
     # Multiple cases by 5.5% to estimate number of hospitalizations
     YYG_Region <- YYG_State
@@ -500,199 +512,211 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
     LANL_Data$'Expected Hospitalizations'<-c(LANL_Data$'Expected Hospitalizations'[1],diff(LANL_Data$'Expected Hospitalizations'))
     LANL_Data$'Lower Estimate'<-c(LANL_Data$'Lower Estimate'[1],diff(LANL_Data$'Lower Estimate'))
     LANL_Data$'Upper Estimate'<-c(LANL_Data$'Upper Estimate'[1],diff(LANL_Data$'Upper Estimate'))  
-    
-    #For DTRA Data, multiply number of cases by projected hospitalization rate
-    DPT1<-data.frame(DPT1$ForecastDate,DPT1$'Expected Hospitalizations'*.0025,DPT1$'Lower Estimate'*.0025,DPT1$'Upper Estimate'*.0025,DPT1$ID)
-    DPT2<-data.frame(DPT2$ForecastDate,DPT2$'Expected Hospitalizations'*.0025,DPT2$'Lower Estimate'*.0025,DPT2$'Upper Estimate'*.0025,DPT2$ID)       
-    colnames(DPT1)<-c("ForecastDate", "Expected Fatalities", "Lower Estimate","Upper Estimate","ID")
-    colnames(DPT2)<-c("ForecastDate", "Expected Fatalities", "Lower Estimate","Upper Estimate","ID")   
-    
-    Army_State<-dplyr::filter(Army_State,FIPS %in% IncludedCounties$FIPS)    
-    Army_State<-subset(Army_State, select=-c(Location,County,Susceptible,Exposed,Removed,Infected,State,number))    
-    Army_State$Date <- as.Date(Army_State$ForecastDate, "%m/%d/%y")
-    Army_State<-dplyr::filter(Army_State,ForecastDate >= Sys.Date())
-    Army_State<-aggregate(Army_State[,sapply(Army_State,is.numeric)],Army_State["ForecastDate"],sum)
-    Army_State<-Army_State[1:DaysProjected,]
-    Army_State<-data.frame(Army_State$ForecastDate,Army_State$Fatalities*.0025,Army_State$Fatalities*.0025*.75,Army_State$Fatalities*.0025*1.25)
-    colnames(Army_State)<-c("ForecastDate","Expected Fatalities","Lower Estimate","Upper Estimate")
-    Army_State$ID<-rep("CAA",nrow(Army_State))    
-    
-    CU20x10PSD_State<-dplyr::filter(CU20_1x10PSD,fips %in% IncludedCounties$FIPS)
-    CU20x5PSD_State<-dplyr::filter(CU20_1x5PSD,fips %in% IncludedCounties$FIPS)
-    CU20w10PSD_State<-dplyr::filter(CU20_w10PSD,fips %in% IncludedCounties$FIPS)
-    CU20w5PSD_State<-dplyr::filter(CU20_w5PSD,fips %in% IncludedCounties$FIPS) 
-    
-    CU20x10PSD_State<-subset(CU20x10PSD_State, select=-c(hosp_need_25,hosp_need_50,hosp_need_75))
-    CU20x5PSD_State<-subset(CU20x5PSD_State, select=-c(hosp_need_25,hosp_need_50,hosp_need_75))   
-    CU20w10PSD_State<-subset(CU20w10PSD_State, select=-c(hosp_need_25,hosp_need_50,hosp_need_75))
-    CU20w5PSD_State<-subset(CU20w5PSD_State, select=-c(hosp_need_25,hosp_need_50,hosp_need_75))   
-    
-    CU20x10PSD_State$Date <- as.Date(CU20x10PSD_State$Date, "%m/%d/%y")
-    CU20x5PSD_State$Date <- as.Date(CU20x5PSD_State$Date, "%m/%d/%y")
-    CU20w10PSD_State$Date <- as.Date(CU20w10PSD_State$Date, "%m/%d/%y")
-    CU20w5PSD_State$Date <- as.Date(CU20w5PSD_State$Date, "%m/%d/%y") 
-    
-    CU20x10PSD_State<-dplyr::filter(CU20x10PSD_State,Date >= Sys.Date())
-    CU20x5PSD_State<-dplyr::filter(CU20x5PSD_State,Date >= Sys.Date())      
-    CU20w10PSD_State<-dplyr::filter(CU20w10PSD_State,Date >= Sys.Date())
-    CU20w5PSD_State<-dplyr::filter(CU20w5PSD_State,Date >= Sys.Date())
-    
-    CU20x10PSD_State<-aggregate(CU20x10PSD_State[,sapply(CU20x10PSD_State,is.numeric)],CU20x10PSD_State["Date"],sum)
-    CU20x5PSD_State<-aggregate(CU20x5PSD_State[,sapply(CU20x5PSD_State,is.numeric)],CU20x5PSD_State["Date"],sum)
-    CU20w10PSD_State<-aggregate(CU20w10PSD_State[,sapply(CU20w10PSD_State,is.numeric)],CU20w10PSD_State["Date"],sum)
-    CU20w5PSD_State<-aggregate(CU20w5PSD_State[,sapply(CU20w5PSD_State,is.numeric)],CU20w5PSD_State["Date"],sum)  
-    
-    CU20x10PSD_State<-CU20x10PSD_State[1:DaysProjected,]
-    CU20x5PSD_State<-CU20x5PSD_State[1:DaysProjected,]
-    CU20w10PSD_State<-CU20w10PSD_State[1:DaysProjected,]
-    CU20w5PSD_State<-CU20w5PSD_State[1:DaysProjected,]
-    
-    CU20x10PSD_State <- data.frame(CU20x10PSD_State$Date,CU20x10PSD_State$death_50,CU20x10PSD_State$death_25,CU20x10PSD_State$death_75)
-    CU20x5PSD_State <- data.frame(CU20x5PSD_State$Date,CU20x5PSD_State$death_50,CU20x5PSD_State$death_25,CU20x5PSD_State$death_75)
-    CU20w10PSD_State <- data.frame(CU20w10PSD_State$Date,CU20w10PSD_State$death_50,CU20w10PSD_State$death_25,CU20w10PSD_State$death_75)
-    CU20w5PSD_State <- data.frame(CU20w5PSD_State$Date,CU20w5PSD_State$death_50,CU20w5PSD_State$death_25,CU20w5PSD_State$death_75)      
-    
-    colnames(CU20x10PSD_State)<-c("ForecastDate","Expected Fatalities","Lower Estimate","Upper Estimate")
-    CU20x10PSD_State$ID<-rep("CU20SCx10",nrow(CU20x10PSD_State))
-    colnames(CU20x5PSD_State)<-c("ForecastDate","Expected Fatalities","Lower Estimate","Upper Estimate")
-    CU20x5PSD_State$ID<-rep("CU20SCx5",nrow(CU20x5PSD_State))
-    colnames(CU20w10PSD_State)<-c("ForecastDate","Expected Fatalities","Lower Estimate","Upper Estimate")
-    CU20w10PSD_State$ID<-rep("CU20SCw10",nrow(CU20w10PSD_State))
-    colnames(CU20w5PSD_State)<-c("ForecastDate","Expected Fatalities","Lower Estimate","Upper Estimate")
-    CU20w5PSD_State$ID<-rep("CU20SCw5",nrow(CU20w5PSD_State))      
-    
-    # DeathCounties<-subset(CovidDeaths, CountyFIPS %in% IncludedCounties$FIPS)
-    # CaseRate <- subset(CovidConfirmedCasesRate, CountyFIPS %in% IncludedCounties$FIPS)
-    # CountyDataTable<-cbind(IncludedCounties,rev(CovidCounties)[,1],rev(DeathCounties)[,1],rev(CaseRate)[,1])
-    # CountyDataTable<-data.frame(CountyDataTable$State,CountyDataTable$County,CountyDataTable$Population, rev(CountyDataTable)[,3], rev(CountyDataTable)[,2],rev(CountyDataTable)[,1])
-    # colnames(CountyDataTable)<-c("State","County","Population","Total Confirmed Cases","Total Fatalities", "Case Doubling Rate (days)" )
-    # 
-    # #Cleaning it up to input into the SEIAR model, we include countyFIPS, CountyName, State, State FIPS, number of cases, population, and doubling rate
-    # #We take the data and create a dataframe called SIR inputs. It checks out by total cases, total population, and average doubling rate
-    # ActiveCases<-rev(CovidCounties)[1:7]
-    # ActiveCases<-data.frame(CovidCounties[,1:4],ActiveCases[,1], IncludedCounties$Population, CountyDataTable$`Case Doubling Rate (days)`)
-    # colnames(ActiveCases)<-c("CountyFIPS","CountyName","State","StateFIPS","CurrentCases", "Population", "Doubling Rate")
-    # SIRinputs<-data.frame(sum(ActiveCases$CurrentCases),sum(ActiveCases$Population), mean(ActiveCases$`Doubling Rate`))
-    # colnames(SIRinputs)<-c("cases","pop","doubling")
-    
+
     colnames(IHME_Data)<-c("ForecastDate", "Expected Fatalities", "Lower Estimate","Upper Estimate")
     IHME_Data$ID<-rep("IHME",nrow(IHME_Data))
-    colnames(UT_Data)<-c("ForecastDate", "Expected Fatalities", "Lower Estimate","Upper Estimate")
-    UT_Data$ID<-rep("UT",nrow(UT_Data))
     YYG_Data$ID<-rep("YYG",nrow(YYG_Data)) 
-    LANL_Data$ID<-rep("LANL",nrow(LANL_Data))
-    
+    LANL_Data$ID<-rep("LANL",nrow(LANL_Data))    
     OverlayData<-rbind(IHME_Data,LANL_Data)
     OverlayData<-rbind(OverlayData,YYG_Data)
-    OverlayData<-rbind(OverlayData,UT_Data)    
-    OverlayData<-rbind(OverlayData,CU20x10PSD_State)
-    OverlayData<-rbind(OverlayData,CU20x5PSD_State)
-    OverlayData<-rbind(OverlayData,CU20w10PSD_State)
-    OverlayData<-rbind(OverlayData,CU20w5PSD_State)
-    OverlayData<-rbind(OverlayData,DPT1)
-    OverlayData<-rbind(OverlayData,DPT2)    
-    OverlayData<-rbind(OverlayData,Army_State)      
+    
+    
+    if (CONUSSelect == "CONUS"){     
+        
+        # Apply ratio's to UT data
+        UT_Region <- UT_State
+        UT_Region$daily_deaths_est = round(UT_State$daily_deaths_est*PopRatio)
+        UT_Region$daily_deaths_90CI_lower = round(UT_State$daily_deaths_95CI_lower*PopRatio)
+        UT_Region$daily_deaths_90CI_upper = round(UT_State$daily_deaths_95CI_upper*PopRatio)
+        UT_Data<-data.frame(UT_Region$date,UT_Region$daily_deaths_est, UT_Region$daily_deaths_95CI_lower, UT_Region$daily_deaths_95CI_upper)
+      
+        #For DTRA Data, multiply number of cases by projected hospitalization rate
+        DPT1<-data.frame(DPT1$ForecastDate,DPT1$'Expected Hospitalizations'*.0025,DPT1$'Lower Estimate'*.0025,DPT1$'Upper Estimate'*.0025,DPT1$ID)
+        DPT2<-data.frame(DPT2$ForecastDate,DPT2$'Expected Hospitalizations'*.0025,DPT2$'Lower Estimate'*.0025,DPT2$'Upper Estimate'*.0025,DPT2$ID)       
+        colnames(DPT1)<-c("ForecastDate", "Expected Fatalities", "Lower Estimate","Upper Estimate","ID")
+        colnames(DPT2)<-c("ForecastDate", "Expected Fatalities", "Lower Estimate","Upper Estimate","ID")   
+        
+        Army_State<-dplyr::filter(Army_State,FIPS %in% IncludedCounties$FIPS)    
+        Army_State<-subset(Army_State, select=-c(Location,County,Susceptible,Exposed,Removed,Infected,State,number))    
+        Army_State$Date <- as.Date(Army_State$ForecastDate, "%m/%d/%y")
+        Army_State<-dplyr::filter(Army_State,ForecastDate >= Sys.Date())
+        Army_State<-aggregate(Army_State[,sapply(Army_State,is.numeric)],Army_State["ForecastDate"],sum)
+        Army_State<-Army_State[1:DaysProjected,]
+        Army_State<-data.frame(Army_State$ForecastDate,Army_State$Fatalities*.0025,Army_State$Fatalities*.0025*.75,Army_State$Fatalities*.0025*1.25)
+        colnames(Army_State)<-c("ForecastDate","Expected Fatalities","Lower Estimate","Upper Estimate")
+        Army_State$ID<-rep("CAA",nrow(Army_State))    
+        
+        CU20x10PSD_State<-dplyr::filter(CU20_1x10PSD,fips %in% IncludedCounties$FIPS)
+        CU20x5PSD_State<-dplyr::filter(CU20_1x5PSD,fips %in% IncludedCounties$FIPS)
+        CU20w10PSD_State<-dplyr::filter(CU20_w10PSD,fips %in% IncludedCounties$FIPS)
+        CU20w5PSD_State<-dplyr::filter(CU20_w5PSD,fips %in% IncludedCounties$FIPS) 
+        
+        CU20x10PSD_State<-subset(CU20x10PSD_State, select=-c(hosp_need_25,hosp_need_50,hosp_need_75))
+        CU20x5PSD_State<-subset(CU20x5PSD_State, select=-c(hosp_need_25,hosp_need_50,hosp_need_75))   
+        CU20w10PSD_State<-subset(CU20w10PSD_State, select=-c(hosp_need_25,hosp_need_50,hosp_need_75))
+        CU20w5PSD_State<-subset(CU20w5PSD_State, select=-c(hosp_need_25,hosp_need_50,hosp_need_75))   
+        
+        CU20x10PSD_State$Date <- as.Date(CU20x10PSD_State$Date, "%m/%d/%y")
+        CU20x5PSD_State$Date <- as.Date(CU20x5PSD_State$Date, "%m/%d/%y")
+        CU20w10PSD_State$Date <- as.Date(CU20w10PSD_State$Date, "%m/%d/%y")
+        CU20w5PSD_State$Date <- as.Date(CU20w5PSD_State$Date, "%m/%d/%y") 
+        
+        CU20x10PSD_State<-dplyr::filter(CU20x10PSD_State,Date >= Sys.Date())
+        CU20x5PSD_State<-dplyr::filter(CU20x5PSD_State,Date >= Sys.Date())      
+        CU20w10PSD_State<-dplyr::filter(CU20w10PSD_State,Date >= Sys.Date())
+        CU20w5PSD_State<-dplyr::filter(CU20w5PSD_State,Date >= Sys.Date())
+        
+        CU20x10PSD_State<-aggregate(CU20x10PSD_State[,sapply(CU20x10PSD_State,is.numeric)],CU20x10PSD_State["Date"],sum)
+        CU20x5PSD_State<-aggregate(CU20x5PSD_State[,sapply(CU20x5PSD_State,is.numeric)],CU20x5PSD_State["Date"],sum)
+        CU20w10PSD_State<-aggregate(CU20w10PSD_State[,sapply(CU20w10PSD_State,is.numeric)],CU20w10PSD_State["Date"],sum)
+        CU20w5PSD_State<-aggregate(CU20w5PSD_State[,sapply(CU20w5PSD_State,is.numeric)],CU20w5PSD_State["Date"],sum)  
+        
+        CU20x10PSD_State<-CU20x10PSD_State[1:DaysProjected,]
+        CU20x5PSD_State<-CU20x5PSD_State[1:DaysProjected,]
+        CU20w10PSD_State<-CU20w10PSD_State[1:DaysProjected,]
+        CU20w5PSD_State<-CU20w5PSD_State[1:DaysProjected,]
+        
+        CU20x10PSD_State <- data.frame(CU20x10PSD_State$Date,CU20x10PSD_State$death_50,CU20x10PSD_State$death_25,CU20x10PSD_State$death_75)
+        CU20x5PSD_State <- data.frame(CU20x5PSD_State$Date,CU20x5PSD_State$death_50,CU20x5PSD_State$death_25,CU20x5PSD_State$death_75)
+        CU20w10PSD_State <- data.frame(CU20w10PSD_State$Date,CU20w10PSD_State$death_50,CU20w10PSD_State$death_25,CU20w10PSD_State$death_75)
+        CU20w5PSD_State <- data.frame(CU20w5PSD_State$Date,CU20w5PSD_State$death_50,CU20w5PSD_State$death_25,CU20w5PSD_State$death_75)      
+        
+        colnames(CU20x10PSD_State)<-c("ForecastDate","Expected Fatalities","Lower Estimate","Upper Estimate")
+        CU20x10PSD_State$ID<-rep("CU20SCx10",nrow(CU20x10PSD_State))
+        colnames(CU20x5PSD_State)<-c("ForecastDate","Expected Fatalities","Lower Estimate","Upper Estimate")
+        CU20x5PSD_State$ID<-rep("CU20SCx5",nrow(CU20x5PSD_State))
+        colnames(CU20w10PSD_State)<-c("ForecastDate","Expected Fatalities","Lower Estimate","Upper Estimate")
+        CU20w10PSD_State$ID<-rep("CU20SCw10",nrow(CU20w10PSD_State))
+        colnames(CU20w5PSD_State)<-c("ForecastDate","Expected Fatalities","Lower Estimate","Upper Estimate")
+        CU20w5PSD_State$ID<-rep("CU20SCw5",nrow(CU20w5PSD_State))      
+        
+        DeathCounties<-subset(CovidDeaths, CountyFIPS %in% IncludedCounties$FIPS)
+        CaseRate <- subset(CovidConfirmedCasesRate, CountyFIPS %in% IncludedCounties$FIPS)
+        CountyDataTable<-cbind(IncludedCounties,rev(CovidCounties)[,1],rev(DeathCounties)[,1],rev(CaseRate)[,1])
+        CountyDataTable<-data.frame(CountyDataTable$State,CountyDataTable$County,CountyDataTable$Population, rev(CountyDataTable)[,3], rev(CountyDataTable)[,2],rev(CountyDataTable)[,1])
+        colnames(CountyDataTable)<-c("State","County","Population","Total Confirmed Cases","Total Fatalities", "Case Doubling Rate (days)" )
+    
+        #Cleaning it up to input into the SEIAR model, we include countyFIPS, CountyName, State, State FIPS, number of cases, population, and doubling rate
+        #We take the data and create a dataframe called SIR inputs. It checks out by total cases, total population, and average doubling rate
+        ActiveCases<-rev(CovidCounties)[1:7]
+        ActiveCases<-data.frame(CovidCounties[,1:4],ActiveCases[,1], IncludedCounties$Population, CountyDataTable$`Case Doubling Rate (days)`)
+        colnames(ActiveCases)<-c("CountyFIPS","CountyName","State","StateFIPS","CurrentCases", "Population", "Doubling Rate")
+        SIRinputs<-data.frame(sum(ActiveCases$CurrentCases),sum(ActiveCases$Population), mean(ActiveCases$`Doubling Rate`))
+        colnames(SIRinputs)<-c("cases","pop","doubling")
+        
+        colnames(UT_Data)<-c("ForecastDate", "Expected Fatalities", "Lower Estimate","Upper Estimate")
+        UT_Data$ID<-rep("UT",nrow(UT_Data))
+    
+        OverlayData<-rbind(OverlayData,UT_Data)    
+        OverlayData<-rbind(OverlayData,CU20x10PSD_State)
+        OverlayData<-rbind(OverlayData,CU20x5PSD_State)
+        OverlayData<-rbind(OverlayData,CU20w10PSD_State)
+        OverlayData<-rbind(OverlayData,CU20w5PSD_State)
+        OverlayData<-rbind(OverlayData,DPT1)
+        OverlayData<-rbind(OverlayData,DPT2)    
+        OverlayData<-rbind(OverlayData,Army_State)      
+    }
     
     #Next we use the calculated values, along with estimated values from the Estimated Values. 
     #The only input we want from the user is the social distancing rate. For this example, we just use 0.5
-    # cases<-SIRinputs$cases
-    # pop<-SIRinputs$pop
-    # doubling<-8
-    # 
-    # SD <- c(27,23,19,15,12,8,4)
-    # sdrow<-length(SD)
-    # for (j in 1:sdrow){
-    #   socialdistancing<-SD[j]
-    #   ####################################################################################
-    #   #Mean Estimate
-    #   #Established Variables at the start for every county or populations
-    #   Ro<-2.5
-    #   incubationtime<-5
-    #   latenttime<-2
-    #   recoverydays<-14
-    #   hospitalizationrate<-5
-    #   icurate<-6
-    #   ventilatorrate<-3
-    #   hospitaltime<-3.5
-    #   icutime<-4
-    #   ventilatortime<-7
-    #   daysforecasted<-120          
-    #   #Established Variables at the start for every county or populations
-    #   #Now we throw the values above into the SEIAR model, and we create dates for the number of days we decided to forecast as well (place holder for now).
-    #   #With the outputs, we grab the daily hospitalized people and the cumulative hospitalizations. Then we name the columns
-    #   SEIARProj<-SEIAR_Model_Run(cases, pop, incubationtime, latenttime,doubling,recoverydays,
-    #                              socialdistancing,hospitalizationrate, icurate,ventilatorrate,hospitaltime,icutime,
-    #                              ventilatortime,daysforecasted,Ro, .5)
-    #   
-    #   MyDates<-seq(Sys.Date()-(length(CovidCounties)-80), length=daysforecasted, by="1 day")
-    #   DailyData<-data.frame(MyDates, SEIARProj$sir$hos_add)
-    #   TotalData<-data.frame(MyDates, SEIARProj$sir$hos_cum)
-    #   colnames(DailyData)<-c("ForecastDate", "Expected Daily Cases")
-    #   colnames(TotalData)<-c("ForecastDate", "Total Daily Cases")
-    #   
-    #   ####################################################################################
-    #   #Lower Estimate
-    #   #Established Variables at the start for every county or populations
-    #   Ro<-2.5
-    #   incubationtime<-5
-    #   latenttime<-2
-    #   recoverydays<-14
-    #   hospitalizationrate<-5
-    #   icurate<-6
-    #   ventilatorrate<-3
-    #   hospitaltime<-3.5
-    #   icutime<-4
-    #   ventilatortime<-7          
-    #   #Established Variables at the start for every county or populations
-    #   #Now we throw the values above into the SEIAR model, and we create dates for the number of days we decided to forecast as well (place holder for now).
-    #   #With the outputs, we grab the daily hospitalized people and the cumulative hospitalizations. Then we name the columns
-    #   SEIARProj<-SEIAR_Model_Run(cases, pop, incubationtime, latenttime,doubling,recoverydays, 
-    #                              socialdistancing,hospitalizationrate, icurate,ventilatorrate,hospitaltime,
-    #                              icutime,ventilatortime,daysforecasted,Ro, .5)
-    #   
-    #   DailyData<-data.frame(DailyData, SEIARProj$sir$hos_add)
-    #   TotalData<-data.frame(TotalData, SEIARProj$sir$hos_cum)
-    #   colnames(DailyData)<-c("ForecastDate", "Expected Daily Cases","Minimum Daily Cases")
-    #   colnames(TotalData)<-c("ForecastDate", "Total Daily Cases", "Minimum Total Cases")
-    #   
-    #   ####################################################################################
-    #   #Upper Estimate
-    #   #Established Variables at the start for every county or populations
-    #   Ro<-2.5
-    #   incubationtime<-5
-    #   latenttime<-2
-    #   recoverydays<-14
-    #   hospitalizationrate<-5.5
-    #   icurate<-6
-    #   ventilatorrate<-3
-    #   hospitaltime<-3.5
-    #   icutime<-4
-    #   ventilatortime<-7          
-    #   #Next we use the calculated values, along with estimated values from the Estimated Values. 
-    #   #Established Variables at the start for every county or populations
-    #   
-    #   #Now we throw the values above into the SEIAR model, and we create dates for the number of days we decided to forecast as well (place holder for now).
-    #   #With the outputs, we grab the daily hospitalized people and the cumulative hospitalizations. Then we name the columns
-    #   SEIARProj<-SEIAR_Model_Run(cases, pop, incubationtime, latenttime,doubling,recoverydays,
-    #                              socialdistancing,hospitalizationrate, icurate,ventilatorrate,hospitaltime,
-    #                              icutime,ventilatortime,daysforecasted,Ro, .5)
-    #   
-    #   DailyData<-data.frame(DailyData, SEIARProj$sir$hos_add)
-    #   TotalData<-data.frame(TotalData, SEIARProj$sir$hos_cum)
-    #   colnames(DailyData)<-c("ForecastDate", "Expected Fatalities","Lower Estimate","Upper Estimate")
-    #   colnames(TotalData)<-c("ForecastDate", "Total Daily Cases", "Lower Estimate","Upper Estimate")
-    #   
-    #   DailyData$`Expected Fatalities` <- round(DailyData$`Expected Fatalities`*(.25/5.5),0)
-    #   DailyData$`Lower Estimate` <- round(DailyData$`Lower Estimate`*(.15/4),0)
-    #   DailyData$`Upper Estimate` <- round(DailyData$`Upper Estimate`*(1/8),0)
-    #   DailyData<-DailyData[-1,]
-    #   DailyData$`Expected Fatalities`<-cumsum(DailyData$`Expected Fatalities`)
-    #   DailyData$`Lower Estimate`<-cumsum(DailyData$`Lower Estimate`)
-    #   DailyData$`Upper Estimate`<-cumsum(DailyData$`Upper Estimate`)
-    #   chimelabel<-paste("CHIME_",socialdistancing,"%_SD",sep = "")
-    #   DailyData$ID<-rep(chimelabel,nrow(DailyData))
-    #   OverlayData<-rbind(OverlayData,DailyData)
-    # }
+    cases<-SIRinputs$cases
+    pop<-SIRinputs$pop
+    doubling<-8
+    daysforecasted<- 120
+    
+    SD <- c(27,23,19,15,12,8,4)
+    sdrow<-length(SD)
+    for (j in 1:sdrow){
+      socialdistancing<-SD[j]
+      ####################################################################################
+      #Mean Estimate
+      #Established Variables at the start for every county or populations
+      Ro<-2.5
+      incubationtime<-5
+      latenttime<-2
+      recoverydays<-14
+      hospitalizationrate<-5
+      icurate<-6
+      ventilatorrate<-3
+      hospitaltime<-3.5
+      icutime<-4
+      ventilatortime<-7
+      #Established Variables at the start for every county or populations
+      #Now we throw the values above into the SEIAR model, and we create dates for the number of days we decided to forecast as well (place holder for now).
+      #With the outputs, we grab the daily hospitalized people and the cumulative hospitalizations. Then we name the columns
+      SEIARProj<-SEIAR_Model_Run(cases, pop, incubationtime, latenttime,doubling,recoverydays,
+                                 socialdistancing,hospitalizationrate, icurate,ventilatorrate,hospitaltime,icutime,
+                                 ventilatortime,daysforecasted,Ro, .5)
+
+      MyDates<-seq(Sys.Date()-(length(CovidCounties)-80), length=daysforecasted, by="1 day")
+      DailyData<-data.frame(MyDates, SEIARProj$sir$hos_add)
+      TotalData<-data.frame(MyDates, SEIARProj$sir$hos_cum)
+      colnames(DailyData)<-c("ForecastDate", "Expected Daily Cases")
+      colnames(TotalData)<-c("ForecastDate", "Total Daily Cases")
+
+      ####################################################################################
+      #Lower Estimate
+      #Established Variables at the start for every county or populations
+      Ro<-2.5
+      incubationtime<-5
+      latenttime<-2
+      recoverydays<-14
+      hospitalizationrate<-5
+      icurate<-6
+      ventilatorrate<-3
+      hospitaltime<-3.5
+      icutime<-4
+      ventilatortime<-7
+      #Established Variables at the start for every county or populations
+      #Now we throw the values above into the SEIAR model, and we create dates for the number of days we decided to forecast as well (place holder for now).
+      #With the outputs, we grab the daily hospitalized people and the cumulative hospitalizations. Then we name the columns
+      SEIARProj<-SEIAR_Model_Run(cases, pop, incubationtime, latenttime,doubling,recoverydays,
+                                 socialdistancing,hospitalizationrate, icurate,ventilatorrate,hospitaltime,
+                                 icutime,ventilatortime,daysforecasted,Ro, .5)
+
+      DailyData<-data.frame(DailyData, SEIARProj$sir$hos_add)
+      TotalData<-data.frame(TotalData, SEIARProj$sir$hos_cum)
+      colnames(DailyData)<-c("ForecastDate", "Expected Daily Cases","Minimum Daily Cases")
+      colnames(TotalData)<-c("ForecastDate", "Total Daily Cases", "Minimum Total Cases")
+
+      ####################################################################################
+      #Upper Estimate
+      #Established Variables at the start for every county or populations
+      Ro<-2.5
+      incubationtime<-5
+      latenttime<-2
+      recoverydays<-14
+      hospitalizationrate<-5.5
+      icurate<-6
+      ventilatorrate<-3
+      hospitaltime<-3.5
+      icutime<-4
+      ventilatortime<-7
+      #Next we use the calculated values, along with estimated values from the Estimated Values.
+      #Established Variables at the start for every county or populations
+
+      #Now we throw the values above into the SEIAR model, and we create dates for the number of days we decided to forecast as well (place holder for now).
+      #With the outputs, we grab the daily hospitalized people and the cumulative hospitalizations. Then we name the columns
+      SEIARProj<-SEIAR_Model_Run(cases, pop, incubationtime, latenttime,doubling,recoverydays,
+                                 socialdistancing,hospitalizationrate, icurate,ventilatorrate,hospitaltime,
+                                 icutime,ventilatortime,daysforecasted,Ro, .5)
+
+      DailyData<-data.frame(DailyData, SEIARProj$sir$hos_add)
+      TotalData<-data.frame(TotalData, SEIARProj$sir$hos_cum)
+      colnames(DailyData)<-c("ForecastDate", "Expected Fatalities","Lower Estimate","Upper Estimate")
+      colnames(TotalData)<-c("ForecastDate", "Total Daily Cases", "Lower Estimate","Upper Estimate")
+
+      DailyData$`Expected Fatalities` <- round(DailyData$`Expected Fatalities`*(.25/5.5),0)
+      DailyData$`Lower Estimate` <- round(DailyData$`Lower Estimate`*(.15/4),0)
+      DailyData$`Upper Estimate` <- round(DailyData$`Upper Estimate`*(1/8),0)
+      DailyData<-DailyData[-1,]
+      DailyData$`Expected Fatalities`<-cumsum(DailyData$`Expected Fatalities`)
+      DailyData$`Lower Estimate`<-cumsum(DailyData$`Lower Estimate`)
+      DailyData$`Upper Estimate`<-cumsum(DailyData$`Upper Estimate`)
+      chimelabel<-paste("CHIME_",socialdistancing,"%_SD",sep = "")
+      DailyData$ID<-rep(chimelabel,nrow(DailyData))
+      OverlayData<-rbind(OverlayData,DailyData)
+    }
     
     colnames(HistoricalData)<-c("ForecastDate", "Expected Fatalities", "Lower Estimate","Upper Estimate")
     HistoricalData$ID<-rep("Past Data", nrow(HistoricalData))
