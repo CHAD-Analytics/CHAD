@@ -359,11 +359,11 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
       colnames(DailyData)<-c("ForecastDate", "Expected Hospitalizations")
       colnames(TotalData)<-c("ForecastDate", "Total Daily Cases")
 
-      CHIMEPeak<-round(max(DailyData$`Expected Hospitalizations`[1:DaysProjected]))
-      PeakDate<-which.max(DailyData$`Expected Hospitalizations`[1:DaysProjected])
-      PeakDate<-format(DailyData$ForecastDate[PeakDate], format="%b-%d")
-      PeakDates<-rbind(PeakDates,PeakDate)
-      PeakValues<-rbind(PeakValues,CHIMEPeak)
+      # CHIMEPeak<-round(max(DailyData$`Expected Hospitalizations`[1:DaysProjected]))
+      # PeakDate<-which.max(DailyData$`Expected Hospitalizations`[1:DaysProjected])
+      # PeakDate<-format(DailyData$ForecastDate[PeakDate], format="%b-%d")
+      # PeakDates<-rbind(PeakDates,PeakDate)
+      # PeakValues<-rbind(PeakValues,CHIMEPeak)
       ####################################################################################
       #Lower Estimate
       #Established Variables at the start for every county or populations
