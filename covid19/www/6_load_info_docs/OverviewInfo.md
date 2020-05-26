@@ -1,13 +1,3 @@
-### About CHAD
-
-The Air Force Institute of Technology (AFIT) COVID-19 Health Assessment Dashboard (CHAD)
-was designed and developed by March 2020 graduates of the Department of Operational Sciences.
-The CHAD Dashboard is being used amongst many tools to help the Department of the Air Force make
-more informed decisions. No one tool should be used out of context to understand the scope of the
-COVID-19 pandemic. It is important to note many variables and assumptions have been made to develop
-this tool to help understand a few of the many planning considerations as the Department of the 
-Air Force seeks to support our Nation, Airmen, and Families.
-
 ### What is CHAD?
 
 CHAD was designed to give leaders across the Department of the Air Force
@@ -17,6 +7,12 @@ the result of rapid response efforts to address the escalating fight
 against COVID-19. Up-to-date pandemic information automatically updates
 daily through various open source datasets listed in the *Sources* info
 panel and model projections described in the *Projections* info panel.
+
+The CHAD Dashboard is being used amongst many tools to help the Department of the Air Force make
+more informed decisions. No one tool should be used out of context to understand the scope of the
+COVID-19 pandemic. It is important to note many variables and assumptions have been made to develop
+this tool to help understand a few of the many planning considerations as the Department of the 
+Air Force seeks to support our Nation, Airmen, and Families.
 
 ### How Can I Use CHAD?
 
@@ -37,10 +33,6 @@ info panel (for the National Summary and Current Local Health tabs) and
 the *Projections* info panel (for the Projections tabs)
 
 When using the model projections, it is important to keep in mind that these are based on models with multiple parameters and **subject to considerable uncertainty**.  Additionally, reasonable parameter values will vary locally and over time subject to changes in mitigation behavior (e.g. social distancing) and other factors.  Read more in the *Projections* info panel and reach out to the designated A9 representative for your MAJCOM for additional support and assistance.
-
-**Download a comprehensive report** of the information diplayed on the
-dashboard by clicking the *Generate Report* button at the bottom of the
-left sidebar.
 
 ### Supporting Agencies
 Various agencies were involved to launch CHAD. The design and development of CHAD was sponsored by the Air Force Institute of Technology (AFIT), who was critical in ensuring appropriate contacts and collaborations were successful. Additional collaboration was conducted with Army Futures Command in developing model projections.
