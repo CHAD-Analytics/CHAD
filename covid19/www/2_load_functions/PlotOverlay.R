@@ -453,21 +453,27 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
 
     #Get data for counties with covid cases. We want number of cases, the rate of the cases and maybe other data.
     #We include State, county, population in those counties, cases, fatalities, doubling rate
-    CovidCounties<-subset(CovidConfirmedCases, CountyFIPS %in% IncludedCounties$FIPS)
-    CovidDeathHist<-subset(CovidDeaths, CountyFIPS %in% IncludedCounties$FIPS)
-    if (nrow(CovidCountiesHospRate) != 0){
-      HistoricalData<-colSums(CovidDeathHist[,5:length(CovidDeathHist)])
-      HistoricalDates<-seq(as.Date("2020-01-22"), length=length(HistoricalData), by="1 day")
-      HistoricalData<-data.frame(HistoricalDates, HistoricalData, HistoricalData, HistoricalData)
-      colnames(HistoricalData)<-c("ForecastDate", "Expected Fatalities", "Lower Estimate","Upper Estimate")
-    } else {
-      HistoricalDataHosp<-colSums(HistoricalDataDaily*.0025)
-      #Create dataframe to hold daily hospitalizations
-      HistoricalDates<-seq(as.Date("2020-01-22"), length=length(HistoricalData), by="1 day")
-      HistoricalData<-data.frame(HistoricalDates, HistoricalData, HistoricalData, HistoricalData)
-      colnames(HistoricalData)<-c("ForecastDate", "Expected Fatalities", "Lower Estimate","Upper Estimate")
-    }    
     
+    
+    #############  This looks like repetitive code ################
+    
+    # CovidCounties<-subset(CovidConfirmedCases, CountyFIPS %in% IncludedCounties$FIPS)
+    # CovidDeathHist<-subset(CovidDeaths, CountyFIPS %in% IncludedCounties$FIPS)
+    
+    # if (nrow(CovidDeathHist) != 0){
+    #   HistoricalData<-colSums(CovidDeathHist[,5:length(CovidDeathHist)])
+    #   HistoricalDates<-seq(as.Date("2020-01-22"), length=length(HistoricalData), by="1 day")
+    #   HistoricalData<-data.frame(HistoricalDates, HistoricalData, HistoricalData, HistoricalData)
+    #   colnames(HistoricalData)<-c("ForecastDate", "Expected Fatalities", "Lower Estimate","Upper Estimate")
+    # } else {
+    #   HistoricalDataHosp<-colSums(HistoricalDataDaily*.0025)
+    #   #Create dataframe to hold daily hospitalizations
+    #   HistoricalDates<-seq(as.Date("2020-01-22"), length=length(HistoricalData), by="1 day")
+    #   HistoricalData<-data.frame(HistoricalDates, HistoricalData, HistoricalData, HistoricalData)
+    #   colnames(HistoricalData)<-c("ForecastDate", "Expected Fatalities", "Lower Estimate","Upper Estimate")
+    # }    
+    
+    ###############################################################
          
     #Get data for counties with covid cases. We want number of cases, the rate of the cases and maybe other data.
     #We include State, county, population in those counties, cases, fatalities, doubling rate
