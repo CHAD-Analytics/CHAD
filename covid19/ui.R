@@ -153,6 +153,11 @@ ui <- tagList(
                                                                           "Choose your base:",
                                                                           list(`Status` = BaseListP),
                                                                           selected = c("Eglin Air Force Base")),
+                                                              sliderInput("Radius",
+                                                                          "Choose your local radius (miles):",
+                                                                          min = 10,
+                                                                          max = 100,
+                                                                          value = 50)  
                                               ),
                                              
                                              conditionalPanel(condition="input.tabselected==3",
@@ -172,11 +177,6 @@ ui <- tagList(
                                                               radioButtons("StatisticType", "Choose projected statistic:",
                                                                            c("Hospitalizations"="Hospitalizations",
                                                                              "Fatalities"="Fatalities")),
-                                                              sliderInput("Radius",
-                                                                          "Choose your local radius (miles):",
-                                                                          min = 10,
-                                                                          max = 100,
-                                                                          value = 50),                                                              
                                                               sliderInput("proj_days",
                                                                           "Projection days:",
                                                                           min = 7,
