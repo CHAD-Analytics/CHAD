@@ -31,7 +31,7 @@ currCount = 0
 
 AFrow = nrow(AFBaseLocations)
 
-MTFSummaryReport <- setNames(data.frame(matrix(ncol = 6, nrow = 0)),c("Installation","MAJCOM","State","50MileTotalCases","50MileCasesPer1000","50MileDblRate"))
+MTFSummaryReport <- setNames(data.frame(matrix(ncol = 7, nrow = 0)),c("Installation","MAJCOM","State","50MileTotalCases","50MileNewCases","50MileCasesPer1000","50MileDblRate"))
 
 ForecastDataTable <- setNames(data.frame(matrix(ncol = 37, nrow = 0)),c("Installation","MAJCOM","State","Available Beds","Hopitalization Per 100,000", "Hopitalization Per 10,000", "New Hospitalizations",
                                                                         "7D IHME Forecast","7D IHME Peak","7D IHME Peak Date","7D SEIAR Forecast","7D SEIAR Peak","7D SEIAR Peak Date",
@@ -158,8 +158,8 @@ for (i in 2:AFrow){
   
   if(nrow(IHME_Region) == 0 || TotPop == 0){
     
-    MTFDF <- data.frame(AFBaseLocations$Base[i],AFBaseLocations$`Major Command`[i],AFBaseLocations$State[i],0,0,0)
-    names(MTFDF)<-c("Installation","MAJCOM","State","50MileTotalCases","50MileCasesPer1000","50MileDblRate")
+    MTFDF <- data.frame(AFBaseLocations$Base[i],AFBaseLocations$`Major Command`[i],AFBaseLocations$State[i],0,0,0,0)
+    names(MTFDF)<-c("Installation","MAJCOM","State","50MileTotalCases","50MileNewCases","50MileCasesPer1000","50MileDblRate")
     
     NewDF <- data.frame(AFBaseLocations$Base[i],AFBaseLocations$`Major Command`[i],AFBaseLocations$State[i],0,0,0,0,0,0,0,0,0,0,
                         0,0,0,0,0,0,
@@ -190,6 +190,11 @@ for (i in 2:AFrow){
     
     CHIME_Local = dplyr::filter(CHIME_All, Base == base)
     CHIME_Local = dplyr::filter(CHIME_Local, ForecastDate > Sys.Date())
+    
+    doubling<-as.integer(CaseDblRate(MyCounties))
+    # if (doubling == 0) {
+    #   doubling <- as.integer(40)
+    # }
     
     ########################################################################################
     SevDayVal<-round(CHIME_Local$`Expected Hospitalizations`[7])
@@ -307,8 +312,8 @@ for (i in 2:AFrow){
     
     ########################################################################################
     
-    MTFDF <- data.frame(AFBaseLocations$Base[i],AFBaseLocations$`Major Command`[i],AFBaseLocations$State[i],TotalCases,CasesPer1000)#,doubling)
-    names(MTFDF)<-c("Installation","MAJCOM","State","50MileTotalCases","50MileCasesPer1000")#,"50MileDblRate")
+    MTFDF <- data.frame(AFBaseLocations$Base[i],AFBaseLocations$`Major Command`[i],AFBaseLocations$State[i],TotalCases,NewCases,CasesPer1000,doubling)
+    names(MTFDF)<-c("Installation","MAJCOM","State","50MileTotalCases","50MileNewCases","50MileCasesPer1000","50MileDblRate")
     MTFSummaryReport <- rbind(MTFSummaryReport,MTFDF)    
     
     NewDF <- data.frame(AFBaseLocations$Base[i],AFBaseLocations$`Major Command`[i],AFBaseLocations$State[i],round(TotalBedsCounty*(1-baseUtlz)), HospitalizationsPer100000, HospitalizationsPer10000, NewHospitalizations,
@@ -525,6 +530,11 @@ for (i in 2:AFrow){
     ForecastDataTableOneMile <- rbind(ForecastDataTableOneMile,NewDF)
   }else{ 
     
+    doubling<-as.integer(CaseDblRate(MyCounties))
+    # if (doubling == 0) {
+    #   doubling <- as.integer(40)
+    # }    
+    
     CHIME_Local = dplyr::filter(CHIME_All_1mile, Base == base)
     CHIME_Local = dplyr::filter(CHIME_Local, ForecastDate > Sys.Date())
        
@@ -623,8 +633,8 @@ for (i in 2:AFrow){
     PID4Cases<-format(PID4, format="%b-%d")
     ########################################################################################
 
-    MTFDF <- data.frame(AFBaseLocations$Base[i],AFBaseLocations$`Major Command`[i],AFBaseLocations$State[i],TotalCases)#,doubling)
-    names(MTFDF)<-c("Installation","MAJCOM","State","TotalCases")#,"DblRate")
+    MTFDF <- data.frame(AFBaseLocations$Base[i],AFBaseLocations$`Major Command`[i],AFBaseLocations$State[i],TotalCases,doubling)
+    names(MTFDF)<-c("Installation","MAJCOM","State","TotalCases","DblRate")
     MTFSummaryReport2 <- rbind(MTFSummaryReport2,MTFDF)       
         
     NewDF <- data.frame(AFBaseLocations$Base[i],AFBaseLocations$`Major Command`[i],AFBaseLocations$State[i],round(TotalBedsCounty*(1-baseUtlz)), HospitalizationsPer100000, HospitalizationsPer10000, NewHospitalizations,

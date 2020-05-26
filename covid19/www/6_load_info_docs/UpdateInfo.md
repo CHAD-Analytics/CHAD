@@ -1,11 +1,12 @@
 ### What's new in CHAD
 
-**CHAD Version 10.1** includes these additional features:
+**CHAD Version 10.2** includes these additional features:
 
 -   Added OCONUS projections from IHME, YYG, LANL, and CHIME models onto Local Projection Tab
 -   OCONUS projections for IHME and CHIME included on MAJCOM summary tab
--   Inproved application load times
+-   Improved application load times
 -   Added additional continental mapping features
+-   Updated DTRA models
 
 Previous Updates
 -   Added installations representing all service branches

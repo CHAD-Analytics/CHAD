@@ -1033,8 +1033,9 @@ server <- function(input, output,session) {
     if(input$selectall2 == 0) return(NULL) 
     else if (input$selectall2%%2 == 0)
     {
-      updateCheckboxGroupInput(session,"ModelSelectionValue2","Forecasting Model(s): ",choices=c("DTRA 1 - Relaxed SD"="DTRA1",
-                                                                                                "DTRA 2 - Relaxed SD w/ Testing"="DTRA2",
+      updateCheckboxGroupInput(session,"ModelSelectionValue2","Forecasting Model(s): ",choices=c("DTRA 1 - Current Response"="DTRA1",
+                                                                                                 "DTRA 2 - Improved Response"="DTRA2", 
+                                                                                                 "DTRA 3 - Worst Case"="DTRA3",
                                                                                                 "CHIME (University of Pennsylvania): SC+NE+SD"="CHIME1",
                                                                                                 "CHIME: NE+SD"="CHIME2",
                                                                                                 "CHIME: SC+SD"="CHIME3",                                                                
@@ -1048,8 +1049,9 @@ server <- function(input, output,session) {
     }
     else
     {
-      updateCheckboxGroupInput(session,"ModelSelectionValue2","Forecasting Model(s):",choices=c("DTRA 1 - Relaxed SD"="DTRA1",
-                                                                                               "DTRA 2 - Relaxed SD w/ Testing"="DTRA2", 
+      updateCheckboxGroupInput(session,"ModelSelectionValue2","Forecasting Model(s):",choices=c("DTRA 1 - Current Response"="DTRA1",
+                                                                                                "DTRA 2 - Improved Response"="DTRA2", 
+                                                                                                "DTRA 3 - Worst Case"="DTRA3", 
                                                                                                "CHIME (University of Pennsylvania): SC+NE+SD"="CHIME1",
                                                                                                "CHIME: NE+SD"="CHIME2",
                                                                                                "CHIME: SC+SD"="CHIME3",                                                                
@@ -1061,8 +1063,9 @@ server <- function(input, output,session) {
                                                                                                "Columbia University: 20% SC Reduction with one time 5% increase in contact"="CU20SCx5",
                                                                                                "Columbia University: 20% SC Reduction with weekly 5% increase in contact"="CU20SCw5"),                                                                                               
                                
-                               selected=c("DTRA 1 - Relaxed SD"="DTRA1",
-                                          "DTRA 2 - Relaxed SD w/ Testing"="DTRA2", 
+                               selected=c("DTRA 1 - Current Response"="DTRA1",
+                                          "DTRA 2 - Improved Response"="DTRA2", 
+                                          "DTRA 3 - Worst Case"="DTRA3", 
                                           "CHIME (University of Pennsylvania): SC+NE+SD"="CHIME1",
                                           "CHIME: NE+SD"="CHIME2",
                                           "CHIME: SC+SD"="CHIME3",                                                                
@@ -1077,6 +1080,59 @@ server <- function(input, output,session) {
   })  
   
   
+  observe({
+    if(input$selectall3 == 0) return(NULL) 
+    else if (input$selectall3%%2 == 0)
+    {
+      updateCheckboxGroupInput(session,"ModelSelectionValue1","Forecasting Model(s): ",choices=c("IHME (University of Washington)"="IHME",
+                                                                                                 "Youyang Gu - Independent (YYG) Model"="YYG",
+                                                                                                 "CHIME: SC"="CHIME7"))
+    }
+    else
+    {
+      updateCheckboxGroupInput(session,"ModelSelectionValue1","Forecasting Model(s):",choices=c("IHME (University of Washington)"="IHME",
+                                                                                                "Youyang Gu - Independent (YYG) Model"="YYG",
+                                                                                                "CHIME: SC"="CHIME7"),                                                                                               
+                               
+                               selected=c("IHME (University of Washington)"="IHME",
+                                          "Youyang Gu - Independent (YYG) Model"="YYG",
+                                          "CHIME: SC"="CHIME7"))                                                                                    
+    }
+  })
+  
+  
+  observe({
+    if(input$selectall4 == 0) return(NULL) 
+    else if (input$selectall4%%2 == 0)
+    {
+      updateCheckboxGroupInput(session,"ModelSelectionValue2","Forecasting Model(s): ",choices=c("CHIME (University of Pennsylvania): SC+NE+SD"="CHIME1",
+                                                                                                 "CHIME: NE+SD"="CHIME2",
+                                                                                                 "CHIME: SC+SD"="CHIME3",                                                                
+                                                                                                 "CHIME: SD"="CHIME4", 
+                                                                                                 "CHIME: SC+NE"="CHIME5",
+                                                                                                 "CHIME: NE"="CHIME6",
+                                                                                                 "Los Alamos National Labs (LANL)"="LANL"))                                                                                                                                                                                                
+    }
+    else
+    {
+      updateCheckboxGroupInput(session,"ModelSelectionValue2","Forecasting Model(s):",choices=c("CHIME (University of Pennsylvania): SC+NE+SD"="CHIME1",
+                                                                                                "CHIME: NE+SD"="CHIME2",
+                                                                                                "CHIME: SC+SD"="CHIME3",                                                                
+                                                                                                "CHIME: SD"="CHIME4", 
+                                                                                                "CHIME: SC+NE"="CHIME5",
+                                                                                                "CHIME: NE"="CHIME6",
+                                                                                                "Los Alamos National Labs (LANL)"="LANL"),                                                                                               
+                               
+                               selected=c("CHIME (University of Pennsylvania): SC+NE+SD"="CHIME1",
+                                          "CHIME: NE+SD"="CHIME2",
+                                          "CHIME: SC+SD"="CHIME3",                                                                
+                                          "CHIME: SD"="CHIME4", 
+                                          "CHIME: SC+NE"="CHIME5",
+                                          "CHIME: NE"="CHIME6",
+                                          "Los Alamos National Labs (LANL)"="LANL"))                                                                                    
+    }
+  })   
+  
   
   #Overlay Projected Plots
   output$OverlayPlots<-renderPlotly({
@@ -1090,6 +1146,7 @@ server <- function(input, output,session) {
           if ("YYG" %in% input$ModelSelectionValue1){ModelID<-cbind(ModelID,"YYG")}
           if ("DTRA1" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"DTRA1")}
           if ("DTRA2" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"DTRA2")}
+          if ("DTRA3" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"DTRA3")}          
           if ("LANL" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"LANL")}
           if ("UT" %in% input$ModelSelectionValue1){ModelID<-cbind(ModelID,"UT")}
           if ("CHIME7" %in% input$ModelSelectionValue1){ModelID<-cbind(ModelID,"CHIME_4%_SD")}

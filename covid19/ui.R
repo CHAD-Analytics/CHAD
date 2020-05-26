@@ -153,11 +153,6 @@ ui <- tagList(
                                                                           "Choose your base:",
                                                                           list(`Status` = BaseListP),
                                                                           selected = c("Eglin Air Force Base")),
-                                                              sliderInput("Radius",
-                                                                          "Choose your local radius (miles):",
-                                                                          min = 10,
-                                                                          max = 100,
-                                                                          value = 50)
                                               ),
                                              
                                              conditionalPanel(condition="input.tabselected==3",
@@ -177,6 +172,11 @@ ui <- tagList(
                                                               radioButtons("StatisticType", "Choose projected statistic:",
                                                                            c("Hospitalizations"="Hospitalizations",
                                                                              "Fatalities"="Fatalities")),
+                                                              sliderInput("Radius",
+                                                                          "Choose your local radius (miles):",
+                                                                          min = 10,
+                                                                          max = 100,
+                                                                          value = 50),                                                              
                                                               sliderInput("proj_days",
                                                                           "Projection days:",
                                                                           min = 7,
@@ -204,15 +204,16 @@ ui <- tagList(
                                                                                      selected = c("")),                                            
                                                                   conditionalPanel(condition = "input.AdditionalModels== 'ShowAll'",  
                                                                                    checkboxGroupInput("ModelSelectionValue2","Forecasting Model(s): ",
-                                                                                                      c("DTRA 1 - Relaxed SD"="DTRA1",
-                                                                                                        "DTRA 2 - Relaxed SD w/ Testing"="DTRA2",
+                                                                                                      c("Los Alamos National Labs (LANL)"="LANL",
+                                                                                                        "DTRA 1 - Current Response"="DTRA1",
+                                                                                                        "DTRA 2 - Improved Response"="DTRA2", 
+                                                                                                        "DTRA 3 - Worst Case"="DTRA3",                                                                                                       
                                                                                                         "CHIME (U. of Pennsylvania): SC+NE+SD"="CHIME1",
                                                                                                         "CHIME: NE+SD"="CHIME2",
                                                                                                         "CHIME: SC+SD"="CHIME3",                                                                
                                                                                                         "CHIME: SD"="CHIME4", 
                                                                                                         "CHIME: SC+NE"="CHIME5",
                                                                                                         "CHIME: NE"="CHIME6",
-                                                                                                        "Los Alamos National Labs (LANL)"="LANL",
                                                                                                         "Columbia University: 20% SC Reduction with one time 10% increase in contact "="CU20SCx10",
                                                                                                         "Columbia University: 20% SC Reduction with one time 5% increase in contact"="CU20SCx5",
                                                                                                         "Columbia University: 20% SC Reduction with weekly 10% increase in contact"="CU20SCw10",                                                                
@@ -227,24 +228,23 @@ ui <- tagList(
                                                                                                     "Youyang Gu (YYG) Model"="YYG",
                                                                                                     "CHIME: SC"="CHIME7"),                                                                
                                                                                                   selected = c("IHME","CAA","CHIME7")),
-                                                                               actionLink("selectall1","Select All"),
+                                                                               actionLink("selectall3","Select All"),
                                                                                
                                                                                checkboxGroupInput("AdditionalModels","Additional Forecasting Model(s): ",
                                                                                                   c("Show All"="ShowAll"),
                                                                                                   selected = c("")),                                            
                                                                                conditionalPanel(condition = "input.AdditionalModels== 'ShowAll'",  
                                                                                                 checkboxGroupInput("ModelSelectionValue2","Forecasting Model(s): ",
-                                                                                                                   c("CHIME (U. of Pennsylvania): SC+NE+SD"="CHIME1",
+                                                                                                                   c("Los Alamos National Labs (LANL)"="LANL",
+                                                                                                                     "CHIME (U. of Pennsylvania): SC+NE+SD"="CHIME1",
                                                                                                                      "CHIME: NE+SD"="CHIME2",
                                                                                                                      "CHIME: SC+SD"="CHIME3",                                                                
                                                                                                                      "CHIME: SD"="CHIME4", 
                                                                                                                      "CHIME: SC+NE"="CHIME5",
-                                                                                                                     "CHIME: NE"="CHIME6",
-                                                                                                                     "Los Alamos National Labs (LANL)"="LANL",
+                                                                                                                     "CHIME: NE"="CHIME6"),
                                                                                                                    selected = c("")),
-                                                                                                actionLink("selectall2","Select All"))
-                                                                                                )
-                                                              )                                                              
+                                                                                                actionLink("selectall4","Select All"))
+                                                                                                )                                                              
                                              ),
                                              
                                              conditionalPanel(condition="input.tabselected == 5",
@@ -316,7 +316,7 @@ ui <- tagList(
                     '))),
                   tags$script(HTML('
                                    $(document).ready(function() {
-                                   $("header").find("nav").append(\'<span class="myClass"> COVID-19 Health Assessment Dashboard Beta v10.1</span>\');
+                                   $("header").find("nav").append(\'<span class="myClass"> COVID-19 Health Assessment Dashboard Beta v10.2</span>\');
                                    })
                                    ')),
                   tabsetPanel(id = "tabselected",
@@ -360,8 +360,8 @@ ui <- tagList(
                                     downloadButton('downloadFilteredData', 'Download Filtered Dataset (Table Above)'),
                                     downloadButton('HotSpotData', 'Download Hotspot Dataset: 50 Mile Radius'),
                                     downloadButton('HotSpotDataOneMile', 'Download Hotspot Dataset: Single County'),
-                                    downloadButton('MTFSummaryT', 'MTF Summary Table'),
-                                    downloadButton('MTFSummaryP', 'MTF Summary Plots'))
+                                    downloadButton('MTFSummaryT', 'MTF Summary Table'))#,
+                                    #downloadButton('MTFSummaryP', 'MTF Summary Plots'))
                                 
                               ),
                               ####### END Mission Risk #######

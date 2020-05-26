@@ -7,10 +7,10 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
   ####Uncomment to test plot function without running the app
   #i<-80
   #ChosenBase = AFBaseLocations$Base[i]
-  #CONUSSelect <- "CONUS"
-  #ChosenBase = "Vandenberg Space Force Base"
-  # CONUSSelect <- "OCONUS"
-  # ChosenBase = "Kapaun ADM"
+  # CONUSSelect <- "CONUS"
+  # ChosenBase = "Vandenberg Space Force Base"
+  # #CONUSSelect <- "OCONUS"
+  # #ChosenBase = "Andersen AFB"
   # SocialDistance = 15
   # DaysProjected = 30
   # HospitalInfo$DistanceMiles = himd[,as.character(ChosenBase)]
@@ -61,30 +61,43 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
 
   if (CONUSSelect == "CONUS"){
       Army_State <- dplyr::filter(Army_Model, State == toString(BaseState$State[1]))  
-      UT_State <- dplyr::filter(UT_Model, State == toString(BaseState$State[1]))   
+      UT_State <- dplyr::filter(UT_Model, State == toString(BaseState$State[1]))  
+      
       DPT1<-dplyr::filter(DP1,FIPS %in% IncludedCounties$FIPS)
       DPT2<-dplyr::filter(DP2,FIPS %in% IncludedCounties$FIPS)
+      DPT3<-dplyr::filter(DP3,FIPS %in% IncludedCounties$FIPS)      
       DPT1$ForecastDate <- strptime(as.character(DPT1$ForecastDate), "%m/%d/%Y")
       DPT2$ForecastDate <- strptime(as.character(DPT2$ForecastDate), "%m/%d/%Y")  
+      DPT3$ForecastDate <- strptime(as.character(DPT3$ForecastDate), "%m/%d/%Y")        
       DPT1$ForecastDate<-as.Date(DPT1$ForecastDate, "%Y-%m-%d")
       DPT2$ForecastDate<-as.Date(DPT2$ForecastDate, "%Y-%m-%d")
-      DPT1<-dplyr::filter(DPT1,(ForecastDate >= (Sys.Date()-5)))        
-      DPT2<-dplyr::filter(DPT2,(ForecastDate >= (Sys.Date()-5)))        
+      DPT3$ForecastDate<-as.Date(DPT3$ForecastDate, "%Y-%m-%d")      
+      startdate <- "2020-05-22"
+      startdate <-as.Date(startdate, "%Y-%m-%d")
+      datediff <- as.numeric(Sys.Date()-startdate)
+      DPT1<-dplyr::filter(DPT1,(ForecastDate >= (Sys.Date()-datediff)))        
+      DPT2<-dplyr::filter(DPT2,(ForecastDate >= (Sys.Date()-datediff)))        
+      DPT3<-dplyr::filter(DPT3,(ForecastDate >= (Sys.Date()-datediff)))              
       DPT1<-aggregate(DPT1[,sapply(DPT1,is.numeric)],DPT1["ForecastDate"],sum)
       DPT2<-aggregate(DPT2[,sapply(DPT2,is.numeric)],DPT2["ForecastDate"],sum)
+      DPT3<-aggregate(DPT3[,sapply(DPT3,is.numeric)],DPT3["ForecastDate"],sum)      
       DPT1<-DPT1[1:DaysProjected,]
       DPT2<-DPT2[1:DaysProjected,]
+      DPT3<-DPT3[1:DaysProjected,]      
       DPT1$ID<-rep("DTRA1",nrow(DPT1))
       DPT2$ID<-rep("DTRA2",nrow(DPT2))
+      DPT3$ID<-rep("DTRA3",nrow(DPT3))      
   } 
 
   
   if (StatisticType == "Hospitalizations") {
 
+    OverlayData <- setNames(data.frame(matrix(ncol = 5, nrow = 0)),c("ForecastDate", "Expected Hospitalizations", "Lower Estimate","Upper Estimate","ID"))
+    
     if (CONUSSelect == "CONUS"){
-        LANL_State <- dplyr::filter(LANLC_Data, State == toString(BaseState$State[1])) 
+        LANL_State <- dplyr::filter(LANLC_Data, State == toString(BaseState$State[1]))
     } else {
-        LANL_State <- dplyr::filter(LANLGC_Data, countries == toString(BaseState$Country[1])) 
+        LANL_State <- dplyr::filter(LANLGC_Data, countries == toString(BaseState$Country[1]))
     }
     #Get covid cases and hospitalization rates for county
     CovidCounties<-subset(CovidConfirmedCases, CountyFIPS %in% IncludedCounties$FIPS)
@@ -110,33 +123,6 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
     }
     
     currHosp = HistoricalData[nrow(HistoricalData),2]
-    
-    # Apply ratio's to YYG Data
-    # Multiple cases by 5.5% to estimate number of hospitalizations
-    YYG_Region <- YYG_State
-    YYG_Region$predicted_new_infected_mean = round(YYG_State$predicted_new_infected_mean*PopRatio)
-    YYG_Region$predicted_new_infected_lower = round(YYG_State$predicted_new_infected_lower*PopRatio)
-    YYG_Region$predicted_new_infected_upper = round(YYG_State$predicted_new_infected_upper*PopRatio)
-    YYG_Data<-data.frame(YYG_Region$date,YYG_Region$predicted_new_infected_mean*.055,YYG_Region$predicted_new_infected_lower*.055,YYG_Region$predicted_new_infected_upper*.055)
-    colnames(YYG_Data)<-c("ForecastDate", "Expected Hospitalizations", "Lower Estimate","Upper Estimate")
-    
-    # Apply ratio's to LANL Data
-    # Multiple cases by 5.5% to estimate number of hospitalizations
-    LANL_Region <- LANL_State
-    LANL_Region$q.25 = round(LANL_Region$q.25*PopRatio)
-    LANL_Region$q.50 = round(LANL_Region$q.50*PopRatio)
-    LANL_Region$q.75 = round(LANL_Region$q.75*PopRatio)
-    LANL_Region<-data.frame(LANL_Region$dates,LANL_Region$q.50*.055,LANL_Region$q.25*.055,LANL_Region$q.75*.055)      
-    colnames(LANL_Region)<-c("ForecastDate", "Expected Hospitalizations", "Lower Estimate","Upper Estimate")
-    LANL_Region$ForecastDate<-as.Date(LANL_Region$ForecastDate)
-    
-    LANL_Region<-LANL_Region[order(as.Date(LANL_Region$ForecastDate, format="%Y/%m/%d")),]
-    LANL_Region$'Expected Hospitalizations'<-c(LANL_Region$'Expected Hospitalizations'[1],diff(LANL_Region$'Expected Hospitalizations'))
-    LANL_Region$'Lower Estimate'<-c(LANL_Region$'Lower Estimate'[1],diff(LANL_Region$'Lower Estimate'))
-    LANL_Region$'Upper Estimate'<-c(LANL_Region$'Upper Estimate'[1],diff(LANL_Region$'Upper Estimate'))
-
-    YYG_Data$ID<-rep("YYG",nrow(YYG_Data)) 
-    LANL_Region$ID<-rep("LANL",nrow(LANL_Region)) 
 
     if (nrow(IHME_State) !=0 ) {
       IHME_Region <- IHME_State
@@ -145,39 +131,55 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
       IHME_Region$allbed_upper = round(IHME_State$allbed_upper*PopRatio)
       IHME_Data<-data.frame(IHME_Region$date,IHME_Region$allbed_mean, IHME_Region$allbed_lower, IHME_Region$allbed_upper)
       colnames(IHME_Data)<-c("ForecastDate", "Expected Hospitalizations", "Lower Estimate","Upper Estimate")
-      IHME_Data$ID<-rep("IHME",nrow(IHME_Data))        
-      OverlayData<-rbind(IHME_Data,LANL_Region)
-      OverlayData<-rbind(OverlayData,YYG_Data)    
-      
-      #Calculate IHME Peak date, create data table of peak dates for hospitalizations 
-      IHMEPeak<-round(max(IHME_Data$`Expected Hospitalizations`[1:DaysProjected]))
-      IHMEDate<-which.max(IHME_Data$`Expected Hospitalizations`[1:DaysProjected])
-      IHMEDate<-format(IHME_Data$ForecastDate[IHMEDate], format="%b-%d")
-      YYGPeak<-round(max(YYG_Data$`Expected Hospitalizations`[1:DaysProjected]))
-      PeakDate<-which.max(YYG_Data$`Expected Hospitalizations`[1:DaysProjected])
-      PeakDate<-format(YYG_Data$ForecastDate[PeakDate], format="%b-%d")    
-      PeakDates<-rbind(IHMEDate,PeakDate)
-      PeakValues<-rbind(IHMEPeak,YYGPeak)
-      LANLPeak<-round(max(LANL_Region$`Expected Hospitalizations`[1:DaysProjected]))
-      PeakDate<-which.max(LANL_Region$`Expected Hospitalizations`[1:DaysProjected])
-      PeakDate<-format(LANL_Region$ForecastDate[PeakDate], format="%b-%d")        
-      PeakDates<-rbind(PeakDates,PeakDate)
-      PeakValues<-rbind(PeakValues,LANLPeak)               
-      
-    } else {
-      OverlayData<-rbind(LANL_Region,YYG_Data)
-      
-      YYGPeak<-round(max(YYG_Data$`Expected Hospitalizations`[1:DaysProjected]))
-      PeakDate<-which.max(YYG_Data$`Expected Hospitalizations`[1:DaysProjected])
-      PeakDateY<-format(YYG_Data$ForecastDate[PeakDate], format="%b-%d")    
-      LANLPeak<-round(max(LANL_Region$`Expected Hospitalizations`[1:DaysProjected]))
-      PeakDate<-which.max(LANL_Region$`Expected Hospitalizations`[1:DaysProjected])
-      PeakDate<-format(LANL_Region$ForecastDate[PeakDate], format="%b-%d")        
-      PeakDates<-rbind(PeakDateY,PeakDate)
-      PeakValues<-rbind(YYGPeak,LANLPeak)
-    }        
+      IHME_Data$ID<-rep("IHME",nrow(IHME_Data))    
+      OverlayData<-rbind(OverlayData,IHME_Data)
+    }            
     
-
+    if (nrow(YYG_State) !=0 ) {        
+        # Apply ratio's to YYG Data
+        # Multiple cases by 5.5% to estimate number of hospitalizations
+        YYG_Region <- YYG_State
+        YYG_Region$predicted_new_infected_mean = round(YYG_State$predicted_new_infected_mean*PopRatio)
+        YYG_Region$predicted_new_infected_lower = round(YYG_State$predicted_new_infected_lower*PopRatio)
+        YYG_Region$predicted_new_infected_upper = round(YYG_State$predicted_new_infected_upper*PopRatio)
+        YYG_Data<-data.frame(YYG_Region$date,YYG_Region$predicted_new_infected_mean*.055,YYG_Region$predicted_new_infected_lower*.055,YYG_Region$predicted_new_infected_upper*.055)
+        colnames(YYG_Data)<-c("ForecastDate", "Expected Hospitalizations", "Lower Estimate","Upper Estimate")
+        YYG_Data$ID<-rep("YYG",nrow(YYG_Data)) 
+        OverlayData<-rbind(OverlayData,YYG_Data)        
+    }
+    
+    if (nrow(LANL_State) !=0 ) {
+        # Apply ratio's to LANL Data
+        # Multiple cases by 5.5% to estimate number of hospitalizations
+        LANL_Region <- LANL_State
+        LANL_Region$q.25 = round(LANL_Region$q.25*PopRatio)
+        LANL_Region$q.50 = round(LANL_Region$q.50*PopRatio)
+        LANL_Region$q.75 = round(LANL_Region$q.75*PopRatio)
+        LANL_Region<-data.frame(LANL_Region$dates,LANL_Region$q.50*.055,LANL_Region$q.25*.055,LANL_Region$q.75*.055)      
+        colnames(LANL_Region)<-c("ForecastDate", "Expected Hospitalizations", "Lower Estimate","Upper Estimate")
+        LANL_Region$ForecastDate<-as.Date(LANL_Region$ForecastDate)
+        
+        LANL_Region<-LANL_Region[order(as.Date(LANL_Region$ForecastDate, format="%Y/%m/%d")),]
+        LANL_Region$'Expected Hospitalizations'<-c(LANL_Region$'Expected Hospitalizations'[1],diff(LANL_Region$'Expected Hospitalizations'))
+        LANL_Region$'Lower Estimate'<-c(LANL_Region$'Lower Estimate'[1],diff(LANL_Region$'Lower Estimate'))
+        LANL_Region$'Upper Estimate'<-c(LANL_Region$'Upper Estimate'[1],diff(LANL_Region$'Upper Estimate'))
+        LANL_Region$ID<-rep("LANL",nrow(LANL_Region)) 
+        OverlayData<-rbind(OverlayData,LANL_Region)
+    }        
+    # #Calculate IHME Peak date, create data table of peak dates for hospitalizations 
+    # IHMEPeak<-round(max(IHME_Data$`Expected Hospitalizations`[1:DaysProjected]))
+    # IHMEDate<-which.max(IHME_Data$`Expected Hospitalizations`[1:DaysProjected])
+    # IHMEDate<-format(IHME_Data$ForecastDate[IHMEDate], format="%b-%d")
+    # YYGPeak<-round(max(YYG_Data$`Expected Hospitalizations`[1:DaysProjected]))
+    # PeakDate<-which.max(YYG_Data$`Expected Hospitalizations`[1:DaysProjected])
+    # PeakDate<-format(YYG_Data$ForecastDate[PeakDate], format="%b-%d")    
+    # PeakDates<-rbind(IHMEDate,PeakDate)
+    # PeakValues<-rbind(IHMEPeak,YYGPeak)
+    # LANLPeak<-round(max(LANL_Region$`Expected Hospitalizations`[1:DaysProjected]))
+    # PeakDate<-which.max(LANL_Region$`Expected Hospitalizations`[1:DaysProjected])
+    # PeakDate<-format(LANL_Region$ForecastDate[PeakDate], format="%b-%d")        
+    # PeakDates<-rbind(PeakDates,PeakDate)
+    # PeakValues<-rbind(PeakValues,LANLPeak)                   
     
     
     if (CONUSSelect == "CONUS"){
@@ -263,31 +265,31 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
         OverlayData<-rbind(OverlayData,DPT2)
         OverlayData<-rbind(OverlayData,Army_State)            
         
-        UTPeak<-round(max(UT_Data$`Expected Hospitalizations`[1:DaysProjected]))
-        UTDate<-which.max(UT_Data$`Expected Hospitalizations`[1:DaysProjected])
-        UTDate<-format(UT_Data$ForecastDate[UTDate], format="%b-%d")    
-        PeakDates<-rbind(PeakDates,UTDate)
-        PeakValues<-rbind(PeakValues,UTPeak)    
-        CU1Peak<-round(max(CU20x10PSD_State$`Expected Hospitalizations`[1:DaysProjected]))
-        PeakDate<-which.max(CU20x10PSD_State$`Expected Hospitalizations`[1:DaysProjected])
-        PeakDate<-format(CU20x10PSD_State$ForecastDate[PeakDate], format="%b-%d")       
-        PeakDates<-rbind(PeakDates,PeakDate)
-        PeakValues<-rbind(PeakValues,CU1Peak)           
-        CU2Peak<-round(max(CU20x5PSD_State$`Expected Hospitalizations`[1:DaysProjected]))
-        PeakDate<-which.max(CU20x5PSD_State$`Expected Hospitalizations`[1:DaysProjected])
-        PeakDate<-format(CU20x5PSD_State$ForecastDate[PeakDate], format="%b-%d")         
-        PeakDates<-rbind(PeakDates,PeakDate)
-        PeakValues<-rbind(PeakValues,CU2Peak)          
-        CU3Peak<-round(max(CU20w10PSD_State$`Expected Hospitalizations`[1:DaysProjected]))
-        PeakDate<-which.max(CU20w10PSD_State$`Expected Hospitalizations`[1:DaysProjected])
-        PeakDate<-format(CU20w10PSD_State$ForecastDate[PeakDate], format="%b-%d")      
-        PeakDates<-rbind(PeakDates,PeakDate)
-        PeakValues<-rbind(PeakValues,CU3Peak)
-        CU4Peak<-round(max(CU20w5PSD_State$`Expected Hospitalizations`[1:DaysProjected]))
-        PeakDate<-which.max(CU20w5PSD_State$`Expected Hospitalizations`[1:DaysProjected])
-        PeakDate<-format(CU20w5PSD_State$ForecastDate[PeakDate], format="%b-%d")      
-        PeakDates<-rbind(PeakDates,PeakDate)
-        PeakValues<-rbind(PeakValues,CU4Peak)         
+        # UTPeak<-round(max(UT_Data$`Expected Hospitalizations`[1:DaysProjected]))
+        # UTDate<-which.max(UT_Data$`Expected Hospitalizations`[1:DaysProjected])
+        # UTDate<-format(UT_Data$ForecastDate[UTDate], format="%b-%d")    
+        # PeakDates<-rbind(PeakDates,UTDate)
+        # PeakValues<-rbind(PeakValues,UTPeak)    
+        # CU1Peak<-round(max(CU20x10PSD_State$`Expected Hospitalizations`[1:DaysProjected]))
+        # PeakDate<-which.max(CU20x10PSD_State$`Expected Hospitalizations`[1:DaysProjected])
+        # PeakDate<-format(CU20x10PSD_State$ForecastDate[PeakDate], format="%b-%d")       
+        # PeakDates<-rbind(PeakDates,PeakDate)
+        # PeakValues<-rbind(PeakValues,CU1Peak)           
+        # CU2Peak<-round(max(CU20x5PSD_State$`Expected Hospitalizations`[1:DaysProjected]))
+        # PeakDate<-which.max(CU20x5PSD_State$`Expected Hospitalizations`[1:DaysProjected])
+        # PeakDate<-format(CU20x5PSD_State$ForecastDate[PeakDate], format="%b-%d")         
+        # PeakDates<-rbind(PeakDates,PeakDate)
+        # PeakValues<-rbind(PeakValues,CU2Peak)          
+        # CU3Peak<-round(max(CU20w10PSD_State$`Expected Hospitalizations`[1:DaysProjected]))
+        # PeakDate<-which.max(CU20w10PSD_State$`Expected Hospitalizations`[1:DaysProjected])
+        # PeakDate<-format(CU20w10PSD_State$ForecastDate[PeakDate], format="%b-%d")      
+        # PeakDates<-rbind(PeakDates,PeakDate)
+        # PeakValues<-rbind(PeakValues,CU3Peak)
+        # CU4Peak<-round(max(CU20w5PSD_State$`Expected Hospitalizations`[1:DaysProjected]))
+        # PeakDate<-which.max(CU20w5PSD_State$`Expected Hospitalizations`[1:DaysProjected])
+        # PeakDate<-format(CU20w5PSD_State$ForecastDate[PeakDate], format="%b-%d")      
+        # PeakDates<-rbind(PeakDates,PeakDate)
+        # PeakValues<-rbind(PeakValues,CU4Peak)         
     }
     
     DeathCounties<-subset(CovidDeaths, CountyFIPS %in% IncludedCounties$FIPS)
@@ -442,8 +444,8 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
       #scale_fill_manual(values = c("tan4", "cadetblue", "gray","red"))+
       #scale_linetype_manual(values=c("dashed", "solid", "dashed", "solid"))+
       #geom_ribbon(aes(ymin = `Lower Estimate`, ymax = `Upper Estimate`),alpha = .2)+
-      
-      geom_hline(aes(yintercept = bcap,linetype = "Estimated COVID Patient Bed Capacity"),colour = "red")+
+  
+      #geom_hline(aes(yintercept = bcap,linetype = "Estimated COVID Patient Bed Capacity"),colour = "red")+
       ggtitle("Projected Daily Hospital Bed Utilization")+
       ylab("Daily Beds Needed")+
       theme_bw() + 
@@ -459,6 +461,14 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
       scale_x_date(date_breaks = "1 week")+
       labs(color = "ID")
 
+    # projections <- projections +
+    #   geom_line(HistoricalData,aes(linetype = ID, color = ID)) + 
+    #   geom_ribbon(HistoricalData,aes(ymin = `Lower Estimate`, ymax = `Upper Estimate`),alpha = .2)
+    #   scale_colour_manual(values=c("black"))+
+    #   scale_fill_manual(values = c("gray"))+
+    #   scale_linetype_manual(values=c("solid"))
+    
+    
     projections <- ggplotly(projections)
     # projections <- projections %>% config(displayModeBar = FALSE)
     projections <- projections %>% config(toImageButtonOptions = list(format = "png",
@@ -466,6 +476,8 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
                                                                       height = 500))
     
   } else {
+    
+    OverlayData <- setNames(data.frame(matrix(ncol = 5, nrow = 0)),c("ForecastDate", "Expected Fatalities", "Lower Estimate","Upper Estimate","ID"))    
     
     if (CONUSSelect == "CONUS"){
       LANL_State <- dplyr::filter(LANLD_Data, State == toString(BaseState$State[1])) 
@@ -477,81 +489,82 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
     #Get data for counties with covid cases. We want number of cases, the rate of the cases and maybe other data.
     #We include State, county, population in those counties, cases, fatalities, doubling rate
     
-    
-    #############  This looks like repetitive code ################
-    
-    # CovidCounties<-subset(CovidConfirmedCases, CountyFIPS %in% IncludedCounties$FIPS)
-    # CovidDeathHist<-subset(CovidDeaths, CountyFIPS %in% IncludedCounties$FIPS)
-    
-    # if (nrow(CovidDeathHist) != 0){
-    #   HistoricalData<-colSums(CovidDeathHist[,5:length(CovidDeathHist)])
-    #   HistoricalDates<-seq(as.Date("2020-01-22"), length=length(HistoricalData), by="1 day")
-    #   HistoricalData<-data.frame(HistoricalDates, HistoricalData, HistoricalData, HistoricalData)
-    #   colnames(HistoricalData)<-c("ForecastDate", "Expected Fatalities", "Lower Estimate","Upper Estimate")
-    # } else {
-    #   HistoricalDataHosp<-colSums(HistoricalDataDaily*.0025)
-    #   #Create dataframe to hold daily hospitalizations
-    #   HistoricalDates<-seq(as.Date("2020-01-22"), length=length(HistoricalData), by="1 day")
-    #   HistoricalData<-data.frame(HistoricalDates, HistoricalData, HistoricalData, HistoricalData)
-    #   colnames(HistoricalData)<-c("ForecastDate", "Expected Fatalities", "Lower Estimate","Upper Estimate")
-    # }    
-    
-    ###############################################################
-         
-    #Get data for counties with covid cases. We want number of cases, the rate of the cases and maybe other data.
-    #We include State, county, population in those counties, cases, fatalities, doubling rate
     CovidCounties<-subset(CovidConfirmedCases, CountyFIPS %in% IncludedCounties$FIPS)
     CovidDeathHist<-subset(CovidDeaths, CountyFIPS %in% IncludedCounties$FIPS)
-    HistoricalData<-colSums(CovidDeathHist[,5:length(CovidDeathHist)])
-    HistoricalDates<-seq(as.Date("2020-01-22"), length=length(HistoricalData), by="1 day")
-    HistoricalData<-data.frame(HistoricalDates, HistoricalData, HistoricalData, HistoricalData)
-    colnames(HistoricalData)<-c("ForecastDate", "Expected Fatalities", "Lower Estimate","Upper Estimate")
     
-    # Apply ratio's to IHME data
-    IHME_Region <- IHME_State
-    IHME_Region$deaths_mean = round(IHME_State$totdea_mean*PopRatio)
-    IHME_Region$deaths_lower = round(IHME_State$totdea_lower*PopRatio)
-    IHME_Region$deaths_upper = round(IHME_State$totdea_upper*PopRatio)
-    IHME_Data<-data.frame(IHME_Region$date,IHME_Region$deaths_mean, IHME_Region$deaths_lower, IHME_Region$deaths_upper)
-
-    # Apply ratio's to YYG Data
-    # Multiple cases by 5.5% to estimate number of hospitalizations
-    YYG_Region <- YYG_State
-    YYG_Region$predicted_deaths_mean = round(YYG_State$predicted_deaths_mean*PopRatio)
-    YYG_Region$predicted_deaths_lower = round(YYG_State$predicted_deaths_lower*PopRatio)
-    YYG_Region$predicted_deaths_upper = round(YYG_State$predicted_deaths_upper*PopRatio)
-    YYG_Data<-data.frame(YYG_Region$date,YYG_Region$predicted_deaths_mean,YYG_Region$predicted_deaths_lower,YYG_Region$predicted_deaths_upper)
-    colnames(YYG_Data)<-c("ForecastDate", "Expected Fatalities", "Lower Estimate","Upper Estimate")
-    
-    YYG_Data<-YYG_Data[order(as.Date(YYG_Data$ForecastDate, format="%Y/%m/%d")),]
-    YYG_Data$'Expected Fatalities'<-c(YYG_Data$'Expected Fatalities'[1],diff(YYG_Data$'Expected Fatalities'))
-    YYG_Data$'Lower Estimate'<-c(YYG_Data$'Lower Estimate'[1],diff(YYG_Data$'Lower Estimate'))
-    YYG_Data$'Upper Estimate'<-c(YYG_Data$'Upper Estimate'[1],diff(YYG_Data$'Upper Estimate'))      
-    
-    LANL_Region <- LANL_State
-    LANL_Region$q.25 = round(LANL_Region$q.25*PopRatio)
-    LANL_Region$q.50 = round(LANL_Region$q.50*PopRatio)
-    LANL_Region$q.75 = round(LANL_Region$q.75*PopRatio)
-    LANL_Data<-data.frame(LANL_Region$dates,LANL_Region$q.50,LANL_Region$q.25,LANL_Region$q.75)      
-    colnames(LANL_Data)<-c("ForecastDate", "Expected Fatalities", "Lower Estimate","Upper Estimate")
-    LANL_Data$ForecastDate <- as.Date(LANL_Data$ForecastDate)
-    LANL_Data<-dplyr::filter(LANL_Data,ForecastDate >= Sys.Date())
-    
-    LANL_Data<-LANL_Data[order(as.Date(LANL_Data$ForecastDate, format="%Y/%m/%d")),]
-    LANL_Data$'Expected Hospitalizations'<-c(LANL_Data$'Expected Hospitalizations'[1],diff(LANL_Data$'Expected Hospitalizations'))
-    LANL_Data$'Lower Estimate'<-c(LANL_Data$'Lower Estimate'[1],diff(LANL_Data$'Lower Estimate'))
-    LANL_Data$'Upper Estimate'<-c(LANL_Data$'Upper Estimate'[1],diff(LANL_Data$'Upper Estimate'))  
-
-    colnames(IHME_Data)<-c("ForecastDate", "Expected Fatalities", "Lower Estimate","Upper Estimate")
-    IHME_Data$ID<-rep("IHME",nrow(IHME_Data))
-    YYG_Data$ID<-rep("YYG",nrow(YYG_Data)) 
-    LANL_Data$ID<-rep("LANL",nrow(LANL_Data))    
-    OverlayData<-rbind(IHME_Data,LANL_Data)
-    OverlayData<-rbind(OverlayData,YYG_Data)
+    if (nrow(CovidDeathHist) != 0){
+      HistoricalData<-colSums(CovidDeathHist[,5:length(CovidDeathHist)])
+      HistoricalDates<-seq(as.Date("2020-01-22"), length=length(HistoricalData), by="1 day")
+      HistoricalData<-data.frame(HistoricalDates, HistoricalData, HistoricalData, HistoricalData)
+      colnames(HistoricalData)<-c("ForecastDate", "Expected Fatalities", "Lower Estimate","Upper Estimate")
+    } else {
+      HistoricalDataHosp<-colSums(HistoricalDataDaily*.0025)
+      #Create dataframe to hold daily hospitalizations
+      HistoricalDates<-seq(as.Date("2020-01-22"), length=length(HistoricalData), by="1 day")
+      HistoricalData<-data.frame(HistoricalDates, HistoricalData, HistoricalData, HistoricalData)
+      colnames(HistoricalData)<-c("ForecastDate", "Expected Fatalities", "Lower Estimate","Upper Estimate")
+    }
+         
+    # #Get data for counties with covid cases. We want number of cases, the rate of the cases and maybe other data.
+    # #We include State, county, population in those counties, cases, fatalities, doubling rate
+    # CovidCounties<-subset(CovidConfirmedCases, CountyFIPS %in% IncludedCounties$FIPS)
+    # CovidDeathHist<-subset(CovidDeaths, CountyFIPS %in% IncludedCounties$FIPS)
+    # HistoricalData<-colSums(CovidDeathHist[,5:length(CovidDeathHist)])
+    # HistoricalDates<-seq(as.Date("2020-01-22"), length=length(HistoricalData), by="1 day")
+    # HistoricalData<-data.frame(HistoricalDates, HistoricalData, HistoricalData, HistoricalData)
+    # colnames(HistoricalData)<-c("ForecastDate", "Expected Fatalities", "Lower Estimate","Upper Estimate")
     
     
-    if (CONUSSelect == "CONUS"){     
+    if (nrow(IHME_State) !=0 ) {
+        # Apply ratio's to IHME data
+        IHME_Region <- IHME_State
+        IHME_Region$deaths_mean = round(IHME_State$totdea_mean*PopRatio)
+        IHME_Region$deaths_lower = round(IHME_State$totdea_lower*PopRatio)
+        IHME_Region$deaths_upper = round(IHME_State$totdea_upper*PopRatio)
+        IHME_Data<-data.frame(IHME_Region$date,IHME_Region$deaths_mean, IHME_Region$deaths_lower, IHME_Region$deaths_upper)
+        colnames(IHME_Data)<-c("ForecastDate", "Expected Fatalities", "Lower Estimate","Upper Estimate")
+        IHME_Data$ID<-rep("IHME",nrow(IHME_Data))
+        OverlayData<-rbind(OverlayData,IHME_Data)
+    }
+    
+    if (nrow(YYG_State) !=0 ) {    
+        # Apply ratio's to YYG Data
+        # Multiple cases by 5.5% to estimate number of hospitalizations
+        YYG_Region <- YYG_State
+        YYG_Region$predicted_deaths_mean = round(YYG_State$predicted_deaths_mean*PopRatio)
+        YYG_Region$predicted_deaths_lower = round(YYG_State$predicted_deaths_lower*PopRatio)
+        YYG_Region$predicted_deaths_upper = round(YYG_State$predicted_deaths_upper*PopRatio)
+        YYG_Data<-data.frame(YYG_Region$date,YYG_Region$predicted_deaths_mean,YYG_Region$predicted_deaths_lower,YYG_Region$predicted_deaths_upper)
+        colnames(YYG_Data)<-c("ForecastDate", "Expected Fatalities", "Lower Estimate","Upper Estimate")
         
+        YYG_Data<-YYG_Data[order(as.Date(YYG_Data$ForecastDate, format="%Y/%m/%d")),]
+        YYG_Data$'Expected Fatalities'<-c(YYG_Data$'Expected Fatalities'[1],diff(YYG_Data$'Expected Fatalities'))
+        YYG_Data$'Lower Estimate'<-c(YYG_Data$'Lower Estimate'[1],diff(YYG_Data$'Lower Estimate'))
+        YYG_Data$'Upper Estimate'<-c(YYG_Data$'Upper Estimate'[1],diff(YYG_Data$'Upper Estimate'))      
+        YYG_Data$ID<-rep("YYG",nrow(YYG_Data))
+        OverlayData<-rbind(OverlayData,YYG_Data)        
+    }
+    
+    if (nrow(LANL_State) !=0 ) {
+        LANL_Region <- LANL_State
+        LANL_Region$q.25 = round(LANL_Region$q.25*PopRatio)
+        LANL_Region$q.50 = round(LANL_Region$q.50*PopRatio)
+        LANL_Region$q.75 = round(LANL_Region$q.75*PopRatio)
+        LANL_Data<-data.frame(LANL_Region$dates,LANL_Region$q.50,LANL_Region$q.25,LANL_Region$q.75)      
+        colnames(LANL_Data)<-c("ForecastDate", "Expected Fatalities", "Lower Estimate","Upper Estimate")
+        LANL_Data$ForecastDate <- as.Date(LANL_Data$ForecastDate)
+        LANL_Data<-dplyr::filter(LANL_Data,ForecastDate >= Sys.Date())
+        
+        LANL_Data<-LANL_Data[order(as.Date(LANL_Data$ForecastDate, format="%Y/%m/%d")),]
+        LANL_Data$'Expected Hospitalizations'<-c(LANL_Data$'Expected Hospitalizations'[1],diff(LANL_Data$'Expected Hospitalizations'))
+        LANL_Data$'Lower Estimate'<-c(LANL_Data$'Lower Estimate'[1],diff(LANL_Data$'Lower Estimate'))
+        LANL_Data$'Upper Estimate'<-c(LANL_Data$'Upper Estimate'[1],diff(LANL_Data$'Upper Estimate'))  
+        LANL_Data$ID<-rep("LANL",nrow(LANL_Data))
+        OverlayData<-rbind(OverlayData,LANL_Data)
+    }
+    
+
+    if (CONUSSelect == "CONUS"){     
         # Apply ratio's to UT data
         UT_Region <- UT_State
         UT_Region$daily_deaths_est = round(UT_State$daily_deaths_est*PopRatio)
