@@ -58,9 +58,9 @@ for (i in 2:AFrow){
   baseDF = baseDF[1,]
   base = baseDF$Base
   CountyInfo$DistanceMiles = cimd[,as.character(base)]
-  
   MyCounties<-dplyr::filter(CountyInfo, DistanceMiles <= radius | FIPS == baseDF$FIPS)
-
+  MyCounties<-MyCounties %>% distinct(FIPS, .keep_all = TRUE)
+  
   # Get Covid Case Data
   CovidCounties<-subset(CovidConfirmedCases, CountyFIPS %in% MyCounties$FIPS)
   NewCases<-sum(rev(CovidCounties)[,1]-rev(CovidCounties)[,2])
