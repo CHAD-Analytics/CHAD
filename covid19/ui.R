@@ -257,14 +257,16 @@ ui <- tagList(
                                              conditionalPanel(condition="input.tabselected == 6",
                                                               br(),br(),br(),
                                                               tags$div(style="text-align: center; font-size: 18px", actionLink("overviewInfo", label = "Overview", icon = icon("globe"))),
-                                                              br(),br(),br(),
+                                                              br(),
                                                               tags$div(style="text-align: center; font-size: 18px", actionLink("inputInfo", label = "User Inputs", icon = icon("sliders-h"))),
-                                                              br(),br(), br(),
+                                                              br(),
                                                               tags$div(style="text-align: center; font-size: 18px", actionLink("projInfo", label = "Projections", icon = icon("chart-line"))),
-                                                              br(),br(),br(),
+                                                              br(),
                                                               tags$div(style="text-align: center; font-size: 18px", actionLink("calcInfo", label = "Calculations", icon = icon("calculator"))),
-                                                              br(),br(),br(),
-                                                              tags$div(style="text-align: center; font-size: 18px", actionLink("sourceInfo", label = "Sources", icon = icon("user-secret")))
+                                                              br(),
+                                                              tags$div(style="text-align: center; font-size: 18px", actionLink("sourceInfo", label = "Sources", icon = icon("user-secret"))),
+                                                              br(),
+                                                              tags$div(style="text-align: center; font-size: 18px", actionLink("aboutInfo", label = "About", icon = icon("info-circle")))
                                              ),
                                              
                                              br()

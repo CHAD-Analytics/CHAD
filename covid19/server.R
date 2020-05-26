@@ -1081,7 +1081,7 @@ server <- function(input, output,session) {
   #Overlay Projected Plots
   output$OverlayPlots<-renderPlotly({
 
-    p = tryCatch({
+    #p = tryCatch({
       if (input$CONUSP == "CONUS"){
           #if ("HUtil" %in% input$Utilization){HospUtil<="Yes"}
           ModelID <- "Past Data"
@@ -1128,9 +1128,9 @@ server <- function(input, output,session) {
       # })
       
 
-    }, error = function(err) {
-      #empty_plot(paste(input$Utilization))
-    })
+    # }, error = function(err) {
+    #   #empty_plot(paste(input$Utilization))
+    # })
     
   })
   
@@ -1660,6 +1660,10 @@ server <- function(input, output,session) {
   
   observeEvent(input$sourceInfo, {
     DocDisplay$data <- "www/6_load_info_docs/SourceInfo.md"
+  })
+  
+  observeEvent(input$aboutInfo, {
+    DocDisplay$data <- "www/6_load_info_docs/About.md"
   })
   
   
