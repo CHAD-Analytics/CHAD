@@ -37,7 +37,17 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
       # Calculate bed ratio
       BedProp <- TotalBedsCounty/TotalBedsState    
   } else {
-      IHME_State <- dplyr::filter(IHME_Model, location_name == toString(BaseState$County[1]))    
+    if (BaseState$Country[1] == "South Korea"){
+      IHME_State <- dplyr::filter(IHME_Model, location_name == "Republic of Korea")
+    } else {
+      IHME_State <- dplyr::filter(IHME_Model, location_name == toString(BaseState$"State Name"[1]))   
+      if (nrow(IHME_State)==0){
+        IHME_State <- dplyr::filter(IHME_Model, location_name == toString(BaseState$County[1]))   
+      } 
+      if (nrow(IHME_State)==0) {
+        IHME_State <- dplyr::filter(IHME_Model, location_name == toString(BaseState$Country[1]))         
+      }  
+    }
       YYG_State <- dplyr::filter(YYG_ModelG, country == toString(BaseState$Country[1])) 
       StPopList <- dplyr::filter(CountyInfo, State == toString(BaseState$Country[1]))
   }
@@ -101,14 +111,6 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
     
     currHosp = HistoricalData[nrow(HistoricalData),2]
     
-    #Add error handling if no rows to aggregate - Abston National Guard/Beale/buckey/channel islands/space force bases
-    # Apply ratio's to IHME data
-    IHME_Region <- IHME_State
-    IHME_Region$allbed_mean = round(IHME_State$allbed_mean*PopRatio)
-    IHME_Region$allbed_lower = round(IHME_State$allbed_lower*PopRatio)
-    IHME_Region$allbed_upper = round(IHME_State$allbed_upper*PopRatio)
-    IHME_Data<-data.frame(IHME_Region$date,IHME_Region$allbed_mean, IHME_Region$allbed_lower, IHME_Region$allbed_upper)
-
     # Apply ratio's to YYG Data
     # Multiple cases by 5.5% to estimate number of hospitalizations
     YYG_Region <- YYG_State
@@ -132,29 +134,50 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
     LANL_Region$'Expected Hospitalizations'<-c(LANL_Region$'Expected Hospitalizations'[1],diff(LANL_Region$'Expected Hospitalizations'))
     LANL_Region$'Lower Estimate'<-c(LANL_Region$'Lower Estimate'[1],diff(LANL_Region$'Lower Estimate'))
     LANL_Region$'Upper Estimate'<-c(LANL_Region$'Upper Estimate'[1],diff(LANL_Region$'Upper Estimate'))
-    
-    colnames(IHME_Data)<-c("ForecastDate", "Expected Hospitalizations", "Lower Estimate","Upper Estimate")
-    IHME_Data$ID<-rep("IHME",nrow(IHME_Data))
+
     YYG_Data$ID<-rep("YYG",nrow(YYG_Data)) 
     LANL_Region$ID<-rep("LANL",nrow(LANL_Region)) 
+
+    if (nrow(IHME_State) !=0 ) {
+      IHME_Region <- IHME_State
+      IHME_Region$allbed_mean = round(IHME_State$allbed_mean*PopRatio)
+      IHME_Region$allbed_lower = round(IHME_State$allbed_lower*PopRatio)
+      IHME_Region$allbed_upper = round(IHME_State$allbed_upper*PopRatio)
+      IHME_Data<-data.frame(IHME_Region$date,IHME_Region$allbed_mean, IHME_Region$allbed_lower, IHME_Region$allbed_upper)
+      colnames(IHME_Data)<-c("ForecastDate", "Expected Hospitalizations", "Lower Estimate","Upper Estimate")
+      IHME_Data$ID<-rep("IHME",nrow(IHME_Data))        
+      OverlayData<-rbind(IHME_Data,LANL_Region)
+      OverlayData<-rbind(OverlayData,YYG_Data)    
+      
+      #Calculate IHME Peak date, create data table of peak dates for hospitalizations 
+      IHMEPeak<-round(max(IHME_Data$`Expected Hospitalizations`[1:DaysProjected]))
+      IHMEDate<-which.max(IHME_Data$`Expected Hospitalizations`[1:DaysProjected])
+      IHMEDate<-format(IHME_Data$ForecastDate[IHMEDate], format="%b-%d")
+      YYGPeak<-round(max(YYG_Data$`Expected Hospitalizations`[1:DaysProjected]))
+      PeakDate<-which.max(YYG_Data$`Expected Hospitalizations`[1:DaysProjected])
+      PeakDate<-format(YYG_Data$ForecastDate[PeakDate], format="%b-%d")    
+      PeakDates<-rbind(IHMEDate,PeakDate)
+      PeakValues<-rbind(IHMEPeak,YYGPeak)
+      LANLPeak<-round(max(LANL_Region$`Expected Hospitalizations`[1:DaysProjected]))
+      PeakDate<-which.max(LANL_Region$`Expected Hospitalizations`[1:DaysProjected])
+      PeakDate<-format(LANL_Region$ForecastDate[PeakDate], format="%b-%d")        
+      PeakDates<-rbind(PeakDates,PeakDate)
+      PeakValues<-rbind(PeakValues,LANLPeak)               
+      
+    } else {
+      OverlayData<-rbind(LANL_Region,YYG_Data)
+      
+      YYGPeak<-round(max(YYG_Data$`Expected Hospitalizations`[1:DaysProjected]))
+      PeakDate<-which.max(YYG_Data$`Expected Hospitalizations`[1:DaysProjected])
+      PeakDateY<-format(YYG_Data$ForecastDate[PeakDate], format="%b-%d")    
+      LANLPeak<-round(max(LANL_Region$`Expected Hospitalizations`[1:DaysProjected]))
+      PeakDate<-which.max(LANL_Region$`Expected Hospitalizations`[1:DaysProjected])
+      PeakDate<-format(LANL_Region$ForecastDate[PeakDate], format="%b-%d")        
+      PeakDates<-rbind(PeakDateY,PeakDate)
+      PeakValues<-rbind(YYGPeak,LANLPeak)
+    }        
     
-    OverlayData<-rbind(IHME_Data,LANL_Region)
-    OverlayData<-rbind(OverlayData,YYG_Data)    
-    
-    #Calculate IHME Peak date, create data table of peak dates for hospitalizations 
-    IHMEPeak<-round(max(IHME_Data$`Expected Hospitalizations`[1:DaysProjected]))
-    IHMEDate<-which.max(IHME_Data$`Expected Hospitalizations`[1:DaysProjected])
-    IHMEDate<-format(IHME_Data$ForecastDate[IHMEDate], format="%b-%d")
-    YYGPeak<-round(max(YYG_Data$`Expected Hospitalizations`[1:DaysProjected]))
-    PeakDate<-which.max(YYG_Data$`Expected Hospitalizations`[1:DaysProjected])
-    PeakDate<-format(YYG_Data$ForecastDate[PeakDate], format="%b-%d")    
-    PeakDates<-rbind(IHMEDate,PeakDate)
-    PeakValues<-rbind(IHMEPeak,YYGPeak)
-    LANLPeak<-round(max(LANL_Region$`Expected Hospitalizations`[1:DaysProjected]))
-    PeakDate<-which.max(LANL_Region$`Expected Hospitalizations`[1:DaysProjected])
-    PeakDate<-format(LANL_Region$ForecastDate[PeakDate], format="%b-%d")        
-    PeakDates<-rbind(PeakDates,PeakDate)
-    PeakValues<-rbind(PeakValues,LANLPeak)         
+
     
     
     if (CONUSSelect == "CONUS"){

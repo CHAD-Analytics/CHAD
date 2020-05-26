@@ -49,7 +49,8 @@ ForecastDataTableCases <- setNames(data.frame(matrix(ncol = 38, nrow = 0)),c("In
 
 for (i in 2:AFrow){
   #Create Number of current cases and cases per 100,000 in a local area
-  
+
+  #i = 96  
   radius = 50
   
   # Get Counties
@@ -57,8 +58,9 @@ for (i in 2:AFrow){
   baseDF = baseDF[1,]
   base = baseDF$Base
   CountyInfo$DistanceMiles = cimd[,as.character(base)]
-  MyCounties<-dplyr::filter(CountyInfo, DistanceMiles <= radius | FIPS == baseDF$FIPS)
   
+  MyCounties<-dplyr::filter(CountyInfo, DistanceMiles <= radius | FIPS == baseDF$FIPS)
+
   # Get Covid Case Data
   CovidCounties<-subset(CovidConfirmedCases, CountyFIPS %in% MyCounties$FIPS)
   NewCases<-sum(rev(CovidCounties)[,1]-rev(CovidCounties)[,2])
@@ -67,7 +69,7 @@ for (i in 2:AFrow){
   TotPop = sum(MyCounties$Population)
   
   MyCounties<-dplyr::filter(MyCounties, FIPS %in% CovidCounties$CountyFIPS)
-  
+
   NewHospitalizations<-round(NewCases*.055)
   TotalPop<-CalculateCounties(MyCounties)
   TotalCases<-CalculateCovid(MyCounties)
@@ -78,37 +80,48 @@ for (i in 2:AFrow){
   HospitalizationsPer10000<-round(HospitalizationsPer100000/10)
   
   
-  HospitalInfo$DistanceMiles = himd[,as.character(base)]
-  MyHospitals<-dplyr::filter(HospitalInfo, (DistanceMiles <= radius))
-  MyHospitals<-dplyr::filter(MyHospitals, (TYPE=="GENERAL ACUTE CARE") | (TYPE=="CRITICAL ACCESS"))
-  
-  
-  IHME_State <- dplyr::filter(IHME_Model, State == AFBaseLocations$State[i])
-  TotalBedsCounty <- sum(MyHospitals$BEDS)
-  
-  
-  hospCounty <- subset(HospUtlzCounty, fips %in% MyCounties$FIPS)
-  #Finds number of hospitals in radius
-  TotalBeds<-sum(hospCounty$num_staffed_beds)
-  #get historic utilization
-  hospCounty$bedsUsed <- hospCounty$bed_utilization * hospCounty$num_staffed_beds
-  totalUsedBeds <- sum(hospCounty$bedsUsed)
-  baseUtlz <- totalUsedBeds/TotalBeds
-  
-  
-  StPopList <- dplyr::filter(CountyInfo, State == AFBaseLocations$State[i])
+  if (AFBaseLocations$Overseas[i] == "CONUS"){
+      HospitalInfo$DistanceMiles = himd[,as.character(base)]
+      MyHospitals<-dplyr::filter(HospitalInfo, (DistanceMiles <= radius))
+      MyHospitals<-dplyr::filter(MyHospitals, (TYPE=="GENERAL ACUTE CARE") | (TYPE=="CRITICAL ACCESS"))
+      IHME_State <- dplyr::filter(IHME_Model, State == AFBaseLocations$State[i])
+      TotalBedsCounty <- sum(MyHospitals$BEDS)
+      hospCounty <- subset(HospUtlzCounty, fips %in% MyCounties$FIPS)
+      #Finds number of hospitals in radius
+      TotalBeds<-sum(hospCounty$num_staffed_beds)
+      #get historic utilization
+      hospCounty$bedsUsed <- hospCounty$bed_utilization * hospCounty$num_staffed_beds
+      totalUsedBeds <- sum(hospCounty$bedsUsed)
+      baseUtlz <- totalUsedBeds/TotalBeds
+      StPopList <- dplyr::filter(CountyInfo, State == AFBaseLocations$State[i])
+
+      # Get total hospital bed number across state
+      IncludedHospitalsST <- dplyr::filter(HospitalInfo, STATE == AFBaseLocations$State[i])
+      TotalBedsState <- sum(IncludedHospitalsST$BEDS)
+      # Calculate bed ratio
+      BedProp <- TotalBedsCounty/TotalBedsState
+  } else {
+      if (AFBaseLocations$Country[i] == "South Korea"){
+          IHME_State <- dplyr::filter(IHME_Model, location_name == "Republic of Korea")
+      } else {
+          IHME_State <- dplyr::filter(IHME_Model, location_name == toString(AFBaseLocations$"State Name"[i]))
+          if (nrow(IHME_State)==0){
+              IHME_State <- dplyr::filter(IHME_Model, location_name == toString(AFBaseLocations$County[i]))   
+          } 
+          if (nrow(IHME_State)==0) {
+              IHME_State <- dplyr::filter(IHME_Model, location_name == toString(AFBaseLocations$Country[i]))         
+          }
+      }
+      StPopList <- dplyr::filter(CountyInfo, State == toString(AFBaseLocations$Country[i]))
+  }
+
+    
   RegPop <- sum(MyCounties$Population)
   StPop <- sum(StPopList$Population)
   
   # Use Population ratio to scale IHME
   PopRatio <- RegPop/StPop
   
-  # Get total hospital bed number across state
-  IncludedHospitalsST <- dplyr::filter(HospitalInfo, STATE == AFBaseLocations$State[i])
-  TotalBedsState <- sum(IncludedHospitalsST$BEDS)
-  
-  # Calculate bed ratio
-  BedProp <- TotalBedsCounty/TotalBedsState
   
   # Apply ratio's to IHME data
   IHME_Region <- IHME_State
@@ -385,8 +398,8 @@ for (i in 2:AFrow){
   baseDF = dplyr::filter(AFBaseLocations, Base == AFBaseLocations$Base[i])
   baseDF = baseDF[1,]
   base = baseDF$Base
-  CountyInfo$DistanceMiles = cimd[,as.character(base)]
-  MyCounties<-dplyr::filter(CountyInfo, DistanceMiles <= radius | FIPS == baseDF$FIPS)
+  #CountyInfo$DistanceMiles = cimd[,as.character(base)]
+  MyCounties<-dplyr::filter(CountyInfo, County == baseDF$County)
   
   # Get Covid Case Data
   CovidCounties<-subset(CovidConfirmedCases, CountyFIPS %in% MyCounties$FIPS)
@@ -406,26 +419,41 @@ for (i in 2:AFrow){
   HospitalizationsPer100000<-round(CasesPer100000*.055)
   HospitalizationsPer10000<-round(HospitalizationsPer100000/10)
   
+  if (AFBaseLocations$Overseas[i] == "CONUS"){
+    HospitalInfo$DistanceMiles = himd[,as.character(base)]
+    MyHospitals<-dplyr::filter(HospitalInfo, (DistanceMiles <= radius))
+    MyHospitals<-dplyr::filter(MyHospitals, (TYPE=="GENERAL ACUTE CARE") | (TYPE=="CRITICAL ACCESS"))
+    IHME_State <- dplyr::filter(IHME_Model, State == AFBaseLocations$State[i])
+    TotalBedsCounty <- sum(MyHospitals$BEDS)
+    hospCounty <- subset(HospUtlzCounty, fips %in% MyCounties$FIPS)
+    #Finds number of hospitals in radius
+    TotalBeds<-sum(hospCounty$num_staffed_beds)
+    #get historic utilization
+    hospCounty$bedsUsed <- hospCounty$bed_utilization * hospCounty$num_staffed_beds
+    totalUsedBeds <- sum(hospCounty$bedsUsed)
+    baseUtlz <- totalUsedBeds/TotalBeds
+    StPopList <- dplyr::filter(CountyInfo, State == AFBaseLocations$State[i])
+    
+    # Get total hospital bed number across state
+    IncludedHospitalsST <- dplyr::filter(HospitalInfo, STATE == AFBaseLocations$State[i])
+    TotalBedsState <- sum(IncludedHospitalsST$BEDS)
+    # Calculate bed ratio
+    BedProp <- TotalBedsCounty/TotalBedsState
+  } else {
+    if (AFBaseLocations$Country[i] == "South Korea"){
+      IHME_State <- dplyr::filter(IHME_Model, location_name == "Republic of Korea")
+    } else {
+      IHME_State <- dplyr::filter(IHME_Model, location_name == toString(AFBaseLocations$"State Name"[i]))
+      if (nrow(IHME_State)==0){
+        IHME_State <- dplyr::filter(IHME_Model, location_name == toString(AFBaseLocations$County[i]))   
+      } 
+      if (nrow(IHME_State)==0) {
+        IHME_State <- dplyr::filter(IHME_Model, location_name == toString(AFBaseLocations$Country[i]))         
+      }
+    }
+    StPopList <- dplyr::filter(CountyInfo, State == toString(AFBaseLocations$Country[i]))
+  }  
   
-  HospitalInfo$DistanceMiles = himd[,as.character(base)]
-  MyHospitals<-dplyr::filter(HospitalInfo, (DistanceMiles <= radius))
-  MyHospitals<-dplyr::filter(MyHospitals, (TYPE=="GENERAL ACUTE CARE") | (TYPE=="CRITICAL ACCESS"))
-  
-  
-  IHME_State <- dplyr::filter(IHME_Model, State == AFBaseLocations$State[i])
-  TotalBedsCounty <- sum(MyHospitals$BEDS)
-  
-  
-  hospCounty <- subset(HospUtlzCounty, fips %in% MyCounties$FIPS)
-  #Finds number of hospitals in radius
-  TotalBeds<-sum(hospCounty$num_staffed_beds)
-  #get historic utilization
-  hospCounty$bedsUsed <- hospCounty$bed_utilization * hospCounty$num_staffed_beds
-  totalUsedBeds <- sum(hospCounty$bedsUsed)
-  baseUtlz <- totalUsedBeds/TotalBeds
-  
-  
-  StPopList <- dplyr::filter(CountyInfo, State == AFBaseLocations$State[i])
   RegPop <- sum(MyCounties$Population)
   StPop <- sum(StPopList$Population)
   

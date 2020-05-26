@@ -1560,7 +1560,7 @@ server <- function(input, output,session) {
       
     })  
   
-  output$MTFSummary <- downloadHandler(
+  output$MTFSummaryT <- downloadHandler(
     filename = function() { 
       paste("MTFSummary-", Sys.Date(), ".csv", sep="")
     },
@@ -1585,6 +1585,39 @@ server <- function(input, output,session) {
       
       write.csv(FTPrint, file)
     })    
+  
+  # output$MTFSummaryT <- downloadHandler(
+  #   if (input$Branch == "Air Force"){
+  #       if (input$MAJCOMInput != "All") {
+  # 
+  #           Stat<-"Cases"
+  #           forecastbaselist<-dplyr::filter(AFBaseLocations,Branch %in% input$Branch)                        
+  #           forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE) 
+  #           
+  #           FilteredDT1<-dplyr::filter(MTFSummaryReport,Installation %in% forecastbaselist)                        
+  #           
+  #           if(input$OperationalInput != "All") {
+  #             forecastbaselist<-dplyr::filter(AFBaseLocations,Operational %in% input$OperationalInput)                        
+  #             forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE)         
+  #             FilteredDT1<-dplyr::filter(FilteredDT1,Installation %in% forecastbaselist)
+  #           }      
+  #           
+  #           if (input$MAJCOMInput == "All") {
+  #             FTPrint<-FilteredDT1
+  #           } else {
+  #             FTPrint<-dplyr::filter(FilteredDT1,MAJCOM %in% input$MAJCOMInput)                        
+  #           }      
+  #         
+  #           #Then run for loop off of final filter     
+  #           for (i in 1:nrow(FTPrint)){ 
+  #               filename = function() { paste(input$dataset, '.png', sep='') },
+  #               content = function(file) {                
+  #                   ggsave(file, plot = plotInput(), device = "png")
+  #               }
+  #           }
+  #       }
+  #   }
+  # )
   
   output$HotSpot <- renderPlot({
     HotspotPlot(input$Branch,input$OperationalInput,input$MAJCOMNAF,

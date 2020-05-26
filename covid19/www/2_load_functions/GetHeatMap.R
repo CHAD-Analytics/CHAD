@@ -7,7 +7,6 @@ GetHeatMap<-function(BranchSelect,OpsSelect,MAJNAFSelect,MAJCOMChoice,NAFChoice,
     Banner<-"Projected Daily New Hospitalizations"
   }
   
-  
   HeatMap<-dplyr::filter(HeatMap,Branch %in% BranchSelect) #"Air Force") 
 
   if (BranchSelect!="Air Force"){

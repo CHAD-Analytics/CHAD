@@ -360,7 +360,8 @@ ui <- tagList(
                                     downloadButton('downloadFilteredData', 'Download Filtered Dataset (Table Above)'),
                                     downloadButton('HotSpotData', 'Download Hotspot Dataset: 50 Mile Radius'),
                                     downloadButton('HotSpotDataOneMile', 'Download Hotspot Dataset: Single County'),
-                                    downloadButton('MTFSummary', 'MTF Summary'))
+                                    downloadButton('MTFSummaryT', 'MTF Summary Table'),
+                                    downloadButton('MTFSummaryP', 'MTF Summary Plots'))
                                 
                               ),
                               ####### END Mission Risk #######
