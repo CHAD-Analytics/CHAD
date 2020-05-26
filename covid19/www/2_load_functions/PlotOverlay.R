@@ -253,10 +253,7 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
     
         colnames(UT_Data)<-c("ForecastDate", "Expected Hospitalizations", "Lower Estimate","Upper Estimate")
         UT_Data$ID<-rep("UT",nrow(UT_Data))
-        DPT1$ID <- rep("DTRA1",nrow(DPT1)) 
-        DPT2$ID <- rep("DTRA2",nrow(DPT2))
-        DPT3$ID <- rep("DTRA2",nrow(DPT3))
-        
+
         OverlayData<-rbind(OverlayData,UT_Data)      
         OverlayData<-rbind(OverlayData,CU20x10PSD_State)
         OverlayData<-rbind(OverlayData,CU20x5PSD_State)
