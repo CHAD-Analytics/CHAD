@@ -1,10 +1,3 @@
-<style type = "text/css">
-.table {
-  width: 86%;
-  margin-left: 7%;
-  margin-right: 7%;
-}
-</style>
 *Users have the ability to adjust various input factors in the left
 sidebar to customize the dashboard experience.*
 
@@ -18,7 +11,7 @@ dashboard for their AF installation.*
     national guard, and air force reserve installations.
 
 2.  **Local Radius**: How large of an area around the installation is
-    considered. Ranges from 10 - 100 miles with a default of 25 miles.
+    considered. Ranges from 10 - 100 miles with a default of 50 miles.
     Data from all counties within that range will be considered in the
     calculations, idependent of the specific state that the installation
     resides.
@@ -55,11 +48,9 @@ customize dashboard assessments and projections.*
 2.  **Projection Days**: How many days into the future the dashboard
     displays predictive model projections.
 
-3.  **Percent Social Distancing Reduction**: How much reduction in
-    transmission is realized from social distancing measures. Studies
-    show the maximum reduction without eliminating essential
-    interactions is 30%. Ranges from 0 - 40% with a default of 10%. See
-    source page for more details.
+3.  **Model Selection**: A large selection of different industry level models have been included in CHAD to give the user diversity in viewing projections. This side bar control allows the user to select as many models as available to view and compare against.
+
+The tables below give the social distancing definitions used by the CHIME model.
 
 </br>
 
