@@ -7,18 +7,18 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
   ####Uncomment to test plot function without running the app
   #i<-80
   #ChosenBase = AFBaseLocations$Base[i]
-  # CONUSSelect <- "CONUS"
-  # ChosenBase = "Vandenberg Space Force Base"
-  # #CONUSSelect <- "OCONUS"
-  # #ChosenBase = "Andersen AFB"
-  # SocialDistance = 15
-  # DaysProjected = 30
-  # HospitalInfo$DistanceMiles = himd[,as.character(ChosenBase)]
-  # IncludedHospitals<-dplyr::filter(HospitalInfo, (DistanceMiles <= 50))
-  # IncludedHospitals<-dplyr::filter(IncludedHospitals, (TYPE=="GENERAL ACUTE CARE") | (TYPE=="CRITICAL ACCESS"))
-  # CountyInfo$DistanceMiles = cimd[,as.character(ChosenBase)]
-  # value = NULL
-  # IncludedCounties<-GetCounties(ChosenBase,50,value,value)
+  CONUSSelect <- "CONUS"
+  ChosenBase = "Vandenberg Space Force Base"
+  #CONUSSelect <- "OCONUS"
+  #ChosenBase = "Andersen AFB"
+  SocialDistance = 15
+  DaysProjected = 30
+  HospitalInfo$DistanceMiles = himd[,as.character(ChosenBase)]
+  IncludedHospitals<-dplyr::filter(HospitalInfo, (DistanceMiles <= 50))
+  IncludedHospitals<-dplyr::filter(IncludedHospitals, (TYPE=="GENERAL ACUTE CARE") | (TYPE=="CRITICAL ACCESS"))
+  CountyInfo$DistanceMiles = cimd[,as.character(ChosenBase)]
+  value = NULL
+  IncludedCounties<-GetCounties(ChosenBase,50,value,value)
   ####
   ####
   
@@ -196,7 +196,7 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
         DPT3<-data.frame(DPT3$ForecastDate,DPT3$'Expected Hospitalizations'*.055,DPT3$'Lower Estimate'*.055,DPT3$'Upper Estimate'*.055,DPT3$ID)          
         colnames(DPT1)<-c("ForecastDate", "Expected Hospitalizations", "Lower Estimate","Upper Estimate", "ID")
         colnames(DPT2)<-c("ForecastDate", "Expected Hospitalizations", "Lower Estimate","Upper Estimate", "ID")    
-        
+        colnames(DPT3)<-c("ForecastDate", "Expected Hospitalizations", "Lower Estimate","Upper Estimate", "ID")         
         Army_State<-dplyr::filter(Army_State,FIPS %in% IncludedCounties$FIPS)    
         Army_State<-subset(Army_State, select=-c(Location,County,Susceptible,Exposed,Removed,Fatalities,State,number))    
         Army_State$Date <- as.Date(Army_State$ForecastDate, "%m/%d/%y")
@@ -577,7 +577,7 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
         DPT3<-data.frame(DPT3$ForecastDate,DPT3$'Expected Hospitalizations'*.0025,DPT3$'Lower Estimate'*.0025,DPT3$'Upper Estimate'*.0025,DPT3$ID)        
         colnames(DPT1)<-c("ForecastDate", "Expected Fatalities", "Lower Estimate","Upper Estimate","ID")
         colnames(DPT2)<-c("ForecastDate", "Expected Fatalities", "Lower Estimate","Upper Estimate","ID")   
-        
+        colnames(DPT3)<-c("ForecastDate", "Expected Fatalities", "Lower Estimate","Upper Estimate","ID")          
         Army_State<-dplyr::filter(Army_State,FIPS %in% IncludedCounties$FIPS)    
         Army_State<-subset(Army_State, select=-c(Location,County,Susceptible,Exposed,Removed,Infected,State,number))    
         Army_State$Date <- as.Date(Army_State$ForecastDate, "%m/%d/%y")
