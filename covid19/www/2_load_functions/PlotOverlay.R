@@ -7,18 +7,18 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
   ####Uncomment to test plot function without running the app
   #i<-80
   #ChosenBase = AFBaseLocations$Base[i]
-  # CONUSSelect <- "CONUS"
-  # ChosenBase = "Vandenberg Space Force Base"
-  # #CONUSSelect <- "OCONUS"
-  # #ChosenBase = "Andersen AFB"
-  # SocialDistance = 15
-  # DaysProjected = 30
-  # HospitalInfo$DistanceMiles = himd[,as.character(ChosenBase)]
-  # IncludedHospitals<-dplyr::filter(HospitalInfo, (DistanceMiles <= 50))
-  # IncludedHospitals<-dplyr::filter(IncludedHospitals, (TYPE=="GENERAL ACUTE CARE") | (TYPE=="CRITICAL ACCESS"))
-  # CountyInfo$DistanceMiles = cimd[,as.character(ChosenBase)]
-  # value = NULL
-  # IncludedCounties<-GetCounties(ChosenBase,50,value,value)
+  CONUSSelect <- "CONUS"
+  ChosenBase = "Vandenberg Space Force Base"
+  #CONUSSelect <- "OCONUS"
+  #ChosenBase = "Andersen AFB"
+  SocialDistance = 15
+  DaysProjected = 30
+  HospitalInfo$DistanceMiles = himd[,as.character(ChosenBase)]
+  IncludedHospitals<-dplyr::filter(HospitalInfo, (DistanceMiles <= 50))
+  IncludedHospitals<-dplyr::filter(IncludedHospitals, (TYPE=="GENERAL ACUTE CARE") | (TYPE=="CRITICAL ACCESS"))
+  CountyInfo$DistanceMiles = cimd[,as.character(ChosenBase)]
+  value = NULL
+  IncludedCounties<-GetCounties(ChosenBase,50,value,value)
   ####
   ####
   
@@ -62,7 +62,6 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
   if (CONUSSelect == "CONUS"){
       Army_State <- dplyr::filter(Army_Model, State == toString(BaseState$State[1]))  
       UT_State <- dplyr::filter(UT_Model, State == toString(BaseState$State[1]))  
-      
       DPT1<-dplyr::filter(DP1,FIPS %in% IncludedCounties$FIPS)
       DPT2<-dplyr::filter(DP2,FIPS %in% IncludedCounties$FIPS)
       DPT3<-dplyr::filter(DP3,FIPS %in% IncludedCounties$FIPS)      
@@ -194,6 +193,7 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
         #For DTRA Data, multiply number of cases by projected hospitalization rate
         DPT1<-data.frame(DPT1$ForecastDate,DPT1$'Expected Hospitalizations'*.055,DPT1$'Lower Estimate'*.055,DPT1$'Upper Estimate'*.055,DPT1$ID)
         DPT2<-data.frame(DPT2$ForecastDate,DPT2$'Expected Hospitalizations'*.055,DPT2$'Lower Estimate'*.055,DPT2$'Upper Estimate'*.055,DPT2$ID)  
+        DPT3<-data.frame(DPT3$ForecastDate,DPT3$'Expected Hospitalizations'*.055,DPT3$'Lower Estimate'*.055,DPT3$'Upper Estimate'*.055,DPT3$ID)          
         colnames(DPT1)<-c("ForecastDate", "Expected Hospitalizations", "Lower Estimate","Upper Estimate", "ID")
         colnames(DPT2)<-c("ForecastDate", "Expected Hospitalizations", "Lower Estimate","Upper Estimate", "ID")    
         
@@ -255,6 +255,7 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
         UT_Data$ID<-rep("UT",nrow(UT_Data))
         DPT1$ID <- rep("DTRA1",nrow(DPT1)) 
         DPT2$ID <- rep("DTRA2",nrow(DPT2))
+        DPT3$ID <- rep("DTRA2",nrow(DPT3))
         
         OverlayData<-rbind(OverlayData,UT_Data)      
         OverlayData<-rbind(OverlayData,CU20x10PSD_State)
@@ -263,6 +264,7 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
         OverlayData<-rbind(OverlayData,CU20w5PSD_State)
         OverlayData<-rbind(OverlayData,DPT1)
         OverlayData<-rbind(OverlayData,DPT2)
+        OverlayData<-rbind(OverlayData,DPT3)        
         OverlayData<-rbind(OverlayData,Army_State)            
         
         # UTPeak<-round(max(UT_Data$`Expected Hospitalizations`[1:DaysProjected]))
@@ -574,7 +576,8 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
       
         #For DTRA Data, multiply number of cases by projected hospitalization rate
         DPT1<-data.frame(DPT1$ForecastDate,DPT1$'Expected Hospitalizations'*.0025,DPT1$'Lower Estimate'*.0025,DPT1$'Upper Estimate'*.0025,DPT1$ID)
-        DPT2<-data.frame(DPT2$ForecastDate,DPT2$'Expected Hospitalizations'*.0025,DPT2$'Lower Estimate'*.0025,DPT2$'Upper Estimate'*.0025,DPT2$ID)       
+        DPT2<-data.frame(DPT2$ForecastDate,DPT2$'Expected Hospitalizations'*.0025,DPT2$'Lower Estimate'*.0025,DPT2$'Upper Estimate'*.0025,DPT2$ID)
+        DPT3<-data.frame(DPT3$ForecastDate,DPT3$'Expected Hospitalizations'*.0025,DPT3$'Lower Estimate'*.0025,DPT3$'Upper Estimate'*.0025,DPT3$ID)        
         colnames(DPT1)<-c("ForecastDate", "Expected Fatalities", "Lower Estimate","Upper Estimate","ID")
         colnames(DPT2)<-c("ForecastDate", "Expected Fatalities", "Lower Estimate","Upper Estimate","ID")   
         
@@ -655,7 +658,8 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
         OverlayData<-rbind(OverlayData,CU20w10PSD_State)
         OverlayData<-rbind(OverlayData,CU20w5PSD_State)
         OverlayData<-rbind(OverlayData,DPT1)
-        OverlayData<-rbind(OverlayData,DPT2)    
+        OverlayData<-rbind(OverlayData,DPT2)  
+        OverlayData<-rbind(OverlayData,DPT3)          
         OverlayData<-rbind(OverlayData,Army_State)      
     }
     
