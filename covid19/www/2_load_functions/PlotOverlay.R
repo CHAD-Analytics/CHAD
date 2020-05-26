@@ -7,18 +7,18 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
   ####Uncomment to test plot function without running the app
   #i<-80
   #ChosenBase = AFBaseLocations$Base[i]
-  CONUSSelect <- "CONUS"
-  ChosenBase = "Vandenberg Space Force Base"
-  #CONUSSelect <- "OCONUS"
-  #ChosenBase = "Andersen AFB"
-  SocialDistance = 15
-  DaysProjected = 30
-  HospitalInfo$DistanceMiles = himd[,as.character(ChosenBase)]
-  IncludedHospitals<-dplyr::filter(HospitalInfo, (DistanceMiles <= 50))
-  IncludedHospitals<-dplyr::filter(IncludedHospitals, (TYPE=="GENERAL ACUTE CARE") | (TYPE=="CRITICAL ACCESS"))
-  CountyInfo$DistanceMiles = cimd[,as.character(ChosenBase)]
-  value = NULL
-  IncludedCounties<-GetCounties(ChosenBase,50,value,value)
+  # CONUSSelect <- "CONUS"
+  # ChosenBase = "Vandenberg Space Force Base"
+  # #CONUSSelect <- "OCONUS"
+  # #ChosenBase = "Andersen AFB"
+  # SocialDistance = 15
+  # DaysProjected = 30
+  # HospitalInfo$DistanceMiles = himd[,as.character(ChosenBase)]
+  # IncludedHospitals<-dplyr::filter(HospitalInfo, (DistanceMiles <= 50))
+  # IncludedHospitals<-dplyr::filter(IncludedHospitals, (TYPE=="GENERAL ACUTE CARE") | (TYPE=="CRITICAL ACCESS"))
+  # CountyInfo$DistanceMiles = cimd[,as.character(ChosenBase)]
+  # value = NULL
+  # IncludedCounties<-GetCounties(ChosenBase,50,value,value)
   ####
   ####
   
@@ -65,9 +65,9 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
       DPT1<-dplyr::filter(DP1,FIPS %in% IncludedCounties$FIPS)
       DPT2<-dplyr::filter(DP2,FIPS %in% IncludedCounties$FIPS)
       DPT3<-dplyr::filter(DP3,FIPS %in% IncludedCounties$FIPS)      
-      DPT1$ForecastDate <- strptime(as.character(DPT1$ForecastDate), "%m/%d/%Y")
-      DPT2$ForecastDate <- strptime(as.character(DPT2$ForecastDate), "%m/%d/%Y")  
-      DPT3$ForecastDate <- strptime(as.character(DPT3$ForecastDate), "%m/%d/%Y")        
+      #DPT1$ForecastDate <- strptime(as.character(DPT1$ForecastDate), "%m/%d/%Y")
+      #DPT2$ForecastDate <- strptime(as.character(DPT2$ForecastDate), "%m/%d/%Y")  
+      #DPT3$ForecastDate <- strptime(as.character(DPT3$ForecastDate), "%m/%d/%Y")        
       DPT1$ForecastDate<-as.Date(DPT1$ForecastDate, "%Y-%m-%d")
       DPT2$ForecastDate<-as.Date(DPT2$ForecastDate, "%Y-%m-%d")
       DPT3$ForecastDate<-as.Date(DPT3$ForecastDate, "%Y-%m-%d")      
