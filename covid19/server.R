@@ -1812,9 +1812,7 @@ server <- function(input, output,session) {
       
     }
   )
->>>>>>> 642d657bc4a737032752ac820b0bfea8ba1404a6
-  
-  
+
   
   
   # Step Three
