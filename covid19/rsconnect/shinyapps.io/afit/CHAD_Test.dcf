@@ -5,8 +5,8 @@ account: afit
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 2279224
-bundleId: 3192674
+bundleId: 3197811
 url: https://afit.shinyapps.io/CHAD_Test/
-when: 1590526038.90753
+when: 1590618959.81712
 asMultiple: FALSE
 asStatic: FALSE
