@@ -2,7 +2,7 @@
 #' @details EXTRA EXTRA Need to find a better way later to replace this 
 #'          probably have the overlay function return a list with two objects. 
 #'          need the data.frame from overlay in the report
-PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDList, DaysProjected, StatisticType,CONUSSelect){
+PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDList, DaysProjected, StatisticType,CONUSSelect,RedLine){
   
   ####Uncomment to test plot function without running the app
   #i<-80
@@ -459,6 +459,10 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
             panel.border = element_blank()) +
       scale_x_date(date_breaks = "1 week")+
       labs(color = "ID")
+    
+    if (RedLine == "ShowLine"){
+      projections = projections + geom_hline(aes(yintercept = bcap,linetype = "Estimated COVID Patient Bed Capacity"),colour = "red")
+    }
 
     # projections <- projections +
     #   geom_line(HistoricalData,aes(linetype = ID, color = ID)) + 

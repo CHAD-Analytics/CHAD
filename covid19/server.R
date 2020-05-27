@@ -943,61 +943,16 @@ server <- function(input, output,session) {
   # 
   # })
   
-  output$CHIMENationalProj<-renderPlotly({
-    
-    if (is.null(input$SocialDistanceValueNational) ){social_dist_national<-1}
-    
-    CSN      <- "CSN"       %in% input$SocialDistanceValueNational
-    CBN    <- "CBN"     %in% input$SocialDistanceValueNational
-    SDN <- "SDN"  %in% input$SocialDistanceValueNational
-    
-    if (CSN & CBN & SDN){
-      social_dist_national <- 27
-    } else if (CSN & CBN){
-      social_dist_national <- 12
-    } else if (CSN & SDN){
-      social_dist_national <-19
-    } else if (SDN & CBN){
-      social_dist_national <-23
-    } else if (CSN) {
-      social_dist_national <- 4
-    }  else if (CBN) {
-      social_dist_national <- 8
-    }  else if (SDN) {
-      social_dist_national <- 15
+
+  output$HospLine <- renderUI({
+    if (input$CONUSP == "CONUS"){
+      checkboxGroupInput("RedLine","Hospital Capacity Line ",
+                         c("Show Line"="ShowLine"),
+                         selected = c(""))
     }
-    CHIMENationalPlot(social_dist_national, input$proj_days_national)
-  })
+    
+  })  
   
-  output$NationalPlotOverlay<-renderPlotly({
-    if (is.null(input$SocialDistanceValueNational) ){social_dist_national<-1}
-    
-    CSN      <- "CSN"       %in% input$SocialDistanceValueNational
-    CBN    <- "CBN"     %in% input$SocialDistanceValueNational
-    SDN <- "SDN"  %in% input$SocialDistanceValueNational
-    
-    if (CSN & CBN & SDN){
-      social_dist_national <- 27
-    } else if (CSN & CBN){
-      social_dist_national <- 12
-    } else if (CSN & SDN){
-      social_dist_national <-19
-    } else if (SDN & CBN){
-      social_dist_national <-23
-    } else if (CSN) {
-      social_dist_national <- 4
-    }  else if (CBN) {
-      social_dist_national <- 8
-    }  else if (SDN) {
-      social_dist_national <- 15
-    }
-    NationalOverlayPlot(social_dist_national, input$proj_days_national)
-  })
-  
-  output$IHMENationaProj<-renderPlotly({
-    
-    IHMENationalProjections(input$proj_days_national) 
-  })
   
   observe({
     if(input$selectall1 == 0) return(NULL) 
@@ -1173,8 +1128,15 @@ server <- function(input, output,session) {
           if ("CHIME2" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CHIME_23%_SD")}
           if ("CHIME1" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CHIME_27%_SD")}
       }
+    
+      if (is.null(input$RedLine)){
+        redline = "No"
+      } else{
+        redline = input$RedLine
+      }
+    
       MyHospitals<-GetHospitals(input$Base,input$Radius)
-      PlotOverlay(input$Base, MyCounties(), MyHospitals,ModelID,input$proj_days,input$StatisticType,input$CONUSP)
+      PlotOverlay(input$Base, MyCounties(), MyHospitals,ModelID,input$proj_days,input$StatisticType,input$CONUSP,redline)
       
       # output$PlotForecastDT<-DT::renderDataTable({
       #   PlotForecastDT <- DT::datatable(PeakValues,rownames = FALSE, options = list(fixedHeader = TRUE, 
@@ -1190,6 +1152,7 @@ server <- function(input, output,session) {
     # })
     
   })
+  
   
   
   output$helptext <- renderText({"I can trigger a shinyBS::bsModal() from here, but I want to place two buttons behind `Option_1` and     `Option_2`" })
@@ -1681,8 +1644,10 @@ server <- function(input, output,session) {
                 input$MAJCOMInput,input$NAFInput,input$WingInput,input$GroupInput)
   })
   
-  # Output Report ------------------------------------------------------------------------------------------------------------------------------------------------------------------
   
+  
+  
+  # Output Report ------------------------------------------------------------------------------------------------------------------------------------------------------------------
   
   # output$MTFSummaryP <- downloadHandler(
   #     filename = function() {  
@@ -1808,6 +1773,46 @@ server <- function(input, output,session) {
   #         print(doc,target = file)
   #   }
   # )
+
+  
+  output$report <- downloadHandler(
+    # For PDF output, change this to "report.pdf"
+    filename = function(){
+      paste0('CHAD_report(',paste(Sys.Date(),sep = '_'),')','.pptx')
+    },
+    content = function(file) {
+      
+      # Copy the report file to a temporary directory before processing it, in
+      # case we don't have write permissions to the current working dir (which
+      # can happen when deployed).
+      
+      # tempReport <- file.path(tempdir(), "TestReport.Rmd")
+      # file.copy("TestReport.Rmd", tempReport, overwrite = TRUE)
+      
+      # src <- normalizePath("TestReport2.Rmd")
+      # owd <- setwd(tempdir())
+      # on.exit(setwd(owd))
+      # file.copy(src, "TestReport2.Rmd", overwrite = TRUE)
+      # out <- render("TestReport2.Rmd", html_document())
+      # file.rename(out, file)
+      
+      # # Set up parameters to pass to Rmd document
+      params <- list(radius = input$Radius,
+                     base = input$Base,
+                     pjDays = input$proj_days,
+                     socDis = input$SocialDistanceValue)
+      
+      # Knit the document, passing in the `params` list, and eval it in a
+      # child of the global environment (this isolates the code in the document
+      # from the code in this app).
+      rmarkdown::render("www/7_other_resources/TestReport2.Rmd", output_file = file,
+                        params = params,
+                        envir = new.env(parent = globalenv())
+      )
+      
+    }
+  )
+>>>>>>> 642d657bc4a737032752ac820b0bfea8ba1404a6
   
   
   
