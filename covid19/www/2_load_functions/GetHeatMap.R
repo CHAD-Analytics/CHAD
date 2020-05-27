@@ -91,6 +91,8 @@ GetHeatMap<-function(BranchSelect,OpsSelect,MAJNAFSelect,MAJCOMChoice,NAFChoice,
       countrycolor = toRGB("white")
     )
     
+    HeatMap$IHME = ifelse(is.infinite(HeatMap$IHME),0,HeatMap$IHME)
+    
     legend.sizes = seq(min(HeatMap$IHME),max(HeatMap$IHME), ceiling(max(HeatMap$IHME)/8))
     ax = list(zeroline = FALSE, showline = FALSE, showticklabels = FALSE, showgrid = FALSE)
     mk = list(sizeref=0.15, sizemode="area", symbol="circle-open", color="black")
