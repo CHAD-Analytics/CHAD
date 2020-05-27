@@ -945,7 +945,7 @@ server <- function(input, output,session) {
   
 
   output$HospLine <- renderUI({
-    if (input$CONUSP == "CONUS"){
+    if (input$CONUSP == "CONUS" & input$StatisticType == "Hospitalizations"){
       checkboxGroupInput("RedLine","Hospital Capacity Line ",
                          c("Show Line"="ShowLine"),
                          selected = c(""))
