@@ -497,27 +497,14 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
     
     if (nrow(CovidDeathHist) != 0){
       HistoricalData<-colSums(CovidDeathHist[,5:length(CovidDeathHist)])
-      HistoricalDates<-seq(as.Date("2020-01-22"), length=length(HistoricalData), by="1 day")
-      HistoricalData<-data.frame(HistoricalDates, HistoricalData, HistoricalData, HistoricalData)
-      colnames(HistoricalData)<-c("ForecastDate", "Expected Fatalities", "Lower Estimate","Upper Estimate")
     } else {
       HistoricalDataHosp<-colSums(HistoricalDataDaily*.0025)
-      #Create dataframe to hold daily hospitalizations
-      HistoricalDates<-seq(as.Date("2020-01-22"), length=length(HistoricalData), by="1 day")
-      HistoricalData<-data.frame(HistoricalDates, HistoricalData, HistoricalData, HistoricalData)
-      colnames(HistoricalData)<-c("ForecastDate", "Expected Fatalities", "Lower Estimate","Upper Estimate")
     }
-         
-    # #Get data for counties with covid cases. We want number of cases, the rate of the cases and maybe other data.
-    # #We include State, county, population in those counties, cases, fatalities, doubling rate
-    # CovidCounties<-subset(CovidConfirmedCases, CountyFIPS %in% IncludedCounties$FIPS)
-    # CovidDeathHist<-subset(CovidDeaths, CountyFIPS %in% IncludedCounties$FIPS)
-    # HistoricalData<-colSums(CovidDeathHist[,5:length(CovidDeathHist)])
-    # HistoricalDates<-seq(as.Date("2020-01-22"), length=length(HistoricalData), by="1 day")
-    # HistoricalData<-data.frame(HistoricalDates, HistoricalData, HistoricalData, HistoricalData)
-    # colnames(HistoricalData)<-c("ForecastDate", "Expected Fatalities", "Lower Estimate","Upper Estimate")
-    
-    
+
+    HistoricalDates<-seq(as.Date("2020-01-22"), length=length(HistoricalData), by="1 day")
+    HistoricalData<-data.frame(HistoricalDates, HistoricalData, HistoricalData, HistoricalData)
+    colnames(HistoricalData)<-c("ForecastDate", "Expected Fatalities", "Lower Estimate","Upper Estimate")
+
     if (nrow(IHME_State) !=0 ) {
         # Apply ratio's to IHME data
         IHME_Region <- IHME_State
@@ -636,20 +623,6 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
         colnames(CU20w5PSD_State)<-c("ForecastDate","Expected Fatalities","Lower Estimate","Upper Estimate")
         CU20w5PSD_State$ID<-rep("CU20SCw5",nrow(CU20w5PSD_State))      
         
-        DeathCounties<-subset(CovidDeaths, CountyFIPS %in% IncludedCounties$FIPS)
-        CaseRate <- subset(CovidConfirmedCasesRate, CountyFIPS %in% IncludedCounties$FIPS)
-        CountyDataTable<-cbind(IncludedCounties,rev(CovidCounties)[,1],rev(DeathCounties)[,1],rev(CaseRate)[,1])
-        CountyDataTable<-data.frame(CountyDataTable$State,CountyDataTable$County,CountyDataTable$Population, rev(CountyDataTable)[,3], rev(CountyDataTable)[,2],rev(CountyDataTable)[,1])
-        colnames(CountyDataTable)<-c("State","County","Population","Total Confirmed Cases","Total Fatalities", "Case Doubling Rate (days)" )
-    
-        #Cleaning it up to input into the SEIAR model, we include countyFIPS, CountyName, State, State FIPS, number of cases, population, and doubling rate
-        #We take the data and create a dataframe called SIR inputs. It checks out by total cases, total population, and average doubling rate
-        ActiveCases<-rev(CovidCounties)[1:7]
-        ActiveCases<-data.frame(CovidCounties[,1:4],ActiveCases[,1], IncludedCounties$Population, CountyDataTable$`Case Doubling Rate (days)`)
-        colnames(ActiveCases)<-c("CountyFIPS","CountyName","State","StateFIPS","CurrentCases", "Population", "Doubling Rate")
-        SIRinputs<-data.frame(sum(ActiveCases$CurrentCases),sum(ActiveCases$Population), mean(ActiveCases$`Doubling Rate`))
-        colnames(SIRinputs)<-c("cases","pop","doubling")
-        
         colnames(UT_Data)<-c("ForecastDate", "Expected Fatalities", "Lower Estimate","Upper Estimate")
         UT_Data$ID<-rep("UT",nrow(UT_Data))
     
@@ -663,6 +636,20 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
         OverlayData<-rbind(OverlayData,DPT3)          
         OverlayData<-rbind(OverlayData,Army_State)      
     }
+    
+    DeathCounties<-subset(CovidDeaths, CountyFIPS %in% IncludedCounties$FIPS)
+    CaseRate <- subset(CovidConfirmedCasesRate, CountyFIPS %in% IncludedCounties$FIPS)
+    CountyDataTable<-cbind(IncludedCounties,rev(CovidCounties)[,1],rev(DeathCounties)[,1],rev(CaseRate)[,1])
+    CountyDataTable<-data.frame(CountyDataTable$State,CountyDataTable$County,CountyDataTable$Population, rev(CountyDataTable)[,3], rev(CountyDataTable)[,2],rev(CountyDataTable)[,1])
+    colnames(CountyDataTable)<-c("State","County","Population","Total Confirmed Cases","Total Fatalities", "Case Doubling Rate (days)" )
+    
+    #Cleaning it up to input into the SEIAR model, we include countyFIPS, CountyName, State, State FIPS, number of cases, population, and doubling rate
+    #We take the data and create a dataframe called SIR inputs. It checks out by total cases, total population, and average doubling rate
+    ActiveCases<-rev(CovidCounties)[1:7]
+    ActiveCases<-data.frame(CovidCounties[,1:4],ActiveCases[,1], IncludedCounties$Population, CountyDataTable$`Case Doubling Rate (days)`)
+    colnames(ActiveCases)<-c("CountyFIPS","CountyName","State","StateFIPS","CurrentCases", "Population", "Doubling Rate")
+    SIRinputs<-data.frame(sum(ActiveCases$CurrentCases),sum(ActiveCases$Population), mean(ActiveCases$`Doubling Rate`))
+    colnames(SIRinputs)<-c("cases","pop","doubling")
     
     #Next we use the calculated values, along with estimated values from the Estimated Values. 
     #The only input we want from the user is the social distancing rate. For this example, we just use 0.5
