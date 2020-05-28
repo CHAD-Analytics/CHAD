@@ -348,20 +348,21 @@ ui <- tagList(
                                 fluidRow(
                                   box(plotlyOutput("SummaryTabChoro", height = 600, width = 'auto')),
                                   box(plotOutput("HotSpot", height = 600))),
-                                box(title = "Base Summary Projections",
+                                box(
+                                    downloadButton('downloadData', 'Download Full Dataset'),
+                                    downloadButton('downloadFilteredData', 'Download Filtered Dataset (Table Above)'),
+                                    downloadButton('HotSpotData', 'Download Hotspot Dataset: 50 Mile Radius'),
+                                    downloadButton('HotSpotDataOneMile', 'Download Hotspot Dataset: Single County'),
+                                    downloadButton('MTFSummaryT', 'MTF Summary Table'),
+                                    downloadButton('MTFSummaryP', 'MTF Summary Plots'),
+                                    title = "Base Summary Projections",
                                     solidHeader=T, 
                                     align = "left", 
                                     column(width = 12, 
                                            DT::dataTableOutput("ForecastDataTableOut"), 
                                            style = "height:720px;overflow-y: scroll"), 
                                     height = 900, 
-                                    width =13,
-                                    downloadButton('downloadData', 'Download Full Dataset'),
-                                    downloadButton('downloadFilteredData', 'Download Filtered Dataset (Table Above)'),
-                                    downloadButton('HotSpotData', 'Download Hotspot Dataset: 50 Mile Radius'),
-                                    downloadButton('HotSpotDataOneMile', 'Download Hotspot Dataset: Single County'),
-                                    downloadButton('MTFSummaryT', 'MTF Summary Table'),
-                                    downloadButton('MTFSummaryP', 'MTF Summary Plots'))
+                                    width =13)
                                 
                               ),
                               ####### END Mission Risk #######
@@ -370,7 +371,16 @@ ui <- tagList(
                               tabPanel(
                                 value = 2,
                                 title = "International/National Summary",
-                                box(title = "Impact Map", solidHeader = T, align = "center", htmlOutput("SummaryPlot"),height=700,width=1200),
+                                widgetUserBox(
+                                  title = uiOutput("ImpactTitle"),
+                                  subtitle = uiOutput("ImpactText"),
+                                  width = 12,
+                                  solidHeader = T,
+                                  #type = 2,
+                                  #uiOutput("ImpactText"),
+                                  htmlOutput("SummaryPlot")
+                                ),
+                                #box(title = "Impact Map",subtitle="info here",solidHeader = T, align = "center", htmlOutput("SummaryPlot"),height=700,width=1200),
                                 DT::dataTableOutput("NationalDataTable1")
                                 # box(title = "National Statistics", solidHeader=T, align = "left", column(width = 12, DT::dataTableOutput("NationalDataTable1"), style = "height:400px;overflow-y: scroll;overflow-x:scroll"),width = 13, height = 500)
                                 

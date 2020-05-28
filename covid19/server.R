@@ -942,13 +942,34 @@ server <- function(input, output,session) {
   #     CHIMELocalPlot(social_dist, input$proj_days, IncludedCounties, input$StatisticType)
   # 
   # })
+
+  output$ImpactTitle <- renderUI({
+    if (input$MapScale == "Log"){
+      textbox <- "Impact Map: Logarithmic Scale"
+    } else if (input$MapScale == "Linear"){
+      textbox <- "Impact Map: Linear Scale"
+    }
+  })  
   
+  output$ImpactText <- renderUI({
+    if (input$MapScale == "Log"){
+        text1 = "A logarithmic scale is ideal for measuring rates of change. "
+        text2 = "This scale flattens the rate of growth to better visualize where the growth starts to level off once the exponential growth has stopped."
+        out <- paste(text1, "\n", text2,sep = "")
+        #cat(out)
+    } else if (input$MapScale == "Linear"){
+        text1 = "On a linear scale, the cases increase additively and the visual distance between the data points remains constant. "
+        #text2 = "querystring"
+        out <- paste(text1,sep = "")
+    }
+  })    
+    
 
   output$HospLine <- renderUI({
     if (input$CONUSP == "CONUS" & input$StatisticType == "Hospitalizations"){
       checkboxGroupInput("RedLine","Hospital Capacity Line ",
                          c("Show Line"="ShowLine"),
-                         selected = c(""))
+                         selected = c("ShowLine"))
     }
     
   })  

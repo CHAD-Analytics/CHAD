@@ -468,10 +468,11 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
     if (RedLine == "ShowLine"){
       projections = projections + geom_hline(aes(yintercept = bcap,linetype = "Estimated COVID Patient Bed Capacity"),colour = "red")
     }
-
+    
     # projections <- projections +
-    #   geom_line(HistoricalData,aes(linetype = ID, color = ID)) + 
-    #   geom_ribbon(HistoricalData,aes(ymin = `Lower Estimate`, ymax = `Upper Estimate`),alpha = .2)
+    #   ggplot(HistoricalData)+
+    #   geom_line(aes(linetype = ID, color = ID)) +
+    #   geom_ribbon(aes(ymin = `Lower Estimate`, ymax = `Upper Estimate`),alpha = .2)+
     #   scale_colour_manual(values=c("black"))+
     #   scale_fill_manual(values = c("gray"))+
     #   scale_linetype_manual(values=c("solid"))
