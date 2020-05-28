@@ -155,7 +155,7 @@ ui <- tagList(
                                                                           selected = c("Eglin Air Force Base")),
                                                               sliderInput("Radius",
                                                                           "Choose your local radius (miles):",
-                                                                          min = 10,
+                                                                          min = 1,
                                                                           max = 100,
                                                                           value = 50)  
                                               ),

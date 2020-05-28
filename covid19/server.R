@@ -975,6 +975,21 @@ server <- function(input, output,session) {
   })  
   
   
+
+  # observeEvent(input$ModelSelectionValue1, {
+  #   selected <- c()
+  #     if (input$selectall1 != 0) {
+  #         if ("IHME" %in% input$ModelSelectionValue1){selected<-cbind(selected,"IHME")}
+  #         if ("CAA" %in% input$ModelSelectionValue1){selected<-cbind(selected,"CAA")}      
+  #         if ("YYG" %in% input$ModelSelectionValue1){selected<-cbind(selected,"YYG")}
+  #         if ("UT" %in% input$ModelSelectionValue1){selected<-cbind(selected,"UT")}
+  #         if ("CHIME7" %in% input$ModelSelectionValue1){selected<-cbind(selected,"CHIME_4%_SD")}
+  #         if ("CU20SCw10" %in% input$ModelSelectionValue1){selected<-cbind(selected,"CU20SCw10")}
+  #     }
+  #     updateCheckboxGroupInput(session, "dynamic", selected = selected)
+  # }, ignoreNULL = FALSE)  
+  
+
   observe({
     if(input$selectall1 == 0) return(NULL) 
     else if (input$selectall1%%2 == 0)

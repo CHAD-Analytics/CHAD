@@ -199,19 +199,15 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
         colnames(DPT2)<-c("ForecastDate", "Expected Hospitalizations", "Lower Estimate","Upper Estimate", "ID")    
         colnames(DPT3)<-c("ForecastDate", "Expected Hospitalizations", "Lower Estimate","Upper Estimate", "ID")         
         
-
-        #Army_State1<-dplyr::filter(Army_State,FIPS %in% IncludedCounties$FIPS)    
-        if (nrow(Army_State) !=0 ) {
-            Army_State<-subset(Army_State, select=-c(Location,County,Susceptible,Exposed,Removed,Fatalities,State))    
-            Army_State$Date <- as.Date(Army_State$ForecastDate, "%m/%d/%y")
-            Army_State<-dplyr::filter(Army_State,ForecastDate >= Sys.Date())
-            Army_State<-aggregate(Army_State[,sapply(Army_State,is.numeric)],Army_State["ForecastDate"],sum)
-            Army_State<-Army_State[1:DaysProjected,]
-            Army_State<-data.frame(Army_State$ForecastDate,Army_State$Infected*.055,Army_State$Infected*.055*.75,Army_State$Infected*.055*1.25)
-            colnames(Army_State)<-c("ForecastDate","Expected Hospitalizations","Lower Estimate","Upper Estimate")
-            Army_State$ID<-rep("CAA",nrow(Army_State))
-            OverlayData<-rbind(OverlayData,Army_State)
-        }
+        Army_State<-subset(Army_State, select=-c(Location,County,Susceptible,Exposed,Removed,Fatalities,State))    
+        Army_State$Date <- as.Date(Army_State$ForecastDate, "%m/%d/%y")
+        Army_State<-dplyr::filter(Army_State,ForecastDate >= Sys.Date())
+        Army_State<-aggregate(Army_State[,sapply(Army_State,is.numeric)],Army_State["ForecastDate"],sum)
+        Army_State<-Army_State[1:DaysProjected,]
+        Army_State<-data.frame(Army_State$ForecastDate,Army_State$Infected*.055,Army_State$Infected*.055*.75,Army_State$Infected*.055*1.25)
+        colnames(Army_State)<-c("ForecastDate","Expected Hospitalizations","Lower Estimate","Upper Estimate")
+        Army_State$ID<-rep("CAA",nrow(Army_State))
+        OverlayData<-rbind(OverlayData,Army_State)
             
         CU20x10PSD_State<-dplyr::filter(CU20_1x10PSD,fips %in% IncludedCounties$FIPS)
         CU20x5PSD_State<-dplyr::filter(CU20_1x5PSD,fips %in% IncludedCounties$FIPS)
@@ -328,9 +324,9 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
       #Established Variables at the start for every county or populations
 
       doubling<-as.integer(CaseDblRate(MyCounties))
-      if (doubling == 0) {
-        doubling <- as.integer(40)
-      }
+       if (doubling == 0) {
+         doubling <- as.integer(40)
+       }
       
       #for the OCONUS locations, use the Rt from YYG files
       Ro<-Estimate_Rt(MyCounties)
@@ -576,18 +572,15 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
         colnames(DPT2)<-c("ForecastDate", "Expected Fatalities", "Lower Estimate","Upper Estimate","ID")   
         colnames(DPT3)<-c("ForecastDate", "Expected Fatalities", "Lower Estimate","Upper Estimate","ID")          
 
-        Army_State<-dplyr::filter(Army_State,FIPS %in% IncludedCounties$FIPS)  
-        if (nrow(Army_State) !=0 ) {
-            Army_State<-subset(Army_State, select=-c(Location,County,Susceptible,Exposed,Removed,Infected,State,number))    
-            Army_State$Date <- as.Date(Army_State$ForecastDate, "%m/%d/%y")
-            Army_State<-dplyr::filter(Army_State,ForecastDate >= Sys.Date())
-            Army_State<-aggregate(Army_State[,sapply(Army_State,is.numeric)],Army_State["ForecastDate"],sum)
-            Army_State<-Army_State[1:DaysProjected,]
-            Army_State<-data.frame(Army_State$ForecastDate,Army_State$Fatalities*.0025,Army_State$Fatalities*.0025*.75,Army_State$Fatalities*.0025*1.25)
-            colnames(Army_State)<-c("ForecastDate","Expected Fatalities","Lower Estimate","Upper Estimate")
-            Army_State$ID<-rep("CAA",nrow(Army_State)) 
-            OverlayData<-rbind(OverlayData,Army_State)                  
-        }
+        Army_State<-subset(Army_State, select=-c(Location,County,Susceptible,Exposed,Removed,Infected,State,number))    
+        Army_State$Date <- as.Date(Army_State$ForecastDate, "%m/%d/%y")
+        Army_State<-dplyr::filter(Army_State,ForecastDate >= Sys.Date())
+        Army_State<-aggregate(Army_State[,sapply(Army_State,is.numeric)],Army_State["ForecastDate"],sum)
+        Army_State<-Army_State[1:DaysProjected,]
+        Army_State<-data.frame(Army_State$ForecastDate,Army_State$Fatalities*.0025,Army_State$Fatalities*.0025*.75,Army_State$Fatalities*.0025*1.25)
+        colnames(Army_State)<-c("ForecastDate","Expected Fatalities","Lower Estimate","Upper Estimate")
+        Army_State$ID<-rep("CAA",nrow(Army_State)) 
+        OverlayData<-rbind(OverlayData,Army_State)
         
         CU20x10PSD_State<-dplyr::filter(CU20_1x10PSD,fips %in% IncludedCounties$FIPS)
         CU20x5PSD_State<-dplyr::filter(CU20_1x5PSD,fips %in% IncludedCounties$FIPS)
