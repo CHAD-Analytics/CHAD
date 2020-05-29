@@ -1621,7 +1621,7 @@ server <- function(input, output,session) {
       paste("MTFSummary-", Sys.Date(), ".csv", sep="")
     },
     content = function(file) {
-      Stat<-"Cases"
+
       forecastbaselist<-dplyr::filter(AFBaseLocations,Branch %in% input$Branch)                        
       forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE) 
 
@@ -1685,130 +1685,145 @@ server <- function(input, output,session) {
   
   # Output Report ------------------------------------------------------------------------------------------------------------------------------------------------------------------
   
-  # output$MTFSummaryP <- downloadHandler(
-  #     filename = function() {  
-  #       "MTF_Plots.pptx"
-  #     },   
-  # 
-  #     content = function(file) {     
-  #         Stat<-"Cases"
-  #         
-  #         # iBranch  <- "Air Force"
-  #         # iOperationalInput <- "Active Duty"
-  #         # iMAJCOMInput <- "AFMC"
-  #         
-  #         forecastbaselist<-dplyr::filter(AFBaseLocations,Branch %in% input$Branch)                        
-  #         forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE) 
-  #         
-  #         FilteredDT1<-dplyr::filter(MTFSummaryReport,Installation %in% forecastbaselist)                        
-  #         
-  #         if(input$OperationalInput != "All") {
-  #           forecastbaselist<-dplyr::filter(AFBaseLocations,Operational %in% input$OperationalInput)                        
-  #           forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE)         
-  #           FilteredDT1<-dplyr::filter(FilteredDT1,Installation %in% forecastbaselist)
-  #         }      
-  #         
-  #         if (input$MAJCOMInput == "All") {
-  #           FTPrint<-FilteredDT1
-  #         } else {
-  #           FTPrint<-dplyr::filter(FilteredDT1,MAJCOM %in% input$MAJCOMInput)                        
-  #         }
-  #         
-  #       
-  #         #Create a new powerpoint document
-  #         doc <- read_pptx() %>%
-  #                 add_slide("Title Slide", master = "Office Theme")
-  #                 #add_Title(doc,"Create a PowerPoint document from R software")
-  #         
-  #         for (i in 1:(nrow(FTPrint))){
-  #         #LocalHealthPlot1
-  #           
-  #             ChosenBase <- ForecastDataTableCases$Installation[i]
-  #             value = NULL
-  #             IncludedCounties<-GetCounties(ChosenBase,50,value,value)
-  #           
-  #             DailyChart <- CovidCasesPerDayChart(IncludedCounties)
-  #             DailyChart <- dplyr::filter(DailyChart, ForecastDate >= DailyChart$ForecastDate[1] + 35)
-  #             
-  #             plotDaily <- ggplot(DailyChart) + 
-  #               geom_line(aes(x=ForecastDate, y=value, colour = variable), size = 0.5) +
-  #               scale_colour_manual(values=c("Blue", "Red")) +
-  #               xlab('Date') +
-  #               ylab('Number of People') +
-  #               theme_bw() + 
-  #               theme(plot.title = element_text(face = "bold", size = 15, family = "sans"),
-  #                     axis.title = element_text(face = "bold", size = 11, family = "sans"),
-  #                     axis.text.x = element_text(angle = 60, hjust = 1), 
-  #                     axis.line = element_line(color = "black"),
-  #                     legend.position = "top",
-  #                     plot.background = element_blank(),
-  #                     panel.grid.major = element_blank(),
-  #                     panel.grid.minor = element_blank(),
-  #                     panel.border = element_blank()) +
-  #               scale_x_date(date_breaks = "1 week") +
-  #               labs(color='')
-  #             
-  #             plotDaily <- ggplotly(plotDaily)
-  #             plotDaily <- plotDaily %>% layout(legend = list(orientation = "h",   # show entries horizontally
-  #                                                             xanchor = "center",  # use center of legend as anchor
-  #                                                             x = 0.5,
-  #                                                             y = 1.2)) #%>% config(displayModeBar = FALSE)
-  #             plotDaily      
-  # 
-  #             doc %>% add_slide(layout="Two Content",master='Office Theme') %>%
-  #                     ph_with(plotDaily,location = ph_location_left())                            
-  #                     #ph_with(dml(ggobj = plotDaily),location = ph_location_left())                            
-  #       
-  #             # #LocalHealthPlot2
-  #             # CumulChart <- CovidCasesCumChart(IncludedCounties)
-  #             # CumulChart <- dplyr::filter(CumulChart, ForecastDate >= CumulChart$ForecastDate[1] + 35)
-  #             # 
-  #             # #Plot for local area cumulative cases
-  #             # plotTot <- ggplot(CumulChart) + 
-  #             #   geom_line(aes(x=ForecastDate, y=value, colour = variable), size = 0.5) +
-  #             #   scale_colour_manual(values=c("Blue", "Red", "Green"))+
-  #             #   xlab('Date') +
-  #             #   ylab('Number of People') +
-  #             #   theme_bw() + 
-  #             #   theme(plot.title = element_text(face = "bold", size = 15, family = "sans"),
-  #             #         axis.title = element_text(face = "bold", size = 11, family = "sans"),
-  #             #         axis.text.x = element_text(angle = 60, hjust = 1), 
-  #             #         axis.line = element_line(color = "black"),
-  #             #         plot.background = element_blank(),
-  #             #         panel.grid.major = element_blank(),
-  #             #         panel.grid.minor = element_blank(),
-  #             #         panel.border = element_blank(),
-  #             #         legend.position = c(0, 1),) +
-  #             #   scale_x_date(date_breaks = "1 week")
-  #             # 
-  #             # plotTot <- ggplotly(plotTot)
-  #             # plotTot <- plotTot %>% layout(legend = list(orientation = "h",   # show entries horizontally
-  #             #                                             xanchor = "center",  # use center of legend as anchor
-  #             #                                             x = 0.5,
-  #             #                                             y = 1.2)) #%>% config(displayModeBar = FALSE)
-  #             # plotTot        
-  #             
-  #             # grid.arrange(plotDaily,plotTot)
-  #             # 
-  #             # grid.arrange(grobs=lapply(list(plotDaily,plotTot), grobTree), ncol=2)
-  #             # 
-  #             # grid.arrange(grobTree(plotDaily),grobTree(plotTot), ncol=2) 
-  #             # 
-  #             # grid.arrange(plotDaily,plotTot,ncol=2,top="Main Title")
-  #             # 
-  #             # plotDaily
-  #             # plotTot
-  #             # 
-  #             # par(mfcol = c(1, 1))
-  #             # pobj <- grid.arrange(grobs = list(plotDaily,plotTot),nrow=1)
-  #             # 
-  #             # doc %>% ph_with(dml(ggobj = plotTot),location = ph_location_right())
-  #             # 
-  #         }
-  #   
-  #         print(doc,target = file)
-  #   }
-  # )
+  output$MTFSummaryP <- downloadHandler(
+      filename = function() {
+        "MTF_Plots.pptx"
+      },
+
+      content = function(file) {
+
+          #iBranch  <- "Air Force"
+          #iOperationalInput <- "Active"
+          #iMAJCOMInput <- "AFMC"
+
+          forecastbaselist<-dplyr::filter(AFBaseLocations,Branch %in% input$Branch)
+          forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE)
+
+          FilteredDT1<-dplyr::filter(MTFSummaryReport,Installation %in% forecastbaselist)
+
+          if(input$OperationalInput != "All") {
+            forecastbaselist<-dplyr::filter(AFBaseLocations,Operational %in% input$OperationalInput)
+            forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE)
+            FilteredDT1<-dplyr::filter(FilteredDT1,Installation %in% forecastbaselist)
+          }
+
+          if (iMAJCOMInput == "All") {
+            FTPrint<-FilteredDT1
+          } else {
+            FTPrint<-dplyr::filter(FilteredDT1,MAJCOM %in% input$MAJCOMInput)
+          }
+
+
+          #Create a new powerpoint document
+          doc <- read_pptx() 
+          
+                  #%>%
+                  #add_slide("Title", master = "Office Theme")
+                  #add_Title(doc,"MAJCOM MTF Summary Plots")
+          
+          for (i in 1:(nrow(FTPrint))){
+          #LocalHealthPlot1
+
+              ChosenBase <- ForecastDataTableCases$Installation[i]
+              value = NULL
+              IncludedCounties<-GetCounties(ChosenBase,50,value,value)
+
+              DailyChart <- CovidCasesPerDayChart(IncludedCounties)
+              DailyChart <- dplyr::filter(DailyChart, ForecastDate >= DailyChart$ForecastDate[1] + 35)
+
+              doc <- add_slide(doc)
+              
+              plotDaily <- ggplot(DailyChart) +
+                geom_line(aes(x=ForecastDate, y=value, colour = variable), size = 0.5) +
+                scale_colour_manual(values=c("Blue", "Red")) +
+                xlab('Date') +
+                ylab('Number of People') +
+                theme_bw() +
+                theme(plot.title = element_text(face = "bold", size = 15, family = "sans"),
+                      axis.title = element_text(face = "bold", size = 11, family = "sans"),
+                      axis.text.x = element_text(angle = 60, hjust = 1),
+                      axis.line = element_line(color = "black"),
+                      legend.position = "top",
+                      plot.background = element_blank(),
+                      panel.grid.major = element_blank(),
+                      panel.grid.minor = element_blank(),
+                      panel.border = element_blank()) +
+                scale_x_date(date_breaks = "1 week") +
+                labs(color='')
+
+              #plotDaily <- ggplotly(plotDaily)
+              #plotDaily <- plotDaily %>% layout(legend = list(orientation = "h",   # show entries horizontally
+                                                              #xanchor = "center",  # use center of legend as anchor
+                                                              #x = 0.5,
+                                                              #y = 1.2)) #%>% config(displayModeBar = FALSE)
+              #plotDaily
+
+              # graph2ppt(x=plotDaily) # export graph with current graphics window width & height
+              # # use active graph instead of passing plot as object
+              # if (i == 0){
+              #     graph2ppt(file="ggplot2_plot.pptx", aspectr=1.7)              
+              # } else {
+              #     graph2ppt(file="ggplot2_plot.pptx", aspectr=sqrt(2), append=TRUE) 
+              # }
+              
+              
+              # doc <- ph_with(x=doc, value=plotDaily,
+              #                  location = ph_location_type(type = "body"),bg = "transparent" )
+              
+        
+              #LocalHealthPlot2
+              CumulChart <- CovidCasesCumChart(IncludedCounties)
+              CumulChart <- dplyr::filter(CumulChart, ForecastDate >= CumulChart$ForecastDate[1] + 35)
+
+              #Plot for local area cumulative cases
+              plotTot <- ggplot(CumulChart) +
+                geom_line(aes(x=ForecastDate, y=value, colour = variable), size = 0.5) +
+                scale_colour_manual(values=c("Blue", "Red", "Green"))+
+                xlab('Date') +
+                ylab('Number of People') +
+                theme_bw() +
+                theme(plot.title = element_text(face = "bold", size = 15, family = "sans"),
+                      axis.title = element_text(face = "bold", size = 11, family = "sans"),
+                      axis.text.x = element_text(angle = 60, hjust = 1),
+                      axis.line = element_line(color = "black"),
+                      plot.background = element_blank(),
+                      panel.grid.major = element_blank(),
+                      panel.grid.minor = element_blank(),
+                      panel.border = element_blank(),
+                      legend.position = c(0, 1),) +
+                scale_x_date(date_breaks = "1 week")
+              
+              # plotTot <- ggplotly(plotTot)
+              # plotTot <- plotTot %>% layout(legend = list(orientation = "h",   # show entries horizontally
+              #                                             xanchor = "center",  # use center of legend as anchor
+              #                                             x = 0.5,
+              #                                             y = 1.2)) #%>% config(displayModeBar = FALSE)
+              # plotTot
+
+              # grid.arrange(plotDaily,plotTot)
+              #
+              # grid.arrange(grobs=lapply(list(plotDaily,plotTot), grobTree), ncol=2)
+              #
+              # grid.arrange(grobTree(plotDaily),grobTree(plotTot), ncol=2)
+              #
+              # grid.arrange(plotDaily,plotTot,ncol=2,top="Main Title")
+              #
+              # plotDaily
+              # plotTot
+              #
+              # par(mfcol = c(1, 1))
+              # pobj <- grid.arrange(grobs = list(plotDaily,plotTot),nrow=1)
+              #
+              # doc %>% ph_with(dml(ggobj = plotTot),location = ph_location_right())
+              
+              doc %>% add_slide(layout="Two Content",master='Office Theme') %>%
+                      ph_with(plotDaily,location = ph_location_left())
+                      ph_with(plotTot,location = ph_location_right())
+          }
+
+          print(doc,target = file)
+    }
+  )
 
   
   output$report <- downloadHandler(
