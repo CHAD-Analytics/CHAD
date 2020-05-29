@@ -354,7 +354,7 @@ ui <- tagList(
                                     downloadButton('HotSpotData', 'Download Hotspot Dataset: 50 Mile Radius'),
                                     downloadButton('HotSpotDataOneMile', 'Download Hotspot Dataset: Single County'),
                                     downloadButton('MTFSummaryT', 'MTF Summary Table'),
-                                    downloadButton('MTFSummaryP', 'MTF Summary Plots'),
+                                    downloadButton('MTFSummaryP', 'MTF Summary Plots (Click Once)'),
                                     title = "Base Summary Projections",
                                     solidHeader=T, 
                                     align = "left", 

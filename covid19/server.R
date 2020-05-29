@@ -1707,7 +1707,7 @@ server <- function(input, output,session) {
             FilteredDT1<-dplyr::filter(FilteredDT1,Installation %in% forecastbaselist)
           }
 
-          if (iMAJCOMInput == "All") {
+          if (input$MAJCOMInput == "All") {
             FTPrint<-FilteredDT1
           } else {
             FTPrint<-dplyr::filter(FilteredDT1,MAJCOM %in% input$MAJCOMInput)
@@ -1730,8 +1730,6 @@ server <- function(input, output,session) {
 
               DailyChart <- CovidCasesPerDayChart(IncludedCounties)
               DailyChart <- dplyr::filter(DailyChart, ForecastDate >= DailyChart$ForecastDate[1] + 35)
-
-              doc <- add_slide(doc)
               
               plotDaily <- ggplot(DailyChart) +
                 geom_line(aes(x=ForecastDate, y=value, colour = variable), size = 0.5) +
@@ -1816,9 +1814,9 @@ server <- function(input, output,session) {
               #
               # doc %>% ph_with(dml(ggobj = plotTot),location = ph_location_right())
               
-              doc %>% add_slide(layout="Two Content",master='Office Theme') %>%
-                      ph_with(plotDaily,location = ph_location_left())
-                      ph_with(plotTot,location = ph_location_right())
+              doc <- add_slide(x=doc,layout="Two Content",master='Office Theme')
+              doc <- ph_with(x=doc,value=plotDaily,location = ph_location_left())
+              doc <- ph_with(x=doc,value=plotTot,location = ph_location_right())
           }
 
           print(doc,target = file)
