@@ -1815,6 +1815,8 @@ server <- function(input, output,session) {
               # doc %>% ph_with(dml(ggobj = plotTot),location = ph_location_right())
               
               doc <- add_slide(x=doc,layout="Two Content",master='Office Theme')
+              titleline <- paste("Plots for ",FTPrint$Installation[i])
+              doc <- ph_with(x = doc, value = titleline,location = ph_location_type(type="title") )
               doc <- ph_with(x=doc,value=plotDaily,location = ph_location_left())
               doc <- ph_with(x=doc,value=plotTot,location = ph_location_right())
           }
