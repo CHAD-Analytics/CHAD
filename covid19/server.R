@@ -1756,18 +1756,6 @@ server <- function(input, output,session) {
                                                               #y = 1.2)) #%>% config(displayModeBar = FALSE)
               #plotDaily
 
-              # graph2ppt(x=plotDaily) # export graph with current graphics window width & height
-              # # use active graph instead of passing plot as object
-              # if (i == 0){
-              #     graph2ppt(file="ggplot2_plot.pptx", aspectr=1.7)              
-              # } else {
-              #     graph2ppt(file="ggplot2_plot.pptx", aspectr=sqrt(2), append=TRUE) 
-              # }
-              
-              
-              # doc <- ph_with(x=doc, value=plotDaily,
-              #                  location = ph_location_type(type = "body"),bg = "transparent" )
-              
         
               #LocalHealthPlot2
               CumulChart <- CovidCasesCumChart(IncludedCounties)
@@ -1784,11 +1772,11 @@ server <- function(input, output,session) {
                       axis.title = element_text(face = "bold", size = 11, family = "sans"),
                       axis.text.x = element_text(angle = 60, hjust = 1),
                       axis.line = element_line(color = "black"),
+                      legend.position = "top",                      
                       plot.background = element_blank(),
                       panel.grid.major = element_blank(),
                       panel.grid.minor = element_blank(),
-                      panel.border = element_blank(),
-                      legend.position = c(0, 1),) +
+                      panel.border = element_blank()) +
                 scale_x_date(date_breaks = "1 week")
               
               # plotTot <- ggplotly(plotTot)

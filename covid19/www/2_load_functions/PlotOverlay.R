@@ -323,18 +323,18 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
       #Mean Estimate
       #Established Variables at the start for every county or populations
 
-      doubling<-as.integer(CaseDblRate(MyCounties))
-       if (doubling == 0) {
-         doubling <- as.integer(40)
-       }
-      
-      #for the OCONUS locations, use the Rt from YYG files
-      Ro<-Estimate_Rt(MyCounties)
-      if (Ro == "Undefined for Region"){
-        Ro<-as.integer(1)
-      } else if (Ro < 1){
-        Ro<-as.integer(1)
-      }
+      # doubling<-as.integer(CaseDblRate(MyCounties))
+      #  if (doubling == 0) {
+      #    doubling <- as.integer(40)
+      #  }
+      # 
+      # #for the OCONUS locations, use the Rt from YYG files
+      # Ro<-Estimate_Rt(MyCounties)
+      # if (Ro == "Undefined for Region"){
+      #   Ro<-as.integer(1)
+      # } else if (Ro < 1){
+      #   Ro<-as.integer(1)
+      # }
 
       incubationtime<-5
       latenttime<-2
@@ -345,8 +345,8 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
       hospitaltime<-3.5
       icutime<-4
       ventilatortime<-7
-      #doubling<-8
-      #Ro<-2.5
+      doubling<-8
+      Ro<-2.5
 
       #Now we throw the values above into the SEIAR model, and we create dates for the number of days we decided to forecast as well (place holder for now).
       #With the outputs, we grab the daily hospitalized people and the cumulative hospitalizations. Then we name the columns
@@ -572,7 +572,7 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
         colnames(DPT2)<-c("ForecastDate", "Expected Fatalities", "Lower Estimate","Upper Estimate","ID")   
         colnames(DPT3)<-c("ForecastDate", "Expected Fatalities", "Lower Estimate","Upper Estimate","ID")          
 
-        Army_State<-subset(Army_State, select=-c(Location,County,Susceptible,Exposed,Removed,Infected,State,number))    
+        Army_State<-subset(Army_State, select=-c(Location,County,Susceptible,Exposed,Removed,Infected,State))    
         Army_State$Date <- as.Date(Army_State$ForecastDate, "%m/%d/%y")
         Army_State<-dplyr::filter(Army_State,ForecastDate >= Sys.Date())
         Army_State<-aggregate(Army_State[,sapply(Army_State,is.numeric)],Army_State["ForecastDate"],sum)

@@ -1,0 +1,12 @@
+name: covid19
+title: covid19
+username:
+account: afit
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 2192363
+bundleId: 3198714
+url: https://afit.shinyapps.io/covid19/
+when: 1590639782.8329
+asMultiple: FALSE
+asStatic: FALSE
