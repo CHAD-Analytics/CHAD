@@ -5,10 +5,10 @@
 #' 
 #' Columbia does not provide overseas forecasting
 
-CU20_1x10PSD <-vroom::vroom("https://raw.githubusercontent.com/shaman-lab/COVID-19Projection/master/Projection_May17/bed_80contact1x10p.csv")
-CU20_1x5PSD <-vroom::vroom("https://raw.githubusercontent.com/shaman-lab/COVID-19Projection/master/Projection_May17/bed_80contact1x5p.csv")
-CU20_w10PSD <-vroom::vroom("https://raw.githubusercontent.com/shaman-lab/COVID-19Projection/master/Projection_May17/bed_80contactw10p.csv")
-CU20_w5PSD <-vroom::vroom("https://raw.githubusercontent.com/shaman-lab/COVID-19Projection/master/Projection_May17/bed_80contactw5p.csv")
+CU20_1x10PSD <-vroom::vroom("https://raw.githubusercontent.com/shaman-lab/COVID-19Projection/master/Projection_May24/bed_80contact1x10p.csv")
+CU20_1x5PSD <-vroom::vroom("https://raw.githubusercontent.com/shaman-lab/COVID-19Projection/master/Projection_May24/bed_80contact1x5p.csv")
+CU20_w10PSD <-vroom::vroom("https://raw.githubusercontent.com/shaman-lab/COVID-19Projection/master/Projection_May24/bed_80contactw10p.csv")
+CU20_w5PSD <-vroom::vroom("https://raw.githubusercontent.com/shaman-lab/COVID-19Projection/master/Projection_May24/bed_80contactw5p.csv")
 
 # CU20_1x10PSD <-vroom::vroom("www/4_load_external_data/data_files/bed_80contact1x10p.csv")
 # CU20_1x5PSD<-vroom::vroom("www/4_load_external_data/data_files/bed_80contact1x5p.csv")
