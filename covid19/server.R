@@ -751,156 +751,156 @@ server <- function(input, output,session) {
   # Output Projections  ---------------------------------------------------------------------------------------------------------------------------------------------------------------
   
   # Output AMC Analysis
-  output$ProjectedEpidemicTable<-renderPlotly({
-    
-    baseUsed = input$AMClist
-    
-    # Read the json file and convert it to data.frame
-    #myList <- fromJSON("data/shinyjson.json")
-    
-    df <- AMC_model
-    
-    df <- select(df, "DataDate", "DataType", baseUsed)
-    
-    colnames(df)[3]  <- "Data"
-    
-    myTibble <- as_tibble(df)
-    
-    cummInf <- myTibble %>% filter(DataType == "Cumulative Infections")
-    currInf <- myTibble %>% filter(DataType == "Current Infections")
-    cummDeath <- myTibble %>% filter(DataType == "Cumulative Deaths")
-    
-    cummDeath <- select(cummDeath, "DataDate","Data")
-    currInf <- select(currInf, "DataDate","Data")
-    cummInf <- select(cummInf, "DataDate", "Data")
-    
-    colnames(cummDeath)[2] <- "Projected Cumulative Deaths"
-    colnames(currInf)[2] <- "Projected Daily Infections"
-    colnames(cummInf)[2] <- "Projected Cumulative Infections"
-    
-    df <- merge(cummDeath, currInf, by="DataDate")
-    df <- merge(df, cummInf, by="DataDate")
-    
-    Chart2DataSub <- melt(data.table(df), id=c("DataDate"))
-    
-    #Plotting the Line Graph
-    p <- ggplot(Chart2DataSub) + 
-      geom_line(aes(x=DataDate,  y=value, colour = variable, linetype = variable), 
-                size = 0.5) +
-      scale_colour_manual(values=c("Blue", "Orange", "Red", "Black"))+
-      scale_linetype_manual(values=c("dashed", "solid", "solid", "solid"))+
-      geom_vline(aes(xintercept = as.numeric(lubridate::ymd(Sys.Date())), linetype = "Current Day"), color = "Black") +
-      xlab('Date') +
-      ylab('Number of People') +
-      theme_bw() + 
-      theme(plot.title = element_text(face = "bold", size = 15, family = "sans"),
-            axis.title = element_text(face = "bold", size = 11, family = "sans"),
-            axis.text.x = element_text(angle = 60, hjust = 1), 
-            axis.line = element_line(color = "black"),
-            plot.background = element_blank(),
-            panel.grid.major = element_blank(),
-            panel.grid.minor = element_blank(),
-            panel.border = element_blank(),) +
-      scale_x_date(date_breaks = "1 week") + scale_y_continuous(labels = function(x) format(x, scientific = FALSE))
-    
-    p2 <- ggplotly(p)
-    p2 <- p2 %>% layout(legend = list(orientation = "h",   # show entries horizontally
-                                      xanchor = "center",
-                                      x = 0.5,
-                                      y = -0.5
-    )) #%>% config(displayModeBar = FALSE)
-    p2 <- p2 %>% layout(xaxis = list(showgrid = F),
-                        yaxis = list(gridcolor = "lightgray"),margin = list(t = 50), title=baseUsed)# %>% config(displayModeBar = FALSE)
-    p2
-    
-  })
-  
-  
-  output$ProjPeakInfDate<-renderValueBox({
-    
-    baseUsed = input$AMClist
-    
-    df <- AMC_model
-    
-    datePeak <- tryCatch({
-      
-      df <- select(df, "DataDate", "DataType", baseUsed)
-      
-      colnames(df)[3]  <- "Data"
-      
-      myTibble <- as_tibble(df)
-      
-      currInf <- myTibble %>% filter(DataType == "Current Infections")
-      
-      datePeak = format(currInf$DataDate[which.max(currInf$Data)], format = "%B %d")
-      
-    }, error = function(err) {
-      datePeak = "No Model Data Available"
-      return(datePeak)
-    })
-    
-    valueBox(subtitle = "Projected Peak Infection Date",
-             paste(datePeak),
-             color = "light-blue")
-  })
-  
-  output$ProjTotInf<-renderValueBox({
-    
-    baseUsed = input$AMClist
-    
-    df <- AMC_model
-    
-    InfTot <- tryCatch({
-      
-      df <- select(df, "DataDate", "DataType", baseUsed)
-      
-      colnames(df)[3]  <- "Data"
-      
-      myTibble <- as_tibble(df)
-      
-      cummInf <- myTibble %>% filter(DataType == "Cumulative Infections")
-      
-      InfTot = round(max(cummInf$Data))
-      
-    }, error = function(err) {
-      InfTot = "No Model Data Available"
-      return(InfTot)
-    })
-    
-    
-    
-    valueBox(subtitle = "Projected Total Infections",
-             paste(InfTot),
-             color = "blue")
-  })
-  
-  output$ProjTotDeaths<-renderValueBox({
-    
-    baseUsed = input$AMClist
-    
-    df <- AMC_model
-    
-    DeathsTot <- tryCatch({
-      
-      df <- select(df, "DataDate", "DataType", baseUsed)
-      
-      colnames(df)[3]  <- "Data"
-      
-      myTibble <- as_tibble(df)
-      
-      cummDeath <- myTibble %>% filter(DataType == "Cumulative Deaths")
-      
-      DeathsTot = round(max(cummDeath$Data))
-      
-    }, error = function(err) {
-      x = "No Model Data Available"
-      return(x)
-    })
-    
-    valueBox(subtitle = "Projected Total Fatalities",
-             paste(DeathsTot),
-             color = "navy")
-  })
+  # output$ProjectedEpidemicTable<-renderPlotly({
+  #   
+  #   baseUsed = input$AMClist
+  #   
+  #   # Read the json file and convert it to data.frame
+  #   #myList <- fromJSON("data/shinyjson.json")
+  #   
+  #   df <- AMC_model
+  #   
+  #   df <- select(df, "DataDate", "DataType", baseUsed)
+  #   
+  #   colnames(df)[3]  <- "Data"
+  #   
+  #   myTibble <- as_tibble(df)
+  #   
+  #   cummInf <- myTibble %>% filter(DataType == "Cumulative Infections")
+  #   currInf <- myTibble %>% filter(DataType == "Current Infections")
+  #   cummDeath <- myTibble %>% filter(DataType == "Cumulative Deaths")
+  #   
+  #   cummDeath <- select(cummDeath, "DataDate","Data")
+  #   currInf <- select(currInf, "DataDate","Data")
+  #   cummInf <- select(cummInf, "DataDate", "Data")
+  #   
+  #   colnames(cummDeath)[2] <- "Projected Cumulative Deaths"
+  #   colnames(currInf)[2] <- "Projected Daily Infections"
+  #   colnames(cummInf)[2] <- "Projected Cumulative Infections"
+  #   
+  #   df <- merge(cummDeath, currInf, by="DataDate")
+  #   df <- merge(df, cummInf, by="DataDate")
+  #   
+  #   Chart2DataSub <- melt(data.table(df), id=c("DataDate"))
+  #   
+  #   #Plotting the Line Graph
+  #   p <- ggplot(Chart2DataSub) + 
+  #     geom_line(aes(x=DataDate,  y=value, colour = variable, linetype = variable), 
+  #               size = 0.5) +
+  #     scale_colour_manual(values=c("Blue", "Orange", "Red", "Black"))+
+  #     scale_linetype_manual(values=c("dashed", "solid", "solid", "solid"))+
+  #     geom_vline(aes(xintercept = as.numeric(lubridate::ymd(Sys.Date())), linetype = "Current Day"), color = "Black") +
+  #     xlab('Date') +
+  #     ylab('Number of People') +
+  #     theme_bw() + 
+  #     theme(plot.title = element_text(face = "bold", size = 15, family = "sans"),
+  #           axis.title = element_text(face = "bold", size = 11, family = "sans"),
+  #           axis.text.x = element_text(angle = 60, hjust = 1), 
+  #           axis.line = element_line(color = "black"),
+  #           plot.background = element_blank(),
+  #           panel.grid.major = element_blank(),
+  #           panel.grid.minor = element_blank(),
+  #           panel.border = element_blank(),) +
+  #     scale_x_date(date_breaks = "1 week") + scale_y_continuous(labels = function(x) format(x, scientific = FALSE))
+  #   
+  #   p2 <- ggplotly(p)
+  #   p2 <- p2 %>% layout(legend = list(orientation = "h",   # show entries horizontally
+  #                                     xanchor = "center",
+  #                                     x = 0.5,
+  #                                     y = -0.5
+  #   )) #%>% config(displayModeBar = FALSE)
+  #   p2 <- p2 %>% layout(xaxis = list(showgrid = F),
+  #                       yaxis = list(gridcolor = "lightgray"),margin = list(t = 50), title=baseUsed)# %>% config(displayModeBar = FALSE)
+  #   p2
+  #   
+  # })
+  # 
+  # 
+  # output$ProjPeakInfDate<-renderValueBox({
+  #   
+  #   baseUsed = input$AMClist
+  #   
+  #   df <- AMC_model
+  #   
+  #   datePeak <- tryCatch({
+  #     
+  #     df <- select(df, "DataDate", "DataType", baseUsed)
+  #     
+  #     colnames(df)[3]  <- "Data"
+  #     
+  #     myTibble <- as_tibble(df)
+  #     
+  #     currInf <- myTibble %>% filter(DataType == "Current Infections")
+  #     
+  #     datePeak = format(currInf$DataDate[which.max(currInf$Data)], format = "%B %d")
+  #     
+  #   }, error = function(err) {
+  #     datePeak = "No Model Data Available"
+  #     return(datePeak)
+  #   })
+  #   
+  #   valueBox(subtitle = "Projected Peak Infection Date",
+  #            paste(datePeak),
+  #            color = "light-blue")
+  # })
+  # 
+  # output$ProjTotInf<-renderValueBox({
+  #   
+  #   baseUsed = input$AMClist
+  #   
+  #   df <- AMC_model
+  #   
+  #   InfTot <- tryCatch({
+  #     
+  #     df <- select(df, "DataDate", "DataType", baseUsed)
+  #     
+  #     colnames(df)[3]  <- "Data"
+  #     
+  #     myTibble <- as_tibble(df)
+  #     
+  #     cummInf <- myTibble %>% filter(DataType == "Cumulative Infections")
+  #     
+  #     InfTot = round(max(cummInf$Data))
+  #     
+  #   }, error = function(err) {
+  #     InfTot = "No Model Data Available"
+  #     return(InfTot)
+  #   })
+  #   
+  #   
+  #   
+  #   valueBox(subtitle = "Projected Total Infections",
+  #            paste(InfTot),
+  #            color = "blue")
+  # })
+  # 
+  # output$ProjTotDeaths<-renderValueBox({
+  #   
+  #   baseUsed = input$AMClist
+  #   
+  #   df <- AMC_model
+  #   
+  #   DeathsTot <- tryCatch({
+  #     
+  #     df <- select(df, "DataDate", "DataType", baseUsed)
+  #     
+  #     colnames(df)[3]  <- "Data"
+  #     
+  #     myTibble <- as_tibble(df)
+  #     
+  #     cummDeath <- myTibble %>% filter(DataType == "Cumulative Deaths")
+  #     
+  #     DeathsTot = round(max(cummDeath$Data))
+  #     
+  #   }, error = function(err) {
+  #     x = "No Model Data Available"
+  #     return(x)
+  #   })
+  #   
+  #   valueBox(subtitle = "Projected Total Fatalities",
+  #            paste(DeathsTot),
+  #            color = "navy")
+  # })
   
   # #Create IHME plot by State projected hospitalization 
   # output$IHME_State_Hosp<-renderPlotly({

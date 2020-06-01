@@ -247,12 +247,12 @@ ui <- tagList(
                                                                                                 )                                                              
                                              ),
                                              
-                                             conditionalPanel(condition="input.tabselected == 5",
-                                                              selectInput("AMClist",
-                                                                          "Base List:", 
-                                                                          list(`AMCBase` = AMC_model_BaseList),
-                                                                          selected = c(""))
-                                             ),
+                                             # conditionalPanel(condition="input.tabselected == 5",
+                                             #                  selectInput("AMClist",
+                                             #                              "Base List:", 
+                                             #                              list(`AMCBase` = AMC_model_BaseList),
+                                             #                              selected = c(""))
+                                             # ),
                                              
                                              conditionalPanel(condition="input.tabselected == 6",
                                                               br(),br(),br(),
@@ -455,7 +455,7 @@ ui <- tagList(
                                 box(uiOutput("HospLine"),
                                     textOutput("line"),
                                     plotlyOutput("OverlayPlots"),height=800, width=1500)
-                              ),
+                              )
                               ####### END PROJECTION TAB #######
                               
                               ####### BEGIN National PROJECTION TAB #########
@@ -476,29 +476,29 @@ ui <- tagList(
                               
                               ####### BEGIN Aircrew TAB #########
                               # Air Force Community Projections ------------------------------------------------------------
-                              tabPanel(
-                                value = 5,
-                                title = "AMC Infection Model Projections",
-                                fluidRow(
-                                  valueBoxOutput("ProjPeakInfDate"),
-                                  valueBoxOutput("ProjTotInf"),
-                                  valueBoxOutput("ProjTotDeaths")
-                                ),
-                                fluidRow(
-                                  column(4,
-                                         includeMarkdown("www/6_load_info_docs/AMC_Desc.md")),
-                                  
-                                  box(title = "Projected Community Epidemic Curve",
-                                      solidHeader=T,
-                                      align = "left",
-                                      column(width = 12,
-                                             plotlyOutput("ProjectedEpidemicTable"),
-                                             style = "height:720px;overflow-y: scroll"),
-                                      height = 500,
-                                      width =8
-                                  )
-                                )
-                              )
+                              # tabPanel(
+                              #   value = 5,
+                              #   title = "AMC Infection Model Projections",
+                              #   fluidRow(
+                              #     valueBoxOutput("ProjPeakInfDate"),
+                              #     valueBoxOutput("ProjTotInf"),
+                              #     valueBoxOutput("ProjTotDeaths")
+                              #   ),
+                              #   fluidRow(
+                              #     column(4,
+                              #            includeMarkdown("www/6_load_info_docs/AMC_Desc.md")),
+                              #     
+                              #     box(title = "Projected Community Epidemic Curve",
+                              #         solidHeader=T,
+                              #         align = "left",
+                              #         column(width = 12,
+                              #                plotlyOutput("ProjectedEpidemicTable"),
+                              #                style = "height:720px;overflow-y: scroll"),
+                              #         height = 500,
+                              #         width =8
+                              #     )
+                              #   )
+                              # )
                   )
                   
                 ) #close dash body
