@@ -110,14 +110,16 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
         HistoricalDataHosp<-colSums(HistoricalDataDaily*CovidCountiesHospRate$HospRate)
 
         #Create dataframe to hold daily hospitalizations
-        HistoricalDates<-seq(as.Date("2020-01-27"), length=length(HistoricalDataHosp), by="1 day")
+        #HistoricalDates<-seq(as.Date("2020-01-27"), length=length(HistoricalDataHosp), by="1 day")
+        HistoricalDates = as.Date(names(HistoricalDataHosp), "%m/%d/%y")
         HistoricalData<-data.frame(HistoricalDates, HistoricalDataHosp, HistoricalDataHosp*0.75, HistoricalDataHosp*1.25)
         colnames(HistoricalData)<-c("ForecastDate", "Expected Hospitalizations", "Lower Estimate","Upper Estimate")
     } else {
       HistoricalDataHosp<-colSums(HistoricalDataDaily*.055)
       
       #Create dataframe to hold daily hospitalizations
-      HistoricalDates<-seq(as.Date("2020-01-27"), length=length(HistoricalDataHosp), by="1 day")
+      #HistoricalDates<-seq(as.Date("2020-01-27"), length=length(HistoricalDataHosp), by="1 day")
+      HistoricalDates = as.Date(names(HistoricalDataHosp), "%m/%d/%y")
       HistoricalData<-data.frame(HistoricalDates, HistoricalDataHosp, HistoricalDataHosp*0.75, HistoricalDataHosp*1.25)
       colnames(HistoricalData)<-c("ForecastDate", "Expected Hospitalizations", "Lower Estimate","Upper Estimate")      
     }
@@ -506,7 +508,8 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
       HistoricalDataHosp<-colSums(HistoricalDataDaily*.0025)
     }
 
-    HistoricalDates<-seq(as.Date("2020-01-22"), length=length(HistoricalData), by="1 day")
+    HistoricalDates = as.Date(names(HistoricalData), "%m/%d/%y")
+    #HistoricalDates<-seq(as.Date("2020-01-22"), length=length(HistoricalData), by="1 day")
     HistoricalData<-data.frame(HistoricalDates, HistoricalData, HistoricalData, HistoricalData)
     colnames(HistoricalData)<-c("ForecastDate", "Expected Fatalities", "Lower Estimate","Upper Estimate")
 

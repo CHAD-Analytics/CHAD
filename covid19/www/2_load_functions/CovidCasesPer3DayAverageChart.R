@@ -17,8 +17,9 @@ CovidCasesPer3DayAverageChart<-function(IncludedCounties){
   DailyNewDeathsThreeDay = round(rollmean(DailyNewDeathsT, 3, align = "right"))
   
   #Plot 3 day moving average
-  ForecastDateB<- seq(as.Date("2020-1-25"), length=length(DailyNewCasesThreeDay), by="1 day")
-  Chart1Data<-cbind.data.frame(ForecastDateB,DailyNewCasesThreeDay,DailyNewDeathsThreeDay)
+  ForecastDate = as.Date(names(DailyNewCasesThreeDay), "%m/%d/%y")
+  # ForecastDateB<- seq(as.Date("2020-1-25"), length=length(DailyNewCasesThreeDay), by="1 day")
+  Chart1Data<-cbind.data.frame(ForecastDate,DailyNewCasesThreeDay,DailyNewDeathsThreeDay)
   colnames(Chart1Data)<-c("ForecastDate","New Cases","New Fatalities")
   Chart1DataSub <- melt(data.table(Chart1Data), id=c("ForecastDate"))
   

@@ -17,8 +17,10 @@ CovidCasesCumChart<-function(IncludedCounties){
     
     
     #Clean up the dataset to get ready to plot it
-    ForecastDate<- seq(as.Date("2020-1-22"), length=length(CumDailyCovid), by="1 day")
-    ForecastDateR<- seq(as.Date("2020-2-05"), length=length(CumRecovered), by="1 day")
+    ForecastDate = as.Date(names(CumDailyCovid), "%m/%d/%y")
+    ForecastDateR = as.Date(names(CumRecovered), "%m/%d/%y") + 13
+    # ForecastDate<- seq(as.Date("2020-1-22"), length=length(CumDailyCovid), by="1 day")
+    # ForecastDateR<- seq(as.Date("2020-2-05"), length=length(CumRecovered), by="1 day")
     ChartData<-cbind.data.frame(ForecastDate,CumDailyCovid,CumDailyDeaths)
     colnames(ChartData)<-c("ForecastDate","Total Cases","Total Fatalities")
     ChartData2 = cbind.data.frame(ForecastDateR, "Estimated Recovered", CumRecovered)
