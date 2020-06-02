@@ -196,7 +196,7 @@ ui <- tagList(
                                                                                        "CHIME: SC"="CHIME7",
                                                                                        "University of Texas"="UT",
                                                                                        "Columbia University: 20% SC Reduction with weekly 10% increase in contact"="CU20SCw10"),                                                                
-                                                                                     selected = c("IHME","CAA","CHIME7")),
+                                                                                     selected = c("IHME","CAA")),
                                                                   actionLink("selectall1","Select All"),
                                                                   
                                                                   checkboxGroupInput("AdditionalModels","Additional Forecasting Model(s): ",
@@ -227,7 +227,7 @@ ui <- tagList(
                                                                                                   c("IHME (U. of Washinton)"="IHME",
                                                                                                     "Youyang Gu (YYG) Model"="YYG",
                                                                                                     "CHIME: SC"="CHIME7"),                                                                
-                                                                                                  selected = c("IHME","CAA","CHIME7")),
+                                                                                                  selected = c("IHME","CAA")),
                                                                                actionLink("selectall3","Select All"),
                                                                                
                                                                                checkboxGroupInput("AdditionalModels","Additional Forecasting Model(s): ",
@@ -346,23 +346,23 @@ ui <- tagList(
                                 value = 1,
                                 title = "MAJCOM Summary",
                                 fluidRow(
-                                  box(plotlyOutput("SummaryTabChoro", height = 600, width = 'auto')),
+                                  # box(plotlyOutput("SummaryTabChoro", height = 600, width = 'auto')),
                                   box(plotOutput("HotSpot", height = 600))),
-                                box(
-                                    downloadButton('downloadData', 'Download Full Dataset'),
-                                    downloadButton('downloadFilteredData', 'Download Filtered Dataset (Table Above)'),
-                                    downloadButton('HotSpotData', 'Download Hotspot Dataset: 50 Mile Radius'),
-                                    downloadButton('HotSpotDataOneMile', 'Download Hotspot Dataset: Single County'),
-                                    downloadButton('MTFSummaryT', 'MTF Summary Table'),
-                                    downloadButton('MTFSummaryP', 'MTF Summary Plots (Click Once)'),
-                                    title = "Base Summary Projections",
-                                    solidHeader=T, 
-                                    align = "left", 
-                                    column(width = 12, 
-                                           DT::dataTableOutput("ForecastDataTableOut"), 
-                                           style = "height:720px;overflow-y: scroll"), 
-                                    height = 900, 
-                                    width =13)
+                                # box(
+                                #     downloadButton('downloadData', 'Download Full Dataset'),
+                                #     downloadButton('downloadFilteredData', 'Download Filtered Dataset (Table Above)'),
+                                #     downloadButton('HotSpotData', 'Download Hotspot Dataset: 50 Mile Radius'),
+                                #     downloadButton('HotSpotDataOneMile', 'Download Hotspot Dataset: Single County'),
+                                #     downloadButton('MTFSummaryT', 'MTF Summary Table'),
+                                #     downloadButton('MTFSummaryP', 'MTF Summary Plots (Click Once)'),
+                                #     title = "Base Summary Projections",
+                                #     solidHeader=T, 
+                                #     align = "left", 
+                                #     column(width = 12, 
+                                #            DT::dataTableOutput("ForecastDataTableOut"), 
+                                #            style = "height:720px;overflow-y: scroll"), 
+                                #     height = 900, 
+                                #     width =13)
                                 
                               ),
                               ####### END Mission Risk #######

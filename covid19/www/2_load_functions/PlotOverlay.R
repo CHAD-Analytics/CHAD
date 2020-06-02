@@ -31,11 +31,11 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
       TTBCounty <- sum(IncludedHospitals$BEDS)
       StPopList <- dplyr::filter(CountyInfo, State == toString(BaseState$State[1]))
 
-      # Get total hospital bed number across state
-      IncludedHospitalsST <- dplyr::filter(HospitalInfo, STATE == toString(BaseState$State[1]))
-      TotalBedsState <- sum(IncludedHospitalsST$BEDS)
-      # Calculate bed ratio
-      BedProp <- TotalBedsCounty/TotalBedsState    
+      # # Get total hospital bed number across state
+      # IncludedHospitalsST <- dplyr::filter(HospitalInfo, STATE == toString(BaseState$State[1]))
+      # TotalBedsState <- sum(IncludedHospitalsST$BEDS)
+      # # Calculate bed ratio
+      # BedProp <- TotalBedsCounty/TotalBedsState    
   } else {
     if (BaseState$Country[1] == "South Korea"){
       IHME_State <- dplyr::filter(IHME_Model, location_name == "Republic of Korea")
