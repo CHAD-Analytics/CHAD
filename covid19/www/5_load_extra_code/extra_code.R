@@ -35,22 +35,21 @@ AFrow = nrow(AFBaseLocations)
 MTFSummaryReport <- setNames(data.frame(matrix(ncol = 7, nrow = 0)),c("Installation","MAJCOM","State","50MileTotalCases","50MileNewCases","50MileCasesPer1000","50MileDblRate"))
 
 ForecastDataTable <- setNames(data.frame(matrix(ncol = 37, nrow = 0)),c("Installation","MAJCOM","State","Available Beds","Hopitalization Per 100,000", "Hopitalization Per 10,000", "New Hospitalizations",
-                                                                        "7D IHME Forecast","7D IHME Peak","7D IHME Peak Date","7D SEIAR Forecast","7D SEIAR Peak","7D SEIAR Peak Date",
-                                                                        "14D IHME Forecast","14D IHME Peak","14D IHME Peak Date","14D SEIAR Forecast","14D SEIAR Peak","14D SEIAR Peak Date",
-                                                                        "21D IHME Forecast","21D IHME Peak","21D IHME Peak Date","21D SEIAR Forecast","21D SEIAR Peak","21D SEIAR Peak Date",
-                                                                        "30D IHME Forecast","30D IHME Peak","30D IHME Peak Date","30D SEIAR Forecast","30D SEIAR Peak","30D SEIAR Peak Date",
-                                                                        "60D IHME Forecast","60D IHME Peak","60D IHME Peak Date","60D SEIAR Forecast","60D SEIAR Peak","60D SEIAR Peak Date"))
+                                                                        "7D IHME Forecast","7D IHME Peak","7D IHME Peak Date","7D CAA Forecast","7D CAA Peak","7D CAA Peak Date",
+                                                                        "14D IHME Forecast","14D IHME Peak","14D IHME Peak Date","14D CAA Forecast","14D CAA Peak","14D CAA Peak Date",
+                                                                        "21D IHME Forecast","21D IHME Peak","21D IHME Peak Date","21D CAA Forecast","21D CAA Peak","21D CAA Peak Date",
+                                                                        "30D IHME Forecast","30D IHME Peak","30D IHME Peak Date","30D CAA Forecast","30D CAA Peak","30D CAA Peak Date",
+                                                                        "60D IHME Forecast","60D IHME Peak","60D IHME Peak Date","60D CAA Forecast","60D CAA Peak","60D CAA Peak Date"))
 
 ForecastDataTableCases <- setNames(data.frame(matrix(ncol = 38, nrow = 0)),c("Installation","MAJCOM","State","Available Beds","Cases Per 100,000", "Cases Per 10,000", "New Cases","Total Cases",
-                                                                             "7D IHME Forecast","7D IHME Peak","7D IHME Peak Date","7D SEIAR Forecast","7D SEIAR Peak","7D SEIAR Peak Date",
-                                                                             "14D IHME Forecast","14D IHME Peak","14D IHME Peak Date","14D SEIAR Forecast","14D SEIAR Peak","14D SEIAR Peak Date",
-                                                                             "21D IHME Forecast","21D IHME Peak","21D IHME Peak Date","21D SEIAR Forecast","21D SEIAR Peak","21D SEIAR Peak Date",
-                                                                             "30D IHME Forecast","30D IHME Peak","30D IHME Peak Date","30D SEIAR Forecast","30D SEIAR Peak","30D SEIAR Peak Date",
-                                                                             "60D IHME Forecast","60D IHME Peak","60D IHME Peak Date","60D SEIAR Forecast","60D SEIAR Peak","60D SEIAR Peak Date"))
+                                                                             "7D IHME Forecast","7D IHME Peak","7D IHME Peak Date","7D CAA Forecast","7D CAA Peak","7D CAA Peak Date",
+                                                                             "14D IHME Forecast","14D IHME Peak","14D IHME Peak Date","14D CAA Forecast","14D CAA Peak","14D CAA Peak Date",
+                                                                             "21D IHME Forecast","21D IHME Peak","21D IHME Peak Date","21D CAA Forecast","21D CAA Peak","21D CAA Peak Date",
+                                                                             "30D IHME Forecast","30D IHME Peak","30D IHME Peak Date","30D CAA Forecast","30D CAA Peak","30D CAA Peak Date",
+                                                                             "60D IHME Forecast","60D IHME Peak","60D IHME Peak Date","60D CAA Forecast","60D CAA Peak","60D CAA Peak Date"))
 
 for (i in 2:AFrow){
   #Create Number of current cases and cases per 100,000 in a local area
-
   #i = 96
   radius = 50
 
@@ -69,7 +68,7 @@ for (i in 2:AFrow){
   currHosp = (rev(CummCases)[1] - rev(CummCases)[6])*0.055
   TotPop = sum(MyCounties$Population)
 
-  MyCounties<-dplyr::filter(MyCounties, FIPS %in% CovidCounties$CountyFIPS)
+  #MyCounties<-dplyr::filter(MyCounties, FIPS %in% CovidCounties$CountyFIPS)
 
   NewHospitalizations<-round(NewCases*.055)
   TotalPop<-CalculateCounties(MyCounties)
@@ -79,7 +78,6 @@ for (i in 2:AFrow){
   CasesPer1000<-round(TotalCases/TotalPop*1000)
   HospitalizationsPer100000<-round(CasesPer100000*.055)
   HospitalizationsPer10000<-round(HospitalizationsPer100000/10)
-
 
   if (AFBaseLocations$Overseas[i] == "CONUS"){
       HospitalInfo$DistanceMiles = himd[,as.character(base)]
@@ -157,8 +155,16 @@ for (i in 2:AFrow){
   # }
 
   ####################################################################################
+  
+  if (AFBaseLocations$Overseas[i] == "CONUS"){
+    DaysProjected <- 120
+    Army_State<-dplyr::filter(Army_Model,FIPS %in% MyCounties$FIPS)      
+    Local<-subset(Army_State, select=-c(Location,County,Susceptible,Exposed,Removed,Fatalities,State))    
+    Local$Date <- as.Date(Local$ForecastDate, "%m/%d/%y")
+    Local<-dplyr::filter(Local,ForecastDate >= Sys.Date())
+  }
 
-  if(nrow(IHME_Region) == 0 || TotPop == 0){
+  if(nrow(IHME_Region) == 0 || TotPop == 0 || nrow(Local) == 0){
 
     MTFDF <- data.frame(AFBaseLocations$Base[i],AFBaseLocations$`Major Command`[i],AFBaseLocations$State[i],0,0,0,0)
     names(MTFDF)<-c("Installation","MAJCOM","State","50MileTotalCases","50MileNewCases","50MileCasesPer1000","50MileDblRate")
@@ -169,11 +175,11 @@ for (i in 2:AFrow){
                         0,0,0,0,0,0,
                         0,0,0,0,0,0)
     names(NewDF) <- c("Installation","MAJCOM","State","Available Beds", "Hopitalization Per 100,000", "Hopitalization Per 10,000", "New Hospitalizations",
-                      "7D IHME Forecast","7D IHME Peak","7D IHME Peak Date","7D SEIAR Forecast","7D SEIAR Peak","7D SEIAR Peak Date",
-                      "14D IHME Forecast","14D IHME Peak","14D IHME Peak Date","14D SEIAR Forecast","14D SEIAR Peak","14D SEIAR Peak Date",
-                      "21D IHME Forecast","21D IHME Peak","21D IHME Peak Date","21D SEIAR Forecast","21D SEIAR Peak","21D SEIAR Peak Date",
-                      "30D IHME Forecast","30D IHME Peak","30D IHME Peak Date","30D SEIAR Forecast","30D SEIAR Peak","30D SEIAR Peak Date",
-                      "60D IHME Forecast","60D IHME Peak","60D IHME Peak Date","60D SEIAR Forecast","60D SEIAR Peak","60D SEIAR Peak Date")
+                      "7D IHME Forecast","7D IHME Peak","7D IHME Peak Date","7D CAA Forecast","7D CAA Peak","7D CAA Peak Date",
+                      "14D IHME Forecast","14D IHME Peak","14D IHME Peak Date","14D CAA Forecast","14D CAA Peak","14D CAA Peak Date",
+                      "21D IHME Forecast","21D IHME Peak","21D IHME Peak Date","21D CAA Forecast","21D CAA Peak","21D CAA Peak Date",
+                      "30D IHME Forecast","30D IHME Peak","30D IHME Peak Date","30D CAA Forecast","30D CAA Peak","30D CAA Peak Date",
+                      "60D IHME Forecast","60D IHME Peak","60D IHME Peak Date","60D CAA Forecast","60D CAA Peak","60D CAA Peak Date")
 
     NewDFCases <- data.frame(AFBaseLocations$Base[i],AFBaseLocations$`Major Command`[i],AFBaseLocations$State[i],0,0,0,0,0,0,0,0,0,0,0,
                              0,0,0,0,0,0,
@@ -181,45 +187,55 @@ for (i in 2:AFrow){
                              0,0,0,0,0,0,
                              0,0,0,0,0,0)
     names(NewDFCases) <- c("Installation","MAJCOM","State","Available Beds", "Cases Per 100,000", "Cases Per 10,000", "New Cases","Total Cases",
-                           "7D IHME Forecast","7D IHME Peak","7D IHME Peak Date","7D SEIAR Forecast","7D SEIAR Peak","7D SEIAR Peak Date",
-                           "14D IHME Forecast","14D IHME Peak","14D IHME Peak Date","14D SEIAR Forecast","14D SEIAR Peak","14D SEIAR Peak Date",
-                           "21D IHME Forecast","21D IHME Peak","21D IHME Peak Date","21D SEIAR Forecast","21D SEIAR Peak","21D SEIAR Peak Date",
-                           "30D IHME Forecast","30D IHME Peak","30D IHME Peak Date","30D SEIAR Forecast","30D SEIAR Peak","30D SEIAR Peak Date",
-                           "60D IHME Forecast","60D IHME Peak","60D IHME Peak Date","60D SEIAR Forecast","60D SEIAR Peak","60D SEIAR Peak Date")
+                           "7D IHME Forecast","7D IHME Peak","7D IHME Peak Date","7D CAA Forecast","7D CAA Peak","7D CAA Peak Date",
+                           "14D IHME Forecast","14D IHME Peak","14D IHME Peak Date","14D CAA Forecast","14D CAA Peak","14D CAA Peak Date",
+                           "21D IHME Forecast","21D IHME Peak","21D IHME Peak Date","21D CAA Forecast","21D CAA Peak","21D CAA Peak Date",
+                           "30D IHME Forecast","30D IHME Peak","30D IHME Peak Date","30D CAA Forecast","30D CAA Peak","30D CAA Peak Date",
+                           "60D IHME Forecast","60D IHME Peak","60D IHME Peak Date","60D CAA Forecast","60D CAA Peak","60D CAA Peak Date")
     ForecastDataTable <- rbind(ForecastDataTable,NewDF)
   }else{
 
-
-    CHIME_Local = dplyr::filter(CHIME_All, Base == base)
-    CHIME_Local = dplyr::filter(CHIME_Local, ForecastDate > Sys.Date())
-
+    if (AFBaseLocations$Overseas[i] == "CONUS"){
+      DaysProjected <- 120
+      Army_State<-dplyr::filter(Army_Model,FIPS %in% MyCounties$FIPS)      
+      Local<-subset(Army_State, select=-c(Location,County,Susceptible,Exposed,Removed,Fatalities,State))    
+      Local$Date <- as.Date(Local$ForecastDate, "%m/%d/%y")
+      Local<-dplyr::filter(Local,ForecastDate >= Sys.Date())
+      Local<-aggregate(Local[,sapply(Local,is.numeric)],Local["ForecastDate"],sum)
+      Local<-Local[1:DaysProjected,]
+      Local<-data.frame(Local$ForecastDate,Local$Infected*.055,Local$Infected)
+      colnames(Local)<-c("ForecastDate", "Expected Hospitalizations","Expected Infections")
+      Local$ForecastDate<-as.Date(Local$ForecastDate)
+      Local <- dplyr::arrange(Local,ForecastDate)      
+    } else {
+      Local = dplyr::filter(CHIME_All, Base == base)
+      Local = dplyr::filter(Local, ForecastDate > Sys.Date())
+    }  
+      
     doubling<-as.integer(CaseDblRate(MyCounties))
-    # if (doubling == 0) {
-    #   doubling <- as.integer(40)
-    # }
 
     ########################################################################################
-    SevDayVal<-round(CHIME_Local$`Expected Hospitalizations`[7])
-    FourteenDayVal<-round(CHIME_Local$`Expected Hospitalizations`[14])
-    TwentyOneDayVal<-round(CHIME_Local$`Expected Hospitalizations`[21])
-    ThirtyDayVal<-round(CHIME_Local$`Expected Hospitalizations`[30])
-    SixtyDayVal<-round(CHIME_Local$`Expected Hospitalizations`[60])
-    PeakSevDayVal<-round(max(CHIME_Local$`Expected Hospitalizations`[1:7]))
-    PeakFourteenDayVal<-round(max(CHIME_Local$`Expected Hospitalizations`[1:14]))
-    PeakTwentyOneDayVal<-round(max(CHIME_Local$`Expected Hospitalizations`[1:21]))
-    PeakThirtyDayVal<-round(max(CHIME_Local$`Expected Hospitalizations`[1:30]))
-    PeakSixtyDayVal<-round(max(CHIME_Local$`Expected Hospitalizations`[1:60]))
-    PeakDateSevDayVal<-which.max(CHIME_Local$`Expected Hospitalizations`[1:7])
-    PeakDateFourteenDayVal<-which.max(CHIME_Local$`Expected Hospitalizations`[1:14])
-    PeakDateTwentyOneDayVal<-which.max(CHIME_Local$`Expected Hospitalizations`[1:21])
-    PeakDateThirtyDayVal<-which.max(CHIME_Local$`Expected Hospitalizations`[1:30])
-    PeakDateSixtyDayVal<-which.max(CHIME_Local$`Expected Hospitalizations`[1:60])
-    PeakDateSevDayVal<-format(CHIME_Local$ForecastDate[PeakDateSevDayVal], format="%b-%d")
-    PeakDateFourteenDayVal<-format(CHIME_Local$ForecastDate[PeakDateFourteenDayVal], format="%b-%d")
-    PeakDateTwentyOneDayVal<-format(CHIME_Local$ForecastDate[PeakDateTwentyOneDayVal], format="%b-%d")
-    PeakDateThirtyDayVal<-format(CHIME_Local$ForecastDate[PeakDateThirtyDayVal], format="%b-%d")
-    PeakDateSixtyDayVal<-format(CHIME_Local$ForecastDate[PeakDateSixtyDayVal], format="%b-%d")
-
+    SevDayVal<-round(Local$`Expected Hospitalizations`[7])
+    FourteenDayVal<-round(Local$`Expected Hospitalizations`[14])
+    TwentyOneDayVal<-round(Local$`Expected Hospitalizations`[21])
+    ThirtyDayVal<-round(Local$`Expected Hospitalizations`[30])
+    SixtyDayVal<-round(Local$`Expected Hospitalizations`[60])
+    PeakSevDayVal<-round(max(Local$`Expected Hospitalizations`[1:7]))
+    PeakFourteenDayVal<-round(max(Local$`Expected Hospitalizations`[1:14]))
+    PeakTwentyOneDayVal<-round(max(Local$`Expected Hospitalizations`[1:21]))
+    PeakThirtyDayVal<-round(max(Local$`Expected Hospitalizations`[1:30]))
+    PeakSixtyDayVal<-round(max(Local$`Expected Hospitalizations`[1:60]))
+    PeakDateSevDayVal<-which.max(Local$`Expected Hospitalizations`[1:7])
+    PeakDateFourteenDayVal<-which.max(Local$`Expected Hospitalizations`[1:14])
+    PeakDateTwentyOneDayVal<-which.max(Local$`Expected Hospitalizations`[1:21])
+    PeakDateThirtyDayVal<-which.max(Local$`Expected Hospitalizations`[1:30])
+    PeakDateSixtyDayVal<-which.max(Local$`Expected Hospitalizations`[1:60])
+    PeakDateSevDayVal<-format(Local$ForecastDate[PeakDateSevDayVal], format="%b-%d")
+    PeakDateFourteenDayVal<-format(Local$ForecastDate[PeakDateFourteenDayVal], format="%b-%d")
+    PeakDateTwentyOneDayVal<-format(Local$ForecastDate[PeakDateTwentyOneDayVal], format="%b-%d")
+    PeakDateThirtyDayVal<-format(Local$ForecastDate[PeakDateThirtyDayVal], format="%b-%d")
+    PeakDateSixtyDayVal<-format(Local$ForecastDate[PeakDateSixtyDayVal], format="%b-%d")
+    
     #BEGIN IHME CALCS
     I1 = round(IHME_Region$`Expected Hospitalizations`[7])
     I2 = round(IHME_Region$`Expected Hospitalizations`[14])
@@ -254,26 +270,26 @@ for (i in 2:AFrow){
     PID5<-format(PID5, format="%b-%d")
 
     ########################################################################################
-    SevDayValCases<-round(CHIME_Local$`Expected Infections`[7])
-    FourteenDayValCases<-round(CHIME_Local$`Expected Infections`[14])
-    TwentyOneDayValCases<-round(CHIME_Local$`Expected Infections`[21])
-    ThirtyDayValCases<-round(CHIME_Local$`Expected Infections`[30])
-    SixtyDayValCases<-round(CHIME_Local$`Expected Infections`[60])
-    PeakSevDayValCases<-round(max(CHIME_Local$`Expected Infections`[1:7]))
-    PeakFourteenDayValCases<-round(max(CHIME_Local$`Expected Infections`[1:14]))
-    PeakTwentyOneDayValCases<-round(max(CHIME_Local$`Expected Infections`[1:21]))
-    PeakThirtyDayValCases<-round(max(CHIME_Local$`Expected Infections`[1:30]))
-    PeakSixtyDayValCases<-round(max(CHIME_Local$`Expected Infections`[1:60]))
-    PeakDateSevDayValCases<-which.max(CHIME_Local$`Expected Infections`[1:7])
-    PeakDateFourteenDayValCases<-which.max(CHIME_Local$`Expected Infections`[1:14])
-    PeakDateTwentyOneDayValCases<-which.max(CHIME_Local$`Expected Infections`[1:21])
-    PeakDateThirtyDayValCases<-which.max(CHIME_Local$`Expected Infections`[1:30])
-    PeakDateSixtyDayValCases<-which.max(CHIME_Local$`Expected Infections`[1:60])
-    PeakDateSevDayValCases<-format(CHIME_Local$ForecastDate[PeakDateSevDayValCases], format="%b-%d")
-    PeakDateFourteenDayValCases<-format(CHIME_Local$ForecastDate[PeakDateFourteenDayValCases], format="%b-%d")
-    PeakDateTwentyOneDayValCases<-format(CHIME_Local$ForecastDate[PeakDateTwentyOneDayValCases], format="%b-%d")
-    PeakDateThirtyDayValCases<-format(CHIME_Local$ForecastDate[PeakDateThirtyDayValCases], format="%b-%d")
-    PeakDateSixtyDayValCases<-format(CHIME_Local$ForecastDate[PeakDateSixtyDayValCases], format="%b-%d")
+    SevDayValCases<-round(Local$`Expected Infections`[7])
+    FourteenDayValCases<-round(Local$`Expected Infections`[14])
+    TwentyOneDayValCases<-round(Local$`Expected Infections`[21])
+    ThirtyDayValCases<-round(Local$`Expected Infections`[30])
+    SixtyDayValCases<-round(Local$`Expected Infections`[60])
+    PeakSevDayValCases<-round(max(Local$`Expected Infections`[1:7]))
+    PeakFourteenDayValCases<-round(max(Local$`Expected Infections`[1:14]))
+    PeakTwentyOneDayValCases<-round(max(Local$`Expected Infections`[1:21]))
+    PeakThirtyDayValCases<-round(max(Local$`Expected Infections`[1:30]))
+    PeakSixtyDayValCases<-round(max(Local$`Expected Infections`[1:60]))
+    PeakDateSevDayValCases<-which.max(Local$`Expected Infections`[1:7])
+    PeakDateFourteenDayValCases<-which.max(Local$`Expected Infections`[1:14])
+    PeakDateTwentyOneDayValCases<-which.max(Local$`Expected Infections`[1:21])
+    PeakDateThirtyDayValCases<-which.max(Local$`Expected Infections`[1:30])
+    PeakDateSixtyDayValCases<-which.max(Local$`Expected Infections`[1:60])
+    PeakDateSevDayValCases<-format(Local$ForecastDate[PeakDateSevDayValCases], format="%b-%d")
+    PeakDateFourteenDayValCases<-format(Local$ForecastDate[PeakDateFourteenDayValCases], format="%b-%d")
+    PeakDateTwentyOneDayValCases<-format(Local$ForecastDate[PeakDateTwentyOneDayValCases], format="%b-%d")
+    PeakDateThirtyDayValCases<-format(Local$ForecastDate[PeakDateThirtyDayValCases], format="%b-%d")
+    PeakDateSixtyDayValCases<-format(Local$ForecastDate[PeakDateSixtyDayValCases], format="%b-%d")
 
     #BEGIN IHME CALCS for CASES
     I1Cases = round(IHME_Region$`Expected Cases`[7])
@@ -325,11 +341,11 @@ for (i in 2:AFrow){
                         I4,PI4,PID4,ThirtyDayVal,PeakThirtyDayVal,PeakDateThirtyDayVal,
                         I5,PI5,PID5,SixtyDayVal,PeakSixtyDayVal,PeakDateSixtyDayVal)
     names(NewDF) <- c("Installation","MAJCOM","State","Available Beds", "Hopitalization Per 100,000", "Hopitalization Per 10,000","New Hospitalizations",
-                      "7D IHME Forecast","7D IHME Peak","7D IHME Peak Date","7D SEIAR Forecast","7D SEIAR Peak","7D SEIAR Peak Date",
-                      "14D IHME Forecast","14D IHME Peak","14D IHME Peak Date","14D SEIAR Forecast","14D SEIAR Peak","14D SEIAR Peak Date",
-                      "21D IHME Forecast","21D IHME Peak","21D IHME Peak Date","21D SEIAR Forecast","21D SEIAR Peak","21D SEIAR Peak Date",
-                      "30D IHME Forecast","30D IHME Peak","30D IHME Peak Date","30D SEIAR Forecast","30D SEIAR Peak","30D SEIAR Peak Date",
-                      "60D IHME Forecast","60D IHME Peak","60D IHME Peak Date","60D SEIAR Forecast","60D SEIAR Peak","60D SEIAR Peak Date")
+                      "7D IHME Forecast","7D IHME Peak","7D IHME Peak Date","7D CAA Forecast","7D CAA Peak","7D CAA Peak Date",
+                      "14D IHME Forecast","14D IHME Peak","14D IHME Peak Date","14D CAA Forecast","14D CAA Peak","14D CAA Peak Date",
+                      "21D IHME Forecast","21D IHME Peak","21D IHME Peak Date","21D CAA Forecast","21D CAA Peak","21D CAA Peak Date",
+                      "30D IHME Forecast","30D IHME Peak","30D IHME Peak Date","30D CAA Forecast","30D CAA Peak","30D CAA Peak Date",
+                      "60D IHME Forecast","60D IHME Peak","60D IHME Peak Date","60D CAA Forecast","60D CAA Peak","60D CAA Peak Date")
 
     ForecastDataTable <- rbind(ForecastDataTable,NewDF)
 
@@ -340,11 +356,11 @@ for (i in 2:AFrow){
                              I4Cases,PI4Cases,PID4Cases,ThirtyDayValCases,PeakThirtyDayValCases,PeakDateThirtyDayValCases,
                              I5Cases,PI5Cases,PID5Cases,SixtyDayValCases,PeakSixtyDayValCases,PeakDateSixtyDayValCases)
     names(NewDFCases) <- c("Installation","MAJCOM","State","Available Beds", "Cases Per 100,000", "Cases Per 10,000","New Cases","Total Cases",
-                           "7D IHME Forecast","7D IHME Peak","7D IHME Peak Date","7D SEIAR Forecast","7D SEIAR Peak","7D SEIAR Peak Date",
-                           "14D IHME Forecast","14D IHME Peak","14D IHME Peak Date","14D SEIAR Forecast","14D SEIAR Peak","14D SEIAR Peak Date",
-                           "21D IHME Forecast","21D IHME Peak","21D IHME Peak Date","21D SEIAR Forecast","21D SEIAR Peak","21D SEIAR Peak Date",
-                           "30D IHME Forecast","30D IHME Peak","30D IHME Peak Date","30D SEIAR Forecast","30D SEIAR Peak","30D SEIAR Peak Date",
-                           "60D IHME Forecast","60D IHME Peak","60D IHME Peak Date","60D SEIAR Forecast","60D SEIAR Peak","60D SEIAR Peak Date")
+                           "7D IHME Forecast","7D IHME Peak","7D IHME Peak Date","7D CAA Forecast","7D CAA Peak","7D CAA Peak Date",
+                           "14D IHME Forecast","14D IHME Peak","14D IHME Peak Date","14D CAA Forecast","14D CAA Peak","14D CAA Peak Date",
+                           "21D IHME Forecast","21D IHME Peak","21D IHME Peak Date","21D CAA Forecast","21D CAA Peak","21D CAA Peak Date",
+                           "30D IHME Forecast","30D IHME Peak","30D IHME Peak Date","30D CAA Forecast","30D CAA Peak","30D CAA Peak Date",
+                           "60D IHME Forecast","60D IHME Peak","60D IHME Peak Date","60D CAA Forecast","60D CAA Peak","60D CAA Peak Date")
 
     ForecastDataTableCases <- rbind(ForecastDataTableCases,NewDFCases)
   }
@@ -387,16 +403,16 @@ AFrow = nrow(AFBaseLocations)
 MTFSummaryReport2 <- setNames(data.frame(matrix(ncol = 5, nrow = 0)),c("Installation","MAJCOM","State","TotalCases","DblRate"))
 
 ForecastDataTableOneMile <- setNames(data.frame(matrix(ncol = 31, nrow = 0)),c("Installation","MAJCOM","State","Available Beds","Hopitalization Per 100,000", "Hopitalization Per 10,000", "New Hospitalizations",
-                                                                               "7D IHME Forecast","7D IHME Peak","7D IHME Peak Date","7D SEIAR Forecast","7D SEIAR Peak","7D SEIAR Peak Date",
-                                                                               "14D IHME Forecast","14D IHME Peak","14D IHME Peak Date","14D SEIAR Forecast","14D SEIAR Peak","14D SEIAR Peak Date",
-                                                                               "21D IHME Forecast","21D IHME Peak","21D IHME Peak Date","21D SEIAR Forecast","21D SEIAR Peak","21D SEIAR Peak Date",
-                                                                               "30D IHME Forecast","30D IHME Peak","30D IHME Peak Date","30D SEIAR Forecast","30D SEIAR Peak","30D SEIAR Peak Date"))
+                                                                               "7D IHME Forecast","7D IHME Peak","7D IHME Peak Date","7D CAA Forecast","7D CAA Peak","7D CAA Peak Date",
+                                                                               "14D IHME Forecast","14D IHME Peak","14D IHME Peak Date","14D CAA Forecast","14D CAA Peak","14D CAA Peak Date",
+                                                                               "21D IHME Forecast","21D IHME Peak","21D IHME Peak Date","21D CAA Forecast","21D CAA Peak","21D CAA Peak Date",
+                                                                               "30D IHME Forecast","30D IHME Peak","30D IHME Peak Date","30D CAA Forecast","30D CAA Peak","30D CAA Peak Date"))
 
 ForecastDataTableCasesOneMile <- setNames(data.frame(matrix(ncol = 32, nrow = 0)),c("Installation","MAJCOM","State","Available Beds","Cases Per 100,000", "Cases Per 10,000", "New Cases","Total Cases",
-                                                                                    "7D IHME Forecast","7D IHME Peak","7D IHME Peak Date","7D SEIAR Forecast","7D SEIAR Peak","7D SEIAR Peak Date",
-                                                                                    "14D IHME Forecast","14D IHME Peak","14D IHME Peak Date","14D SEIAR Forecast","14D SEIAR Peak","14D SEIAR Peak Date",
-                                                                                    "21D IHME Forecast","21D IHME Peak","21D IHME Peak Date","21D SEIAR Forecast","21D SEIAR Peak","21D SEIAR Peak Date",
-                                                                                    "30D IHME Forecast","30D IHME Peak","30D IHME Peak Date","30D SEIAR Forecast","30D SEIAR Peak","30D SEIAR Peak Date"))
+                                                                                    "7D IHME Forecast","7D IHME Peak","7D IHME Peak Date","7D CAA Forecast","7D CAA Peak","7D CAA Peak Date",
+                                                                                    "14D IHME Forecast","14D IHME Peak","14D IHME Peak Date","14D CAA Forecast","14D CAA Peak","14D CAA Peak Date",
+                                                                                    "21D IHME Forecast","21D IHME Peak","21D IHME Peak Date","21D CAA Forecast","21D CAA Peak","21D CAA Peak Date",
+                                                                                    "30D IHME Forecast","30D IHME Peak","30D IHME Peak Date","30D CAA Forecast","30D CAA Peak","30D CAA Peak Date"))
 ##Repeat the above process to generate all of the same information for the single county the base is in (SG request)
 for (i in 2:AFrow){
   radius = 10
@@ -506,7 +522,16 @@ for (i in 2:AFrow){
 
   ####################################################################################
 
-  if(nrow(IHME_Region) == 0 || TotPop == 0){
+  if (AFBaseLocations$Overseas[i] == "CONUS"){
+    DaysProjected <- 120
+    Army_State<-dplyr::filter(Army_Model,FIPS %in% MyCounties$FIPS)      
+    Local<-subset(Army_State, select=-c(Location,County,Susceptible,Exposed,Removed,Fatalities,State))    
+    Local$Date <- as.Date(Local$ForecastDate, "%m/%d/%y")
+    Local<-dplyr::filter(Local,ForecastDate >= Sys.Date())
+  }
+  
+  if(nrow(IHME_Region) == 0 || TotPop == 0 || nrow(Local) == 0){
+  
     MTFDF <- data.frame(AFBaseLocations$Base[i],AFBaseLocations$`Major Command`[i],AFBaseLocations$State[i],0,0)
     names(MTFDF)<-c("Installation","MAJCOM","State","TotalCases","DblRate")
 
@@ -515,48 +540,59 @@ for (i in 2:AFrow){
                         0,0,0,0,0,0,
                         0,0,0,0,0,0)
     names(NewDF) <- c("Installation","MAJCOM","State","Available Beds", "Hopitalization Per 100,000", "Hopitalization Per 10,000", "New Hospitalizations",
-                      "7D IHME Forecast","7D IHME Peak","7D IHME Peak Date","7D SEIAR Forecast","7D SEIAR Peak","7D SEIAR Peak Date",
-                      "14D IHME Forecast","14D IHME Peak","14D IHME Peak Date","14D SEIAR Forecast","14D SEIAR Peak","14D SEIAR Peak Date",
-                      "21D IHME Forecast","21D IHME Peak","21D IHME Peak Date","21D SEIAR Forecast","21D SEIAR Peak","21D SEIAR Peak Date",
-                      "30D IHME Forecast","30D IHME Peak","30D IHME Peak Date","30D SEIAR Forecast","30D SEIAR Peak","30D SEIAR Peak Date")
+                      "7D IHME Forecast","7D IHME Peak","7D IHME Peak Date","7D CAA Forecast","7D CAA Peak","7D CAA Peak Date",
+                      "14D IHME Forecast","14D IHME Peak","14D IHME Peak Date","14D CAA Forecast","14D CAA Peak","14D CAA Peak Date",
+                      "21D IHME Forecast","21D IHME Peak","21D IHME Peak Date","21D CAA Forecast","21D CAA Peak","21D CAA Peak Date",
+                      "30D IHME Forecast","30D IHME Peak","30D IHME Peak Date","30D CAA Forecast","30D CAA Peak","30D CAA Peak Date")
 
     NewDFCases <- data.frame(AFBaseLocations$Base[i],AFBaseLocations$`Major Command`[i],AFBaseLocations$State[i],0,0,0,0,0,0,0,0,0,0,0,
                              0,0,0,0,0,0,
                              0,0,0,0,0,0,
                              0,0,0,0,0,0)
     names(NewDFCases) <- c("Installation","MAJCOM","State","Available Beds", "Cases Per 100,000", "Cases Per 10,000", "New Cases","Total Cases",
-                           "7D IHME Forecast","7D IHME Peak","7D IHME Peak Date","7D SEIAR Forecast","7D SEIAR Peak","7D SEIAR Peak Date",
-                           "14D IHME Forecast","14D IHME Peak","14D IHME Peak Date","14D SEIAR Forecast","14D SEIAR Peak","14D SEIAR Peak Date",
-                           "21D IHME Forecast","21D IHME Peak","21D IHME Peak Date","21D SEIAR Forecast","21D SEIAR Peak","21D SEIAR Peak Date",
-                           "30D IHME Forecast","30D IHME Peak","30D IHME Peak Date","30D SEIAR Forecast","30D SEIAR Peak","30D SEIAR Peak Date")
+                           "7D IHME Forecast","7D IHME Peak","7D IHME Peak Date","7D CAA Forecast","7D CAA Peak","7D CAA Peak Date",
+                           "14D IHME Forecast","14D IHME Peak","14D IHME Peak Date","14D CAA Forecast","14D CAA Peak","14D CAA Peak Date",
+                           "21D IHME Forecast","21D IHME Peak","21D IHME Peak Date","21D CAA Forecast","21D CAA Peak","21D CAA Peak Date",
+                           "30D IHME Forecast","30D IHME Peak","30D IHME Peak Date","30D CAA Forecast","30D CAA Peak","30D CAA Peak Date")
     ForecastDataTableOneMile <- rbind(ForecastDataTableOneMile,NewDF)
   }else{
 
+    if (AFBaseLocations$Overseas[i] == "CONUS"){
+      DaysProjected <- 120
+      Army_State<-dplyr::filter(Army_Model,FIPS %in% MyCounties$FIPS)      
+      Local<-subset(Army_State, select=-c(Location,County,Susceptible,Exposed,Removed,Fatalities,State))    
+      Local$Date <- as.Date(Local$ForecastDate, "%m/%d/%y")
+      Local<-dplyr::filter(Local,ForecastDate >= Sys.Date())
+      Local<-aggregate(Local[,sapply(Local,is.numeric)],Local["ForecastDate"],sum)
+      Local<-Local[1:DaysProjected,]
+      Local<-data.frame(Local$ForecastDate,Local$Infected*.055,Local$Infected)
+      colnames(Local)<-c("ForecastDate", "Expected Hospitalizations","Expected Infections")
+      Local$ForecastDate<-as.Date(Local$ForecastDate)
+      Local <- dplyr::arrange(Local,ForecastDate)      
+    } else {  
+      Local = dplyr::filter(CHIME_All, Base == base)
+      Local = dplyr::filter(Local, ForecastDate > Sys.Date())
+    }  
+    
     doubling<-as.integer(CaseDblRate(MyCounties))
-    # if (doubling == 0) {
-    #   doubling <- as.integer(40)
-    # }
-
-    CHIME_Local = dplyr::filter(CHIME_All_1mile, Base == base)
-    CHIME_Local = dplyr::filter(CHIME_Local, ForecastDate > Sys.Date())
-
+    
     ########################################################################################
-    SevDayVal<-round(CHIME_Local$`Expected Hospitalizations`[7])
-    FourteenDayVal<-round(CHIME_Local$`Expected Hospitalizations`[14])
-    ThirtyDayVal<-round(CHIME_Local$`Expected Hospitalizations`[21])
-    SixtyDayVal<-round(CHIME_Local$`Expected Hospitalizations`[30])
-    PeakSevDayVal<-round(max(CHIME_Local$`Expected Hospitalizations`[1:7]))
-    PeakFourteenDayVal<-round(max(CHIME_Local$`Expected Hospitalizations`[1:14]))
-    PeakThirtyDayVal<-round(max(CHIME_Local$`Expected Hospitalizations`[1:21]))
-    PeakSixtyDayVal<-round(max(CHIME_Local$`Expected Hospitalizations`[1:30]))
-    PeakDateSevDayVal<-which.max(CHIME_Local$`Expected Hospitalizations`[1:7])
-    PeakDateFourteenDayVal<-which.max(CHIME_Local$`Expected Hospitalizations`[1:14])
-    PeakDateThirtyDayVal<-which.max(CHIME_Local$`Expected Hospitalizations`[1:21])
-    PeakDateSixtyDayVal<-which.max(CHIME_Local$`Expected Hospitalizations`[1:30])
-    PeakDateSevDayVal<-format(CHIME_Local$ForecastDate[PeakDateSevDayVal], format="%b-%d")
-    PeakDateFourteenDayVal<-format(CHIME_Local$ForecastDate[PeakDateFourteenDayVal], format="%b-%d")
-    PeakDateThirtyDayVal<-format(CHIME_Local$ForecastDate[PeakDateThirtyDayVal], format="%b-%d")
-    PeakDateSixtyDayVal<-format(CHIME_Local$ForecastDate[PeakDateSixtyDayVal], format="%b-%d")
+    SevDayVal<-round(Local$`Expected Hospitalizations`[7])
+    FourteenDayVal<-round(Local$`Expected Hospitalizations`[14])
+    ThirtyDayVal<-round(Local$`Expected Hospitalizations`[21])
+    SixtyDayVal<-round(Local$`Expected Hospitalizations`[30])
+    PeakSevDayVal<-round(max(Local$`Expected Hospitalizations`[1:7]))
+    PeakFourteenDayVal<-round(max(Local$`Expected Hospitalizations`[1:14]))
+    PeakThirtyDayVal<-round(max(Local$`Expected Hospitalizations`[1:21]))
+    PeakSixtyDayVal<-round(max(Local$`Expected Hospitalizations`[1:30]))
+    PeakDateSevDayVal<-which.max(Local$`Expected Hospitalizations`[1:7])
+    PeakDateFourteenDayVal<-which.max(Local$`Expected Hospitalizations`[1:14])
+    PeakDateThirtyDayVal<-which.max(Local$`Expected Hospitalizations`[1:21])
+    PeakDateSixtyDayVal<-which.max(Local$`Expected Hospitalizations`[1:30])
+    PeakDateSevDayVal<-format(Local$ForecastDate[PeakDateSevDayVal], format="%b-%d")
+    PeakDateFourteenDayVal<-format(Local$ForecastDate[PeakDateFourteenDayVal], format="%b-%d")
+    PeakDateThirtyDayVal<-format(Local$ForecastDate[PeakDateThirtyDayVal], format="%b-%d")
+    PeakDateSixtyDayVal<-format(Local$ForecastDate[PeakDateSixtyDayVal], format="%b-%d")
 
     #BEGIN IHME CALCS
     I1 = round(IHME_Region$`Expected Hospitalizations`[7])
@@ -587,22 +623,22 @@ for (i in 2:AFrow){
 
     ########################################################################################
     #All of the case information from the CHIME model
-    SevDayValCases<-round(CHIME_Local$`Expected Infections`[7])
-    FourteenDayValCases<-round(CHIME_Local$`Expected Infections`[14])
-    ThirtyDayValCases<-round(CHIME_Local$`Expected Infections`[21])
-    SixtyDayValCases<-round(CHIME_Local$`Expected Infections`[30])
-    PeakSevDayValCases<-round(max(CHIME_Local$`Expected Infections`[1:7]))
-    PeakFourteenDayValCases<-round(max(CHIME_Local$`Expected Infections`[1:14]))
-    PeakThirtyDayValCases<-round(max(CHIME_Local$`Expected Infections`[1:21]))
-    PeakSixtyDayValCases<-round(max(CHIME_Local$`Expected Infections`[1:30]))
-    PeakDateSevDayValCases<-which.max(CHIME_Local$`Expected Infections`[1:7])
-    PeakDateFourteenDayValCases<-which.max(CHIME_Local$`Expected Infections`[1:14])
-    PeakDateThirtyDayValCases<-which.max(CHIME_Local$`Expected Infections`[1:21])
-    PeakDateSixtyDayValCases<-which.max(CHIME_Local$`Expected Infections`[1:30])
-    PeakDateSevDayValCases<-format(CHIME_Local$ForecastDate[PeakDateSevDayValCases], format="%b-%d")
-    PeakDateFourteenDayValCases<-format(CHIME_Local$ForecastDate[PeakDateFourteenDayValCases], format="%b-%d")
-    PeakDateThirtyDayValCases<-format(CHIME_Local$ForecastDate[PeakDateThirtyDayValCases], format="%b-%d")
-    PeakDateSixtyDayValCases<-format(CHIME_Local$ForecastDate[PeakDateSixtyDayValCases], format="%b-%d")
+    SevDayValCases<-round(Local$`Expected Infections`[7])
+    FourteenDayValCases<-round(Local$`Expected Infections`[14])
+    ThirtyDayValCases<-round(Local$`Expected Infections`[21])
+    SixtyDayValCases<-round(Local$`Expected Infections`[30])
+    PeakSevDayValCases<-round(max(Local$`Expected Infections`[1:7]))
+    PeakFourteenDayValCases<-round(max(Local$`Expected Infections`[1:14]))
+    PeakThirtyDayValCases<-round(max(Local$`Expected Infections`[1:21]))
+    PeakSixtyDayValCases<-round(max(Local$`Expected Infections`[1:30]))
+    PeakDateSevDayValCases<-which.max(Local$`Expected Infections`[1:7])
+    PeakDateFourteenDayValCases<-which.max(Local$`Expected Infections`[1:14])
+    PeakDateThirtyDayValCases<-which.max(Local$`Expected Infections`[1:21])
+    PeakDateSixtyDayValCases<-which.max(Local$`Expected Infections`[1:30])
+    PeakDateSevDayValCases<-format(Local$ForecastDate[PeakDateSevDayValCases], format="%b-%d")
+    PeakDateFourteenDayValCases<-format(Local$ForecastDate[PeakDateFourteenDayValCases], format="%b-%d")
+    PeakDateThirtyDayValCases<-format(Local$ForecastDate[PeakDateThirtyDayValCases], format="%b-%d")
+    PeakDateSixtyDayValCases<-format(Local$ForecastDate[PeakDateSixtyDayValCases], format="%b-%d")
 
     #BEGIN IHME CALCS for CASES
     I1Cases = round(IHME_Region$`Expected Cases`[7])
@@ -645,10 +681,10 @@ for (i in 2:AFrow){
                         I3,PI3,PID3,ThirtyDayVal,PeakThirtyDayVal,PeakDateThirtyDayVal,
                         I4,PI4,PID4,SixtyDayVal,PeakSixtyDayVal,PeakDateSixtyDayVal)
     names(NewDF) <- c("Installation","MAJCOM","State","Available Beds", "Hopitalization Per 100,000", "Hopitalization Per 10,000","New Hospitalizations",
-                      "7D IHME Forecast","7D IHME Peak","7D IHME Peak Date","7D SEIAR Forecast","7D SEIAR Peak","7D SEIAR Peak Date",
-                      "14D IHME Forecast","14D IHME Peak","14D IHME Peak Date","14D SEIAR Forecast","14D SEIAR Peak","14D SEIAR Peak Date",
-                      "21D IHME Forecast","21D IHME Peak","21D IHME Peak Date","21D SEIAR Forecast","21D SEIAR Peak","21D SEIAR Peak Date",
-                      "30D IHME Forecast","30D IHME Peak","30D IHME Peak Date","30D SEIAR Forecast","30D SEIAR Peak","30D SEIAR Peak Date")
+                      "7D IHME Forecast","7D IHME Peak","7D IHME Peak Date","7D CAA Forecast","7D CAA Peak","7D CAA Peak Date",
+                      "14D IHME Forecast","14D IHME Peak","14D IHME Peak Date","14D CAA Forecast","14D CAA Peak","14D CAA Peak Date",
+                      "21D IHME Forecast","21D IHME Peak","21D IHME Peak Date","21D CAA Forecast","21D CAA Peak","21D CAA Peak Date",
+                      "30D IHME Forecast","30D IHME Peak","30D IHME Peak Date","30D CAA Forecast","30D CAA Peak","30D CAA Peak Date")
     ForecastDataTableOneMile <- rbind(ForecastDataTableOneMile,NewDF)
 
     NewDFCases <- data.frame(AFBaseLocations$Base[i],AFBaseLocations$`Major Command`[i],AFBaseLocations$State[i],round(TotalBedsCounty*(1-baseUtlz)), CasesPer100000, CasesPer10000, NewCases,TotalCases,
@@ -657,10 +693,10 @@ for (i in 2:AFrow){
                              I3Cases,PI3Cases,PID3Cases,ThirtyDayValCases,PeakThirtyDayValCases,PeakDateThirtyDayValCases,
                              I4Cases,PI4Cases,PID4Cases,SixtyDayValCases,PeakSixtyDayValCases,PeakDateSixtyDayValCases)
     names(NewDFCases) <- c("Installation","MAJCOM","State","Available Beds", "Cases Per 100,000", "Cases Per 10,000","New Cases","Total Cases",
-                           "7D IHME Forecast","7D IHME Peak","7D IHME Peak Date","7D SEIAR Forecast","7D SEIAR Peak","7D SEIAR Peak Date",
-                           "14D IHME Forecast","14D IHME Peak","14D IHME Peak Date","14D SEIAR Forecast","14D SEIAR Peak","14D SEIAR Peak Date",
-                           "21D IHME Forecast","21D IHME Peak","21D IHME Peak Date","21D SEIAR Forecast","21D SEIAR Peak","21D SEIAR Peak Date",
-                           "30D IHME Forecast","30D IHME Peak","30D IHME Peak Date","30D SEIAR Forecast","30D SEIAR Peak","30D SEIAR Peak Date")
+                           "7D IHME Forecast","7D IHME Peak","7D IHME Peak Date","7D CAA Forecast","7D CAA Peak","7D CAA Peak Date",
+                           "14D IHME Forecast","14D IHME Peak","14D IHME Peak Date","14D CAA Forecast","14D CAA Peak","14D CAA Peak Date",
+                           "21D IHME Forecast","21D IHME Peak","21D IHME Peak Date","21D CAA Forecast","21D CAA Peak","21D CAA Peak Date",
+                           "30D IHME Forecast","30D IHME Peak","30D IHME Peak Date","30D CAA Forecast","30D CAA Peak","30D CAA Peak Date")
     ForecastDataTableCasesOneMile <- rbind(ForecastDataTableCasesOneMile,NewDFCases)
   }
 }
@@ -706,9 +742,9 @@ MTFSummaryReport <- merge(MTFSummaryReport2,
 HeatMapForecast<-merge(AFBaseLocations, ForecastDataTable, by.x = c("Base","State","Major Command"), by.y = c("Installation","State","MAJCOM"))
 HeatMapForecast<-data.frame(HeatMapForecast$Base,HeatMapForecast$State,HeatMapForecast$Branch,HeatMapForecast$Operational,HeatMapForecast$`Major Command`,
                             HeatMapForecast$Lat, HeatMapForecast$Long,HeatMapForecast$`Available Beds`,HeatMapForecast$`Hopitalization Per 100,000`,HeatMapForecast$`Hopitalization Per 10,000`,
-                            HeatMapForecast$`New Hospitalizations`,HeatMapForecast$`New Hospitalizations`,HeatMapForecast$`7D SEIAR Forecast`, HeatMapForecast$`7D IHME Forecast`,
-                            HeatMapForecast$`14D SEIAR Forecast`,HeatMapForecast$`14D IHME Forecast`,  HeatMapForecast$`21D SEIAR Forecast`, HeatMapForecast$`21D IHME Forecast`,
-                            HeatMapForecast$`30D SEIAR Forecast`, HeatMapForecast$`30D IHME Forecast`,HeatMapForecast$ID)
+                            HeatMapForecast$`New Hospitalizations`,HeatMapForecast$`New Hospitalizations`,HeatMapForecast$`7D CAA Forecast`, HeatMapForecast$`7D IHME Forecast`,
+                            HeatMapForecast$`14D CAA Forecast`,HeatMapForecast$`14D IHME Forecast`,  HeatMapForecast$`21D CAA Forecast`, HeatMapForecast$`21D IHME Forecast`,
+                            HeatMapForecast$`30D CAA Forecast`, HeatMapForecast$`30D IHME Forecast`,HeatMapForecast$ID)
 colnames(HeatMapForecast)<-c("Base","State","Branch","Operational","MAJCOM","Lat","Long","Beds","Hospitalizations Per 100,000","Hospitalizations Per 10,000","Today.CHIME","Today.IHME", "Seven.IHME","Seven.CHIME",
                              "Fourteen.IHME","Fourteen.CHIME","Twenty-One.IHME","Twenty-One.CHIME", "Thirty.IHME","Thirty.CHIME","ID")
 HeatMapForecast<-reshape(HeatMapForecast, direction='long',
@@ -724,9 +760,9 @@ HeatMapForecast<-transform(HeatMapForecast,CHIMEID=ifelse((Beds)>=CHIME,"Under C
 HeatMapForecastCases<-merge(AFBaseLocations, ForecastDataTableCases, by.x = c("Base","State","Major Command"), by.y = c("Installation","State","MAJCOM"))
 HeatMapForecastCases<-data.frame(HeatMapForecastCases$Base, HeatMapForecastCases$State,HeatMapForecastCases$Branch,HeatMapForecastCases$Operational,HeatMapForecastCases$`Major Command`,
                                  HeatMapForecastCases$Lat, HeatMapForecastCases$Long,HeatMapForecastCases$`Available Beds`,HeatMapForecastCases$`Cases Per 100,000`,HeatMapForecastCases$`Cases Per 10,000`,
-                                 HeatMapForecastCases$`New Cases`,HeatMapForecastCases$`New Cases`,HeatMapForecastCases$`7D SEIAR Forecast`, HeatMapForecastCases$`7D IHME Forecast`,
-                                 HeatMapForecastCases$`14D SEIAR Forecast`,  HeatMapForecastCases$`14D IHME Forecast`,  HeatMapForecastCases$`21D SEIAR Forecast`, HeatMapForecastCases$`21D IHME Forecast`,
-                                 HeatMapForecastCases$`30D SEIAR Forecast`, HeatMapForecastCases$`30D IHME Forecast`,HeatMapForecastCases$ID)
+                                 HeatMapForecastCases$`New Cases`,HeatMapForecastCases$`New Cases`,HeatMapForecastCases$`7D CAA Forecast`, HeatMapForecastCases$`7D IHME Forecast`,
+                                 HeatMapForecastCases$`14D CAA Forecast`,  HeatMapForecastCases$`14D IHME Forecast`,  HeatMapForecastCases$`21D CAA Forecast`, HeatMapForecastCases$`21D IHME Forecast`,
+                                 HeatMapForecastCases$`30D CAA Forecast`, HeatMapForecastCases$`30D IHME Forecast`,HeatMapForecastCases$ID)
 colnames(HeatMapForecastCases)<-c("Base","State","Branch","Operational","MAJCOM","Lat","Long","Beds","Cases Per 100,000","Cases_Per_10000","Today.CHIME","Today.IHME", "Seven.IHME","Seven.CHIME",
                                   "Fourteen.IHME","Fourteen.CHIME","Twenty-One.IHME","Twenty-One.CHIME","Thirty.IHME","Thirty.CHIME","ID")
 HeatMapForecastCases<-reshape(HeatMapForecastCases, direction='long',
