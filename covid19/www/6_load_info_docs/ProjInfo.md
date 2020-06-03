@@ -5,8 +5,7 @@ CHAD utilizes a mulititude of well known models from institutions and organizati
 
 ### IHME
 
-The IHME model was built by the Institute for Health Metrics and Evaluation (IHME) at the University of Washington. It assumes that three of the four mitigation measures of closing schools, closing non-essential services, shelter-in-place, and significant travel
-restricitons have been implemented. The IHME model is built for all U.S. states and certain countries. The models are adapted by CHAD at the county level by a simplistic scaling method using a ratio of the local population to the state population. 
+The IHME model was built by the Institute for Health Metrics and Evaluation (IHME) at the University of Washington. It assumes that three of the four mitigation measures of closing schools, closing non-essential services, shelter-in-place, and significant travel restricitons have been implemented. The IHME model is built for all U.S. states and certain countries. The models are adapted by CHAD at the county level by a simplistic scaling method using a ratio of the local population to the state population. 
 
 **Data:**
 http://www.healthdata.org/covid/data-downloads
@@ -17,11 +16,36 @@ https://covid19.healthdata.org/united-states-of-america
 **Information:**
 http://www.healthdata.org/covid/faqs
 
+
+### Center for Army Analysis (CAA)
+
+**Model Appropriateness**
+A SEIR model is a compartmental population model with four bins – susceptible, exposed, infected, and removed – each with their own function that gives bin size with respect to time. Other compartmental population models similar to SEIR include SIR (susceptible, infectious, and removed), SIS (susceptible, infectious, susceptible), MSIR (maternally-derived immunity, susceptible, infectious, removed), and MSEIRS (maternally-derived immunity, susceptible, infectious, removed, and susceptible). Of these common models in infectious disease modeling, Center for Army Analysis (CAA) selected the SEIR construct because it accounts for important components of the COVID-19 disease process.
+
+**Model Assumptions**
+Key Modeling Assumptions:
+• Total population remains constant (birth rate = mortality rate).
+• Population suffering re-infection is statistically insignificant.
+• Infection rates are constant across all demographics – all members of the population are equally
+susceptible.
+• Population is well-mixed amongst the bins.
+• No intermixing between discrete population bins (an individual cannot be in the susceptible bin
+and the removed bin at the same time).
+• There is no difference in the behavior between asymptomatic and symptomatic infected people.
+Data Assumptions:
+• Hospitalization and ICU demand is ~2x as seasonal influenza.
+• Hospital/ICU Bed availability assumed to be similar to that of the US Medical System.
+Strict alignment between national populations and national hospital/ICU bed spaces (geographic
+dispersion of hospitals vis-a-vis population is ignored).
+
+**Methodology**
+Each day, CAA uses all available historical data to estimate historical R0 values from a Weibull
+distribution at the core based statistical area (CBSA) level.8 Using this Weibull function, CAA forecasts R0 values. The R0 values are then grouped into three categories: 1) CBSAs with few cases; 2) CBSAs with high population densities; and 3) CBSAs with low population densities. The R0 values for the high and low population densities are regressed against factors such as transformations on the population density, day of infection timeline, and date of stay at home order to create a parametric R0 function. The parametric R0 function then forecasts R0 values which informs β, a factor in the functions determining population bin size. Using the number of reported cases, calculated estimates for the exposed population, and the model functions, CAA forecasts the susceptible, exposed, infectious, and removed populations and compares them against general hospital bed and intensive care unit (ICU) bed capacities to produce COVID-19 response metrics at the county and core based statistical area level.
+
+
 ### CHIME
 
-The COVID-19 Hospital Impact Model for Epidemics (CHIME) app was created by the Predictive Healthcare team at Penn Medicine, University of Pennsylvania. CHIME provides estimates of daily and cumulative cases, hospitalizations, ICU admissions, and patients
-requiring ventilators. It uses an adapation of the Susceptible-Infected-Recovered (SIR) model to generate estimates based on user inputs. There are many inputs to CHIME relative to the location of interest. In CHAD, majority of these are pre-filled in and are specfic to the location chosen and COVID-19 case data. Furthermore, the model in CHAD is an adaptation of CHIME that includes Exposed and Asympotmatic in addition to Susceptible, Infected, and Asympotmatic. This adaption came from the Army’s ACME Tool,
-developed through collaborative efforts from Army Futures Command and the Army Public Health Center(APHC) COVID-19 Modeling Team.
+The COVID-19 Hospital Impact Model for Epidemics (CHIME) app was created by the Predictive Healthcare team at Penn Medicine, University of Pennsylvania. CHIME provides estimates of daily and cumulative cases, hospitalizations, ICU admissions, and patients requiring ventilators. It uses an adapation of the Susceptible-Infected-Recovered (SIR) model to generate estimates based on user inputs. There are many inputs to CHIME relative to the location of interest. In CHAD, majority of these are pre-filled in and are specfic to the location chosen and COVID-19 case data. Furthermore, the model in CHAD is an adaptation of CHIME that includes Exposed and Asympotmatic in addition to Susceptible, Infected, and Asympotmatic. This adaption came from the Army’s ACME Tool, developed through collaborative efforts from Army Futures Command and the Army Public Health Center(APHC) COVID-19 Modeling Team.
 
 **Live Model:**
 https://penn-chime.phl.io/

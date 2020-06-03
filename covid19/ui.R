@@ -316,7 +316,7 @@ ui <- tagList(
                     '))),
                   tags$script(HTML('
                                    $(document).ready(function() {
-                                   $("header").find("nav").append(\'<span class="myClass"> COVID-19 Health Assessment Dashboard v10.2</span>\');
+                                   $("header").find("nav").append(\'<span class="myClass"> COVID-19 Health Assessment Dashboard v10.2  </span>\');
                                    })
                                    ')),
                   tabsetPanel(id = "tabselected",
@@ -346,23 +346,23 @@ ui <- tagList(
                                 value = 1,
                                 title = "MAJCOM Summary",
                                 fluidRow(
-                                  # box(plotlyOutput("SummaryTabChoro", height = 600, width = 'auto')),
+                                  box(plotlyOutput("SummaryTabChoro", height = 600, width = 'auto')),
                                   box(plotOutput("HotSpot", height = 600))),
-                                # box(
-                                #     downloadButton('downloadData', 'Download Full Dataset'),
-                                #     downloadButton('downloadFilteredData', 'Download Filtered Dataset (Table Above)'),
-                                #     downloadButton('HotSpotData', 'Download Hotspot Dataset: 50 Mile Radius'),
-                                #     downloadButton('HotSpotDataOneMile', 'Download Hotspot Dataset: Single County'),
-                                #     downloadButton('MTFSummaryT', 'MTF Summary Table'),
-                                #     downloadButton('MTFSummaryP', 'MTF Summary Plots (Click Once)'),
-                                #     title = "Base Summary Projections",
-                                #     solidHeader=T, 
-                                #     align = "left", 
-                                #     column(width = 12, 
-                                #            DT::dataTableOutput("ForecastDataTableOut"), 
-                                #            style = "height:720px;overflow-y: scroll"), 
-                                #     height = 900, 
-                                #     width =13)
+                                  box(
+                                      downloadButton('downloadData', 'Download Full Dataset'),
+                                      downloadButton('downloadFilteredData', 'Download Filtered Dataset (Table Above)'),
+                                      downloadButton('HotSpotData', 'Download Hotspot Dataset: 50 Mile Radius'),
+                                      downloadButton('HotSpotDataOneMile', 'Download Hotspot Dataset: Single County'),
+                                      downloadButton('MTFSummaryT', 'MTF Summary Table'),
+                                      downloadButton('MTFSummaryP', 'MTF Summary Plots (Click Once)'),
+                                      title = "Base Summary Projections",
+                                      solidHeader=T,
+                                      align = "left",
+                                      column(width = 12,
+                                             DT::dataTableOutput("ForecastDataTableOut"),
+                                             style = "height:720px;overflow-y: scroll"),
+                                      height = 900,
+                                      width =13)
                                 
                               ),
                               ####### END Mission Risk #######
