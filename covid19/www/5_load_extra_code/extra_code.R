@@ -207,7 +207,7 @@ for (i in 2:AFrow){
       colnames(Local)<-c("ForecastDate", "Expected Hospitalizations","Expected Infections")
       Local$ForecastDate<-as.Date(Local$ForecastDate)
       Local <- dplyr::arrange(Local,ForecastDate)      
-    } else {
+    } else if (AFBaseLocations$Overseas[i] == "OCONUS") {  
       Local = dplyr::filter(CHIME_All, Base == base)
       Local = dplyr::filter(Local, ForecastDate > Sys.Date())
     }  
@@ -569,7 +569,7 @@ for (i in 2:AFrow){
       colnames(Local)<-c("ForecastDate", "Expected Hospitalizations","Expected Infections")
       Local$ForecastDate<-as.Date(Local$ForecastDate)
       Local <- dplyr::arrange(Local,ForecastDate)      
-    } else {  
+    } else if (AFBaseLocations$Overseas[i] == "OCONUS") {  
       Local = dplyr::filter(CHIME_All, Base == base)
       Local = dplyr::filter(Local, ForecastDate > Sys.Date())
     }  
