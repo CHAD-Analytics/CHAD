@@ -114,25 +114,36 @@ ui <- tagList(
                                                               "International/National Summary",
                                                               icon = icon("sliders-h"),
                                                               div(id = "single", style="display: none;", numericInput("tckt", "Ticket Number : ", 12345,  width = 300)),
+                                                              
                                                               radioButtons("MapView",
                                                                            "Map Selection: ",
                                                                            c("World"="World",
-                                                                             "United States"="US",
+                                                                             "United States"="United States",
                                                                              #"North America"="North America", 
-                                                                             #"Central America"="Central America",
                                                                              #"South America"="South America",
                                                                              "Europe"="Europe",
-                                                                             #"Middle East"="Middle East",
                                                                              "Africa"="Africa",
                                                                              "Asia"="Asia",
                                                                              "Oceania"="Oceania"                                                                             
                                                                              ),
                                                                            selected = "World"),
-                                                              radioButtons("MapScale",
-                                                                           "Scaling Selection: ",
-                                                                           c("Log"="Log",
-                                                                             "Linear"="Linear"),
-                                                                           selected = "Log")                                                              
+                                                              
+                                                              radioButtons("Metric",
+                                                                           "Metric: ",
+                                                                           c("Total Cases" = "Total Cases",
+                                                                             "Weekly Total Case Change" = "Weekly Total Change",
+                                                                             "Weekly Case Change" = "Weekly Change"),
+                                                                           selected = "Total Cases"),
+                                                              
+                                                              conditionalPanel(condition = "input.Metric == 'Total Cases'",
+                                                                               radioButtons("MapScale",
+                                                                                            "Scaling Selection: ",
+                                                                                            c("Log"="Log",
+                                                                                              "Linear"="Linear"),
+                                                                                            selected = "Log")
+                                                              )
+                                                              
+                                                              
                                              ),
 
                                              conditionalPanel(condition="input.tabselected == 3 || input.tabselected == 4",
@@ -331,6 +342,12 @@ ui <- tagList(
                                 tags$div(style="text-align:center; font-size=16px;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; color: black", 
                                          "Want to learn more?  Visit the links on the left for more information."),  
                                 br(),
+                                tags$div(style="text-align:center; font-size=16px;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; color: black", 
+                                         "Feel free to visit the link below and give us a review!"),
+                                tags$div(style="text-align:center; font-size=16px;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; color: blue",
+                                         tags$a(href="https://forms.gle/NAubEc3mbmtgQd1C8","CHAD Feedback",target = "_blank")),
+                                br(),
+                                
                                 fluidPage(
                                           tags$style('.container-fluid {
                                           background-color: #fcfcfc;}'),

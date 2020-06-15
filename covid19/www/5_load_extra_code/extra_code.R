@@ -875,3 +875,81 @@ choroplethObj = st_as_sf(county_df)
 choroplethObj = st_transform(choroplethObj, crs = 4326)
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+###############################################################################################
+############################### Set Map Options for Summary Tab ###############################
+###############################################################################################
+
+
+
+USlist = list(region="US",
+              displayMode = "regions",
+              resolution = "provinces",
+              colors="['#52E74B','blue','#85050a']", #green to dark red
+              width=1200,
+              height = 600,
+              legendPosition="bottom"
+) 
+
+NAlist = list(region="021",
+              displayMode = "regions",
+              colors="['#52E74B','blue','#85050a']", #green to dark red
+              width=1200,
+              height = 600,
+              legendPosition="bottom"
+)    
+SAlist = list(region="005",
+              displayMode = "regions",
+              colors="['#52E74B','blue','#85050a']", #green to dark red
+              width=1200,
+              height = 600,
+              legendPosition="bottom"
+)    
+EUROlist = list(region="150",
+                displayMode = "regions",
+                colors="['#52E74B','blue','#85050a']", #green to dark red
+                width=1200,
+                height = 600,
+                legendPosition="bottom"
+)
+AFRICAlist = list(region="002",
+                  displayMode = "regions",
+                  colors="['#52E74B','blue','#85050a']", #green to dark red
+                  width=1200,
+                  height = 600,
+                  legendPosition="bottom"
+)    
+ASIAlist = list(region="142",
+                displayMode = "regions",
+                colors="['#52E74B','blue','#85050a']", #green to dark red
+                width=1200,
+                height = 600,
+                legendPosition="bottom"
+)
+OCEANIAlist = list(region="009",
+                   displayMode = "province",
+                   colors="['#52E74B','blue','#85050a']", #green to dark red
+                   width=1200,
+                   height = 600,
+                   legendPosition="bottom"
+)    
+
+WORLDlist = list(region="world",
+                 displayMode = "province",
+                 colors="['#52E74B','blue','#85050a']", #green to dark red
+                 width=1200,
+                 height = 600,
+                 legendPosition="bottom"
+)
+

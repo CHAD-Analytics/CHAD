@@ -76,6 +76,6 @@ CovidConfirmedCases$CountyFIPS = as.numeric(CovidConfirmedCases$CountyFIPS)
 
 tempTbl = left_join(CovidConfirmedCases, CountyInfo, by = c("CountyFIPS" = "FIPS")) 
 
-labelsDF = c(colnames(CovidConfirmedCases)[1:4], "Continent", colnames(CovidConfirmedCases)[5:ncol(CovidConfirmedCases)])
-ContinentMap = data.frame(tempTbl[1:4], tempTbl$Continent, tempTbl[5:ncol(CovidConfirmedCases)])
+labelsDF = c(colnames(CovidConfirmedCases)[1:4], "Continent", "Country", colnames(CovidConfirmedCases)[5:ncol(CovidConfirmedCases)])
+ContinentMap = data.frame(tempTbl[1:4], tempTbl$Continent, tempTbl$Country, tempTbl[5:ncol(CovidConfirmedCases)])
 names(ContinentMap) = labelsDF
