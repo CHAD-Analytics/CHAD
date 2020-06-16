@@ -953,3 +953,10 @@ WORLDlist = list(region="world",
                  legendPosition="bottom"
 )
 
+
+
+
+
+# Load Torch Data-----------------------------
+
+torchData = read_csv("www/4_load_external_data/data_files/TorchData.csv")
