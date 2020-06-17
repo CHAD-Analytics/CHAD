@@ -1,16 +1,15 @@
 ### What's new in CHAD
 
-**CHAD Version 10.2** includes these additional features:
+**CHAD Version 10.3** includes these additional features:
+- Minor bug fixes with installation locations
+- Added new metrics to International/National Summary tab
+- Calculations page updated with inofrmation on new metrics
+- Added Excel download button for International/National Summary Table
 
+
+Previous Updates
 -   Added OCONUS projections from IHME, YYG, LANL, and CHIME models onto Local Projection Tab
 -   OCONUS projections for IHME and CHIME included on MAJCOM summary tab
 -   Improved application load times
 -   Added additional continental mapping features
 -   Updated DTRA models
-
-Previous Updates
--   Added installations representing all service branches
--   Added additional filtering for Active Duty, Reserve, and National Guard installations
--   Added Numbered Air Force filtering, including Wings and Groups
--   Added the independent projection model from Youyang Gu (https://github.com/youyanggu)
--   Changed Nation Summary tab to include international maps as well as a world map
