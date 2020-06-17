@@ -638,23 +638,27 @@ server <- function(input, output,session) {
   # })
 
   output$ImpactTitle <- renderUI({
-    if (input$MapScale == "Log"){
+    if (input$MapScale == "Log" & input$Metric == "Total Cases"){
       textbox <- "Impact Map: Logarithmic Scale"
-    } else if (input$MapScale == "Linear"){
+    } else if (input$MapScale == "Linear" & input$Metric == "Total Cases"){
       textbox <- "Impact Map: Linear Scale"
+    } else {
+      textbox <- "Impact Map"
     }
   })  
   
   output$ImpactText <- renderUI({
-    if (input$MapScale == "Log"){
+    if (input$MapScale == "Log" & input$Metric == "Total Cases"){
         text1 = "A logarithmic scale is ideal for measuring rates of change. "
         text2 = "This scale flattens the rate of growth to better visualize where the growth starts to level off once the exponential growth has stopped."
         out <- paste(text1, "\n", text2,sep = "")
         #cat(out)
-    } else if (input$MapScale == "Linear"){
+    } else if (input$MapScale == "Linear" & input$Metric == "Total Cases"){
         text1 = "On a linear scale, the cases increase additively and the visual distance between the data points remains constant. "
         #text2 = "querystring"
         out <- paste(text1,sep = "")
+    } else{
+      out = ""
     }
   })    
     
@@ -891,8 +895,216 @@ server <- function(input, output,session) {
   #Data tables ------------------------------------------------------------------------------------------------------------------------------------------------------
   
   
+  output$TabIncreasing <- DT::renderDataTable({
+    
+    NationalDataTable1 = dplyr::filter(NationalDataTable, Population >= 100000)
+    
+    if (input$MapView == "World"){
+      select <- which(NationalDataTable1$Country == "United States" & NationalDataTable1$State != "United States")
+      NationalDataTable1 = NationalDataTable1[-c(select),]
+      
+      NationalDataTable1 = dplyr::select(NationalDataTable1,
+                                         Continent,
+                                         Country,
+                                         `Total Cases`,
+                                         `Cases Per 100,000 People`,
+                                         `Weekly Total Case Change`,
+                                         `Average New Cases Per Day`,
+                                         `Weekly Case Change`,
+                                         `Total Deaths`,
+                                         `Average New Deaths Per Day`
+      )
+    } else if(input$MapView == "United States"){
+      NationalDataTable1 = dplyr::filter(NationalDataTable1, Country == input$MapView)
+      NationalDataTable1<-dplyr::filter(NationalDataTable1, Country == "United States" & State != "United States")
+      NationalDataTable1 = dplyr::select(NationalDataTable1,
+                                         Continent,
+                                         Country,
+                                         State,
+                                         `Total Cases`,
+                                         `Cases Per 100,000 People`,
+                                         `Weekly Total Case Change`,
+                                         `Average New Cases Per Day`,
+                                         `Weekly Case Change`,
+                                         `Total Deaths`,
+                                         `Average New Deaths Per Day`
+      )
+      
+    } else{
+      NationalDataTable1 = dplyr::filter(NationalDataTable1, Continent == input$MapView)
+      NationalDataTable1 = dplyr::select(NationalDataTable1,
+                                         Continent,
+                                         Country,
+                                         `Total Cases`,
+                                         `Cases Per 100,000 People`,
+                                         `Weekly Total Case Change`,
+                                         `Average New Cases Per Day`,
+                                         `Weekly Case Change`,
+                                         `Total Deaths`,
+                                         `Average New Deaths Per Day`
+      )
+    }
+      
+      if (input$Metric == "Total Cases"){
+        Inc_Table = NationalDataTable1 %>% top_n(5, wt = `Cases Per 100,000 People`)
+        
+        if (input$MapView == "United States"){
+          Inc_Table = dplyr::select(Inc_Table, State, `Cases Per 100,000 People`, `Total Cases`)
+        } else{
+          Inc_Table = dplyr::select(Inc_Table, Country, `Cases Per 100,000 People`, `Total Cases`)
+        }
+        
+        Inc_Table <- DT::datatable(Inc_Table,
+                                   rownames = FALSE,
+                                   options = list(order = list(1, "desc"),
+                                                  dom = 't',
+                                                  pageLength = 5))
+        
+      } else if(input$Metric == "Weekly Total Change"){
+        Inc_Table = NationalDataTable1 %>% top_n(5, wt = `Weekly Total Case Change`)
+        
+        if (input$MapView == "United States"){
+          Inc_Table = dplyr::select(Inc_Table, State, `Weekly Total Case Change`, `Total Cases`)
+        } else{
+          Inc_Table = dplyr::select(Inc_Table, Country, `Weekly Total Case Change`, `Total Cases`)
+        }
+        
+        Inc_Table <- DT::datatable(Inc_Table,
+                                   rownames = FALSE, 
+                                   options = list(order = list(1, "desc"),
+                                                  dom = 't',
+                                                  pageLength = 5)) %>% formatPercentage(c("Weekly Total Case Change"), 1)
+        
+      }else if(input$Metric == "Weekly Change"){
+        Inc_Table = NationalDataTable1 %>% top_n(5, wt = `Weekly Case Change`)
+        
+        if (input$MapView == "United States"){
+          Inc_Table = dplyr::select(Inc_Table, State, `Weekly Case Change`, `Total Cases`)
+        } else{
+          Inc_Table = dplyr::select(Inc_Table, Country, `Weekly Case Change`, `Total Cases`)
+        }
+        
+        Inc_Table <- DT::datatable(Inc_Table,
+                                   rownames = FALSE, 
+                                   options = list(order = list(1, "desc"),
+                                                  dom = 't',
+                                                  pageLength = 5)) %>% formatPercentage(c("Weekly Case Change"), 1)
+        
+      }
+    
+    
+    Inc_Table
+    
+  })
+  
+  
+  
+  output$TabDecreasing <- DT::renderDataTable({
+    
+    NationalDataTable1 = dplyr::filter(NationalDataTable, Population >= 100000)
+    
+    if (input$MapView == "World"){
+      select <- which(NationalDataTable1$Country == "United States" & NationalDataTable1$State != "United States")
+      NationalDataTable1 = NationalDataTable1[-c(select),]
+      
+      NationalDataTable1 = dplyr::select(NationalDataTable1,
+                                         Continent,
+                                         Country,
+                                         `Total Cases`,
+                                         `Cases Per 100,000 People`,
+                                         `Weekly Total Case Change`,
+                                         `Average New Cases Per Day`,
+                                         `Weekly Case Change`,
+                                         `Total Deaths`,
+                                         `Average New Deaths Per Day`
+      )
+    } else if(input$MapView == "United States"){
+      NationalDataTable1 = dplyr::filter(NationalDataTable1, Country == input$MapView)
+      NationalDataTable1<-dplyr::filter(NationalDataTable1, Country == "United States" & State != "United States")
+      NationalDataTable1 = dplyr::select(NationalDataTable1,
+                                         Continent,
+                                         Country,
+                                         State,
+                                         `Total Cases`,
+                                         `Cases Per 100,000 People`,
+                                         `Weekly Total Case Change`,
+                                         `Average New Cases Per Day`,
+                                         `Weekly Case Change`,
+                                         `Total Deaths`,
+                                         `Average New Deaths Per Day`
+      )
+      
+    } else{
+      NationalDataTable1 = dplyr::filter(NationalDataTable1, Continent == input$MapView)
+      NationalDataTable1 = dplyr::select(NationalDataTable1,
+                                         Continent,
+                                         Country,
+                                         `Total Cases`,
+                                         `Cases Per 100,000 People`,
+                                         `Weekly Total Case Change`,
+                                         `Average New Cases Per Day`,
+                                         `Weekly Case Change`,
+                                         `Total Deaths`,
+                                         `Average New Deaths Per Day`
+      )
+    }
+    
+    if (input$Metric == "Total Cases"){
+      Inc_Table = NationalDataTable1 %>% top_n(-5, wt = `Cases Per 100,000 People`)
+      
+      if (input$MapView == "United States"){
+        Inc_Table = dplyr::select(Inc_Table, State, `Cases Per 100,000 People`, `Total Cases`)
+      } else{
+        Inc_Table = dplyr::select(Inc_Table, Country, `Cases Per 100,000 People`, `Total Cases`)
+      }
+      
+      Inc_Table <- DT::datatable(Inc_Table,
+                                 rownames = FALSE,
+                                 options = list(order = list(1, "asc"),
+                                                dom = 't',
+                                                pageLength = 5))
+      
+    } else if(input$Metric == "Weekly Total Change"){
+      Inc_Table = NationalDataTable1 %>% top_n(-5, wt = `Weekly Total Case Change`)
+      
+      if (input$MapView == "United States"){
+        Inc_Table = dplyr::select(Inc_Table, State, `Weekly Total Case Change`, `Total Cases`)
+      } else{
+        Inc_Table = dplyr::select(Inc_Table, Country, `Weekly Total Case Change`, `Total Cases`)
+      }
+      
+      Inc_Table <- DT::datatable(Inc_Table,
+                                 rownames = FALSE, 
+                                 options = list(order = list(1, "asc"),
+                                                dom = 't',
+                                                pageLength = 5)) %>% formatPercentage(c("Weekly Total Case Change"), 1)
+      
+    }else if(input$Metric == "Weekly Change"){
+      Inc_Table = NationalDataTable1 %>% top_n(-5, wt = `Weekly Case Change`)
+      
+      if (input$MapView == "United States"){
+        Inc_Table = dplyr::select(Inc_Table, State, `Weekly Case Change`, `Total Cases`)
+      } else{
+        Inc_Table = dplyr::select(Inc_Table, Country, `Weekly Case Change`, `Total Cases`)
+      }
+      
+      Inc_Table <- DT::datatable(Inc_Table,
+                                 rownames = FALSE, 
+                                 options = list(order = list(1, "asc"),
+                                                dom = 't',
+                                                pageLength = 5)) %>% formatPercentage(c("Weekly Case Change"), 1)
+      
+    }
+    
+    
+    Inc_Table
+    
+  })
+  
+  
+  
   #Render National Data Table on summary page
-  output$NationalDataTable1<-DT::renderDataTable({
+  output$NationalDataTable1<-DT::renderDataTable(server = FALSE, {
     
     if (input$MapView == "World"){
       NationalDataTable1 = NationalDataTable
@@ -944,12 +1156,16 @@ server <- function(input, output,session) {
     
     NationalDataTable1 <- DT::datatable(NationalDataTable1,
                                         rownames = FALSE, 
+                                        extensions = 'Buttons',
                                         options = list(order = list(1, "desc"),
+                                                       dom = 'Bfrtip',
+                                                       buttons = 'excel',
                                                        pageLength = 15))
     
     NationalDataTable1 = DT::formatPercentage(NationalDataTable1, c("Weekly Total Case Change", "Weekly Case Change"), 1)
     
     NationalDataTable1
+
   })
   
   output$CountyDataTable1<-DT::renderDataTable({

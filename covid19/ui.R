@@ -327,7 +327,7 @@ ui <- tagList(
                     '))),
                   tags$script(HTML('
                                    $(document).ready(function() {
-                                   $("header").find("nav").append(\'<span class="myClass"> COVID-19 Health Assessment Dashboard v10.2  </span>\');
+                                   $("header").find("nav").append(\'<span class="myClass"> COVID-19 Health Assessment Dashboard v10.3  </span>\');
                                    })
                                    ')),
                   tabsetPanel(id = "tabselected",
@@ -388,15 +388,35 @@ ui <- tagList(
                               tabPanel(
                                 value = 2,
                                 title = "International/National Summary",
-                                widgetUserBox(
-                                  title = uiOutput("ImpactTitle"),
-                                  subtitle = uiOutput("ImpactText"),
+                                box(
                                   width = 12,
-                                  solidHeader = T,
-                                  #type = 2,
-                                  #uiOutput("ImpactText"),
-                                  htmlOutput("SummaryPlot")
+                                  
+                                  column(9,
+                                         box(title = uiOutput("ImpactTitle"),
+                                             width = NULL,
+                                             
+                                             uiOutput("ImpactText"),
+                                             htmlOutput("SummaryPlot")
+                                         )
+                                  ),
+                                  column(3, 
+                                         box(title = "Top 5 Values",
+                                             status = "danger",
+                                             solidHeader = TRUE,
+                                             width = NULL,
+                                             
+                                             DT::dataTableOutput("TabIncreasing")
+                                         ),
+                                         box(title = "Bottom 5 Values",
+                                             status = "success",
+                                             solidHeader = TRUE,
+                                             width = NULL,
+                                             
+                                             DT::dataTableOutput("TabDecreasing")
+                                         )
+                                  )
                                 ),
+
                                 #box(title = "Impact Map",subtitle="info here",solidHeader = T, align = "center", htmlOutput("SummaryPlot"),height=700,width=1200),
                                 DT::dataTableOutput("NationalDataTable1")
                                 # box(title = "National Statistics", solidHeader=T, align = "left", column(width = 12, DT::dataTableOutput("NationalDataTable1"), style = "height:400px;overflow-y: scroll;overflow-x:scroll"),width = 13, height = 500)

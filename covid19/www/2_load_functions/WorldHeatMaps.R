@@ -21,7 +21,7 @@ WorldHeatMaps <- function (MapView, MapScale, Metric){
     MapFilter = "United States" 
   }else {
     MapChoice = WORLDlist
-    MapFilter = "World"      
+    MapFilter = "World" 
   }
   
   
