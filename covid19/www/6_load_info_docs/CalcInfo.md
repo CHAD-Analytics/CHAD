@@ -21,6 +21,12 @@ the assumptions made regarding the data. See Projections for information on proj
 
 1.  **Average New Cases/Deaths Per Day**: This metric is calculated using a 7 day-average of daily cases/deaths.
 
+2.  **Weekly Total Case Change**: This metric is calculated using the total cases in the last 7 days and dividing it by the overall total cases up to the last 7 days. It shows the weekly change in cases when compared to the total for that area. This can help put the case numbers in persepctive to identify if regions are experiencing an initial surge.
+
+3.  **Weekly Case Change**: This metric is a ratio of cases in the past 7 days to cases in the week before that. This is helpful in identifying where outbreaks may be speeding up or slowing down, when used in conjunction with other metrics.
+
+*Note: For all metrics in the top 5/bottom 5 tables, countries with a population less than 100,000 are excluded.*
+
 ### Local Health Statistics
 
 1.  **Confirmed Cases**: Confirmed COVID-19 cases and deaths are
