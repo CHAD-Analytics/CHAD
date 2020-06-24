@@ -43,6 +43,42 @@ Each day, CAA uses all available historical data to estimate historical R0 value
 distribution at the core based statistical area (CBSA) level.8 Using this Weibull function, CAA forecasts R0 values. The R0 values are then grouped into three categories: 1) CBSAs with few cases; 2) CBSAs with high population densities; and 3) CBSAs with low population densities. The R0 values for the high and low population densities are regressed against factors such as transformations on the population density, day of infection timeline, and date of stay at home order to create a parametric R0 function. The parametric R0 function then forecasts R0 values which informs β, a factor in the functions determining population bin size. Using the number of reported cases, calculated estimates for the exposed population, and the model functions, CAA forecasts the susceptible, exposed, infectious, and removed populations and compares them against general hospital bed and intensive care unit (ICU) bed capacities to produce COVID-19 response metrics at the county and core based statistical area level.
 
 
+### Leavitt Partners Insight COVID-19 Burden Index (Torch Insight)
+
+The Torch Insight COVID-19 Burden Index Projections analyzes hospital and ICU burden and
+estimates the total hospital bed and ICU capacity in counties and hospitals given current and projected
+COVID-19 case levels. We extend projections up to 180 days from the most recent COVID-19 reported
+case numbers. The Burden Index Projections estimate if the hospital or county has exceeded its normal
+capacity. To adjust for current conditions in specific regions, the Burden Projections:
+• Factor in county-specific infection rates: Our projections are based on growth curves of what is
+actually happening on the ground and update daily. Thus, when states implement social
+distancing, shelter-in-place, or other measures, our projections take these into account by
+updating accordingly as new case count data comes in. The models reflect what is observed to
+be happening, not what is hoped or assumed will happen.
+• Adjusts for Hospital Service Area: Not all counties have hospitals, and sometimes patients cross
+county lines to go to different hospitals. We base our projections for counties and individual
+hospitals on hospital service areas (HSAs), which are local healthcare markets for hospital care,
+rather than simply on where the hospital is located. This means we have scores even for
+counties that have no hospitals in their borders, and that we account for hospital patients from
+outside the hospital's county.
+• Adjusts for Hospital Baseline Capacity: Some hospitals were already near capacity before the
+COVID crisis. We base our projections of capacity on hospital- and ICU-bed utilization rates
+derived from the 2018 CMS Hospital Cost Reports.
+• Eliminates Hospital Elective Procedures: Many hospitals can make additional beds available for
+COVID-related illness by postponing elective admissions. Based on a sample of all-payer claims
+and 100% of Medicare hospitalizations we estimate the percent of admissions in each hospital
+that are elective, allowing us to account for increased capacity over the baseline utilization.
+
+**Data:**
+https://covid19.torchinsight.com/
+
+**Methodology:**
+https://covid19.torchinsight.com/method.html
+
+**Non-Technical Summary:**
+https://www.fiercehealthcare.com/hospitals-health-systems/industry-voices-new-covid-19-model-can-support-those-front-lines-aid 
+
+
 ### CHIME
 
 The COVID-19 Hospital Impact Model for Epidemics (CHIME) app was created by the Predictive Healthcare team at Penn Medicine, University of Pennsylvania. CHIME provides estimates of daily and cumulative cases, hospitalizations, ICU admissions, and patients requiring ventilators. It uses an adapation of the Susceptible-Infected-Recovered (SIR) model to generate estimates based on user inputs. There are many inputs to CHIME relative to the location of interest. In CHAD, majority of these are pre-filled in and are specfic to the location chosen and COVID-19 case data. Furthermore, the model in CHAD is an adaptation of CHIME that includes Exposed and Asympotmatic in addition to Susceptible, Infected, and Asympotmatic. This adaption came from the Army’s ACME Tool, developed through collaborative efforts from Army Futures Command and the Army Public Health Center(APHC) COVID-19 Modeling Team.
