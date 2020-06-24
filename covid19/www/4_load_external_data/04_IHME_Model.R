@@ -9,8 +9,26 @@
 
 #States/regions are not tied to country names, need to merge with county info
 #IHME_Model <- vroom::vroom("C:/Users/taylo/Documents/CHADNew/covid19/www/4_load_external_data/data_files/Hospitalization_all_locs.csv")
-IHME_Model<-vroom::vroom("www/4_load_external_data/data_files/Hospitalization_all_locs.csv")
+#IHME_Model<-vroom::vroom("www/4_load_external_data/data_files/Hospitalization_all_locs.csv")#Store URL for most recent IHME Zip File
+url <-"https://ihmecovid19storage.blob.core.windows.net/latest/ihme-covid19.zip"
 
+#Create 2 temp files
+temp <- tempfile()
+temp2 <- tempfile()
+
+#Download the zip file and unzip
+download.file(url, temp)
+unzip(zipfile = temp, exdir = temp2)
+
+#Defnie path up to the latest date
+IHME_Path <- list.files(path = temp2, full.names = TRUE)
+#Ammend path with desired file name
+#Using Projected data here but could also use "Summary_stats_all_locs.csv" if you wanted that info
+IHME_Path <- paste(IHME_Path, "/Hospitalization_all_locs.csv", sep = "")
+#Stores the data
+IHME_Model <- read.csv(IHME_Path)
+#Unlinks the temp files
+unlink(c(temp, temp2))
 
 IHME_Model$date <- as.Date(IHME_Model$date,format = "%Y-%m-%d")
 

@@ -22,7 +22,23 @@ if(test_date < Sys.Date()) {
   #                       filename = "www/4_load_external_data/data_files/data.csv",
   #                       skip = F,
   #                       overwrite = T)
+
   GlobalData = as.data.frame(data.table::fread("https://open-covid-19.github.io/data/data.csv"))
+  GlobalData1 = as.data.frame(data.table::fread("https://open-covid-19.github.io/data/v2/epidemiology.csv"))
+  GlobalData2 = as.data.frame(data.table::fread("https://open-covid-19.github.io/data/v2/hospitalizations.csv")) 
+  
+  GlobalActive = GlobalData %>% full_join(GlobalData1,by=c("Key" = "key","Date"="date"))
+  GlobalActive = GlobalActive %>% full_join(GlobalData2,by=c("Key" = "key","Date"="date"))  
+  
+  GlobalActive = inner_join(GlobalActive,CountyInfo, by = "Key")
+  #colset<-c(Latitude.x,Longitude.x,Population.x,Latitude.y,Longitude.y,Population.y,Sort,'County Seat',DistanceMiles)
+  #colset <- c(9,10,11,29,33,34,35,36,37)
+  colset <- c(1,2,3,4,5,6,7,8,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,30,31,32,38,39)
+  GlobalActive<-GlobalActive[, names(GlobalActive)[colset]] 
+
+ 
+  
+  #GlobalActive = GlobalActive %>% full_join(GlobalData2,by=c("Key" = "key","Date"="date"))  
   
   # shaman.lab.json = jsonlite::fromJSON("https://api.github.com/repos/shaman-lab/COVID-19Projection/contents?per_page=100")
   # shaman.lab.path = get.shaman.lab.path()
@@ -63,7 +79,7 @@ if(test_date < Sys.Date()) {
   End1<-'_confirmed_quantiles_us_website.csv'
   Middle2<-'/deaths/'
   End2<-'_deaths_quantiles_us_website.csv'  
-  Date<-bsv_metadata$us$most_recent_date
+  Date<- "2020-06-17" #bsv_metadata$us$most_recent_date
   ReadIn<-paste0(Front,Date,Middle1,Date,End1)
   LANL_file_name1 = paste0("www/4_load_external_data/data_files/",Date,End1)
   R.utils::downloadFile(ReadIn,
@@ -80,7 +96,7 @@ if(test_date < Sys.Date()) {
   End1<-'_confirmed_quantiles_global_website.csv'
   Middle2<-'/deaths/'
   End2<-'_deaths_quantiles_global_website.csv'  
-  Date<-bsv_metadata$us$most_recent_date
+  Date<- "2020-06-17" #bsv_metadata$us$most_recent_date
   ReadIn<-paste0(Front,Date,Middle1,Date,End1)
   LANL_file_name3 = paste0("www/4_load_external_data/data_files/",Date,End1)
   R.utils::downloadFile(ReadIn,
@@ -97,7 +113,7 @@ if(test_date < Sys.Date()) {
   bsv_metadata<-jsonlite::fromJSON("www/4_load_external_data/data_files/forecast_metadata.json")
   End1<-'_confirmed_quantiles_us_website.csv'
   End2<-'_deaths_quantiles_us_website.csv'    
-  Date<-bsv_metadata$us$most_recent_date
+  Date<- "2020-06-17" #bsv_metadata$us$most_recent_date
   LANL_file_name1 = paste0("www/4_load_external_data/data_files/",Date,End1)
   LANL_file_name2 = paste0("www/4_load_external_data/data_files/",Date,End2)  
   End1<-'_confirmed_quantiles_global_website.csv'

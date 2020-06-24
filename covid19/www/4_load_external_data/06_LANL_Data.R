@@ -116,17 +116,21 @@ LANLD_Data <- merge(LANLD_Data,
                    by.x = names(LANLD_Data)[6], 
                    by.y = names(StateList)[1])
 
-# LANLGC_Data <- merge(LANLGC_Data, 
-#                     StateList, # defined in 1_StateInfo.R
-#                     by.x = names(LANLGC_Data)[6], 
-#                     by.y = names(StateList)[1])
-# 
-# LANLGD_Data <- merge(LANLGD_Data, 
-#                     StateList, # defined in 1_StateInfo.R
-#                     by.x = names(LANLGD_Data)[6], 
-#                     by.y = names(StateList)[1])
+LANLGC_Data <- merge(LANLGC_Data,
+                    StateList, # defined in 1_StateInfo.R
+                    by.x = names(LANLGC_Data)[6],
+                    by.y = names(StateList)[1])
+
+LANLGD_Data <- merge(LANLGD_Data,
+                    StateList, # defined in 1_StateInfo.R
+                    by.x = names(LANLGD_Data)[6],
+                    by.y = names(StateList)[1])
 
 
 names(LANLC_Data)[names(LANLC_Data)=="state.abb"] <- "State"
 
 names(LANLD_Data)[names(LANLD_Data)=="state.abb"] <- "State"
+
+names(LANLC_Data)[names(LANLGC_Data)=="state.abb"] <- "State"
+
+names(LANLD_Data)[names(LANLGD_Data)=="state.abb"] <- "State"
