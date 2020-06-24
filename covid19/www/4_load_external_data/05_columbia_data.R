@@ -37,15 +37,16 @@ CUM2$fips<-as.numeric(CUM2$fips)
 CUM3$fips<-as.numeric(CUM3$fips)
 CUM4$fips<-as.numeric(CUM4$fips)
 
-CUM1 <- merge(CUM1,StateList,by.x = names(CUM1)[3],by.y = names(StateList)[1])
-CUM2 <- merge(CUM2,StateList,by.x = names(CUM2)[3],by.y = names(StateList)[1])
-CUM3 <- merge(CUM3,StateList,by.x = names(CUM3)[3],by.y = names(StateList)[1])
-CUM4 <- merge(CUM4,StateList,by.x = names(CUM4)[3],by.y = names(StateList)[1])
+CUM1 <- merge(CUM1,CountyInfo,by.x = names(CUM1)[2],by.y = names(CountyInfo)[3])
+CUM2 <- merge(CUM2,CountyInfo,by.x = names(CUM2)[2],by.y = names(CountyInfo)[3])
+CUM3 <- merge(CUM3,CountyInfo,by.x = names(CUM3)[2],by.y = names(CountyInfo)[3])
+CUM4 <- merge(CUM4,CountyInfo,by.x = names(CUM4)[2],by.y = names(CountyInfo)[3])
 
-names(CUM1)[names(CUM1)=="state.abb"] <- "State"
-names(CUM2)[names(CUM2)=="state.abb"] <- "State"
-names(CUM3)[names(CUM3)=="state.abb"] <- "State"
-names(CUM4)[names(CUM4)=="state.abb"] <- "State"
+colset<-c(1,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,25,26)
+CUM1<-CUM1[, names(CUM1)[colset]]
+CUM2<-CUM2[, names(CUM2)[colset]]
+CUM3<-CUM3[, names(CUM3)[colset]]
+CUM4<-CUM4[, names(CUM4)[colset]]
 
 #CU20_1x10PSD<-subset(CU20_1x10PSD, select = -c(report_2.5,report_97.5,total_2.5,total_25,total_50,total_75,total_97.5))
 #CU20_1x5PSD<-subset(CU20_1x5PSD, select = -c(report_2.5,report_97.5,total_2.5,total_25,total_50,total_75,total_97.5))

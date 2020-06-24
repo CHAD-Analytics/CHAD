@@ -24,6 +24,7 @@ R_code_files <- list.files("www/2_load_functions",
 purrr::map(R_code_files, source)
 
 
+
 # Step 3: load local data sets that do not change daily
 local_data_files <- list.files("www/3_load_local_data", 
                                pattern = "\\.rda$",

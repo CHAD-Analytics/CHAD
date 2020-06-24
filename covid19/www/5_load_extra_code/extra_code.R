@@ -958,5 +958,6 @@ WORLDlist = list(region="world",
 
 
 # Load Torch Data-----------------------------
-
-torchData = read_csv("www/4_load_external_data/data_files/TorchData.csv")
+#load(file = "Torch_Model.rda")
+#Torch_Model = read_csv("C:/Users/taylo/Documents/CHADNew2/covid19/www/4_load_external_data/data_files/Torch_Model.csv")
+Torch_Model = read_csv("www/4_load_external_data/data_files/Torch_Model.csv")
