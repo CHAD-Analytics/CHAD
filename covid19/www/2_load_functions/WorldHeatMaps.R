@@ -1,5 +1,5 @@
 WorldHeatMaps <- function (MapView, MapScale, Metric){
-
+  
   # Establish which map to be used
   if (MapView == "Europe"){
     MapChoice = EUROlist
@@ -57,7 +57,7 @@ WorldHeatMaps <- function (MapView, MapScale, Metric){
                          DF$`Cases Per 100,000 People`,
                          " || Population: ",
                          as.character(format(DF$Population,big.mark=","))
-                         )
+    )
   }
   
   names(DF)[8] = paste("Weekly Total Case Change Percent")
@@ -80,5 +80,5 @@ WorldHeatMaps <- function (MapView, MapScale, Metric){
                      options = MapChoice)
   }
   
-
+  
 }
