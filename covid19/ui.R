@@ -232,6 +232,8 @@ ui <- tagList(
                                                               
                                                               radioButtons("StatisticType", "Choose projected statistic:",
                                                                            c("Hospitalizations"="Hospitalizations",
+                                                                             "ICU Patients"="ICUPatients",
+                                                                             "Ventilator Patients"="VentPatients",
                                                                              "Fatalities"="Fatalities")),
                                                               
                                                               sliderInput("proj_days",
@@ -246,6 +248,7 @@ ui <- tagList(
                                                                   checkboxGroupInput("ModelSelectionValue1","Forecasting Model(s): ",
                                                                                      c("IHME (U. of Washinton)"="IHME",
                                                                                        "Center for Army Analysis"="CAA",
+                                                                                       "Torch Insight"="Torch",
                                                                                        "Youyang Gu (YYG) Model"="YYG",
                                                                                        "CHIME: SC"="CHIME7",
                                                                                        "University of Texas"="UT",
@@ -437,9 +440,6 @@ ui <- tagList(
                                   )
                                 
                               ),
-
-                              
-                              
                               
                               
                               # International/National Map Summary Page
@@ -498,17 +498,21 @@ ui <- tagList(
                                 title = "Current Local Health",
                                 
                                 fluidRow(
-                                  valueBoxOutput("CovidCases", width = 3),
-                                  valueBoxOutput("CaseChangeLocal", width = 3),
-                                  valueBoxOutput("CasesPer1000", width = 3),
-                                  valueBoxOutput("HospitalUtilization", width = 3)
+                                  valueBoxOutput("CovidCases", width = 2),
+                                  valueBoxOutput("CaseChangeLocal", width = 2),
+                                  valueBoxOutput("CasesPer1000", width = 2),
+                                  valueBoxOutput("HospitalUtilization", width = 2),
+                                  valueBoxOutput("Est_Active", width = 2),
+                                  valueBoxOutput("Est_Testing", width = 2)                                  
                                 ),
                                 
                                 fluidRow(
-                                  valueBoxOutput("LocalCovidDeaths", width = 3),
-                                  valueBoxOutput("DeathChangeLocal", width = 3),
-                                  valueBoxOutput("CaseDbRate", width = 3),
-                                  valueBoxOutput("Rt_Estimate", width = 3)
+                                  valueBoxOutput("LocalCovidDeaths", width = 2),
+                                  valueBoxOutput("DeathChangeLocal", width = 2),
+                                  valueBoxOutput("CaseDbRate", width = 2),
+                                  valueBoxOutput("Rt_Estimate", width = 2),
+                                  valueBoxOutput("Est_Recover", width = 2),
+                                  valueBoxOutput("Est_TestRate", width = 2)                                                                    
                                 ),
                                 
                                 fluidRow( 
@@ -555,7 +559,7 @@ ui <- tagList(
 
                                 box(uiOutput("HospLine"),
                                     textOutput("line"),
-                                    plotlyOutput("OverlayPlots"),height=800, width=1500)
+                                    plotlyOutput("OverlayPlots"),height=600, width=1500)                             
                               )
 
                               

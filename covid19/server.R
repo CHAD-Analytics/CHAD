@@ -120,7 +120,7 @@ server <- function(input, output,session) {
     valueBox(subtitle = "Total Confirmed Cases per 1,000",
              comma(CalculateCovid1000(MyCounties())),
              #icon = icon("list-ol"),
-             color = "teal"
+             color = "blue"
     )
     
   })
@@ -163,10 +163,10 @@ server <- function(input, output,session) {
   #Finds hospital information within a given 100 mile radius. Calculates number of total hospital beds. Can compare to number of cases
   output$HospitalUtilization <- renderValueBox({
     #MyCounties<-GetCounties(input$Base,input$Radius)
-    valueBox(subtitle = "Estimated Local Hospital Bed Utilization",
+    valueBox(subtitle = "Est Local Hospital Bed Utilization",
              HospitalIncreases(MyCounties()),
              #icon = icon("hospital"),
-             color = "navy")
+             color = "blue")
   })
   
   
@@ -174,17 +174,45 @@ server <- function(input, output,session) {
     #MyCounties<-GetCounties(input$Base,input$Radius)
     valueBox(paste(CaseDblRate(MyCounties()),"days"),
              subtitle = "Case Doubling Rate",
-             color = "teal")
+             color = "blue")
   })
   
   
   output$Rt_Estimate <- renderValueBox({
     #MyCounties<-GetCounties(input$Base,input$Radius)
     valueBox(paste(Estimate_Rt(MyCounties())),
-             subtitle = "Estimated Virus Reproduction Rate",
+             subtitle = "Est Virus Reproduction Rate",
+             color = "blue")
+  })
+  
+  
+  output$Est_Active <- renderValueBox({
+    #MyCounties<-GetCounties(input$Base,input$Radius)
+    valueBox(paste(Estimate_ActiveCases(input$CONUSP,input$Base,MyCounties())),
+             subtitle = "Est Active Cases",
              color = "navy")
   })
   
+  output$Est_Recover <- renderValueBox({
+    #MyCounties<-GetCounties(input$Base,input$Radius)
+    valueBox(paste(Estimate_Recovered(input$CONUSP,input$Base,MyCounties())),
+             subtitle = "Est Recovered Cases",
+             color = "navy")
+  })  
+  
+  output$Est_Testing <- renderValueBox({
+    #MyCounties<-GetCounties(input$Base,input$Radius)
+    valueBox(paste(Estimate_Testing(input$CONUSP,input$Base,MyCounties())),
+             subtitle = "Estimated Total Tests",
+             color = "navy")
+  })
+  
+  output$Est_TestRate <- renderValueBox({
+    #MyCounties<-GetCounties(input$Base,input$Radius)
+    valueBox(paste(Estimate_TestRate(input$CONUSP,input$Base,MyCounties())),
+             subtitle = "Est Testing Rate",
+             color = "navy")
+  })
   
   ###################################################################################################
   
@@ -668,6 +696,10 @@ server <- function(input, output,session) {
       checkboxGroupInput("RedLine","Hospital Capacity Line ",
                          c("Show Line"="ShowLine"),
                          selected = c("ShowLine"))
+    } else if (input$CONUSP == "CONUS" & input$StatisticType == "ICUPatients"){
+      checkboxGroupInput("RedLine","ICU Patient Capacity Line ",
+                         c("Show Line"="ShowLine"),
+                         selected = c("ShowLine"))
     }
     
   })  
@@ -694,6 +726,7 @@ server <- function(input, output,session) {
     {
       updateCheckboxGroupInput(session,"ModelSelectionValue1","Forecasting Model(s): ",choices=c("IHME (University of Washington)"="IHME",
                                                                                                  "Center for Army Analysis"="CAA",
+                                                                                                 "Torch Insight"="Torch",
                                                                                                  "Youyang Gu - Independent (YYG) Model"="YYG",
                                                                                                  "CHIME: SC"="CHIME7",
                                                                                                  "University of Texas"="UT",
@@ -703,6 +736,7 @@ server <- function(input, output,session) {
     {
       updateCheckboxGroupInput(session,"ModelSelectionValue1","Forecasting Model(s):",choices=c("IHME (University of Washington)"="IHME",
                                                                                                 "Center for Army Analysis"="CAA",
+                                                                                                "Torch Insight"="Torch",                                                                                                
                                                                                                 "Youyang Gu - Independent (YYG) Model"="YYG",
                                                                                                 "CHIME: SC"="CHIME7",
                                                                                                 "University of Texas"="UT",
@@ -710,6 +744,7 @@ server <- function(input, output,session) {
                                
                                selected=c("IHME (University of Washington)"="IHME",
                                           "Center for Army Analysis"="CAA",
+                                          "Torch Insight"="Torch",                                          
                                           "Youyang Gu - Independent (YYG) Model"="YYG",
                                           "CHIME: SC"="CHIME7",
                                           "University of Texas"="UT",
@@ -831,7 +866,8 @@ server <- function(input, output,session) {
           #if ("HUtil" %in% input$Utilization){HospUtil<="Yes"}
           ModelID <- "Past Data"
           if ("IHME" %in% input$ModelSelectionValue1){ModelID<-cbind(ModelID,"IHME")}
-          if ("CAA" %in% input$ModelSelectionValue1){ModelID<-cbind(ModelID,"CAA")}      
+          if ("CAA" %in% input$ModelSelectionValue1){ModelID<-cbind(ModelID,"CAA")}
+          if ("Torch" %in% input$ModelSelectionValue1){ModelID<-cbind(ModelID,"Torch")}          
           if ("YYG" %in% input$ModelSelectionValue1){ModelID<-cbind(ModelID,"YYG")}
           if ("DTRA1" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"DTRA1")}
           if ("DTRA2" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"DTRA2")}
@@ -887,7 +923,13 @@ server <- function(input, output,session) {
     
   })
   
-  
+
+  # #Overlay Projected Plots
+  # output$OverlayPlots2<-renderPlotly({
+  #     MyHospitals<-GetHospitals(input$Base,input$Radius)
+  #     PlotOverlay2(input$Base,MyCounties(),MyHospitals,input$proj_days,input$CONUSP)    
+  # })  
+    
   
   output$helptext <- renderText({"I can trigger a shinyBS::bsModal() from here, but I want to place two buttons behind `Option_1` and     `Option_2`" })
   
