@@ -730,7 +730,7 @@ server <- function(input, output,session) {
                                                                                                  "Youyang Gu - Independent (YYG) Model"="YYG",
                                                                                                  "CHIME: SC"="CHIME7",
                                                                                                  "University of Texas"="UT",
-                                                                                                 "Columbia University: 20% SC Reduction with weekly 10% increase in contact"="CU20SCw10"))
+                                                                                                 "Columbia University: 20% SC Reduction with weekly 10% increase in contact"="CUM1"))
     }
     else
     {
@@ -740,7 +740,7 @@ server <- function(input, output,session) {
                                                                                                 "Youyang Gu - Independent (YYG) Model"="YYG",
                                                                                                 "CHIME: SC"="CHIME7",
                                                                                                 "University of Texas"="UT",
-                                                                                                "Columbia University: 20% SC Reduction with weekly 10% increase in contact"="CU20SCw10"),                                                                                               
+                                                                                                "Columbia University: 20% SC Reduction with weekly 10% increase in contact"="CUM1"),                                                                                               
                                
                                selected=c("IHME (University of Washington)"="IHME",
                                           "Center for Army Analysis"="CAA",
@@ -748,7 +748,7 @@ server <- function(input, output,session) {
                                           "Youyang Gu - Independent (YYG) Model"="YYG",
                                           "CHIME: SC"="CHIME7",
                                           "University of Texas"="UT",
-                                          "Columbia University: 20% SC Reduction with weekly 10% increase in contact"="CU20SCw10"))                                                                                    
+                                          "Columbia University: 20% SC Reduction with weekly 10% increase in contact"="CUM1"))                                                                                    
     }
   })
   
@@ -767,9 +767,9 @@ server <- function(input, output,session) {
                                                                                                 "CHIME: SC+NE"="CHIME5",
                                                                                                 "CHIME: NE"="CHIME6",
                                                                                                 "Los Alamos National Labs (LANL)"="LANL",
-                                                                                                "Columbia University: 20% SC Reduction with one time 10% increase in contact "="CU20SCx10",
-                                                                                                "Columbia University: 20% SC Reduction with one time 5% increase in contact"="CU20SCx5",
-                                                                                                "Columbia University: 20% SC Reduction with weekly 5% increase in contact"="CU20SCw5"))                                                                                                                                                                                                
+                                                                                                "Columbia University: 20% SC Reduction with one time 10% increase in contact "="CUM2",
+                                                                                                "Columbia University: 20% SC Reduction with one time 5% increase in contact"="CUM3",
+                                                                                                "Columbia University: 20% SC Reduction with weekly 5% increase in contact"="CUM4"))                                                                                                                                                                                                
     }
     else
     {
@@ -783,9 +783,9 @@ server <- function(input, output,session) {
                                                                                                "CHIME: SC+NE"="CHIME5",
                                                                                                "CHIME: NE"="CHIME6",
                                                                                                "Los Alamos National Labs (LANL)"="LANL",
-                                                                                               "Columbia University: 20% SC Reduction with one time 10% increase in contact "="CU20SCx10",
-                                                                                               "Columbia University: 20% SC Reduction with one time 5% increase in contact"="CU20SCx5",
-                                                                                               "Columbia University: 20% SC Reduction with weekly 5% increase in contact"="CU20SCw5"),                                                                                               
+                                                                                               "Columbia University: 20% SC Reduction with one time 10% increase in contact "="CUM2",
+                                                                                               "Columbia University: 20% SC Reduction with one time 5% increase in contact"="CUM3",
+                                                                                               "Columbia University: 20% SC Reduction with weekly 5% increase in contact"="CUM4"),                                                                                               
                                
                                selected=c("DTRA 1 - Current Response"="DTRA1",
                                           "DTRA 2 - Improved Response"="DTRA2", 
@@ -797,9 +797,9 @@ server <- function(input, output,session) {
                                           "CHIME: SC+NE"="CHIME5",
                                           "CHIME: NE"="CHIME6",
                                           "Los Alamos National Labs (LANL)"="LANL",
-                                          "Columbia University: 20% SC Reduction with one time 10% increase in contact "="CU20SCx10",
-                                          "Columbia University: 20% SC Reduction with one time 5% increase in contact"="CU20SCx5",
-                                          "Columbia University: 20% SC Reduction with weekly 5% increase in contact"="CU20SCw5"))                                                                                    
+                                          "Columbia University: 20% SC Reduction with one time 10% increase in contact "="CUM2",
+                                          "Columbia University: 20% SC Reduction with one time 5% increase in contact"="CUM3",
+                                          "Columbia University: 20% SC Reduction with weekly 5% increase in contact"="CUM4"))                                                                                    
     }
   })  
   
@@ -881,10 +881,10 @@ server <- function(input, output,session) {
           if ("CHIME3" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CHIME_19%_SD")}
           if ("CHIME2" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CHIME_23%_SD")}
           if ("CHIME1" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CHIME_27%_SD")}
-          if ("CU20SCx10" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CU20SCx10")}
-          if ("CU20SCx5" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CU20SCx5")}
-          if ("CU20SCw10" %in% input$ModelSelectionValue1){ModelID<-cbind(ModelID,"CU20SCw10")}
-          if ("CU20SCw5" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CU20SCw5")}
+          if ("CUM1" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CUM1")}
+          if ("CUM2" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CUM2")}
+          if ("CUM3" %in% input$ModelSelectionValue1){ModelID<-cbind(ModelID,"CUM3")}
+          if ("CUM4" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CUM4")}
       } else if (input$CONUSP == "OCONUS"){
           ModelID <- "Past Data"
           if ("IHME" %in% input$ModelSelectionValue1){ModelID<-cbind(ModelID,"IHME")}

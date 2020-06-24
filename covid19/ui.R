@@ -252,7 +252,7 @@ ui <- tagList(
                                                                                        "Youyang Gu (YYG) Model"="YYG",
                                                                                        "CHIME: SC"="CHIME7",
                                                                                        "University of Texas"="UT",
-                                                                                       "Columbia University: 20% SC Reduction with weekly 10% increase in contact"="CU20SCw10"),                                                                
+                                                                                       "Columbia University: 20% SC Reduction with weekly 10% increase in contact"="CUM1"),                                                                
                                                                                      selected = c("IHME","CAA")),
                                                                   
                                                                   actionLink("selectall1","Select All"),
@@ -264,6 +264,9 @@ ui <- tagList(
                                                                   conditionalPanel(condition = "input.AdditionalModels== 'ShowAll'",  
                                                                                    checkboxGroupInput("ModelSelectionValue2","Forecasting Model(s): ",
                                                                                                       c("Los Alamos National Labs (LANL)"="LANL",
+                                                                                                        "Columbia University: 20% SC Reduction with one time 10% increase in contact "="CUM2",
+                                                                                                        "Columbia University: 20% SC Reduction with one time 5% increase in contact"="CUM3",
+                                                                                                        "Columbia University: 20% SC Reduction with weekly 10% increase in contact"="CUM4",                                                                
                                                                                                         "DTRA 1 - Current Response"="DTRA1",
                                                                                                         "DTRA 2 - Improved Response"="DTRA2", 
                                                                                                         "DTRA 3 - Worst Case"="DTRA3",                                                                                                       
@@ -272,11 +275,7 @@ ui <- tagList(
                                                                                                         "CHIME: SC+SD"="CHIME3",                                                                
                                                                                                         "CHIME: SD"="CHIME4", 
                                                                                                         "CHIME: SC+NE"="CHIME5",
-                                                                                                        "CHIME: NE"="CHIME6",
-                                                                                                        "Columbia University: 20% SC Reduction with one time 10% increase in contact "="CU20SCx10",
-                                                                                                        "Columbia University: 20% SC Reduction with one time 5% increase in contact"="CU20SCx5",
-                                                                                                        "Columbia University: 20% SC Reduction with weekly 10% increase in contact"="CU20SCw10",                                                                
-                                                                                                        "Columbia University: 20% SC Reduction with weekly 5% increase in contact"="CU20SCw5"),
+                                                                                                        "CHIME: NE"="CHIME6"),
                                                                                                       selected = c("")),
                                                                                    
                                                                                    actionLink("selectall2","Select All"))
