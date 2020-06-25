@@ -21,6 +21,7 @@
 #Establishes the layout of the overall dashboard and how items are displayed
 ui <- tagList(
   #Warning Banner
+  tags$head(includeHTML(("gglTracker.html"))),
   HTML('<body text = white bgcolor = blue> <center> <font size = 3 color = black> *** Pre-Decisional // Projections Are Estimates and Pulled From Public Sources *** </p> </center></body>'),
   dashboardPage(skin = "black",title="COVID-19 Health Assessment Dashboard",
                 
