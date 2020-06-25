@@ -166,7 +166,7 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
         OverlayData<-rbind(OverlayData,YYG_Data)        
     }
     
-    if (nrow(LANL_State) !=0 ) {
+    if (nrow(LANL_State) !=0 & max(as.Date(LANL_State$dates)) > Sys.Date()) {
         # Apply ratio's to LANL Data
         # Multiple cases by 5.5% to estimate number of hospitalizations
         LANL_Region <- LANL_State
@@ -573,7 +573,7 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
       OverlayData<-rbind(OverlayData,YYG_Data)        
     }
     
-    if (nrow(LANL_State) !=0 ) {
+    if (nrow(LANL_State) !=0 & max(as.Date(LANL_State$dates)) > Sys.Date()) {
       # Apply ratio's to LANL Data
       # Multiple cases by 5.5% to estimate number of ICU Patients
       LANL_Region <- LANL_State
@@ -923,7 +923,7 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
       OverlayData<-rbind(OverlayData,YYG_Data)        
     }
     
-    if (nrow(LANL_State) !=0 ) {
+    if (nrow(LANL_State) !=0 & max(as.Date(LANL_State$dates)) > Sys.Date()) {
       # Apply ratio's to LANL Data
       # Multiple cases by 5.5% to estimate number of ICU Patients
       LANL_Region <- LANL_State
@@ -1262,7 +1262,7 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
       OverlayData<-rbind(OverlayData,YYG_Data)        
     }
     
-    if (nrow(LANL_State) !=0 ) {
+    if (nrow(LANL_State) !=0 & max(as.Date(LANL_State$dates)) > Sys.Date()) {
       LANL_Region <- LANL_State
       LANL_Region$q.25 = round(LANL_Region$q.25*PopRatio)
       LANL_Region$q.50 = round(LANL_Region$q.50*PopRatio)
