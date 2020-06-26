@@ -489,7 +489,9 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
     
     if (RedLine == "ShowLine"){
       projections = projections + geom_hline(aes(yintercept = bcap,linetype = "Estimated COVID Patient Bed Capacity - AHA"),colour = "red")
-      projections = projections + geom_hline(aes(yintercept = Torch_HospAvail,linetype = "Est COVID Patient Bed Capacity - Torch Insight"),colour = "blue")
+      if (CONUSSelect == "CONUS"){
+        projections = projections + geom_hline(aes(yintercept = Torch_HospAvail,linetype = "Est COVID Patient Bed Capacity - Torch Insight"),colour = "blue")
+      }
     }
     
     # projections <- projections +
@@ -849,8 +851,10 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
       scale_x_date(date_breaks = "1 week")+
       labs(color = "ID")
     
-    if (RedLine == "ShowLine"){
-      projections = projections + geom_hline(aes(yintercept = Torch_ICUAvail,linetype = "Estimated COVID ICU Patient Bed Capacity"),colour = "blue")
+    if (CONUSSelect == "CONUS"){
+      if (RedLine == "ShowLine"){
+          projections = projections + geom_hline(aes(yintercept = Torch_ICUAvail,linetype = "Estimated COVID ICU Patient Bed Capacity"),colour = "blue")
+      }
     }
 
     projections <- ggplotly(projections)
