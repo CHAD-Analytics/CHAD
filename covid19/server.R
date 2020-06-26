@@ -728,9 +728,9 @@ server <- function(input, output,session) {
                                                                                                  "Center for Army Analysis"="CAA",
                                                                                                  "Torch Insight"="Torch",
                                                                                                  "Youyang Gu - Independent (YYG) Model"="YYG",
-                                                                                                 "CHIME: SC"="CHIME7",
                                                                                                  "University of Texas"="UT",
-                                                                                                 "Columbia University: 20% SC Reduction with weekly 10% increase in contact"="CUM1"))
+                                                                                                 "Columbia University: Current contact rates remain unchanged"="CUM1"))
+  
     }
     else
     {
@@ -738,17 +738,15 @@ server <- function(input, output,session) {
                                                                                                 "Center for Army Analysis"="CAA",
                                                                                                 "Torch Insight"="Torch",                                                                                                
                                                                                                 "Youyang Gu - Independent (YYG) Model"="YYG",
-                                                                                                "CHIME: SC"="CHIME7",
                                                                                                 "University of Texas"="UT",
-                                                                                                "Columbia University: 20% SC Reduction with weekly 10% increase in contact"="CUM1"),                                                                                               
+                                                                                                "Columbia University: Current contact rates remain unchanged"="CUM1"),                                                                                               
                                
                                selected=c("IHME (University of Washington)"="IHME",
                                           "Center for Army Analysis"="CAA",
                                           "Torch Insight"="Torch",                                          
                                           "Youyang Gu - Independent (YYG) Model"="YYG",
-                                          "CHIME: SC"="CHIME7",
                                           "University of Texas"="UT",
-                                          "Columbia University: 20% SC Reduction with weekly 10% increase in contact"="CUM1"))                                                                                    
+                                          "Columbia University: Current contact rates remain unchanged"="CUM1"))                                                                                    
     }
   })
   
@@ -760,46 +758,28 @@ server <- function(input, output,session) {
       updateCheckboxGroupInput(session,"ModelSelectionValue2","Forecasting Model(s): ",choices=c("DTRA 1 - Current Response"="DTRA1",
                                                                                                  "DTRA 2 - Improved Response"="DTRA2", 
                                                                                                  "DTRA 3 - Worst Case"="DTRA3",
-                                                                                                "CHIME (University of Pennsylvania): SC+NE+SD"="CHIME1",
-                                                                                                "CHIME: NE+SD"="CHIME2",
-                                                                                                "CHIME: SC+SD"="CHIME3",                                                                
-                                                                                                "CHIME: SD"="CHIME4", 
-                                                                                                "CHIME: SC+NE"="CHIME5",
-                                                                                                "CHIME: NE"="CHIME6",
                                                                                                 "Los Alamos National Labs (LANL)"="LANL",
-                                                                                                "Columbia University: 20% SC Reduction with one time 10% increase in contact "="CUM2",
-                                                                                                "Columbia University: 20% SC Reduction with one time 5% increase in contact"="CUM3",
-                                                                                                "Columbia University: 20% SC Reduction with weekly 5% increase in contact"="CUM4"))                                                                                                                                                                                                
+                                                                                                "Columbia University: One time 5% increase in social contact"="CUM2",
+                                                                                                "Columbia University: 5% weekly increase in social contact"="CUM3",
+                                                                                                "Columbia University: Current levels of social mixing remain unchanged"="CUM4"))                                                                                                                                                                                                
     }
     else
     {
       updateCheckboxGroupInput(session,"ModelSelectionValue2","Forecasting Model(s):",choices=c("DTRA 1 - Current Response"="DTRA1",
                                                                                                 "DTRA 2 - Improved Response"="DTRA2", 
                                                                                                 "DTRA 3 - Worst Case"="DTRA3", 
-                                                                                               "CHIME (University of Pennsylvania): SC+NE+SD"="CHIME1",
-                                                                                               "CHIME: NE+SD"="CHIME2",
-                                                                                               "CHIME: SC+SD"="CHIME3",                                                                
-                                                                                               "CHIME: SD"="CHIME4", 
-                                                                                               "CHIME: SC+NE"="CHIME5",
-                                                                                               "CHIME: NE"="CHIME6",
                                                                                                "Los Alamos National Labs (LANL)"="LANL",
-                                                                                               "Columbia University: 20% SC Reduction with one time 10% increase in contact "="CUM2",
-                                                                                               "Columbia University: 20% SC Reduction with one time 5% increase in contact"="CUM3",
-                                                                                               "Columbia University: 20% SC Reduction with weekly 5% increase in contact"="CUM4"),                                                                                               
+                                                                                               "Columbia University: One time 5% increase in social contact"="CUM2",
+                                                                                               "Columbia University: 5% weekly increase in social contact"="CUM3",
+                                                                                               "Columbia University: Current levels of social mixing remain unchanged"="CUM4"),                                                                                               
                                
                                selected=c("DTRA 1 - Current Response"="DTRA1",
                                           "DTRA 2 - Improved Response"="DTRA2", 
                                           "DTRA 3 - Worst Case"="DTRA3", 
-                                          "CHIME (University of Pennsylvania): SC+NE+SD"="CHIME1",
-                                          "CHIME: NE+SD"="CHIME2",
-                                          "CHIME: SC+SD"="CHIME3",                                                                
-                                          "CHIME: SD"="CHIME4", 
-                                          "CHIME: SC+NE"="CHIME5",
-                                          "CHIME: NE"="CHIME6",
                                           "Los Alamos National Labs (LANL)"="LANL",
-                                          "Columbia University: 20% SC Reduction with one time 10% increase in contact "="CUM2",
-                                          "Columbia University: 20% SC Reduction with one time 5% increase in contact"="CUM3",
-                                          "Columbia University: 20% SC Reduction with weekly 5% increase in contact"="CUM4"))                                                                                    
+                                          "Columbia University: One time 5% increase in social contact"="CUM2",
+                                          "Columbia University: 5% weekly increase in social contact"="CUM3",
+                                          "Columbia University: Current levels of social mixing remain unchanged"="CUM4"))                                                                                    
     }
   })  
   
@@ -810,53 +790,21 @@ server <- function(input, output,session) {
     {
       updateCheckboxGroupInput(session,"ModelSelectionValue1","Forecasting Model(s): ",choices=c("IHME (University of Washington)"="IHME",
                                                                                                  "Youyang Gu - Independent (YYG) Model"="YYG",
-                                                                                                 "CHIME: SC"="CHIME7"))
+                                                                                                 "Los Alamos National Labs (LANL)"="LANL"))
     }
     else
     {
       updateCheckboxGroupInput(session,"ModelSelectionValue1","Forecasting Model(s):",choices=c("IHME (University of Washington)"="IHME",
                                                                                                 "Youyang Gu - Independent (YYG) Model"="YYG",
-                                                                                                "CHIME: SC"="CHIME7"),                                                                                               
+                                                                                                "Los Alamos National Labs (LANL)"="LANL"),                                                                                               
                                
                                selected=c("IHME (University of Washington)"="IHME",
                                           "Youyang Gu - Independent (YYG) Model"="YYG",
-                                          "CHIME: SC"="CHIME7"))                                                                                    
+                                          "Los Alamos National Labs (LANL)"="LANL"))                                                                                    
     }
   })
   
-  
-  observe({
-    if(input$selectall4 == 0) return(NULL) 
-    else if (input$selectall4%%2 == 0)
-    {
-      updateCheckboxGroupInput(session,"ModelSelectionValue2","Forecasting Model(s): ",choices=c("CHIME (University of Pennsylvania): SC+NE+SD"="CHIME1",
-                                                                                                 "CHIME: NE+SD"="CHIME2",
-                                                                                                 "CHIME: SC+SD"="CHIME3",                                                                
-                                                                                                 "CHIME: SD"="CHIME4", 
-                                                                                                 "CHIME: SC+NE"="CHIME5",
-                                                                                                 "CHIME: NE"="CHIME6",
-                                                                                                 "Los Alamos National Labs (LANL)"="LANL"))                                                                                                                                                                                                
-    }
-    else
-    {
-      updateCheckboxGroupInput(session,"ModelSelectionValue2","Forecasting Model(s):",choices=c("CHIME (University of Pennsylvania): SC+NE+SD"="CHIME1",
-                                                                                                "CHIME: NE+SD"="CHIME2",
-                                                                                                "CHIME: SC+SD"="CHIME3",                                                                
-                                                                                                "CHIME: SD"="CHIME4", 
-                                                                                                "CHIME: SC+NE"="CHIME5",
-                                                                                                "CHIME: NE"="CHIME6",
-                                                                                                "Los Alamos National Labs (LANL)"="LANL"),                                                                                               
-                               
-                               selected=c("CHIME (University of Pennsylvania): SC+NE+SD"="CHIME1",
-                                          "CHIME: NE+SD"="CHIME2",
-                                          "CHIME: SC+SD"="CHIME3",                                                                
-                                          "CHIME: SD"="CHIME4", 
-                                          "CHIME: SC+NE"="CHIME5",
-                                          "CHIME: NE"="CHIME6",
-                                          "Los Alamos National Labs (LANL)"="LANL"))                                                                                    
-    }
-  })   
-  
+
   
   #Overlay Projected Plots
   output$OverlayPlots<-renderPlotly({
@@ -874,13 +822,6 @@ server <- function(input, output,session) {
           if ("DTRA3" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"DTRA3")}          
           if ("LANL" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"LANL")}
           if ("UT" %in% input$ModelSelectionValue1){ModelID<-cbind(ModelID,"UT")}
-          if ("CHIME7" %in% input$ModelSelectionValue1){ModelID<-cbind(ModelID,"CHIME_4%_SD")}
-          if ("CHIME6" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CHIME_8%_SD")}
-          if ("CHIME5" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CHIME_12%_SD")}
-          if ("CHIME4" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CHIME_15%_SD")}
-          if ("CHIME3" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CHIME_19%_SD")}
-          if ("CHIME2" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CHIME_23%_SD")}
-          if ("CHIME1" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CHIME_27%_SD")}
           if ("CUM1" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CUM1")}
           if ("CUM2" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CUM2")}
           if ("CUM3" %in% input$ModelSelectionValue1){ModelID<-cbind(ModelID,"CUM3")}
@@ -890,13 +831,6 @@ server <- function(input, output,session) {
           if ("IHME" %in% input$ModelSelectionValue1){ModelID<-cbind(ModelID,"IHME")}
           if ("YYG" %in% input$ModelSelectionValue1){ModelID<-cbind(ModelID,"YYG")}
           if ("LANL" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"LANL")}
-          if ("CHIME7" %in% input$ModelSelectionValue1){ModelID<-cbind(ModelID,"CHIME_4%_SD")}
-          if ("CHIME6" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CHIME_8%_SD")}
-          if ("CHIME5" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CHIME_12%_SD")}
-          if ("CHIME4" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CHIME_15%_SD")}
-          if ("CHIME3" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CHIME_19%_SD")}
-          if ("CHIME2" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CHIME_23%_SD")}
-          if ("CHIME1" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CHIME_27%_SD")}
       }
     
       if (is.null(input$RedLine)){

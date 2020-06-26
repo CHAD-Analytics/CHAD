@@ -251,11 +251,10 @@ ui <- tagList(
                                                                                        "Center for Army Analysis"="CAA",
                                                                                        "Torch Insight"="Torch",
                                                                                        "Youyang Gu (YYG) Model"="YYG",
-                                                                                       "CHIME: SC"="CHIME7",
                                                                                        "University of Texas"="UT",
-                                                                                       "Columbia University: 20% SC Reduction with weekly 10% increase in contact"="CUM1"),                                                                
-                                                                                     selected = c("IHME","CAA")),
-                                                                  
+                                                                                       "Columbia University: Current contact rates remain unchanged"="CUM1"),
+                                                                                     selected = c("IHME","CAA","Torch")),
+
                                                                   actionLink("selectall1","Select All"),
                                                                   
                                                                   checkboxGroupInput("AdditionalModels","Additional Forecasting Model(s): ",
@@ -265,20 +264,13 @@ ui <- tagList(
                                                                   conditionalPanel(condition = "input.AdditionalModels== 'ShowAll'",  
                                                                                    checkboxGroupInput("ModelSelectionValue2","Forecasting Model(s): ",
                                                                                                       c("Los Alamos National Labs (LANL)"="LANL",
-                                                                                                        "Columbia University: 20% SC Reduction with one time 10% increase in contact "="CUM2",
-                                                                                                        "Columbia University: 20% SC Reduction with one time 5% increase in contact"="CUM3",
-                                                                                                        "Columbia University: 20% SC Reduction with weekly 10% increase in contact"="CUM4",                                                                
+                                                                                                        "Columbia University: One time 5% increase in social contact"="CUM2",
+                                                                                                        "Columbia University: 5% weekly increase in social contact"="CUM3",
+                                                                                                        "Columbia University: Current levels of social mixing remain unchanged"="CUM4",                                                                
                                                                                                         "DTRA 1 - Current Response"="DTRA1",
                                                                                                         "DTRA 2 - Improved Response"="DTRA2", 
-                                                                                                        "DTRA 3 - Worst Case"="DTRA3",                                                                                                       
-                                                                                                        "CHIME (U. of Pennsylvania): SC+NE+SD"="CHIME1",
-                                                                                                        "CHIME: NE+SD"="CHIME2",
-                                                                                                        "CHIME: SC+SD"="CHIME3",                                                                
-                                                                                                        "CHIME: SD"="CHIME4", 
-                                                                                                        "CHIME: SC+NE"="CHIME5",
-                                                                                                        "CHIME: NE"="CHIME6"),
+                                                                                                        "DTRA 3 - Worst Case"="DTRA3"),
                                                                                                       selected = c("")),
-                                                                                   
                                                                                    actionLink("selectall2","Select All"))
                                                               ),
                                                               
@@ -287,27 +279,9 @@ ui <- tagList(
                                                                                checkboxGroupInput("ModelSelectionValue1","Forecasting Model(s): ",
                                                                                                   c("IHME (U. of Washinton)"="IHME",
                                                                                                     "Youyang Gu (YYG) Model"="YYG",
-                                                                                                    "CHIME: SC"="CHIME7"),                                                                
-                                                                                                  selected = c("IHME","CAA")),
-                                                                               
-                                                                               actionLink("selectall3","Select All"),
-                                                                               
-                                                                               checkboxGroupInput("AdditionalModels","Additional Forecasting Model(s): ",
-                                                                                                  c("Show All"="ShowAll"),
-                                                                                                  selected = c("")),   
-                                                                               
-                                                                               conditionalPanel(condition = "input.AdditionalModels== 'ShowAll'",  
-                                                                                                checkboxGroupInput("ModelSelectionValue2","Forecasting Model(s): ",
-                                                                                                                   c("Los Alamos National Labs (LANL)"="LANL",
-                                                                                                                     "CHIME (U. of Pennsylvania): SC+NE+SD"="CHIME1",
-                                                                                                                     "CHIME: NE+SD"="CHIME2",
-                                                                                                                     "CHIME: SC+SD"="CHIME3",                                                                
-                                                                                                                     "CHIME: SD"="CHIME4", 
-                                                                                                                     "CHIME: SC+NE"="CHIME5",
-                                                                                                                     "CHIME: NE"="CHIME6"),
-                                                                                                                   selected = c("")),
-                                                                                                
-                                                                                                actionLink("selectall4","Select All"))
+                                                                                                    "Los Alamos National Labs (LANL)"="LANL"),                                                                
+                                                                                                  selected = c("IHME","YYG","LANL")),
+                                                                               actionLink("selectall3","Select All")
                                                               )
                                                                                                                                                             
                                              ),
