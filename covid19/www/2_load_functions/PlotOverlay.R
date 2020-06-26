@@ -94,9 +94,9 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
       DPT1<-dplyr::filter(DPT1,(ForecastDate >= (Sys.Date()-datediff)))        
       DPT2<-dplyr::filter(DPT2,(ForecastDate >= (Sys.Date()-datediff)))        
       DPT3<-dplyr::filter(DPT3,(ForecastDate >= (Sys.Date()-datediff)))              
-      DPT1<-aggregate(DPT1[,sapply(DPT1,is.numeric)],DPT1["ForecastDate"],sum)
-      DPT2<-aggregate(DPT2[,sapply(DPT2,is.numeric)],DPT2["ForecastDate"],sum)
-      DPT3<-aggregate(DPT3[,sapply(DPT3,is.numeric)],DPT3["ForecastDate"],sum)      
+      DPT1<-aggregate(data.frame(DPT1)[,sapply(data.frame(DPT1),is.numeric)],data.frame(DPT1)["ForecastDate"],sum)
+      DPT2<-aggregate(data.frame(DPT2)[,sapply(data.frame(DPT2),is.numeric)],data.frame(DPT2)["ForecastDate"],sum)
+      DPT3<-aggregate(data.frame(DPT3)[,sapply(data.frame(DPT3),is.numeric)],data.frame(DPT3)["ForecastDate"],sum)      
       DPT1<-DPT1[1:DaysProjected,]
       DPT2<-DPT2[1:DaysProjected,]
       DPT3<-DPT3[1:DaysProjected,]      
@@ -210,9 +210,9 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
         UT_Data<-data.frame(UT_Region$date,UT_Region$daily_deaths_est, UT_Region$daily_deaths_95CI_lower, UT_Region$daily_deaths_95CI_upper)    
         
         #For DTRA Data, multiply number of cases by projected hospitalization rate
-        DPT1<-data.frame(DPT1$ForecastDate,DPT1$'Expected Hospitalizations'*HRate,DPT1$'Lower Estimate'*HRate,DPT1$'Upper Estimate'*HRate,DPT1$ID)
-        DPT2<-data.frame(DPT2$ForecastDate,DPT2$'Expected Hospitalizations'*HRate,DPT2$'Lower Estimate'*HRate,DPT2$'Upper Estimate'*HRate,DPT2$ID)  
-        DPT3<-data.frame(DPT3$ForecastDate,DPT3$'Expected Hospitalizations'*HRate,DPT3$'Lower Estimate'*HRate,DPT3$'Upper Estimate'*HRate,DPT3$ID)          
+        DPT1<-data.frame(DPT1$ForecastDate,DPT1$'Expected.Hospitalizations'*HRate,DPT1$'Lower.Estimate'*HRate,DPT1$'Upper.Estimate'*HRate,DPT1$ID)
+        DPT2<-data.frame(DPT2$ForecastDate,DPT2$'Expected.Hospitalizations'*HRate,DPT2$'Lower.Estimate'*HRate,DPT2$'Upper.Estimate'*HRate,DPT2$ID)  
+        DPT3<-data.frame(DPT3$ForecastDate,DPT3$'Expected.Hospitalizations'*HRate,DPT3$'Lower.Estimate'*HRate,DPT3$'Upper.Estimate'*HRate,DPT3$ID)          
         colnames(DPT1)<-c("ForecastDate", "Expected Hospitalizations", "Lower Estimate","Upper Estimate", "ID")
         colnames(DPT2)<-c("ForecastDate", "Expected Hospitalizations", "Lower Estimate","Upper Estimate", "ID")    
         colnames(DPT3)<-c("ForecastDate", "Expected Hospitalizations", "Lower Estimate","Upper Estimate", "ID")         
@@ -490,9 +490,9 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
       UT_Data<-data.frame(UT_Region$date,UT_Region$daily_deaths_est, UT_Region$daily_deaths_95CI_lower, UT_Region$daily_deaths_95CI_upper)    
       
       #For DTRA Data, multiply number of cases by projected hospitalization rate
-      DPT1<-data.frame(DPT1$ForecastDate,DPT1$'Expected Hospitalizations'*IHRate,DPT1$'Lower Estimate'*IHRate,DPT1$'Upper Estimate'*IHRate,DPT1$ID)
-      DPT2<-data.frame(DPT2$ForecastDate,DPT2$'Expected Hospitalizations'*IHRate,DPT2$'Lower Estimate'*IHRate,DPT2$'Upper Estimate'*IHRate,DPT2$ID)  
-      DPT3<-data.frame(DPT3$ForecastDate,DPT3$'Expected Hospitalizations'*IHRate,DPT3$'Lower Estimate'*IHRate,DPT3$'Upper Estimate'*IHRate,DPT3$ID)          
+      DPT1<-data.frame(DPT1$ForecastDate,DPT1$'Expected.Hospitalizations'*IHRate,DPT1$'Lower.Estimate'*IHRate,DPT1$'Upper.Estimate'*IHRate,DPT1$ID)
+      DPT2<-data.frame(DPT2$ForecastDate,DPT2$'Expected.Hospitalizations'*IHRate,DPT2$'Lower.Estimate'*IHRate,DPT2$'Upper.Estimate'*IHRate,DPT2$ID)  
+      DPT3<-data.frame(DPT3$ForecastDate,DPT3$'Expected.Hospitalizations'*IHRate,DPT3$'Lower.Estimate'*IHRate,DPT3$'Upper.Estimate'*IHRate,DPT3$ID)          
       colnames(DPT1)<-c("ForecastDate", "Expected ICU Patients", "Lower Estimate","Upper Estimate", "ID")
       colnames(DPT2)<-c("ForecastDate", "Expected ICU Patients", "Lower Estimate","Upper Estimate", "ID")    
       colnames(DPT3)<-c("ForecastDate", "Expected ICU Patients", "Lower Estimate","Upper Estimate", "ID")         
@@ -727,9 +727,9 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
       UT_Data<-data.frame(UT_Region$date,UT_Region$daily_deaths_est, UT_Region$daily_deaths_95CI_lower, UT_Region$daily_deaths_95CI_upper)    
       
       #For DTRA Data, multiply number of cases by projected hospitalization rate
-      DPT1<-data.frame(DPT1$ForecastDate,DPT1$'Expected Hospitalizations'*VHRate,DPT1$'Lower Estimate'*VHRate,DPT1$'Upper Estimate'*VHRate,DPT1$ID)
-      DPT2<-data.frame(DPT2$ForecastDate,DPT2$'Expected Hospitalizations'*VHRate,DPT2$'Lower Estimate'*VHRate,DPT2$'Upper Estimate'*VHRate,DPT2$ID)  
-      DPT3<-data.frame(DPT3$ForecastDate,DPT3$'Expected Hospitalizations'*VHRate,DPT3$'Lower Estimate'*VHRate,DPT3$'Upper Estimate'*VHRate,DPT3$ID)          
+      DPT1<-data.frame(DPT1$ForecastDate,DPT1$'Expected.Hospitalizations'*VHRate,DPT1$'Lower.Estimate'*VHRate,DPT1$'Upper.Estimate'*VHRate,DPT1$ID)
+      DPT2<-data.frame(DPT2$ForecastDate,DPT2$'Expected.Hospitalizations'*VHRate,DPT2$'Lower.Estimate'*VHRate,DPT2$'Upper.Estimate'*VHRate,DPT2$ID)  
+      DPT3<-data.frame(DPT3$ForecastDate,DPT3$'Expected.Hospitalizations'*VHRate,DPT3$'Lower.Estimate'*VHRate,DPT3$'Upper.Estimate'*VHRate,DPT3$ID)          
       colnames(DPT1)<-c("ForecastDate", "Expected Ventilator Patients", "Lower Estimate","Upper Estimate", "ID")
       colnames(DPT2)<-c("ForecastDate", "Expected Ventilator Patients", "Lower Estimate","Upper Estimate", "ID")    
       colnames(DPT3)<-c("ForecastDate", "Expected Ventilator Patients", "Lower Estimate","Upper Estimate", "ID")         
@@ -951,9 +951,9 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
       UT_Data<-data.frame(UT_Region$date,UT_Region$daily_deaths_est, UT_Region$daily_deaths_95CI_lower, UT_Region$daily_deaths_95CI_upper)
       
       #For DTRA Data, multiply number of cases by projected hospitalization rate
-      DPT1<-data.frame(DPT1$ForecastDate,DPT1$'Expected Hospitalizations'*FCRate,DPT1$'Lower Estimate'*FCRate,DPT1$'Upper Estimate'*FCRate,DPT1$ID)
-      DPT2<-data.frame(DPT2$ForecastDate,DPT2$'Expected Hospitalizations'*FCRate,DPT2$'Lower Estimate'*FCRate,DPT2$'Upper Estimate'*FCRate,DPT2$ID)
-      DPT3<-data.frame(DPT3$ForecastDate,DPT3$'Expected Hospitalizations'*FCRate,DPT3$'Lower Estimate'*FCRate,DPT3$'Upper Estimate'*FCRate,DPT3$ID)        
+      DPT1<-data.frame(DPT1$ForecastDate,DPT1$'Expected.Hospitalizations'*FCRate,DPT1$'Lower.Estimate'*FCRate,DPT1$'Upper.Estimate'*FCRate,DPT1$ID)
+      DPT2<-data.frame(DPT2$ForecastDate,DPT2$'Expected.Hospitalizations'*FCRate,DPT2$'Lower.Estimate'*FCRate,DPT2$'Upper.Estimate'*FCRate,DPT2$ID)
+      DPT3<-data.frame(DPT3$ForecastDate,DPT3$'Expected.Hospitalizations'*FCRate,DPT3$'Lower.Estimate'*FCRate,DPT3$'Upper.Estimate'*FCRate,DPT3$ID)        
       colnames(DPT1)<-c("ForecastDate", "Expected Fatalities", "Lower Estimate","Upper Estimate","ID")
       colnames(DPT2)<-c("ForecastDate", "Expected Fatalities", "Lower Estimate","Upper Estimate","ID")   
       colnames(DPT3)<-c("ForecastDate", "Expected Fatalities", "Lower Estimate","Upper Estimate","ID")  
