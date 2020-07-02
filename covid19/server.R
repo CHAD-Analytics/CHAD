@@ -216,81 +216,6 @@ server <- function(input, output,session) {
   
   ###################################################################################################
   
-  output$CHIMEPeakDate<-renderValueBox({
-    #MyCounties<-GetCounties(input$Base,input$Radius)
-    if (is.null(input$SocialDistanceValue) ){social_dist<-1}
-    
-    CS <- "CS"  %in% input$SocialDistanceValue
-    CB <- "CB"  %in% input$SocialDistanceValue
-    SD <- "SD"  %in% input$SocialDistanceValue
-    
-    if (CS & CB & SD){
-      social_dist <- 27
-    } else if (CS & CB){
-      social_dist <- 12
-    } else if (CS & SD){
-      social_dist <-19
-    } else if (SD & CB){
-      social_dist <-23
-    } else if (CS) {
-      social_dist <- 4
-    }  else if (CB) {
-      social_dist <- 8
-    }  else if (SD) {
-      social_dist <- 15
-    }
-    Peak<-CalculateCHIMEPeak(MyCounties(), input$Base, input$Radius, social_dist, input$proj_days, input$StatisticType)
-    Peak<-format(Peak)
-    if (input$StatisticType == "Hospitalizations") {
-      valueBox(subtitle = "CHIME Predicted Peak Hospitalizations",
-               paste(Peak),
-               #icon = icon("hospital"),
-               color = "blue") 
-    } else {
-      valueBox(subtitle = "CHIME Predicted Total Fatalities",
-               paste(Peak),
-               #icon = icon("skull"),
-               color = "blue")}
-    
-  })
-  
-  # output$CHIMEMinMax<-renderValueBox({
-  #     MyCounties<-GetCounties()
-  #     Peak<-CalculateCHIMEMinMax(MyCounties, input$Base, input$Radius, input$social_dist, input$proj_days)
-  #     Peak<-format(Peak)
-  #     valueBox(subtitle = "CHIME Predicted Peak Hospitalizations",
-  #              paste(Peak),
-  #              icon = icon("hospital"),
-  #              color = "blue")
-  # })
-  
-  output$IHMEPeakDate<-renderValueBox({
-    MyHospitals<-GetHospitals(input$Base,input$Radius)
-    Peak<-CalculateIHMEPeak(input$Base, MyHospitals, input$Radius, input$StatisticType)
-    Peak<-format(Peak)
-    if (input$StatisticType == "Hospitalizations") {
-      valueBox(subtitle = "IHME Predicted Peak Hospitalizations",
-               paste(Peak),
-               #icon = icon("hospital"),
-               color = "navy")
-    } else {
-      valueBox(subtitle = "IHME Predicted Total Fatalities",
-               paste(Peak),
-               #icon = icon("hospital"),
-               color = "navy")
-    }
-    
-  })
-  
-  
-  # output$IHMEMinMax<-renderValueBox({
-  #     MyHospitals<-GetHospitals()
-  #     Peak<-CalculateIHMEMinMax(input$Base, MyHospitals, input$Radius)
-  #     valueBox(subtitle = "IHME Predicted Min/Max Hospitalizations",
-  #              paste(Peak),
-  #              icon = icon("hospital"),
-  #              color = "navy")
-  # })
   
   # Output line plots for the dashboard ----------------------------------------------------------------------------------------------------------------------------------------------------
   
@@ -670,7 +595,11 @@ server <- function(input, output,session) {
       textbox <- "Impact Map: Logarithmic Scale"
     } else if (input$MapScale == "Linear" & input$Metric == "Total Cases"){
       textbox <- "Impact Map: Linear Scale"
-    } else {
+    } else if (input$Metric == "Weekly Total Change"){
+      textbox <- "Impact Map: Weekly Total Case Change"
+    } else if (input$Metric == "Weekly Change"){
+      textbox <- "Impact Map: Weekly Case Change"
+    } else{
       textbox <- "Impact Map"
     }
   })  
@@ -685,6 +614,10 @@ server <- function(input, output,session) {
         text1 = "On a linear scale, the cases increase additively and the visual distance between the data points remains constant. "
         #text2 = "querystring"
         out <- paste(text1,sep = "")
+    } else if (input$Metric == "Weekly Total Change"){
+      textbox <- "This map shows the weekly change in cases compared against the total case number"
+    } else if (input$Metric == "Weekly Change"){
+      textbox <- "This map shows the week over week case change"
     } else{
       out = ""
     }

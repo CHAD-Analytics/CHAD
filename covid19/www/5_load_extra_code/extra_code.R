@@ -961,3 +961,91 @@ WORLDlist = list(region="world",
 #load(file = "Torch_Model.rda")
 #Torch_Model = read_csv("C:/Users/taylo/Documents/CHADNew2/covid19/www/4_load_external_data/data_files/Torch_Model.csv")
 Torch_Model = read_csv("www/4_load_external_data/data_files/Torch_Model.csv")
+
+
+
+
+
+
+
+
+
+###############################################################################################
+############################### Base Hot Spot Summary #########################################
+###############################################################################################
+
+
+BaseSummaryList <- setNames(data.frame(matrix(ncol = 16, nrow = 0)),
+                            c("ID", "Base", "Branch", "Operational", "Major Command","Region",
+                              "Population","Cases Per Capita","Total Weekly Case Change","Weekly Case Change",
+                              "Total Cases", "New Weekly Cases", "New Weekly Cases (per capita)", "Deaths Per Capita", "Total Deaths", "New Weekly Deaths"))
+
+for (i in 1:nrow(AFBaseLocations)){
+  
+  # Find counties in radius
+  baseDF = dplyr::filter(AFBaseLocations, Base == AFBaseLocations$Base[i])
+  CountyInfo$DistanceMiles = cimd[,as.character(AFBaseLocations$Base[i])]
+  IncludedCounties<-dplyr::filter(CountyInfo, DistanceMiles <= 50 | FIPS == baseDF$FIPS)
+  IncludedCounties<-IncludedCounties %>% distinct(FIPS, .keep_all = TRUE)
+  PopReg = sum(IncludedCounties$Population)
+  
+  # Find metrics in region
+  CovidCountiesCases = subset(CovidConfirmedCases, CountyFIPS %in% IncludedCounties$FIPS)
+  CovidCountiesDeaths = subset(CovidDeaths, CountyFIPS %in% IncludedCounties$FIPS)
+  CumCovid = colSums(CovidCountiesCases[,5:length(CovidCountiesCases)])
+  CumDeaths = colSums(CovidCountiesDeaths[,5:length(CovidCountiesDeaths)])
+  CummCases = rev(CumCovid)[1]
+  CummDeaths = rev(CumDeaths)[1]
+  weeklyCases = rev(CumCovid)[1] - rev(CumCovid)[8]
+  weeklyDeaths = rev(CumDeaths)[1] - rev(CumDeaths)[8]
+  CasesPerCap = round((CummCases/PopReg)*100000,0)
+  DeathsPerCap = round((CummDeaths/PopReg)*100000,0)
+  
+  # Week over Week growth rates
+  WeeklyChange = rev(CumCovid)[c(1:15)]
+  WeeklyChange = (((WeeklyChange[1]-WeeklyChange[8])-(WeeklyChange[8]-WeeklyChange[15]))/(WeeklyChange[8]-WeeklyChange[15]))
+  WeeklyChange[is.na(WeeklyChange)] = 0
+  WeeklyChange[is.infinite(as.matrix(WeeklyChange))] = 0
+  
+  # Weekly Total Case Change
+  WeeklyTotChange = rev(CumCovid)[c(1:15)]
+  WeeklyTotChange = ((WeeklyTotChange[1]-WeeklyTotChange[8])/WeeklyTotChange[8])
+  WeeklyTotChange[is.na(WeeklyTotChange)] = 0
+  WeeklyTotChange[is.infinite(as.matrix(WeeklyTotChange))] = 0
+  
+  # Weekly case numbers per capita
+  weeklyCaseCapita = round(((rev(CumCovid)[1] - rev(CumCovid)[8])/PopReg)*100000,0)
+  
+  # Append to list
+  ListTemp = cbind(baseDF[1:5],baseDF$`State Name`,PopReg,CasesPerCap,WeeklyTotChange,WeeklyChange,CummCases,weeklyCases,weeklyCaseCapita,DeathsPerCap,CummDeaths,weeklyDeaths)
+  colnames(ListTemp) = colnames(BaseSummaryList)
+  BaseSummaryList = rbind(BaseSummaryList, ListTemp, make.row.names = FALSE, stringsAsFactors = FALSE)
+  
+}
+
+# Create scores using min/max scaler
+
+# Capita
+minCap = min(BaseSummaryList$`Cases Per Capita`)
+maxCap = max(BaseSummaryList$`Cases Per Capita`)
+
+# Weekly total change
+minTot = 0
+maxTot = max(BaseSummaryList$`Total Weekly Case Change`)
+
+# Weekly change
+minWeek = min(BaseSummaryList$`Weekly Case Change`)
+maxWeek = max(BaseSummaryList$`Weekly Case Change`)
+
+# # Score each metric
+# BaseSummaryList$ScoreC = (BaseSummaryList$`Cases Per Capita` - minCap)/(maxCap - minCap)
+# BaseSummaryList$ScoreT = (BaseSummaryList$`Total Weekly Case Change` - minTot)/(maxTot - minTot)
+# BaseSummaryList$ScoreW = (BaseSummaryList$`Weekly Case Change` - minWeek)/(maxWeek - minWeek)
+# 
+# # Compute weight score
+# BaseSummaryList$Scen1aScore = (1/3)*BaseSummaryList$ScoreC + (1/3)*BaseSummaryList$ScoreT + (1/3)*BaseSummaryList$ScoreW
+# BaseSummaryList$Scen1bScore = (1/3)*(1-BaseSummaryList$ScoreC) + (1/3)*BaseSummaryList$ScoreT + (1/3)*BaseSummaryList$ScoreW
+# BaseSummaryList$Scen2aScore = (1/3)*BaseSummaryList$ScoreC + (1/3)*(1-BaseSummaryList$ScoreT) + (1/3)*BaseSummaryList$ScoreW
+# BaseSummaryList$Scen2bScore = (1/3)*(1-BaseSummaryList$ScoreC) + (1/3)*(1-BaseSummaryList$ScoreT) + (1/3)*BaseSummaryList$ScoreW
+# BaseSummaryList$Scen3aScore = (1/3)*BaseSummaryList$ScoreC + (1/3)*BaseSummaryList$ScoreT + (1/3)*(1-BaseSummaryList$ScoreW)
+# BaseSummaryList$Scen3bScore = (1/3)*(1-BaseSummaryList$ScoreC) + (1/3)*BaseSummaryList$ScoreT + (1/3)*(1-BaseSummaryList$ScoreW)

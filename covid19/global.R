@@ -50,3 +50,5 @@ SourceLink <- includeMarkdown("www/6_load_info_docs/SourceInfo.md")
 OverviewLink <- includeMarkdown("www/6_load_info_docs/OverviewInfo.md")
 ProjLink <- includeMarkdown("www/6_load_info_docs/ProjInfo.md")
 UpdateLink <- includeMarkdown("www/6_load_info_docs/UpdateInfo.md")
+
+closeAllConnections()

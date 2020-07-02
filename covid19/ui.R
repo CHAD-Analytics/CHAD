@@ -143,14 +143,14 @@ ui <- tagList(
                                                                              "Asia"="Asia",
                                                                              "Oceania"="Oceania"                                                                             
                                                                              ),
-                                                                           selected = "World"),
+                                                                           selected = "United States"),
                                                               
                                                               radioButtons("Metric",
                                                                            "Metric: ",
                                                                            c("Total Cases" = "Total Cases",
                                                                              "Weekly Total Case Change" = "Weekly Total Change",
                                                                              "Weekly Case Change" = "Weekly Change"),
-                                                                           selected = "Total Cases"),
+                                                                           selected = "Weekly Total Change"),
                                                               
                                                               conditionalPanel(condition = "input.Metric == 'Total Cases'",
                                                                                radioButtons("MapScale",
