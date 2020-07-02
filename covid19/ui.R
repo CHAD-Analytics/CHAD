@@ -472,21 +472,21 @@ ui <- tagList(
                                 title = "Current Local Health",
                                 
                                 fluidRow(
-                                  valueBoxOutput("CovidCases", width = 2),
-                                  valueBoxOutput("CaseChangeLocal", width = 2),
-                                  valueBoxOutput("CasesPer1000", width = 2),
-                                  valueBoxOutput("HospitalUtilization", width = 2),
-                                  valueBoxOutput("Est_Active", width = 2),
-                                  valueBoxOutput("Est_Testing", width = 2)                                  
+                                  valueBoxOutput("CovidCases", width = 3),
+                                  valueBoxOutput("CaseChangeLocal", width = 3),
+                                  valueBoxOutput("CasesPer1000", width = 3),
+                                  valueBoxOutput("HospitalUtilization", width = 3)
+                                  # valueBoxOutput("Est_Active", width = 2),
+                                  # valueBoxOutput("Est_Testing", width = 2)                                  
                                 ),
                                 
                                 fluidRow(
-                                  valueBoxOutput("LocalCovidDeaths", width = 2),
-                                  valueBoxOutput("DeathChangeLocal", width = 2),
-                                  valueBoxOutput("CaseDbRate", width = 2),
-                                  valueBoxOutput("Rt_Estimate", width = 2),
-                                  valueBoxOutput("Est_Recover", width = 2),
-                                  valueBoxOutput("Est_TestRate", width = 2)                                                                    
+                                  valueBoxOutput("LocalCovidDeaths", width = 3),
+                                  valueBoxOutput("DeathChangeLocal", width = 3),
+                                  valueBoxOutput("CaseDbRate", width = 3),
+                                  valueBoxOutput("Rt_Estimate", width = 3)
+                                  # valueBoxOutput("Est_Recover", width = 2),
+                                  # valueBoxOutput("Est_TestRate", width = 2)                                                                    
                                 ),
                                 
                                 fluidRow( 
@@ -510,8 +510,9 @@ ui <- tagList(
                                   box(title = "Local County Statistics", 
                                       solidHeader=T, align = "left", 
                                       
-                                      DT::dataTableOutput("CountyDataTable1"), 
-                                      
+                                      column(width = 12,
+                                        DT::dataTableOutput("CountyDataTable1"),
+                                        style = "height:240px;overflow-y: scroll"),
                                       height = 300)
                                 )
                               ),

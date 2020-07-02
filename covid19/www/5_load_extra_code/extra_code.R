@@ -1023,19 +1023,19 @@ for (i in 1:nrow(AFBaseLocations)){
   
 }
 
-# Create scores using min/max scaler
-
-# Capita
-minCap = min(BaseSummaryList$`Cases Per Capita`)
-maxCap = max(BaseSummaryList$`Cases Per Capita`)
-
-# Weekly total change
-minTot = 0
-maxTot = max(BaseSummaryList$`Total Weekly Case Change`)
-
-# Weekly change
-minWeek = min(BaseSummaryList$`Weekly Case Change`)
-maxWeek = max(BaseSummaryList$`Weekly Case Change`)
+# # Create scores using min/max scaler
+# 
+# # Capita
+# minCap = min(BaseSummaryList$`Cases Per Capita`)
+# maxCap = max(BaseSummaryList$`Cases Per Capita`)
+# 
+# # Weekly total change
+# minTot = 0
+# maxTot = max(BaseSummaryList$`Total Weekly Case Change`)
+# 
+# # Weekly change
+# minWeek = min(BaseSummaryList$`Weekly Case Change`)
+# maxWeek = max(BaseSummaryList$`Weekly Case Change`)
 
 # # Score each metric
 # BaseSummaryList$ScoreC = (BaseSummaryList$`Cases Per Capita` - minCap)/(maxCap - minCap)
