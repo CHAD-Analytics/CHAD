@@ -1214,105 +1214,226 @@ server <- function(input, output,session) {
     forecastbaselist<-dplyr::filter(AFBaseLocations,Branch %in% input$Branch)                        
     forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE) 
     
-    if(input$SummaryStatistic == "Cases") {
-      FilteredDT<-dplyr::filter(ForecastDataTableCases,Installation %in% forecastbaselist)                        
-    } else if (input$SummaryStatistic == "Hospitalizations") {
-      FilteredDT<-dplyr::filter(ForecastDataTable,Installation %in% forecastbaselist)                        
-    }   
+    FilteredDT<-dplyr::filter(BaseSummaryList, Base %in% forecastbaselist)
     
     if(input$OperationalInput != "All") {
       forecastbaselist<-dplyr::filter(AFBaseLocations,Operational %in% input$OperationalInput)                        
       forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE)         
-      FilteredDT<-dplyr::filter(FilteredDT,Installation %in% forecastbaselist)
+      FilteredDT<-dplyr::filter(FilteredDT,Base %in% forecastbaselist)
     }      
     
     if (input$MAJCOMNAF == "MAJCOM") {
       if (input$MAJCOMInput == "All") {
-        FilteredDT<-FilterDataTable(FilteredDT,input$SummaryModelType,input$SummaryForecast,input$SummaryStatistic)
-        FTPrint<-FilteredDT
-        dt<-DT::datatable(FilteredDT, rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))
-        dt
+        
+        dt<-FilteredDT
+        
       } else {
-        FilteredDT<-FilterDataTable(FilteredDT,input$SummaryModelType,input$SummaryForecast,input$SummaryStatistic)
-        FTPrint<-FilteredDT
-        dt<-DT::datatable(filter(FilteredDT, MAJCOM == input$MAJCOMInput), rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))
-        dt
-      }
-    } else if (input$MAJCOMNAF == "NAF") {
-      
-      AFWings<-dplyr::filter(AFNAFS,NAF %in% input$NAFInput)  # We do not allow for all NAFs to be selected, too many units 
-      if(input$SummaryStatistic == "Cases") {
-        colset<-c(1,3,2,15,16,17,4,6,7,8,9,10,11)
-      } else if (input$SummaryStatistic == "Hospitalizations") {
-        colset<-c(1,3,2,14,15,16,4,6,7,8,9,10)
-      }  
-      
-      
-      if (input$WingInput == "All") {               
         
-        if (input$GroupInput == "All") {                
-          GroupList<-sort(unique(AFWings$`Group`), decreasing = FALSE)
-          forecastbaselist<-dplyr::filter(AFWings,Group %in% GroupList)                        
-          forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE) 
-          FilteredDT<-dplyr::filter(FilteredDT,Installation %in% forecastbaselist) 
-          
-          FilteredDT<-FilterDataTable(FilteredDT,input$SummaryModelType,input$SummaryForecast,input$SummaryStatistic)
-          # FilteredDT<-merge(FilteredDT,AFWings, by.x = "Installation", by.y = "Base")
-          # FilteredDT<-FilteredDT[, names(FilteredDT)[colset]]  
-          # colnames(FilteredDT)[2]<-"State"
-          FTPrint<-FilteredDT                        
-          dt<-DT::datatable(FilteredDT, rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))   
-          dt
-          
-        } else {                                    
-          forecastbaselistG<-dplyr::filter(AFWings,Group %in% input$GroupInput)                        
-          forecastbaselist<-sort(unique(forecastbaselistG$Base), decreasing = FALSE) 
-          FilteredDT<-dplyr::filter(ForecastDataTableCases,Installation %in% forecastbaselist) 
-          
-          FilteredDT<-FilterDataTable(FilteredDT,input$SummaryModelType,input$SummaryForecast,input$SummaryStatistic)
-          # FilteredDT<-merge(FilteredDT,forecastbaselistG, by.x = "Installation", by.y = "Base")
-          # FilteredDT<-FilteredDT[, names(FilteredDT)[colset]]  
-          # colnames(FilteredDT)[2]<-"State"
-          FTPrint<-FilteredDT                        
-          dt<-DT::datatable(FilteredDT, rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))   
-          dt
-        }
-      } else {      #If one wing is selected
+        dt<-dplyr::filter(FilteredDT, MAJCOM == input$MAJCOMInput)
         
-        AFWings<-dplyr::filter(AFWings,Wing %in% input$WingInput)            
-        
-        if (input$GroupInput == "All") {
-          GroupList<-sort(unique(AFWings$`Group`), decreasing = FALSE)
-          forecastbaselistG<-dplyr::filter(AFWings,Group %in% GroupList)                        
-          forecastbaselist<-sort(unique(forecastbaselistG$Base), decreasing = FALSE) 
-          FilteredDT<-dplyr::filter(FilteredDT,Installation %in% forecastbaselist) 
-          
-          FilteredDT<-FilterDataTable(FilteredDT,input$SummaryModelType,input$SummaryForecast,input$SummaryStatistic)
-          # FilteredDT<-merge(FilteredDT,forecastbaselistG, by.x = "Installation", by.y = "Base")
-          # FilteredDT<-FilteredDT[, names(FilteredDT)[colset]]  
-          # colnames(FilteredDT)[2]<-"State"
-          FTPrint<-FilteredDT                        
-          dt<-DT::datatable(FilteredDT, rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))   
-          dt
-          
-        } else {                                    
-          forecastbaselistG<-dplyr::filter(AFWings,Group %in% input$GroupInput)                        
-          forecastbaselist<-sort(unique(forecastbaselistG$Base), decreasing = FALSE) 
-          FilteredDT<-dplyr::filter(FilteredDT,Installation %in% forecastbaselist) 
-          
-          FilteredDT<-FilterDataTable(FilteredDT,input$SummaryModelType,input$SummaryForecast,input$SummaryStatistic)
-          # FilteredDT<-merge(FilteredDT,forecastbaselistG, by.x = "Installation", by.y = "Base")
-          # FilteredDT<-FilteredDT[, names(FilteredDT)[colset]]  
-          # colnames(FilteredDT)[2]<-"State"
-          FTPrint<-FilteredDT                        
-          dt<-DT::datatable(FilteredDT, rownames = FALSE, options = list(dom = 'ft',ordering = F, "pageLength"=200))   
-          dt
-          
-        }
       }
     }
+    
+    dt = dplyr::select(dt, 
+                       Base,
+                       Branch,
+                       Region,
+                       `Weekly Case Change`,
+                       `New Weekly Cases (per capita)`,
+                       Risk,
+                       Trending)
+    dt = DT::datatable(dt,
+                       rownames = FALSE, 
+                       extensions = 'Buttons',
+                       options = list(order = list(1, "desc"),
+                                      dom = 'Bfrtip',
+                                      buttons = 'excel',
+                                      pageLength = 15))
+    dt = DT::formatPercentage(dt, c("Weekly Case Change"), 1)
+    dt = formatStyle(dt,"Risk",backgroundColor = styleEqual(c("Level 1", "Level 2", "Level 3", "Level 4"), c('green', 'yellow', 'orange', 'red')))
+    dt = formatStyle(dt,"Trending",backgroundColor = styleEqual(c("Decreasing", "Increasing"), c('green', 'red')))
+    
   })
   
+  output$RedBases <- renderValueBox({
+    
+    forecastbaselist<-dplyr::filter(AFBaseLocations,Branch %in% input$Branch)                        
+    forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE) 
+    
+    FilteredDT<-dplyr::filter(BaseSummaryList, Base %in% forecastbaselist)
+    
+    if(input$OperationalInput != "All") {
+      forecastbaselist<-dplyr::filter(AFBaseLocations,Operational %in% input$OperationalInput)                        
+      forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE)         
+      FilteredDT<-dplyr::filter(FilteredDT,Base %in% forecastbaselist)
+    }      
+    
+    if (input$MAJCOMNAF == "MAJCOM") {
+      if (input$MAJCOMInput == "All") {
+        
+        dt<- FilteredDT
+        
+      } else {
+        
+        dt<-dplyr::filter(FilteredDT,MAJCOM == input$MAJCOMInput)
+      }
+    }
+    
+    baseCount = dplyr::filter(dt, Risk == "Level 4")
+    baseCount = nrow(baseCount)
+    
+    valueBox(paste(baseCount),
+             subtitle = "Level 4",
+             color = "red")
+  })
+  
+  output$OrangeBases <- renderValueBox({
+    
+    forecastbaselist<-dplyr::filter(AFBaseLocations,Branch %in% input$Branch)                        
+    forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE) 
+    
+    FilteredDT<-dplyr::filter(BaseSummaryList, Base %in% forecastbaselist)
+    
+    if(input$OperationalInput != "All") {
+      forecastbaselist<-dplyr::filter(AFBaseLocations,Operational %in% input$OperationalInput)                        
+      forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE)         
+      FilteredDT<-dplyr::filter(FilteredDT,Base %in% forecastbaselist)
+    }      
+    
+    if (input$MAJCOMNAF == "MAJCOM") {
+      if (input$MAJCOMInput == "All") {
+        
+        dt<- FilteredDT
+        
+      } else {
+        
+        dt<-dplyr::filter(FilteredDT,MAJCOM == input$MAJCOMInput)
+      }
+    }
+    
+    baseCount = dplyr::filter(dt, Risk == "Level 3")
+    baseCount = nrow(baseCount)
+    
+    valueBox(paste(baseCount),
+             subtitle = "Level 3",
+             color = "orange")
+  })
+  
+  output$YellowBases <- renderValueBox({
+    
+    forecastbaselist<-dplyr::filter(AFBaseLocations,Branch %in% input$Branch)                        
+    forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE) 
+    
+    FilteredDT<-dplyr::filter(BaseSummaryList, Base %in% forecastbaselist)
+    
+    if(input$OperationalInput != "All") {
+      forecastbaselist<-dplyr::filter(AFBaseLocations,Operational %in% input$OperationalInput)                        
+      forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE)         
+      FilteredDT<-dplyr::filter(FilteredDT,Base %in% forecastbaselist)
+    }      
+    
+    if (input$MAJCOMNAF == "MAJCOM") {
+      if (input$MAJCOMInput == "All") {
+        
+        dt<- FilteredDT
+        
+      } else {
+        
+        dt<-dplyr::filter(FilteredDT,MAJCOM == input$MAJCOMInput)
+      }
+    }
+    
+    baseCount = dplyr::filter(dt, Risk == "Level 2")
+    baseCount = nrow(baseCount)
+    
+    valueBox(paste(baseCount),
+             subtitle = "Level 2",
+             color = "yellow")
+  })
+  
+  output$GreenBases <- renderValueBox({
+    
+    forecastbaselist<-dplyr::filter(AFBaseLocations,Branch %in% input$Branch)                        
+    forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE) 
+    
+    FilteredDT<-dplyr::filter(BaseSummaryList, Base %in% forecastbaselist)
+    
+    if(input$OperationalInput != "All") {
+      forecastbaselist<-dplyr::filter(AFBaseLocations,Operational %in% input$OperationalInput)                        
+      forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE)         
+      FilteredDT<-dplyr::filter(FilteredDT,Base %in% forecastbaselist)
+    }      
+    
+    if (input$MAJCOMNAF == "MAJCOM") {
+      if (input$MAJCOMInput == "All") {
+        
+        dt<- FilteredDT
+        
+      } else {
+        
+        dt<-dplyr::filter(FilteredDT,MAJCOM == input$MAJCOMInput)
+      }
+    }
+    
+    baseCount = dplyr::filter(dt, Risk == "Level 1")
+    baseCount = nrow(baseCount)
+    
+    valueBox(paste(baseCount),
+             subtitle = "Level 1",
+             color = "green")
+  })
+  
+  
+  output$BaseSummaryMap <- renderLeaflet({
+    forecastbaselist<-dplyr::filter(AFBaseLocations,Branch %in% input$Branch)                        
+    forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE) 
+    
+    FilteredDT<-dplyr::filter(BaseSummaryList, Base %in% forecastbaselist)
+    
+    if(input$OperationalInput != "All") {
+      forecastbaselist<-dplyr::filter(AFBaseLocations,Operational %in% input$OperationalInput)                        
+      forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE)         
+      FilteredDT<-dplyr::filter(FilteredDT,Base %in% forecastbaselist)
+    }      
+    
+    if (input$MAJCOMNAF == "MAJCOM") {
+      if (input$MAJCOMInput == "All") {
+        
+        dt<- FilteredDT
+        
+      } else {
+        
+        dt<-dplyr::filter(FilteredDT,MAJCOM == input$MAJCOMInput)
+      }
+    }
+    
+    
+    dt = dplyr::filter(dt, Risk != "")
+    plot_data = dt %>% distinct(Base, .keep_all = TRUE)
+    plot_data = dplyr::select(plot_data, Base, lat, long, Risk)
+    
+    labs = lapply(seq(nrow(plot_data)), 
+                  function(i) {
+                    paste0(plot_data[i, "Base"], '</br>',
+                           plot_data[i, "Risk"])
+                  })
+    
+    leaflet(data = plot_data) %>% addTiles() %>%
+      addCircleMarkers(~long, ~lat,
+                       label = lapply(labs, htmltools::HTML),
+                       labelOptions = labelOptions(noHide = F, textsize = "12px"),
+                       fillColor = ~colorPal(Risk),
+                       stroke = FALSE,
+                       fillOpacity = 0.8,
+      ) %>%
+      addLegend("bottomright", pal = colorPal, values = colorLab,
+                title = "Risk Levels",
+                opacity = 1,
+      )
+    
+    
+    
+  })
   
   # })
   
@@ -1792,7 +1913,13 @@ server <- function(input, output,session) {
   # })
   
   
-  
+  observeEvent(input$rskLvls, {
+    showModal(
+      modalDialog(
+        size = "l",fade = TRUE, easyClose = TRUE, title = "Risk Levels",
+        img(src='Risk_Levels.png', align = "center", width = '800px'))
+    )
+  })
   
   
   

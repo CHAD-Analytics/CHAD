@@ -64,12 +64,8 @@ ui <- tagList(
                                                               tabName = "MAJCOMsummary",
                                                               icon = icon("sliders-h"),
                                                               div(id = "single", style="display: none;", numericInput("tckt", "Ticket Number : ", 12345,  width = 300)),
-                                                              
-                                                              radioButtons("SummaryStatistic",
-                                                                           "Cases or Hospitalizations: ",
-                                                                           c("Cases"="Cases","Hospitalizations"="Hospitalizations"),
-                                                                           selected = c("Hospitalizations")),
-                                                              
+                                                          
+                                                          
                                                               selectInput("Branch",
                                                                           "Service Branch:", 
                                                                           list(`Branch` = BranchList ),
@@ -83,7 +79,7 @@ ui <- tagList(
                                                               conditionalPanel(condition = "input.Branch == 'Air Force'",                                           
                                                                                radioButtons("MAJCOMNAF",
                                                                                             "MAJCOM or NAF Filter: ",
-                                                                                            c("MAJCOM"="MAJCOM","NAF"="NAF"),
+                                                                                            c("MAJCOM"="MAJCOM"),
                                                                                             selected = c("MAJCOM")), 
                                                                                
                                                                                conditionalPanel(condition = "input.MAJCOMNAF == 'MAJCOM'",
@@ -92,32 +88,22 @@ ui <- tagList(
                                                                                                             list(`MAJCOM` = MAJCOMList ), 
                                                                                                             selectize = FALSE)),
                                                                                
-                                                                               conditionalPanel(condition = "input.MAJCOMNAF == 'NAF'",
-                                                                                                selectInput("NAFInput",
-                                                                                                            "Numbered Air Forces:", 
-                                                                                                            choices=NAFList,
-                                                                                                            selected = c("All")),
-                                                                                                selectInput("WingInput",
-                                                                                                            "Wing:", 
-                                                                                                            list(`Wings` = WingList),
-                                                                                                            selectize = FALSE),
-                                                                                                selectInput("GroupInput",
-                                                                                                            "Group:",
-                                                                                                            choices=NULL,
-                                                                                                            selectize = FALSE))),  
+                                                                               # conditionalPanel(condition = "input.MAJCOMNAF == 'NAF'",
+                                                                               #                  selectInput("NAFInput",
+                                                                               #                              "Numbered Air Forces:", 
+                                                                               #                              choices=NAFList,
+                                                                               #                              selected = c("All")),
+                                                                               #                  selectInput("WingInput",
+                                                                               #                              "Wing:", 
+                                                                               #                              list(`Wings` = WingList),
+                                                                               #                              selectize = FALSE),
+                                                                               #                  selectInput("GroupInput",
+                                                                               #                              "Group:",
+                                                                               #                              choices=NULL,
+                                                                               #                              selectize = FALSE))
+                                                                               )
                                                               
                                                               
-                                                              radioButtons("SummaryModelType",
-                                                                           "Summary Plot Model: ",
-                                                                           c("IHME"="IHME","CAA"="CAA"),
-                                                                           selected = c("CAA")),
-                                                              
-                                                              radioButtons("SummaryForecast",
-                                                                           "Choose Days Forecasted: ",
-                                                                           c('Today'='Today',"7 Days"="Seven",
-                                                                             "14 Days"="Fourteen","21 Days"="Twenty-One",
-                                                                             "30 Days"="Thirty"),
-                                                                           selected = c("Seven"))
                                              ),
                                              
                                              
@@ -345,6 +331,8 @@ ui <- tagList(
                                    })
                                    ')),
                   
+                  tags$style(".small-box.bg-yellow { background-color: #FFFF00 !important; color: #000000 !important; }"),
+                  
                   tabsetPanel(id = "tabselected",
                               
                               
@@ -390,18 +378,36 @@ ui <- tagList(
                                 title = "MAJCOM Summary",
                                 
                                 fluidRow(
+                                  column(width = 6,
+                                         leafletOutput("BaseSummaryMap")
+                                         #plotlyOutput("SummaryTabChoro", height = 600, width = 'auto')
+                                  ),
+                                  column(width = 6,
+                                         tags$div(style="text-align:center;font-size: 22px; font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; color: black",
+                                                  "COVID-19 Installation Regional Risk Summary"),
+                                         br(),
+                                         fluidRow(
+                                           valueBoxOutput("GreenBases", width = 6),
+                                           valueBoxOutput("YellowBases", width = 6)
+                                         ),
+                                         fluidRow(
+                                           valueBoxOutput("OrangeBases", width = 6),
+                                           valueBoxOutput("RedBases", width = 6)
+                                         ),
+                                         column(width = 6,
+                                                actionLink("rskLvls", "Risk Levels")
+                                         ),
+                                         column(width = 6,
+                                                tags$a(href="https://globalepidemics.org/wp-content/uploads/2020/06/key_metrics_and_indicators_v4.pdf","Reference Framework",target = "_blank")
+                                         )
+                                         
+                                  )
+                                ),
                                   
-                                  box(plotlyOutput("SummaryTabChoro", height = 600, width = 'auto')),
-                                  box(plotOutput("HotSpot", height = 600))),
+                                  #box(plotOutput("HotSpot", height = 600))),
                                   box(
-                                      downloadButton('downloadData', 'Download Full Dataset'),
-                                      downloadButton('downloadFilteredData', 'Download Filtered Dataset (Table Above)'),
-                                      downloadButton('HotSpotData', 'Download Hotspot Dataset: 50 Mile Radius'),
-                                      downloadButton('HotSpotDataOneMile', 'Download Hotspot Dataset: Single County'),
-                                      downloadButton('MTFSummaryT', 'MTF Summary Table'),
-                                      downloadButton('MTFSummaryP', 'MTF Summary Plots (Click Once)'),
                                       
-                                      title = "Base Summary Projections",
+                                      title = "Base Summaries",
                                       solidHeader=T,
                                       align = "left",
                                       height = 900,
