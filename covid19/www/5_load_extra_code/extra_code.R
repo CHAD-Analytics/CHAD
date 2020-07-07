@@ -781,90 +781,90 @@ currCount = 0
 
 
 
-#convert cases and death dataframes to long format. Also add in new_cases in last 1, 3, and 30 days
-tempCases = CovidConfirmedCases %>% select(-State, -stateFIPS) %>%
-  reshape2::melt(id.var = c('CountyFIPS','County Name'), variable.name = 'date', value.name = "cumulative_cases") %>%
-  mutate(date = as.Date(str_replace(date, "X",""), format = "%m/%d/%y"), `County Name` = as.character(`County Name`)) %>%
-  distinct(CountyFIPS,date,.keep_all = TRUE)
-CasesGrowth <- tempCases %>% group_by(CountyFIPS) %>% arrange(CountyFIPS, date) %>%
-  dplyr::mutate(new_cases_1 = cumulative_cases - lag(cumulative_cases, 1), 
-                new_cases_3_days = cumulative_cases - lag(cumulative_cases,3),
-                new_cases_30_days = cumulative_cases - lag(cumulative_cases, 30),
-                case_growth = ifelse(is.nan(new_cases_3_days/(new_cases_30_days)), 0,
-                                     (new_cases_3_days/(new_cases_30_days))),
-                new_cases_7_days = cumulative_cases - lag(cumulative_cases,7),
-                new_cases_14_days = cumulative_cases - lag(cumulative_cases,14),
-                case_growth_week = ifelse(is.nan(new_cases_7_days/(new_cases_14_days - new_cases_7_days)), 0,
-                                          ifelse(is.infinite(new_cases_7_days/(new_cases_14_days  - new_cases_7_days)),0,
-                                                 new_cases_7_days/(new_cases_14_days  - new_cases_7_days)))) %>%
-  replace(is.na(.),0)
-
-tempDeaths = CovidDeaths %>% select(-State, -stateFIPS) %>%
-  reshape2::melt(id.var = c('CountyFIPS','County Name'), variable.name = 'date', value.name = "cumulative_deaths") %>%
-  mutate(date = as.Date(str_replace(date, "X",""), format = "%m/%d/%y"), `County Name` = as.character(`County Name`)) %>%
-  distinct(CountyFIPS,date,.keep_all = TRUE) %>% mutate(cumulative_deaths = ifelse(is.na(cumulative_deaths), 0, cumulative_deaths))
-
-# join Cases and deaths dataframes
-Growth = CasesGrowth %>% left_join(tempDeaths, by = c("CountyFIPS" = "CountyFIPS", "date" = "date", "County Name" = "County Name"))
-# deaths_1_days = lag(cumulative_deaths,1),
-# deaths_3_days = cumulative_deaths - lag(cumulative_deaths,3), 
-# deaths_10_days = cumulative_deaths - lag(cumulative_deaths,10)) 
-
-#Join case data with county population data
-Growth = Growth %>% left_join(CountyInfo %>% select(FIPS, Population), by = c("CountyFIPS" = "FIPS")) %>% 
-  mutate(Population = ifelse(is.na(Population), 0, Population),
-         cumulative_deaths = ifelse(is.na(cumulative_deaths), 0, cumulative_deaths))
-
-
-#######
-Growth = dplyr::filter(Growth, Population != 0)
-Growth <- Growth %>% mutate_if(is.numeric, function(x) ifelse(is.infinite(x), 0, x))
-
-#########
-
-# Function to fix 4-letter FIPS
-fix.fips <- function(column){
-  column <- str_pad(column, width=5, side="left", pad="0")
-  return(column)
-}
-# per capita calcs
-Growth = Growth %>% mutate(new_cases_1_pp = new_cases_1*100000/Population, new_cases_3_pp = new_cases_3_days*100000/Population,
-                           new_cases_30_pp = new_cases_30_days*100000/Population, cases_pp = cumulative_cases*100000/Population,
-                           new_cases_7_pp = new_cases_7_days*100000/Population, new_cases_14_pp = new_cases_14_days*100000/Population,
-                           deaths_pp = cumulative_deaths*100000/Population) %>% ungroup() %>%
-  mutate(CountyFIPS = fix.fips(CountyFIPS))
-
-# Convert cimd dataframe to long format and filter to within 50 miles of base
-rownames(cimd) = CountyInfo$FIPS
-cimd_long <- cimd %>% rownames_to_column(var= "FIPS")
-cimd_long <- cimd_long %>% gather(-c(FIPS), key = base, value = DistanceMiles) 
-Bases50 <- cimd_long %>% filter(DistanceMiles <= 50) %>% mutate(FIPS = fix.fips(FIPS))
-
-#test code
-# Bases50 %>% filter(base == 'Pentagon') %>% left_join(Growth, by = c("FIPS" = "CountyFIPS")) %>%filter(date == current_date)
-
-#join base data with county growth data. aggregate county data to base-radius level. also add back in the MAJCOM column 
-bases_radius <- Bases50 %>% left_join(Growth, by = c("FIPS" = "CountyFIPS")) %>% dplyr::group_by(base, date) %>% 
-  dplyr::summarise(cumulative_cases = sum(cumulative_cases),  new_cases_1 = sum(new_cases_1),
-                   new_cases_3_days = sum(new_cases_3_days),new_cases_7_days = sum(new_cases_7_days),
-                   new_cases_14_days = sum(new_cases_14_days),new_cases_30_days = sum(new_cases_30_days),
-                   cumulative_deaths = sum(cumulative_deaths), Population = sum(Population)
-  ) %>% 
-  mutate(cases_pp = cumulative_cases/Population,
-         new_cases_1_pp = new_cases_1/Population*100000, new_cases_3_pp = new_cases_3_days/Population*100000,
-         new_cases_7_pp = new_cases_7_days/Population*100000, new_cases_14_pp = new_cases_14_days/Population*100000,
-         new_cases_30_pp = new_cases_30_days/Population*100000, deaths_pp = cumulative_deaths/Population*100000,
-         case_growth = ifelse(is.nan(new_cases_3_pp/(new_cases_3_pp + new_cases_30_pp)), 0,
-                              ifelse(is.infinite(new_cases_3_pp/(new_cases_3_pp +new_cases_30_pp)),0,
-                                     new_cases_3_pp/(new_cases_3_pp +new_cases_30_pp))),
-         case_growth_week = ifelse(is.nan(new_cases_7_pp/(new_cases_14_pp - new_cases_7_pp)), 0,
-                                   ifelse(is.infinite(new_cases_7_pp/(new_cases_14_pp  - new_cases_7_pp)),0,
-                                          new_cases_7_pp/(new_cases_14_pp  - new_cases_7_pp)))
-  )
-
-bases_radius = bases_radius %>% left_join(AFBaseLocations %>% select(Base,Branch,Operational,'Major Command'), by = c("base" = "Base"))
-
-
+# #convert cases and death dataframes to long format. Also add in new_cases in last 1, 3, and 30 days
+# tempCases = CovidConfirmedCases %>% select(-State, -stateFIPS) %>%
+#   reshape2::melt(id.var = c('CountyFIPS','County Name'), variable.name = 'date', value.name = "cumulative_cases") %>%
+#   mutate(date = as.Date(str_replace(date, "X",""), format = "%m/%d/%y"), `County Name` = as.character(`County Name`)) %>%
+#   distinct(CountyFIPS,date,.keep_all = TRUE)
+# CasesGrowth <- tempCases %>% group_by(CountyFIPS) %>% arrange(CountyFIPS, date) %>%
+#   dplyr::mutate(new_cases_1 = cumulative_cases - lag(cumulative_cases, 1), 
+#                 new_cases_3_days = cumulative_cases - lag(cumulative_cases,3),
+#                 new_cases_30_days = cumulative_cases - lag(cumulative_cases, 30),
+#                 case_growth = ifelse(is.nan(new_cases_3_days/(new_cases_30_days)), 0,
+#                                      (new_cases_3_days/(new_cases_30_days))),
+#                 new_cases_7_days = cumulative_cases - lag(cumulative_cases,7),
+#                 new_cases_14_days = cumulative_cases - lag(cumulative_cases,14),
+#                 case_growth_week = ifelse(is.nan(new_cases_7_days/(new_cases_14_days - new_cases_7_days)), 0,
+#                                           ifelse(is.infinite(new_cases_7_days/(new_cases_14_days  - new_cases_7_days)),0,
+#                                                  new_cases_7_days/(new_cases_14_days  - new_cases_7_days)))) %>%
+#   replace(is.na(.),0)
+# 
+# tempDeaths = CovidDeaths %>% select(-State, -stateFIPS) %>%
+#   reshape2::melt(id.var = c('CountyFIPS','County Name'), variable.name = 'date', value.name = "cumulative_deaths") %>%
+#   mutate(date = as.Date(str_replace(date, "X",""), format = "%m/%d/%y"), `County Name` = as.character(`County Name`)) %>%
+#   distinct(CountyFIPS,date,.keep_all = TRUE) %>% mutate(cumulative_deaths = ifelse(is.na(cumulative_deaths), 0, cumulative_deaths))
+# 
+# # join Cases and deaths dataframes
+# Growth = CasesGrowth %>% left_join(tempDeaths, by = c("CountyFIPS" = "CountyFIPS", "date" = "date", "County Name" = "County Name"))
+# # deaths_1_days = lag(cumulative_deaths,1),
+# # deaths_3_days = cumulative_deaths - lag(cumulative_deaths,3), 
+# # deaths_10_days = cumulative_deaths - lag(cumulative_deaths,10)) 
+# 
+# #Join case data with county population data
+# Growth = Growth %>% left_join(CountyInfo %>% select(FIPS, Population), by = c("CountyFIPS" = "FIPS")) %>% 
+#   mutate(Population = ifelse(is.na(Population), 0, Population),
+#          cumulative_deaths = ifelse(is.na(cumulative_deaths), 0, cumulative_deaths))
+# 
+# 
+# #######
+# Growth = dplyr::filter(Growth, Population != 0)
+# Growth <- Growth %>% mutate_if(is.numeric, function(x) ifelse(is.infinite(x), 0, x))
+# 
+# #########
+# 
+# # Function to fix 4-letter FIPS
+# fix.fips <- function(column){
+#   column <- str_pad(column, width=5, side="left", pad="0")
+#   return(column)
+# }
+# # per capita calcs
+# Growth = Growth %>% mutate(new_cases_1_pp = new_cases_1*100000/Population, new_cases_3_pp = new_cases_3_days*100000/Population,
+#                            new_cases_30_pp = new_cases_30_days*100000/Population, cases_pp = cumulative_cases*100000/Population,
+#                            new_cases_7_pp = new_cases_7_days*100000/Population, new_cases_14_pp = new_cases_14_days*100000/Population,
+#                            deaths_pp = cumulative_deaths*100000/Population) %>% ungroup() %>%
+#   mutate(CountyFIPS = fix.fips(CountyFIPS))
+# 
+# # Convert cimd dataframe to long format and filter to within 50 miles of base
+# rownames(cimd) = CountyInfo$FIPS
+# cimd_long <- cimd %>% rownames_to_column(var= "FIPS")
+# cimd_long <- cimd_long %>% gather(-c(FIPS), key = base, value = DistanceMiles) 
+# Bases50 <- cimd_long %>% filter(DistanceMiles <= 50) %>% mutate(FIPS = fix.fips(FIPS))
+# 
+# #test code
+# # Bases50 %>% filter(base == 'Pentagon') %>% left_join(Growth, by = c("FIPS" = "CountyFIPS")) %>%filter(date == current_date)
+# 
+# #join base data with county growth data. aggregate county data to base-radius level. also add back in the MAJCOM column 
+# bases_radius <- Bases50 %>% left_join(Growth, by = c("FIPS" = "CountyFIPS")) %>% dplyr::group_by(base, date) %>% 
+#   dplyr::summarise(cumulative_cases = sum(cumulative_cases),  new_cases_1 = sum(new_cases_1),
+#                    new_cases_3_days = sum(new_cases_3_days),new_cases_7_days = sum(new_cases_7_days),
+#                    new_cases_14_days = sum(new_cases_14_days),new_cases_30_days = sum(new_cases_30_days),
+#                    cumulative_deaths = sum(cumulative_deaths), Population = sum(Population)
+#   ) %>% 
+#   mutate(cases_pp = cumulative_cases/Population,
+#          new_cases_1_pp = new_cases_1/Population*100000, new_cases_3_pp = new_cases_3_days/Population*100000,
+#          new_cases_7_pp = new_cases_7_days/Population*100000, new_cases_14_pp = new_cases_14_days/Population*100000,
+#          new_cases_30_pp = new_cases_30_days/Population*100000, deaths_pp = cumulative_deaths/Population*100000,
+#          case_growth = ifelse(is.nan(new_cases_3_pp/(new_cases_3_pp + new_cases_30_pp)), 0,
+#                               ifelse(is.infinite(new_cases_3_pp/(new_cases_3_pp +new_cases_30_pp)),0,
+#                                      new_cases_3_pp/(new_cases_3_pp +new_cases_30_pp))),
+#          case_growth_week = ifelse(is.nan(new_cases_7_pp/(new_cases_14_pp - new_cases_7_pp)), 0,
+#                                    ifelse(is.infinite(new_cases_7_pp/(new_cases_14_pp  - new_cases_7_pp)),0,
+#                                           new_cases_7_pp/(new_cases_14_pp  - new_cases_7_pp)))
+#   )
+# 
+# bases_radius = bases_radius %>% left_join(AFBaseLocations %>% select(Base,Branch,Operational,'Major Command'), by = c("base" = "Base"))
+# 
+# 
 
 ###############################################################################################
 ############################### Establish Choropleth Plot for Local ###########################
