@@ -7,12 +7,13 @@ was initially designed and developed by March 2020 graduates of the Department o
 
 **Current**
 
-CHAD development and usage has been adopted by HAF/A9, and is still being supported by AFIT. Majority of MAJCOMs, along with Air Staff have been using CHAD daily to provide critical up-to-date information to senior leaders. Recent updates have allowed the inclusion of Army, Navy, and Marine installations making it a Joint force tool.
+CHAD development and usage has been adopted by HAF/A9, and is still being supported by AFIT. Majority of MAJCOMs, along with Air Staff have been using CHAD to provide critical up-to-date information to senior leaders. Recent updates have allowed the inclusion of Army, Navy, and Marine installations making it a Joint force tool.
 
 The current team at HAF/A9 maintaining and developing CHAD consists of: 
 * Maj Taylor Leonard
 * Capt Andrew Keith
-* 1st Lt Garrett Alarcon
+* Capt Garrett Alarcon
+* Capt Matthew Burzenski
 
 Please contact the team if you any questions regarding CHAD. Alternatively if you spot any issues, or have a request for an additional feature please use the link below:
 
