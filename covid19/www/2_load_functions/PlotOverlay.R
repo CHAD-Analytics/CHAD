@@ -227,7 +227,7 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
         OverlayData<-rbind(OverlayData,Torch_State)        
                 
         Army_State<-subset(Army_State, select=c(ForecastDate,Infected,LInfected,UInfected))    
-        Army_State$Date <- as.Date(Army_State$ForecastDate, "%Y-%m-%d")
+        Army_State$ForecastDate <- as.Date(Army_State$ForecastDate, "%m/%d/%Y")
         Army_State<-dplyr::filter(Army_State,ForecastDate >= Sys.Date())
         Army_State<-aggregate(data.frame(Army_State)[,sapply(data.frame(Army_State),is.numeric)],data.frame(Army_State)["ForecastDate"],sum)
         Army_State<-Army_State[1:DaysProjected,]
@@ -507,7 +507,7 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
       OverlayData<-rbind(OverlayData,Torch_State)        
       
       Army_State<-subset(Army_State, select=c(ForecastDate,Infected,LInfected,UInfected))    
-      Army_State$Date <- as.Date(Army_State$ForecastDate, "%Y-%m-%d")
+      Army_State$ForecastDate <- as.Date(Army_State$ForecastDate, "%m/%d/%Y")
       Army_State<-dplyr::filter(Army_State,ForecastDate >= Sys.Date())
       Army_State<-aggregate(data.frame(Army_State)[,sapply(data.frame(Army_State),is.numeric)],data.frame(Army_State)["ForecastDate"],sum)
       Army_State<-Army_State[1:DaysProjected,]
@@ -744,7 +744,7 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
       OverlayData<-rbind(OverlayData,Torch_State)        
 
       Army_State<-subset(Army_State, select=c(ForecastDate,Infected,LInfected,UInfected))    
-      Army_State$Date <- as.Date(Army_State$ForecastDate, "%Y-%m-%d")
+      Army_State$ForecastDate <- as.Date(Army_State$ForecastDate, "%m/%d/%Y")
       Army_State<-dplyr::filter(Army_State,ForecastDate >= Sys.Date())
       Army_State<-aggregate(data.frame(Army_State)[,sapply(data.frame(Army_State),is.numeric)],data.frame(Army_State)["ForecastDate"],sum)
       Army_State<-Army_State[1:DaysProjected,]
@@ -968,7 +968,7 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
       OverlayData<-rbind(OverlayData,Torch_State)       
       
       Army_State<-subset(Army_State, select=c(ForecastDate,Fatalities,LFatalities,UFatalities))    
-      Army_State$Date <- as.Date(Army_State$ForecastDate, "%Y-%m-%d")
+      Army_State$ForecastDate <- as.Date(Army_State$ForecastDate, "%m/%d/%Y")
       Army_State<-dplyr::filter(Army_State,ForecastDate >= Sys.Date())
       Army_State<-aggregate(data.frame(Army_State)[,sapply(data.frame(Army_State),is.numeric)],data.frame(Army_State)["ForecastDate"],sum)
       Army_State<-Army_State[1:DaysProjected,]
