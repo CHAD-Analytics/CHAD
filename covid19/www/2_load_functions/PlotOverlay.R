@@ -15,18 +15,18 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
   # ##Uncomment to test plot function without running the app
   # i<-80
   # ChosenBase = AFBaseLocations$Base[i]
-  CONUSSelect <- "CONUS"
-  ChosenBase = "Air Force Plant 42"
+  # CONUSSelect <- "CONUS"
+  # ChosenBase = "Air Force Plant 42"
   #CONUSSelect <- "OCONUS"
   #ChosenBase = "Andersen AFB"
-  SocialDistance = 15
-  DaysProjected = 30
-  HospitalInfo$DistanceMiles = himd[,as.character(ChosenBase)]
-  IncludedHospitals<-dplyr::filter(HospitalInfo, (DistanceMiles <= 50))
-  IncludedHospitals<-dplyr::filter(IncludedHospitals, (TYPE=="GENERAL ACUTE CARE") | (TYPE=="CRITICAL ACCESS"))
-  CountyInfo$DistanceMiles = cimd[,as.character(ChosenBase)]
-  value = NULL
-  IncludedCounties<-GetCounties(ChosenBase,50,value,value)
+  # SocialDistance = 15
+  # DaysProjected = 30
+  # HospitalInfo$DistanceMiles = himd[,as.character(ChosenBase)]
+  # IncludedHospitals<-dplyr::filter(HospitalInfo, (DistanceMiles <= 50))
+  # IncludedHospitals<-dplyr::filter(IncludedHospitals, (TYPE=="GENERAL ACUTE CARE") | (TYPE=="CRITICAL ACCESS"))
+  # CountyInfo$DistanceMiles = cimd[,as.character(ChosenBase)]
+  # value = NULL
+  # IncludedCounties<-GetCounties(ChosenBase,50,value,value)
   # ###
   # ###
   
