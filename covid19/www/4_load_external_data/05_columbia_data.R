@@ -17,10 +17,10 @@
 #3) 5_2xhold - This scenario assumes a weekly 5% increase in contact rates for two weeks. The following week, the reproduction number R is set to 1 for the remainder of the projection.
 #4) season4 - This scenario assumes that current levels of social mixing will remain unchanged in the future. In addition, it assumes a seasonal decrease in disease transmission leading to a weekly 4% decrease in reproductive number R(t).
 
-CUM1 <-vroom::vroom("https://raw.githubusercontent.com/shaman-lab/COVID-19Projection/master/Projection_June21/bed_5_1x.csv")
-CUM2 <-vroom::vroom("https://raw.githubusercontent.com/shaman-lab/COVID-19Projection/master/Projection_June21/bed_5_2xhold.csv")
-CUM3 <-vroom::vroom("https://raw.githubusercontent.com/shaman-lab/COVID-19Projection/master/Projection_June21/bed_nochange.csv")
-CUM4 <-vroom::vroom("https://raw.githubusercontent.com/shaman-lab/COVID-19Projection/master/Projection_June21/bed_season4.csv")
+CUM1 <-vroom::vroom("https://raw.githubusercontent.com/shaman-lab/COVID-19Projection/master/Projection_June28/bed_5_1x.csv")
+CUM2 <-vroom::vroom("https://raw.githubusercontent.com/shaman-lab/COVID-19Projection/master/Projection_June28/bed_5_2xhold.csv")
+CUM3 <-vroom::vroom("https://raw.githubusercontent.com/shaman-lab/COVID-19Projection/master/Projection_June28/bed_nochange.csv")
+CUM4 <-vroom::vroom("https://raw.githubusercontent.com/shaman-lab/COVID-19Projection/master/Projection_June28/bed_season4.csv")
 
 # CUM1 <-vroom::vroom("www/4_load_external_data/data_files/bed_80contact1x10p.csv")
 # CUM1 <-room::vroom("www/4_load_external_data/data_files/bed_80contact1x5p.csv")

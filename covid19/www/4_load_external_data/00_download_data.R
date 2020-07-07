@@ -67,19 +67,32 @@ if(test_date < Sys.Date()) {
   
   ###Global case forecasts are coming from IHME/LANL/YYG/CHIME
   ###IHME is the most difficult to translate because they don't have a separate country column
+  #R.utils::downloadFile("https://covid-19.bsvgateway.org/forecast/forecast_metadata.json",
+  #                      filename = "www/4_load_external_data/data_files/forecast_metadata.json",
+  #                      overwrite = T)
   
-  R.utils::downloadFile("https://covid-19.bsvgateway.org/forecast/forecast_metadata.json",
-                        filename = "www/4_load_external_data/data_files/forecast_metadata.json",
-                        overwrite = T)
+  #bsv_metadata<-jsonlite::fromJSON("www/4_load_external_data/data_files/forecast_metadata.json")
   
-  bsv_metadata<-jsonlite::fromJSON("www/4_load_external_data/data_files/forecast_metadata.json")
+  #Store metadata link
+  URL_metadata <- "https://covid-19.bsvgateway.org/forecast/forecast_metadata.json"
+  
+  #Create temp file
+  temp <- tempfile()
+  
+  #Download the json file and store in temp
+  download.file(URL_metadata, temp)
+  
+  #pull the json attributes
+  LANL_metadata <- fromJSON(temp)
+  unlink(temp)
+  Date <- LANL_metadata$us$most_recent_date
 
   Front<-'https://covid-19.bsvgateway.org/forecast/us/files/'
   Middle1<-'/confirmed/'
   End1<-'_confirmed_quantiles_us_website.csv'
   Middle2<-'/deaths/'
   End2<-'_deaths_quantiles_us_website.csv'  
-  Date<- "2020-06-17" #bsv_metadata$us$most_recent_date
+  #Date<- "2020-06-17" #bsv_metadata$us$most_recent_date
   ReadIn<-paste0(Front,Date,Middle1,Date,End1)
   LANL_file_name1 = paste0("www/4_load_external_data/data_files/",Date,End1)
   R.utils::downloadFile(ReadIn,
@@ -96,7 +109,7 @@ if(test_date < Sys.Date()) {
   End1<-'_confirmed_quantiles_global_website.csv'
   Middle2<-'/deaths/'
   End2<-'_deaths_quantiles_global_website.csv'  
-  Date<- "2020-06-17" #bsv_metadata$us$most_recent_date
+  #Date<- "2020-06-17" #bsv_metadata$us$most_recent_date
   ReadIn<-paste0(Front,Date,Middle1,Date,End1)
   LANL_file_name3 = paste0("www/4_load_external_data/data_files/",Date,End1)
   R.utils::downloadFile(ReadIn,
@@ -110,15 +123,27 @@ if(test_date < Sys.Date()) {
     
 } else {
   
-  bsv_metadata<-jsonlite::fromJSON("www/4_load_external_data/data_files/forecast_metadata.json")
+  #bsv_metadata<-jsonlite::fromJSON("www/4_load_external_data/data_files/forecast_metadata.json")
+  
+  #Store metadata link
+  URL_metadata <- "https://covid-19.bsvgateway.org/forecast/forecast_metadata.json"
+  #Create temp file
+  temp <- tempfile()
+  #Download the json file and store in temp
+  download.file(URL_metadata, temp)
+  #pull the json attributes
+  LANL_metadata <- fromJSON(temp)
+  unlink(temp)
+  Date <- LANL_metadata$us$most_recent_date
+  
   End1<-'_confirmed_quantiles_us_website.csv'
   End2<-'_deaths_quantiles_us_website.csv'    
-  Date<- "2020-06-17" #bsv_metadata$us$most_recent_date
+  #Date<- "2020-06-17" #bsv_metadata$us$most_recent_date
   LANL_file_name1 = paste0("www/4_load_external_data/data_files/",Date,End1)
   LANL_file_name2 = paste0("www/4_load_external_data/data_files/",Date,End2)  
   End1<-'_confirmed_quantiles_global_website.csv'
   End2<-'_deaths_quantiles_global_website.csv'    
-  Date<-bsv_metadata$us$most_recent_date
+  #Date<-bsv_metadata$us$most_recent_date
   LANL_file_name3 = paste0("www/4_load_external_data/data_files/",Date,End1)
   LANL_file_name4 = paste0("www/4_load_external_data/data_files/",Date,End2)    
   
