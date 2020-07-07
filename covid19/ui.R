@@ -240,7 +240,6 @@ ui <- tagList(
                                                                                        "University of Texas"="UT",
                                                                                        "Columbia University: Current contact rates remain unchanged"="CUM1"),
                                                                                      selected = c("IHME","CAA","Torch")),
-
                                                                   actionLink("selectall1","Select All"),
                                                                   
                                                                   checkboxGroupInput("AdditionalModels","Additional Forecasting Model(s): ",
@@ -381,6 +380,7 @@ ui <- tagList(
                                   column(width = 6,
                                          leafletOutput("BaseSummaryMap")
                                          #plotlyOutput("SummaryTabChoro", height = 600, width = 'auto')
+
                                   ),
                                   column(width = 6,
                                          tags$div(style="text-align:center;font-size: 22px; font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; color: black",
@@ -405,10 +405,14 @@ ui <- tagList(
                                          
                                   )
                                 ),
-                                  
                                   #box(plotOutput("HotSpot", height = 600))),
                                   box(
-                                      
+                                      downloadButton('downloadData', 'Download Full Dataset'),
+                                      downloadButton('downloadFilteredData', 'Download Filtered Dataset (Table Above)'),
+                                      downloadButton('HotSpotData', 'Download Hotspot Dataset: 50 Mile Radius'),
+                                      downloadButton('HotSpotDataOneMile', 'Download Hotspot Dataset: Single County'),
+                                      downloadButton('MTFSummaryT', 'MTF Summary Table'),
+                                      downloadButton('MTFSummaryP', 'MTF Summary Plots'),
                                       title = "Base Summaries",
                                       solidHeader=T,
                                       align = "left",
@@ -480,21 +484,21 @@ ui <- tagList(
                                 title = "Current Local Health",
                                 
                                 fluidRow(
-                                  valueBoxOutput("CovidCases", width = 3),
-                                  valueBoxOutput("CaseChangeLocal", width = 3),
-                                  valueBoxOutput("CasesPer1000", width = 3),
-                                  valueBoxOutput("HospitalUtilization", width = 3)
-                                  # valueBoxOutput("Est_Active", width = 2),
-                                  # valueBoxOutput("Est_Testing", width = 2)                                  
+                                  valueBoxOutput("CovidCases", width = 2),
+                                  valueBoxOutput("CaseChangeLocal", width = 2),
+                                  valueBoxOutput("CasesPer1000", width = 2),
+                                  valueBoxOutput("HospitalUtilization", width = 2),
+                                  valueBoxOutput("Est_Active", width = 2),
+                                  valueBoxOutput("Est_Testing", width = 2)                                  
                                 ),
                                 
                                 fluidRow(
-                                  valueBoxOutput("LocalCovidDeaths", width = 3),
-                                  valueBoxOutput("DeathChangeLocal", width = 3),
-                                  valueBoxOutput("CaseDbRate", width = 3),
-                                  valueBoxOutput("Rt_Estimate", width = 3)
-                                  # valueBoxOutput("Est_Recover", width = 2),
-                                  # valueBoxOutput("Est_TestRate", width = 2)                                                                    
+                                  valueBoxOutput("LocalCovidDeaths", width = 2),
+                                  valueBoxOutput("DeathChangeLocal", width = 2),
+                                  valueBoxOutput("CaseDbRate", width = 2),
+                                  valueBoxOutput("Rt_Estimate", width = 2),
+                                  valueBoxOutput("Est_Recover", width = 2),
+                                  valueBoxOutput("Est_TestRate", width = 2)                                                                    
                                 ),
                                 
                                 fluidRow( 

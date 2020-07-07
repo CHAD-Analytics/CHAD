@@ -188,28 +188,28 @@ server <- function(input, output,session) {
   
   output$Est_Active <- renderValueBox({
     #MyCounties<-GetCounties(input$Base,input$Radius)
-    valueBox(paste(Estimate_ActiveCases(input$CONUSP,input$Base,MyCounties())),
+    valueBox(comma(Estimate_ActiveCases(input$CONUSP,input$Base,MyCounties())),
              subtitle = "Est Active Cases",
              color = "navy")
   })
   
   output$Est_Recover <- renderValueBox({
     #MyCounties<-GetCounties(input$Base,input$Radius)
-    valueBox(paste(Estimate_Recovered(input$CONUSP,input$Base,MyCounties())),
+    valueBox(comma(Estimate_Recovered(input$CONUSP,input$Base,MyCounties())),
              subtitle = "Est Recovered Cases",
              color = "navy")
   })  
   
   output$Est_Testing <- renderValueBox({
     #MyCounties<-GetCounties(input$Base,input$Radius)
-    valueBox(paste(Estimate_Testing(input$CONUSP,input$Base,MyCounties())),
+    valueBox(comma(Estimate_Testing(input$CONUSP,input$Base,MyCounties())),
              subtitle = "Estimated Total Tests",
              color = "navy")
   })
   
   output$Est_TestRate <- renderValueBox({
     #MyCounties<-GetCounties(input$Base,input$Radius)
-    valueBox(paste(Estimate_TestRate(input$CONUSP,input$Base,MyCounties())),
+    valueBox(comma(Estimate_TestRate(input$CONUSP,input$Base,MyCounties())),
              subtitle = "Est Testing Rate",
              color = "navy")
   })
@@ -755,9 +755,9 @@ server <- function(input, output,session) {
           if ("DTRA3" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"DTRA3")}          
           if ("LANL" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"LANL")}
           if ("UT" %in% input$ModelSelectionValue1){ModelID<-cbind(ModelID,"UT")}
-          if ("CUM1" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CUM1")}
+          if ("CUM1" %in% input$ModelSelectionValue1){ModelID<-cbind(ModelID,"CUM1")}
           if ("CUM2" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CUM2")}
-          if ("CUM3" %in% input$ModelSelectionValue1){ModelID<-cbind(ModelID,"CUM3")}
+          if ("CUM3" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CUM3")}
           if ("CUM4" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CUM4")}
       } else if (input$CONUSP == "OCONUS"){
           ModelID <- "Past Data"
