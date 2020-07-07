@@ -1283,7 +1283,7 @@ server <- function(input, output,session) {
     baseCount = nrow(baseCount)
     
     valueBox(paste(baseCount),
-             subtitle = "Level 4",
+             subtitle = "Level 4: 25+ Cases per 100,000 People",
              color = "red")
   })
   
@@ -1315,7 +1315,7 @@ server <- function(input, output,session) {
     baseCount = nrow(baseCount)
     
     valueBox(paste(baseCount),
-             subtitle = "Level 3",
+             subtitle = "Level 3: 10-24 Cases per 100,000 People",
              color = "orange")
   })
   
@@ -1347,7 +1347,7 @@ server <- function(input, output,session) {
     baseCount = nrow(baseCount)
     
     valueBox(paste(baseCount),
-             subtitle = "Level 2",
+             subtitle = "Level 2: 1-9 Cases per 100,000 People",
              color = "yellow")
   })
   
@@ -1379,7 +1379,7 @@ server <- function(input, output,session) {
     baseCount = nrow(baseCount)
     
     valueBox(paste(baseCount),
-             subtitle = "Level 1",
+             subtitle = "Level 1: < 1 Case per 100,000 People",
              color = "green")
   })
   

@@ -394,11 +394,13 @@ ui <- tagList(
                                            valueBoxOutput("OrangeBases", width = 6),
                                            valueBoxOutput("RedBases", width = 6)
                                          ),
+                                         br(),
                                          column(width = 6,
-                                                actionLink("rskLvls", "Risk Levels")
+                                                actionLink("rskLvls", "Risk Levels", style = "text-align:center;font-size: 22px; font-family:'Helvetica Neue',Helvetica,Arial,sans-serif")
                                          ),
                                          column(width = 6,
-                                                tags$a(href="https://globalepidemics.org/wp-content/uploads/2020/06/key_metrics_and_indicators_v4.pdf","Reference Framework",target = "_blank")
+                                                tags$div(style="text-align:center;font-size: 22px; font-family:'Helvetica Neue',Helvetica,Arial,sans-serif",
+                                                tags$a(href="https://globalepidemics.org/wp-content/uploads/2020/06/key_metrics_and_indicators_v4.pdf","Reference Framework",target = "_blank"))
                                          )
                                          
                                   )
