@@ -53,6 +53,6 @@ Estimate_Recovered <- function(CONUSSelect,ChosenBase,IncludedCounties){
   #   }
   # }  
 
-  Final <- CumRecovered  
+  Final <- CRec  
   
 }
