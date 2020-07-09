@@ -29,7 +29,7 @@ Estimate_Recovered <- function(CONUSSelect,ChosenBase,IncludedCounties){
     #Estimate recovered from cases and deaths
     DailyCases = CumDailyCovid[2:length(CumDailyCovid)] - CumDailyCovid[1:(length(CumDailyCovid)-1)]
     DailyDeaths = CumDailyDeaths[2:length(CumDailyDeaths)] - CumDailyDeaths[1:(length(CumDailyDeaths)-1)]
-    DailyRecovered = DailyCases[1:(length(CumDailyCovid)-5)] - DailyDeaths[5:length(DailyDeaths)]
+    DailyRecovered = DailyCases[1:(length(CumDailyCovid)-14)] - DailyDeaths[5:(length(DailyDeaths)-9)]
     CumRecovered = cumsum(DailyRecovered)
     cumcount<-nrow(as.data.frame(CumRecovered))
     CRec <- CumRecovered[cumcount]

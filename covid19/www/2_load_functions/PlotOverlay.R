@@ -34,6 +34,9 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
   BaseState<-dplyr::filter(AFBaseLocations, Base == toString(ChosenBase))
   if (CONUSSelect == "CONUS"){
       IHME_State <- dplyr::filter(IHME_Model, State == toString(BaseState$State[1]))
+      IHME_State2 <- dplyr::filter(IHME_Model2, State == toString(BaseState$State[1]))
+      IHME_State3 <- dplyr::filter(IHME_Model3, State == toString(BaseState$State[1]))
+      IHME_StateSum <- dplyr::filter(IHME_Summary, State == toString(BaseState$State[1]))      
       YYG_State <- dplyr::filter(YYG_ModelU, region == toString(BaseState$State[1])) 
       hospCounty <- subset(HospUtlzCounty, fips %in% IncludedCounties$FIPS)
       TTBCounty <- sum(IncludedHospitals$BEDS)
@@ -47,13 +50,22 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
   } else {
     if (BaseState$Country[1] == "South Korea"){
       IHME_State <- dplyr::filter(IHME_Model, location_name == "Republic of Korea")
+      IHME_State2 <- dplyr::filter(IHME_Model2, location_name == "Republic of Korea")
+      IHME_State3 <- dplyr::filter(IHME_Model3, location_name == "Republic of Korea")    
+      IHME_StateSum <- dplyr::filter(IHME_Summary, location_name == "Republic of Korea")          
     } else {
       IHME_State <- dplyr::filter(IHME_Model, location_name == toString(BaseState$"State Name"[1]))   
       if (nrow(IHME_State)==0){
         IHME_State <- dplyr::filter(IHME_Model, location_name == toString(BaseState$County[1]))   
+        IHME_State2 <- dplyr::filter(IHME_Model2, location_name == toString(BaseState$County[1]))   
+        IHME_State3 <- dplyr::filter(IHME_Model3, location_name == toString(BaseState$County[1]))   
+        IHME_StateSum <- dplyr::filter(IHME_Summary, location_name == toString(BaseState$County[1]))           
       } 
       if (nrow(IHME_State)==0) {
         IHME_State <- dplyr::filter(IHME_Model, location_name == toString(BaseState$Country[1]))         
+        IHME_State2 <- dplyr::filter(IHME_Model2, location_name == toString(BaseState$Country[1]))         
+        IHME_State3 <- dplyr::filter(IHME_Model3, location_name == toString(BaseState$Country[1]))   
+        IHME_StateSum <- dplyr::filter(IHME_Summary, location_name == toString(BaseState$County[1]))           
       }  
     }
       YYG_State <- dplyr::filter(YYG_ModelG, country == toString(BaseState$Country[1])) 
@@ -151,6 +163,24 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
       colnames(IHME_Data)<-c("ForecastDate", "Expected Hospitalizations", "Lower Estimate","Upper Estimate")
       IHME_Data$ID<-rep("IHME",nrow(IHME_Data))    
       OverlayData<-rbind(OverlayData,IHME_Data)
+      
+      IHME_Region2 <- IHME_State2
+      IHME_Region2$est_infections_mean = round(IHME_State2$est_infections_mean*HRate*PopRatio)
+      IHME_Region2$est_infections_lower = round(IHME_State2$est_infections_lower*HRate*PopRatio)
+      IHME_Region2$est_infections_upper = round(IHME_State2$est_infections_upper*HRate*PopRatio)
+      IHME_Data2<-data.frame(IHME_Region2$date,IHME_Region2$est_infections_mean, IHME_Region2$est_infections_lower, IHME_Region2$est_infections_upper)
+      colnames(IHME_Data2)<-c("ForecastDate", "Expected Hospitalizations", "Lower Estimate","Upper Estimate")
+      IHME_Data2$ID<-rep("IHME-Best",nrow(IHME_Data2))    
+      OverlayData<-rbind(OverlayData,IHME_Data2)
+      
+      IHME_Region3 <- IHME_State3
+      IHME_Region3$est_infections_mean = round(IHME_State3$est_infections_mean*HRate*PopRatio)
+      IHME_Region3$est_infections_lower = round(IHME_State3$est_infections_lower*HRate*PopRatio)
+      IHME_Region3$est_infections_upper = round(IHME_State3$est_infections_upper*HRate*PopRatio)
+      IHME_Data3<-data.frame(IHME_Region3$date,IHME_Region3$est_infections_mean, IHME_Region3$est_infections_lower, IHME_Region3$est_infections_upper)
+      colnames(IHME_Data3)<-c("ForecastDate", "Expected Hospitalizations", "Lower Estimate","Upper Estimate")
+      IHME_Data3$ID<-rep("IHME-Worse",nrow(IHME_Data3))    
+      OverlayData<-rbind(OverlayData,IHME_Data3)      
     }            
     
     if (nrow(YYG_State) !=0 ) {        
@@ -348,6 +378,7 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
     totalUsedBeds <- sum(hospCounty$bedsUsed)
     baseUtlz <- totalUsedBeds/TotalBeds
     bcap = TotalBeds * (1-baseUtlz)
+    IHMEBed<-round(IHME_StateSum$all_bed_capacity*PopRatio)
     
     projections <-  ggplot(OverlayData, aes(x=ForecastDate, y=`Expected Hospitalizations`, color = ID, fill = ID, linetype = ID)) +
       geom_line(aes(linetype = ID, color = ID)) + 
@@ -375,8 +406,9 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
     
     if (RedLine == "ShowLine"){
       projections = projections + geom_hline(aes(yintercept = bcap,linetype = "Estimated COVID Patient Bed Capacity - AHA"),colour = "red")
+      projections = projections + geom_hline(aes(yintercept = IHMEBed,linetype = "Estimated Hospital Bed Capacity - IHME"),colour = "green")      
       if (CONUSSelect == "CONUS"){
-        projections = projections + geom_hline(aes(yintercept = Torch_HospAvail,linetype = "Est COVID Patient Bed Capacity - Torch Insight"),colour = "blue")
+        projections = projections + geom_hline(aes(yintercept = Torch_HospAvail,linetype = "Est Hospital Bed Capacity - Torch Insight"),colour = "blue")
       }
     }
     
@@ -442,6 +474,24 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
 
       IHME_Data$ID<-rep("IHME",nrow(IHME_Data))    
       OverlayData<-rbind(OverlayData,IHME_Data)
+      
+      IHME_Region2 <- IHME_State2
+      IHME_Region2$est_infections_mean = round(IHME_State2$est_infections_mean*ICRate*PopRatio)
+      IHME_Region2$est_infections_lower = round(IHME_State2$est_infections_lower*ICRate*PopRatio)
+      IHME_Region2$est_infections_upper = round(IHME_State2$est_infections_upper*ICRate*PopRatio)
+      IHME_Data2<-data.frame(IHME_Region2$date,IHME_Region2$est_infections_mean, IHME_Region2$est_infections_lower, IHME_Region2$est_infections_upper)
+      colnames(IHME_Data2)<-c("ForecastDate", "Expected ICU Patients", "Lower Estimate","Upper Estimate")
+      IHME_Data2$ID<-rep("IHME-Best",nrow(IHME_Data2))    
+      OverlayData<-rbind(OverlayData,IHME_Data2)
+      
+      IHME_Region3 <- IHME_State3
+      IHME_Region3$est_infections_mean = round(IHME_State3$est_infections_mean*ICRate*PopRatio)
+      IHME_Region3$est_infections_lower = round(IHME_State3$est_infections_lower*ICRate*PopRatio)
+      IHME_Region3$est_infections_upper = round(IHME_State3$est_infections_upper*ICRate*PopRatio)
+      IHME_Data3<-data.frame(IHME_Region3$date,IHME_Region3$est_infections_mean, IHME_Region3$est_infections_lower, IHME_Region3$est_infections_upper)
+      colnames(IHME_Data3)<-c("ForecastDate", "Expected ICU Patients", "Lower Estimate","Upper Estimate")
+      IHME_Data3$ID<-rep("IHME-Worse",nrow(IHME_Data3))    
+      OverlayData<-rbind(OverlayData,IHME_Data3)      
     }            
 
     
@@ -602,6 +652,8 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
     #totalUsedBeds <- sum(hospCounty$bedsUsed)
     #baseUtlz <- totalUsedBeds/TotalBeds
     #bcap = TotalBeds * (1-baseUtlz)
+    
+    IHMEICU<-round(IHME_StateSum$icu_bed_capacity*PopRatio)
 
     projections <-  ggplot(OverlayData, aes(x=ForecastDate, y=`Expected ICU Patients`, color = ID, fill = ID, linetype = ID)) +
       geom_line(aes(linetype = ID, color = ID)) + 
@@ -622,10 +674,11 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
       scale_x_date(date_breaks = "1 week")+
       labs(color = "ID")
     
-    if (CONUSSelect == "CONUS"){
-      if (RedLine == "ShowLine"){
-          projections = projections + geom_hline(aes(yintercept = Torch_ICUAvail,linetype = "Estimated COVID ICU Patient Bed Capacity"),colour = "blue")
-      }
+    if (RedLine == "ShowLine"){
+        projections = projections + geom_hline(aes(yintercept = IHMEICU,linetype = "Estimated Hospital Bed Capacity - IHME"),colour = "green")      
+        if (CONUSSelect == "CONUS"){
+            projections = projections + geom_hline(aes(yintercept = Torch_ICUAvail,linetype = "Estimated COVID ICU Patient Bed Capacity"),colour = "blue")
+        }
     }
 
     projections <- ggplotly(projections)
@@ -669,9 +722,9 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
     #IHME has their own ICU data
     if (nrow(IHME_State) !=0 ) {
       IHME_Region <- IHME_State
-      IHME_Region$newICU_mean = round(IHME_State$InvVen_mean*PopRatio)
-      IHME_Region$newICU_lower = round(IHME_State$InvVen_lower*PopRatio)
-      IHME_Region$newICU_upper = round(IHME_State$InvVen_upper*PopRatio)
+      IHME_Region$InvVen_mean = round(IHME_State$InvVen_mean*PopRatio)
+      IHME_Region$InvVen_lower = round(IHME_State$InvVen_lower*PopRatio)
+      IHME_Region$InvVen_upper = round(IHME_State$InvVen_upper*PopRatio)
       IHME_Data<-data.frame(IHME_Region$date,IHME_Region$InvVen_mean, IHME_Region$InvVen_lower, IHME_Region$InvVen_upper)
       colnames(IHME_Data)<-c("ForecastDate", "Expected Ventilator Patients", "Lower Estimate","Upper Estimate")
       
@@ -680,6 +733,24 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
       
       IHME_Data$ID<-rep("IHME",nrow(IHME_Data))    
       OverlayData<-rbind(OverlayData,IHME_Data)
+      
+      IHME_Region2 <- IHME_State2
+      IHME_Region2$est_infections_mean = round(IHME_State2$est_infections_mean*VCRate*PopRatio)
+      IHME_Region2$est_infections_lower = round(IHME_State2$est_infections_lower*VCRate*PopRatio)
+      IHME_Region2$est_infections_upper = round(IHME_State2$est_infections_upper*VCRate*PopRatio)
+      IHME_Data2<-data.frame(IHME_Region2$date,IHME_Region2$est_infections_mean, IHME_Region2$est_infections_lower, IHME_Region2$est_infections_upper)
+      colnames(IHME_Data2)<-c("ForecastDate", "Expected Ventilator Patients", "Lower Estimate","Upper Estimate")
+      IHME_Data2$ID<-rep("IHME-Best",nrow(IHME_Data2))    
+      OverlayData<-rbind(OverlayData,IHME_Data2)
+      
+      IHME_Region3 <- IHME_State3
+      IHME_Region3$est_infections_mean = round(IHME_State3$est_infections_mean*VCRate*PopRatio)
+      IHME_Region3$est_infections_lower = round(IHME_State3$est_infections_lower*VCRate*PopRatio)
+      IHME_Region3$est_infections_upper = round(IHME_State3$est_infections_upper*VCRate*PopRatio)
+      IHME_Data3<-data.frame(IHME_Region3$date,IHME_Region3$est_infections_mean, IHME_Region3$est_infections_lower, IHME_Region3$est_infections_upper)
+      colnames(IHME_Data3)<-c("ForecastDate", "Expected Ventilator Patients", "Lower Estimate","Upper Estimate")
+      IHME_Data3$ID<-rep("IHME-Worse",nrow(IHME_Data3))    
+      OverlayData<-rbind(OverlayData,IHME_Data3)      
     }            
     
     currHosp = HistoricalData[nrow(HistoricalData),2]
@@ -896,13 +967,31 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
     if (nrow(IHME_State) !=0 ) {
       # Apply ratio's to IHME data
       IHME_Region <- IHME_State
-      IHME_Region$deaths_mean = round(IHME_State$totdea_mean*PopRatio)
-      IHME_Region$deaths_lower = round(IHME_State$totdea_lower*PopRatio)
-      IHME_Region$deaths_upper = round(IHME_State$totdea_upper*PopRatio)
-      IHME_Data<-data.frame(IHME_Region$date,IHME_Region$deaths_mean, IHME_Region$deaths_lower, IHME_Region$deaths_upper)
+      IHME_Region$totdea_mean = round(IHME_State$totdea_mean*PopRatio)
+      IHME_Region$totdea_lower = round(IHME_State$totdea_lower*PopRatio)
+      IHME_Region$totdea_upper = round(IHME_State$totdea_upper*PopRatio)
+      IHME_Data<-data.frame(IHME_Region$date,IHME_Region$totdea_mean, IHME_Region$totdea_lower, IHME_Region$totdea_upper)
       colnames(IHME_Data)<-c("ForecastDate", "Expected Fatalities", "Lower Estimate","Upper Estimate")
       IHME_Data$ID<-rep("IHME",nrow(IHME_Data))
       OverlayData<-rbind(OverlayData,IHME_Data)
+      
+      IHME_Region2 <- IHME_State2
+      IHME_Region2$totdea_mean = round(IHME_State2$totdea_mean*PopRatio)
+      IHME_Region2$totdea_lower = round(IHME_State2$totdea_lower*PopRatio)
+      IHME_Region2$totdea_upper = round(IHME_State2$totdea_upper*PopRatio)
+      IHME_Data2<-data.frame(IHME_Region2$date,IHME_Region2$totdea_mean, IHME_Region2$totdea_lower, IHME_Region2$totdea_upper)
+      colnames(IHME_Data2)<-c("ForecastDate", "Expected Fatalities", "Lower Estimate","Upper Estimate")
+      IHME_Data2$ID<-rep("IHME-Best",nrow(IHME_Data2))    
+      OverlayData<-rbind(OverlayData,IHME_Data2)
+      
+      IHME_Region3 <- IHME_State3
+      IHME_Region3$totdea_mean = round(IHME_State3$totdea_mean*PopRatio)
+      IHME_Region3$totdea_lower = round(IHME_State3$totdea_lower*PopRatio)
+      IHME_Region3$totdea_upper = round(IHME_State3$totdea_upper*PopRatio)
+      IHME_Data3<-data.frame(IHME_Region3$date,IHME_Region3$totdea_mean, IHME_Region3$totdea_lower, IHME_Region3$totdea_upper)
+      colnames(IHME_Data3)<-c("ForecastDate", "Expected Fatalities", "Lower Estimate","Upper Estimate")
+      IHME_Data3$ID<-rep("IHME-Worse",nrow(IHME_Data3))    
+      OverlayData<-rbind(OverlayData,IHME_Data3)      
     }
     
     if (nrow(YYG_State) !=0 ) {    
