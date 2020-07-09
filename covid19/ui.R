@@ -248,7 +248,9 @@ ui <- tagList(
                                                                   
                                                                   conditionalPanel(condition = "input.AdditionalModels== 'ShowAll'",  
                                                                                    checkboxGroupInput("ModelSelectionValue2","Forecasting Model(s): ",
-                                                                                                      c("Los Alamos National Labs (LANL)"="LANL",
+                                                                                                      c("IHME (Best Case)"="IHME-Best",
+                                                                                                        "IHME (Worse Case)"="IHME-Worse",
+                                                                                                        "Los Alamos National Labs (LANL)"="LANL","Los Alamos National Labs (LANL)"="LANL",
                                                                                                         "Columbia University: One time 5% increase in social contact"="CUM2",
                                                                                                         "Columbia University: 5% weekly increase in social contact"="CUM3",
                                                                                                         "Columbia University: Current levels of social mixing remain unchanged"="CUM4",                                                                
@@ -261,8 +263,10 @@ ui <- tagList(
                                                               
                                                               conditionalPanel(condition = "input.CONUSP == 'OCONUS'",  
                                                                                
-                                                                               checkboxGroupInput("ModelSelectionValue1","Forecasting Model(s): ",
+                                                                               checkboxGroupInput("ModelSelectionValue3","Forecasting Model(s): ",
                                                                                                   c("IHME (U. of Washinton)"="IHME",
+                                                                                                    "IHME (Best Case)"="IHME-Best",
+                                                                                                    "IHME (Worse Case)"="IHME-Worse",                                                                                                    
                                                                                                     "Youyang Gu (YYG) Model"="YYG",
                                                                                                     "Los Alamos National Labs (LANL)"="LANL"),                                                                
                                                                                                   selected = c("IHME","YYG","LANL")),
@@ -326,7 +330,7 @@ ui <- tagList(
                   
                   tags$script(HTML('
                                    $(document).ready(function() {
-                                   $("header").find("nav").append(\'<span class="myClass"> COVID-19 Health Assessment Dashboard v10.5  </span>\');
+                                   $("header").find("nav").append(\'<span class="myClass"> COVID-19 Health Assessment Dashboard v11  </span>\');
                                    })
                                    ')),
                   
@@ -541,7 +545,10 @@ ui <- tagList(
                                 title = "Local Health Projections",
                                 
                                 fluidRow(
-                                  valueBoxOutput("TotalPopulation")
+                                  valueBoxOutput("TotalPopulation",width = 3),
+                                  valueBoxOutput("PeakBedDate",width = 3), 
+                                  valueBoxOutput("PeakICUDate",width = 3),
+                                  valueBoxOutput("PeakVentDate",width = 3)                                  
                                 ),
 
                                 box(uiOutput("HospLine"),

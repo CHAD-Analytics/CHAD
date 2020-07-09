@@ -103,6 +103,33 @@ server <- function(input, output,session) {
     
   })
   
+  output$PeakBedDate <- renderValueBox({
+    #MyCounties<-GetCounties(input$Base,input$Radius)
+    valueBox(subtitle = "Est Peak Hosp Bed Date",
+             as.Date(PeakBedDates(input$Base)),
+             #icon = icon("list-ol"),
+             color = "light-blue"
+    )
+  })  
+
+  output$PeakICUDate <- renderValueBox({
+    #MyCounties<-GetCounties(input$Base,input$Radius)
+    valueBox(subtitle = "Est Peak ICU Date",
+             as.Date(PeakICUDates(input$Base)),
+             #icon = icon("list-ol"),
+             color = "light-blue"
+    )
+  })   
+  
+  output$PeakVentDate <- renderValueBox({
+    #MyCounties<-GetCounties(input$Base,input$Radius)
+    valueBox(subtitle = "Est Peak Ventilator Date",
+             as.Date(PeakVentDates(input$Base)),
+             #icon = icon("list-ol"),
+             color = "light-blue"
+    )
+  })     
+  
   # Finds Covid Cases and statistics on covid per county
   output$CovidCases <- renderValueBox({
     #MyCounties<-GetCounties(input$Base,input$Radius)
@@ -688,27 +715,33 @@ server <- function(input, output,session) {
     if(input$selectall2 == 0) return(NULL) 
     else if (input$selectall2%%2 == 0)
     {
-      updateCheckboxGroupInput(session,"ModelSelectionValue2","Forecasting Model(s): ",choices=c("DTRA 1 - Current Response"="DTRA1",
+      updateCheckboxGroupInput(session,"ModelSelectionValue2","Forecasting Model(s): ",choices=c("IHME (Best Case)"="IHME-Best",
+                                                                                                 "IHME (Worse Case)"="IHME-Worse",
+                                                                                                 "DTRA 1 - Current Response"="DTRA1",
                                                                                                  "DTRA 2 - Improved Response"="DTRA2", 
                                                                                                  "DTRA 3 - Worst Case"="DTRA3",
-                                                                                                "Los Alamos National Labs (LANL)"="LANL",
-                                                                                                "Columbia University: One time 5% increase in social contact"="CUM2",
-                                                                                                "Columbia University: 5% weekly increase in social contact"="CUM3",
-                                                                                                "Columbia University: Current levels of social mixing remain unchanged"="CUM4"))                                                                                                                                                                                                
+                                                                                                 "Los Alamos National Labs (LANL)"="LANL",
+                                                                                                 "Columbia University: One time 5% increase in social contact"="CUM2",
+                                                                                                 "Columbia University: 5% weekly increase in social contact"="CUM3",
+                                                                                                 "Columbia University: Current levels of social mixing remain unchanged"="CUM4"))                                                                                                                                                                                                
     }
     else
     {
-      updateCheckboxGroupInput(session,"ModelSelectionValue2","Forecasting Model(s):",choices=c("DTRA 1 - Current Response"="DTRA1",
+      updateCheckboxGroupInput(session,"ModelSelectionValue2","Forecasting Model(s):",choices=c("IHME (Best Case)"="IHME-Best",
+                                                                                                "IHME (Worse Case)"="IHME-Worse",
+                                                                                                "DTRA 1 - Current Response"="DTRA1",
                                                                                                 "DTRA 2 - Improved Response"="DTRA2", 
-                                                                                                "DTRA 3 - Worst Case"="DTRA3", 
-                                                                                               "Los Alamos National Labs (LANL)"="LANL",
-                                                                                               "Columbia University: One time 5% increase in social contact"="CUM2",
-                                                                                               "Columbia University: 5% weekly increase in social contact"="CUM3",
-                                                                                               "Columbia University: Current levels of social mixing remain unchanged"="CUM4"),                                                                                               
+                                                                                                "DTRA 3 - Worst Case"="DTRA3",
+                                                                                                "Los Alamos National Labs (LANL)"="LANL",
+                                                                                                "Columbia University: One time 5% increase in social contact"="CUM2",
+                                                                                                "Columbia University: 5% weekly increase in social contact"="CUM3",
+                                                                                                "Columbia University: Current levels of social mixing remain unchanged"="CUM4"),                                                                                               
                                
-                               selected=c("DTRA 1 - Current Response"="DTRA1",
+                               selected=c("IHME (Best Case)"="IHME-Best",
+                                          "IHME (Worse Case)"="IHME-Worse",
+                                          "DTRA 1 - Current Response"="DTRA1",
                                           "DTRA 2 - Improved Response"="DTRA2", 
-                                          "DTRA 3 - Worst Case"="DTRA3", 
+                                          "DTRA 3 - Worst Case"="DTRA3",
                                           "Los Alamos National Labs (LANL)"="LANL",
                                           "Columbia University: One time 5% increase in social contact"="CUM2",
                                           "Columbia University: 5% weekly increase in social contact"="CUM3",
@@ -721,17 +754,23 @@ server <- function(input, output,session) {
     if(input$selectall3 == 0) return(NULL) 
     else if (input$selectall3%%2 == 0)
     {
-      updateCheckboxGroupInput(session,"ModelSelectionValue1","Forecasting Model(s): ",choices=c("IHME (University of Washington)"="IHME",
+      updateCheckboxGroupInput(session,"ModelSelectionValue3","Forecasting Model(s): ",choices=c("IHME (University of Washington)"="IHME",
+                                                                                                 "IHME (Best Case)"="IHME-Best",
+                                                                                                 "IHME (Worse Case)"="IHME-Worse",
                                                                                                  "Youyang Gu - Independent (YYG) Model"="YYG",
                                                                                                  "Los Alamos National Labs (LANL)"="LANL"))
     }
     else
     {
-      updateCheckboxGroupInput(session,"ModelSelectionValue1","Forecasting Model(s):",choices=c("IHME (University of Washington)"="IHME",
+      updateCheckboxGroupInput(session,"ModelSelectionValue3","Forecasting Model(s):",choices=c("IHME (University of Washington)"="IHME",
+                                                                                                "IHME (Best Case)"="IHME-Best",
+                                                                                                "IHME (Worse Case)"="IHME-Worse",
                                                                                                 "Youyang Gu - Independent (YYG) Model"="YYG",
                                                                                                 "Los Alamos National Labs (LANL)"="LANL"),                                                                                               
                                
                                selected=c("IHME (University of Washington)"="IHME",
+                                          "IHME (Best Case)"="IHME-Best",
+                                          "IHME (Worse Case)"="IHME-Worse",
                                           "Youyang Gu - Independent (YYG) Model"="YYG",
                                           "Los Alamos National Labs (LANL)"="LANL"))                                                                                    
     }
@@ -747,6 +786,8 @@ server <- function(input, output,session) {
           #if ("HUtil" %in% input$Utilization){HospUtil<="Yes"}
           ModelID <- "Past Data"
           if ("IHME" %in% input$ModelSelectionValue1){ModelID<-cbind(ModelID,"IHME")}
+          if ("IHME-Best" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"IHME-Best")}
+          if ("IHME-Worse" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"IHME-Worse")}          
           if ("CAA" %in% input$ModelSelectionValue1){ModelID<-cbind(ModelID,"CAA")}
           if ("Torch" %in% input$ModelSelectionValue1){ModelID<-cbind(ModelID,"Torch")}          
           if ("YYG" %in% input$ModelSelectionValue1){ModelID<-cbind(ModelID,"YYG")}
@@ -761,9 +802,11 @@ server <- function(input, output,session) {
           if ("CUM4" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"CUM4")}
       } else if (input$CONUSP == "OCONUS"){
           ModelID <- "Past Data"
-          if ("IHME" %in% input$ModelSelectionValue1){ModelID<-cbind(ModelID,"IHME")}
-          if ("YYG" %in% input$ModelSelectionValue1){ModelID<-cbind(ModelID,"YYG")}
-          if ("LANL" %in% input$ModelSelectionValue2){ModelID<-cbind(ModelID,"LANL")}
+          if ("IHME" %in% input$ModelSelectionValue3){ModelID<-cbind(ModelID,"IHME")}
+          if ("IHME-Best" %in% input$ModelSelectionValue3){ModelID<-cbind(ModelID,"IHME-Best")}
+          if ("IHME-Worse" %in% input$ModelSelectionValue3){ModelID<-cbind(ModelID,"IHME-Worse")}           
+          if ("YYG" %in% input$ModelSelectionValue3){ModelID<-cbind(ModelID,"YYG")}
+          if ("LANL" %in% input$ModelSelectionValue3){ModelID<-cbind(ModelID,"LANL")}
       }
     
       if (is.null(input$RedLine)){
