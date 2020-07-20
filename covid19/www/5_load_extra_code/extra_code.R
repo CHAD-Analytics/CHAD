@@ -1049,36 +1049,6 @@ for (i in 1:nrow(AFBaseLocations)){
 # Risk Map Colors
 colorVec = c("#11ff00","#fafa00","#ffc400","#ff0000")
 colorLab = c("Level 1", "Level 2", "Level 3", "Level 4")
-# colorLab = c("Green", "Yellow", "Orange", "Red")
 colorPal = colorFactor(colorVec, colorLab)
 
 
-#fafa00
-
-
-# # Create scores using min/max scaler
-# 
-# # Capita
-# minCap = min(BaseSummaryList$`Cases Per Capita`)
-# maxCap = max(BaseSummaryList$`Cases Per Capita`)
-# 
-# # Weekly total change
-# minTot = 0
-# maxTot = max(BaseSummaryList$`Total Weekly Case Change`)
-# 
-# # Weekly change
-# minWeek = min(BaseSummaryList$`Weekly Case Change`)
-# maxWeek = max(BaseSummaryList$`Weekly Case Change`)
-
-# # Score each metric
-# BaseSummaryList$ScoreC = (BaseSummaryList$`Cases Per Capita` - minCap)/(maxCap - minCap)
-# BaseSummaryList$ScoreT = (BaseSummaryList$`Total Weekly Case Change` - minTot)/(maxTot - minTot)
-# BaseSummaryList$ScoreW = (BaseSummaryList$`Weekly Case Change` - minWeek)/(maxWeek - minWeek)
-# 
-# # Compute weight score
-# BaseSummaryList$Scen1aScore = (1/3)*BaseSummaryList$ScoreC + (1/3)*BaseSummaryList$ScoreT + (1/3)*BaseSummaryList$ScoreW
-# BaseSummaryList$Scen1bScore = (1/3)*(1-BaseSummaryList$ScoreC) + (1/3)*BaseSummaryList$ScoreT + (1/3)*BaseSummaryList$ScoreW
-# BaseSummaryList$Scen2aScore = (1/3)*BaseSummaryList$ScoreC + (1/3)*(1-BaseSummaryList$ScoreT) + (1/3)*BaseSummaryList$ScoreW
-# BaseSummaryList$Scen2bScore = (1/3)*(1-BaseSummaryList$ScoreC) + (1/3)*(1-BaseSummaryList$ScoreT) + (1/3)*BaseSummaryList$ScoreW
-# BaseSummaryList$Scen3aScore = (1/3)*BaseSummaryList$ScoreC + (1/3)*BaseSummaryList$ScoreT + (1/3)*(1-BaseSummaryList$ScoreW)
-# BaseSummaryList$Scen3bScore = (1/3)*(1-BaseSummaryList$ScoreC) + (1/3)*BaseSummaryList$ScoreT + (1/3)*(1-BaseSummaryList$ScoreW)
