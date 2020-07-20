@@ -122,8 +122,6 @@ ui <- tagList(
                                                                            "Map Selection: ",
                                                                            c("World"="World",
                                                                              "United States"="United States",
-                                                                             #"North America"="North America", 
-                                                                             #"South America"="South America",
                                                                              "Europe"="Europe",
                                                                              "Africa"="Africa",
                                                                              "Asia"="Asia",
@@ -134,9 +132,10 @@ ui <- tagList(
                                                               radioButtons("Metric",
                                                                            "Metric: ",
                                                                            c("Total Cases" = "Total Cases",
+                                                                             "Weekly Cases per Capita (100,000)" = "Weekly Cases",
                                                                              "Weekly Total Case Change" = "Weekly Total Change",
                                                                              "Weekly Case Change" = "Weekly Change"),
-                                                                           selected = "Weekly Total Change"),
+                                                                           selected = "Weekly Cases"),
                                                               
                                                               conditionalPanel(condition = "input.Metric == 'Total Cases'",
                                                                                radioButtons("MapScale",
@@ -197,11 +196,7 @@ ui <- tagList(
                                                               "Current Local Health Inputs",
                                                               tabName = "localHealthInput",
                                                               icon = icon("map-marker-alt"),
-                                                              div(id = "single", style="display: none;", numericInput("tckt", "Ticket Number : ", 12345,  width = 300)),
-                                                              
-                                                              radioButtons("TypeLocal", "State or County Plot:",
-                                                                           c("County"="County",
-                                                                             "State"="State"))
+                                                              div(id = "single", style="display: none;", numericInput("tckt", "Ticket Number : ", 12345,  width = 300))
                                              ),
                                              
                                              
@@ -410,14 +405,7 @@ ui <- tagList(
                                   )
                                 ),
                                   #box(plotOutput("HotSpot", height = 600))),
-                                  box(
-                                      downloadButton('downloadData', 'Download Full Dataset'),
-                                      downloadButton('downloadFilteredData', 'Download Filtered Dataset (Table Above)'),
-                                      downloadButton('HotSpotData', 'Download Hotspot Dataset: 50 Mile Radius'),
-                                      downloadButton('HotSpotDataOneMile', 'Download Hotspot Dataset: Single County'),
-                                      downloadButton('MTFSummaryT', 'MTF Summary Table'),
-                                      downloadButton('MTFSummaryP', 'MTF Summary Plots'),
-                                      title = "Base Summaries",
+                                  box(title = "Base Summaries",
                                       solidHeader=T,
                                       align = "left",
                                       height = 900,
@@ -507,11 +495,11 @@ ui <- tagList(
                                 
                                 fluidRow( 
                                   tabBox(
-                                    tabPanel("Daily New Cases",
-                                             plotlyOutput("LocalHealthPlot1",height = 300)
-                                    ),
-                                    tabPanel("Moving 3-Day Average",
+                                    tabPanel("Daily New Cases (3-Day)",
                                              plotlyOutput("LocalHealthPlot3day",height = 300)
+                                    ),
+                                    tabPanel("Daily New Cases (Raw)",
+                                             plotlyOutput("LocalHealthPlot1",height = 300)
                                     ),
                                     tabPanel("Weekly Growth Rate",
                                              plotlyOutput("LocalHealthPlotWeeklyGrowth",height = 300)
@@ -546,9 +534,9 @@ ui <- tagList(
                                 
                                 fluidRow(
                                   valueBoxOutput("TotalPopulation",width = 3),
-                                  valueBoxOutput("PeakBedDate",width = 3), 
-                                  valueBoxOutput("PeakICUDate",width = 3),
-                                  valueBoxOutput("PeakVentDate",width = 3)                                  
+                                  # valueBoxOutput("PeakBedDate",width = 3), 
+                                  # valueBoxOutput("PeakICUDate",width = 3),
+                                  # valueBoxOutput("PeakVentDate",width = 3)                                  
                                 ),
 
                                 box(uiOutput("HospLine"),

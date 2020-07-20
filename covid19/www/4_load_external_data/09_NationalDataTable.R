@@ -38,6 +38,9 @@ WeeklyTotChange = ((WeeklyTotChange[1]-WeeklyTotChange[8])/WeeklyTotChange[8])
 WeeklyTotChange[is.na(WeeklyTotChange)] = 0
 WeeklyTotChange[is.infinite(as.matrix(WeeklyTotChange))] = 0
 
+# Weekly case numbers per capita
+weeklyCaseCapita = rev(NationalDataTable)[1] - rev(NationalDataTable)[8]
+
 ##########
 
 NationalDeathTable = ContinentMapd
@@ -64,6 +67,7 @@ NationalDataTable = data.frame(NationalDataTable$Continent,
                                RateofDeathChange,
                                WeeklyTotChange,
                                WeeklyChange,
+                               weeklyCaseCapita,
                                stringsAsFactors = FALSE)
 
 colnames(NationalDataTable) = c("Continent",
@@ -74,7 +78,8 @@ colnames(NationalDataTable) = c("Continent",
                                 "Total Deaths",
                                 "Average New Deaths Per Day",
                                 "Weekly Total Case Change",
-                                "Weekly Case Change")
+                                "Weekly Case Change",
+                                "Weekly Cases Per Capita")
 
 NationalDataTable = NationalDataTable[order(NationalDataTable$State),]
 
@@ -82,6 +87,7 @@ NationalDataTable<-merge(NationalDataTable, StatePop, by.x = "State", by.y = "St
 #NationalDataTable$`Cases Per 100,000 People` = as.numeric(StatePop$Population)
 
 NationalDataTable$`Cases Per 100,000 People` = round((NationalDataTable$`Total Cases`/NationalDataTable$Population)*100000)
+NationalDataTable$`Weekly Cases Per Capita` = round((NationalDataTable$`Weekly Cases Per Capita`/NationalDataTable$Population)*100000)
 #NationalDataTable<-subset(NationalDataTable, select=-c(Population))   
 
 
@@ -104,9 +110,13 @@ WeeklyTotChangeUS = ((WeeklyTotChangeUS[1]-WeeklyTotChangeUS[8])/WeeklyTotChange
 WeeklyTotChangeUS[is.na(WeeklyTotChangeUS)] = 0
 WeeklyTotChangeUS[is.infinite(as.matrix(WeeklyTotChangeUS))] = 0
 
+weeklyCaseCapitaUS = rev(UStemp)[1] - rev(UStemp)[8]
+
 popUS = CountyInfo %>% dplyr::filter(Country == "United States")
 popUS = sum(popUS$Population)
 perCapitaUS = round((rev(UStemp)[1]/popUS)*100000)
+
+weeklyCaseCapitaUS = ((rev(UStemp)[1] - rev(UStemp)[8])/popUS)*100000
 
 USData = dplyr::filter(NationalDataTable, Country == "United States")
 USData <- plyr::ddply(USData, "Country", numcolwise(sum))
@@ -119,6 +129,7 @@ USData = data.frame("United States",
                     avgDeath,
                     WeeklyTotChangeUS,
                     WeeklyChangeUS,
+                    weeklyCaseCapitaUS,
                     popUS,
                     perCapitaUS)
 

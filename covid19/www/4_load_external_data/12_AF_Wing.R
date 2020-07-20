@@ -36,14 +36,14 @@
 # himd <- distm(y, x, fun=distHaversine)/1609.34
 # himd = data.frame(himd)
 # colnames(himd)<- AFBaseLocations$Base
-# 
-# 
-# 
-# # setwd("C:/Users/taylo/Documents/CHAD/covid19/www/3_load_local_data/")
+# # 
+# # 
+# # 
+# # # setwd("C:/Users/taylo/Documents/CHAD/covid19/www/3_load_local_data/")
 # save(cimd, file = "www/3_load_local_data/cimd.rda")
 # save(himd, file = "www/3_load_local_data/himd.rda")
-# save(AFBaseLocations, file = "AFBaseLocations.rda")
-# save(AFNAFS, file = "AFNAS.rda")
+# save(AFBaseLocations, file = "www/3_load_local_data/AFBaseLocations.rda")
+# # save(AFNAFS, file = "AFNAS.rda")
 # cimd<-vroom::vroom("www/4_load_external_data/data_files/cimd.csv")
 # himd<-vroom::vroom("www/4_load_external_data/data_files/himd.csv")
 # AFBaseLocations<-vroom::vroom("www/4_load_external_data/data_files/AFBaseLocations.csv")

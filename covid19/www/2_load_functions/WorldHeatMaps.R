@@ -75,6 +75,10 @@ WorldHeatMaps <- function (MapView, MapScale, Metric){
     DF$`Weekly Case Change` = DF$`Weekly Case Change`*100
     g = gvisGeoChart(DF, locationvar = "State", hovervar = c("hoverVar"), colorvar = "Weekly Case Change Percent",
                      options = MapChoice)
+  } else if (Metric == "Weekly Cases"){
+    
+    g = gvisGeoChart(DF, locationvar = "State", hovervar = c("hoverVar"), colorvar = "Weekly Cases Per Capita",
+                     options = MapChoice)
   } else{
     g = gvisGeoChart(DF, locationvar = "State", hovervar = c("hoverVar"), colorvar = "Value",
                      options = MapChoice)

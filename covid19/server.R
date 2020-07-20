@@ -424,198 +424,7 @@ server <- function(input, output,session) {
   
   # Output Projections  ---------------------------------------------------------------------------------------------------------------------------------------------------------------
   
-  # Output AMC Analysis
-  # output$ProjectedEpidemicTable<-renderPlotly({
-  #   
-  #   baseUsed = input$AMClist
-  #   
-  #   # Read the json file and convert it to data.frame
-  #   #myList <- fromJSON("data/shinyjson.json")
-  #   
-  #   df <- AMC_model
-  #   
-  #   df <- select(df, "DataDate", "DataType", baseUsed)
-  #   
-  #   colnames(df)[3]  <- "Data"
-  #   
-  #   myTibble <- as_tibble(df)
-  #   
-  #   cummInf <- myTibble %>% filter(DataType == "Cumulative Infections")
-  #   currInf <- myTibble %>% filter(DataType == "Current Infections")
-  #   cummDeath <- myTibble %>% filter(DataType == "Cumulative Deaths")
-  #   
-  #   cummDeath <- select(cummDeath, "DataDate","Data")
-  #   currInf <- select(currInf, "DataDate","Data")
-  #   cummInf <- select(cummInf, "DataDate", "Data")
-  #   
-  #   colnames(cummDeath)[2] <- "Projected Cumulative Deaths"
-  #   colnames(currInf)[2] <- "Projected Daily Infections"
-  #   colnames(cummInf)[2] <- "Projected Cumulative Infections"
-  #   
-  #   df <- merge(cummDeath, currInf, by="DataDate")
-  #   df <- merge(df, cummInf, by="DataDate")
-  #   
-  #   Chart2DataSub <- melt(data.table(df), id=c("DataDate"))
-  #   
-  #   #Plotting the Line Graph
-  #   p <- ggplot(Chart2DataSub) + 
-  #     geom_line(aes(x=DataDate,  y=value, colour = variable, linetype = variable), 
-  #               size = 0.5) +
-  #     scale_colour_manual(values=c("Blue", "Orange", "Red", "Black"))+
-  #     scale_linetype_manual(values=c("dashed", "solid", "solid", "solid"))+
-  #     geom_vline(aes(xintercept = as.numeric(lubridate::ymd(Sys.Date())), linetype = "Current Day"), color = "Black") +
-  #     xlab('Date') +
-  #     ylab('Number of People') +
-  #     theme_bw() + 
-  #     theme(plot.title = element_text(face = "bold", size = 15, family = "sans"),
-  #           axis.title = element_text(face = "bold", size = 11, family = "sans"),
-  #           axis.text.x = element_text(angle = 60, hjust = 1), 
-  #           axis.line = element_line(color = "black"),
-  #           plot.background = element_blank(),
-  #           panel.grid.major = element_blank(),
-  #           panel.grid.minor = element_blank(),
-  #           panel.border = element_blank(),) +
-  #     scale_x_date(date_breaks = "1 week") + scale_y_continuous(labels = function(x) format(x, scientific = FALSE))
-  #   
-  #   p2 <- ggplotly(p)
-  #   p2 <- p2 %>% layout(legend = list(orientation = "h",   # show entries horizontally
-  #                                     xanchor = "center",
-  #                                     x = 0.5,
-  #                                     y = -0.5
-  #   )) #%>% config(displayModeBar = FALSE)
-  #   p2 <- p2 %>% layout(xaxis = list(showgrid = F),
-  #                       yaxis = list(gridcolor = "lightgray"),margin = list(t = 50), title=baseUsed)# %>% config(displayModeBar = FALSE)
-  #   p2
-  #   
-  # })
-  # 
-  # 
-  # output$ProjPeakInfDate<-renderValueBox({
-  #   
-  #   baseUsed = input$AMClist
-  #   
-  #   df <- AMC_model
-  #   
-  #   datePeak <- tryCatch({
-  #     
-  #     df <- select(df, "DataDate", "DataType", baseUsed)
-  #     
-  #     colnames(df)[3]  <- "Data"
-  #     
-  #     myTibble <- as_tibble(df)
-  #     
-  #     currInf <- myTibble %>% filter(DataType == "Current Infections")
-  #     
-  #     datePeak = format(currInf$DataDate[which.max(currInf$Data)], format = "%B %d")
-  #     
-  #   }, error = function(err) {
-  #     datePeak = "No Model Data Available"
-  #     return(datePeak)
-  #   })
-  #   
-  #   valueBox(subtitle = "Projected Peak Infection Date",
-  #            paste(datePeak),
-  #            color = "light-blue")
-  # })
-  # 
-  # output$ProjTotInf<-renderValueBox({
-  #   
-  #   baseUsed = input$AMClist
-  #   
-  #   df <- AMC_model
-  #   
-  #   InfTot <- tryCatch({
-  #     
-  #     df <- select(df, "DataDate", "DataType", baseUsed)
-  #     
-  #     colnames(df)[3]  <- "Data"
-  #     
-  #     myTibble <- as_tibble(df)
-  #     
-  #     cummInf <- myTibble %>% filter(DataType == "Cumulative Infections")
-  #     
-  #     InfTot = round(max(cummInf$Data))
-  #     
-  #   }, error = function(err) {
-  #     InfTot = "No Model Data Available"
-  #     return(InfTot)
-  #   })
-  #   
-  #   
-  #   
-  #   valueBox(subtitle = "Projected Total Infections",
-  #            paste(InfTot),
-  #            color = "blue")
-  # })
-  # 
-  # output$ProjTotDeaths<-renderValueBox({
-  #   
-  #   baseUsed = input$AMClist
-  #   
-  #   df <- AMC_model
-  #   
-  #   DeathsTot <- tryCatch({
-  #     
-  #     df <- select(df, "DataDate", "DataType", baseUsed)
-  #     
-  #     colnames(df)[3]  <- "Data"
-  #     
-  #     myTibble <- as_tibble(df)
-  #     
-  #     cummDeath <- myTibble %>% filter(DataType == "Cumulative Deaths")
-  #     
-  #     DeathsTot = round(max(cummDeath$Data))
-  #     
-  #   }, error = function(err) {
-  #     x = "No Model Data Available"
-  #     return(x)
-  #   })
-  #   
-  #   valueBox(subtitle = "Projected Total Fatalities",
-  #            paste(DeathsTot),
-  #            color = "navy")
-  # })
   
-  # #Create IHME plot by State projected hospitalization 
-  # output$IHME_State_Hosp<-renderPlotly({
-  # 
-  #     IncludedHospitals<-GetHospitals(input$Base, input$Radius)
-  #     MyCounties <- GetCounties(input$Base, input$Radius)
-  #     IHMELocalProjections(MyCounties, IncludedHospitals, input$Base, input$StatisticType, input$proj_days)
-  #     
-  #     
-  # })
-  # 
-  # 
-  # #Output the SEIAR CHIME projections with a max, min, and expected value
-  # output$SEIARProjection<-renderPlotly({
-  #     BaseState<-dplyr::filter(AFBaseLocations, Base == input$Base)
-  #     IncludedCounties<-GetCounties(input$Base,input$Radius)
-  #     if (is.null(input$SocialDistanceValue) ){social_dist<-1}
-  # 
-  #     CS      <- "CS"       %in% input$SocialDistanceValue
-  #     CB    <- "CB"     %in% input$SocialDistanceValue
-  #     SD <- "SD"  %in% input$SocialDistanceValue
-  # 
-  #     if (CS & CB & SD){
-  #         social_dist <- 27
-  #     } else if (CS & CB){
-  #         social_dist <- 12
-  #     } else if (CS & SD){
-  #         social_dist <-19
-  #     } else if (SD & CB){
-  #         social_dist <-23
-  #     } else if (CS) {
-  #         social_dist <- 4
-  #     }  else if (CB) {
-  #         social_dist <- 8
-  #     }  else if (SD) {
-  #         social_dist <- 15
-  #     }
-  #     
-  #     CHIMELocalPlot(social_dist, input$proj_days, IncludedCounties, input$StatisticType)
-  # 
-  # })
 
   output$ImpactTitle <- renderUI({
     if (input$MapScale == "Log" & input$Metric == "Total Cases"){
@@ -626,6 +435,8 @@ server <- function(input, output,session) {
       textbox <- "Impact Map: Weekly Total Case Change"
     } else if (input$Metric == "Weekly Change"){
       textbox <- "Impact Map: Weekly Case Change"
+    } else if (input$Metric == "Weekly Cases"){
+      textbox <- "Impact Map: Weekly Cases per Capita"
     } else{
       textbox <- "Impact Map"
     }
@@ -636,15 +447,15 @@ server <- function(input, output,session) {
         text1 = "A logarithmic scale is ideal for measuring rates of change. "
         text2 = "This scale flattens the rate of growth to better visualize where the growth starts to level off once the exponential growth has stopped."
         out <- paste(text1, "\n", text2,sep = "")
-        #cat(out)
     } else if (input$MapScale == "Linear" & input$Metric == "Total Cases"){
         text1 = "On a linear scale, the cases increase additively and the visual distance between the data points remains constant. "
-        #text2 = "querystring"
         out <- paste(text1,sep = "")
     } else if (input$Metric == "Weekly Total Change"){
       textbox <- "This map shows the weekly change in cases compared against the total case number"
     } else if (input$Metric == "Weekly Change"){
       textbox <- "This map shows the week over week case change"
+    } else if (input$Metric == "Weekly Cases"){
+      textbox <- "This map shows the weekly new cases per capita (100,000)"
     } else{
       out = ""
     }
@@ -834,12 +645,6 @@ server <- function(input, output,session) {
   })
   
 
-  # #Overlay Projected Plots
-  # output$OverlayPlots2<-renderPlotly({
-  #     MyHospitals<-GetHospitals(input$Base,input$Radius)
-  #     PlotOverlay2(input$Base,MyCounties(),MyHospitals,input$proj_days,input$CONUSP)    
-  # })  
-    
   
   output$helptext <- renderText({"I can trigger a shinyBS::bsModal() from here, but I want to place two buttons behind `Option_1` and     `Option_2`" })
   
@@ -863,6 +668,7 @@ server <- function(input, output,session) {
                                          `Weekly Total Case Change`,
                                          `Average New Cases Per Day`,
                                          `Weekly Case Change`,
+                                         `Weekly Cases Per Capita`,
                                          `Total Deaths`,
                                          `Average New Deaths Per Day`
       )
@@ -878,6 +684,7 @@ server <- function(input, output,session) {
                                          `Weekly Total Case Change`,
                                          `Average New Cases Per Day`,
                                          `Weekly Case Change`,
+                                         `Weekly Cases Per Capita`,
                                          `Total Deaths`,
                                          `Average New Deaths Per Day`
       )
@@ -892,6 +699,7 @@ server <- function(input, output,session) {
                                          `Weekly Total Case Change`,
                                          `Average New Cases Per Day`,
                                          `Weekly Case Change`,
+                                         `Weekly Cases Per Capita`,
                                          `Total Deaths`,
                                          `Average New Deaths Per Day`
       )
@@ -942,6 +750,21 @@ server <- function(input, output,session) {
                                                   dom = 't',
                                                   pageLength = 5)) %>% formatPercentage(c("Weekly Case Change"), 1)
         
+      }else if(input$Metric == "Weekly Cases"){
+        Inc_Table = NationalDataTable1 %>% top_n(5, wt = `Weekly Cases Per Capita`)
+        
+        if (input$MapView == "United States"){
+          Inc_Table = dplyr::select(Inc_Table, State, `Weekly Cases Per Capita`, `Weekly Case Change`)
+        } else{
+          Inc_Table = dplyr::select(Inc_Table, Country, `Weekly Cases Per Capita`, `Weekly Case Change`)
+        }
+        
+        Inc_Table <- DT::datatable(Inc_Table,
+                                   rownames = FALSE, 
+                                   options = list(order = list(1, "desc"),
+                                                  dom = 't',
+                                                  pageLength = 5)) %>% formatPercentage(c("Weekly Case Change"), 1)
+        
       }
     
     
@@ -967,6 +790,7 @@ server <- function(input, output,session) {
                                          `Weekly Total Case Change`,
                                          `Average New Cases Per Day`,
                                          `Weekly Case Change`,
+                                         `Weekly Cases Per Capita`,
                                          `Total Deaths`,
                                          `Average New Deaths Per Day`
       )
@@ -982,6 +806,7 @@ server <- function(input, output,session) {
                                          `Weekly Total Case Change`,
                                          `Average New Cases Per Day`,
                                          `Weekly Case Change`,
+                                         `Weekly Cases Per Capita`,
                                          `Total Deaths`,
                                          `Average New Deaths Per Day`
       )
@@ -996,6 +821,7 @@ server <- function(input, output,session) {
                                          `Weekly Total Case Change`,
                                          `Average New Cases Per Day`,
                                          `Weekly Case Change`,
+                                         `Weekly Cases Per Capita`,
                                          `Total Deaths`,
                                          `Average New Deaths Per Day`
       )
@@ -1046,6 +872,21 @@ server <- function(input, output,session) {
                                                 dom = 't',
                                                 pageLength = 5)) %>% formatPercentage(c("Weekly Case Change"), 1)
       
+    }else if(input$Metric == "Weekly Cases"){
+      Inc_Table = NationalDataTable1 %>% top_n(-5, wt = `Weekly Cases Per Capita`)
+      
+      if (input$MapView == "United States"){
+        Inc_Table = dplyr::select(Inc_Table, State, `Weekly Cases Per Capita`, `Weekly Case Change`)
+      } else{
+        Inc_Table = dplyr::select(Inc_Table, Country, `Weekly Cases Per Capita`, `Weekly Case Change`)
+      }
+      
+      Inc_Table <- DT::datatable(Inc_Table,
+                                 rownames = FALSE, 
+                                 options = list(order = list(1, "asc"),
+                                                dom = 't',
+                                                pageLength = 5)) %>% formatPercentage(c("Weekly Case Change"), 1)
+      
     }
     
     
@@ -1072,6 +913,7 @@ server <- function(input, output,session) {
                                          `Weekly Total Case Change`,
                                          `Average New Cases Per Day`,
                                          `Weekly Case Change`,
+                                         `Weekly Cases Per Capita`,
                                          `Total Deaths`,
                                          `Average New Deaths Per Day`
       )
@@ -1087,6 +929,7 @@ server <- function(input, output,session) {
                                          `Weekly Total Case Change`,
                                          `Average New Cases Per Day`,
                                          `Weekly Case Change`,
+                                         `Weekly Cases Per Capita`,
                                          `Total Deaths`,
                                          `Average New Deaths Per Day`
       )
@@ -1101,6 +944,7 @@ server <- function(input, output,session) {
                                          `Weekly Total Case Change`,
                                          `Average New Cases Per Day`,
                                          `Weekly Case Change`,
+                                         `Weekly Cases Per Capita`,
                                          `Total Deaths`,
                                          `Average New Deaths Per Day`
       )
