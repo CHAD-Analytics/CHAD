@@ -23,7 +23,7 @@
 # }
 # 
 # save(CountyPredTable, file = "Torch_Model.rda")
-# write.csv(CountyPredTable,"C:/Users/taylo/Documents/CHADNew2/Torch_Model.csv", row.names = FALSE)
+# write.csv(CountyPredTable,"C:/Users/taylo/Documents/CHADNew5/Torch_Model.csv", row.names = FALSE)
 # closeAllConnections()
 
 # Load Torch Data-----------------------------
