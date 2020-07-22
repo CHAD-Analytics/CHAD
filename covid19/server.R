@@ -245,7 +245,26 @@ server <- function(input, output,session) {
   
   
   # Output line plots for the dashboard ----------------------------------------------------------------------------------------------------------------------------------------------------
-  
+  output$downloadplotdata <- downloadHandler(
+    
+    filename = "data.csv",
+    content = function(file) {
+      #LocalHealthPlot1
+      DailyChart <- CovidCasesPerDayChart(MyCounties())
+      DailyChart <- dplyr::filter(DailyChart, ForecastDate >= DailyChart$ForecastDate[1] + 35)   
+
+      #LocalHealthPlot3day
+      DailyChart1 <- CovidCasesPer3DayAverageChart(MyCounties())
+      DailyChart1 <- dplyr::filter(DailyChart1, ForecastDate >= DailyChart$ForecastDate[1] + 35)     
+      
+      #LocalHealthPlotWeeklyGrowth
+      DailyChart2 <- CovidCasesWeeklyGrowth(MyCounties())      
+            
+      dataprint <- cbind(DailyChart,DailyChart1)
+      dataprint <- cbind(dataprint,DailyChart2)      
+      readr::write_csv(dataprint, file)
+    }
+  )  
   
   #Create local health plot for Daily Cases 
   output$LocalHealthPlot1<-renderPlotly({

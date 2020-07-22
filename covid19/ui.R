@@ -462,10 +462,6 @@ ui <- tagList(
                                 DT::dataTableOutput("NationalDataTable1")
                                 
                               ),
-        
-                              
-                              
-            
                               
                               # Current Local Health Page
                               ######################################################################################################################
@@ -492,7 +488,7 @@ ui <- tagList(
                                   valueBoxOutput("Est_Recover", width = 2),
                                   valueBoxOutput("Est_TestRate", width = 2)                                                                    
                                 ),
-                                
+                                downloadButton("downloadplotdata"),
                                 fluidRow( 
                                   tabBox(
                                     tabPanel("Daily New Cases (3-Day)",
