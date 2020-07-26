@@ -10,6 +10,10 @@ for (i in 1:nrow(CovidConfirmedCases)){
         while (cases/2 < CovidConfirmedCases[i,ncol(CovidConfirmedCases)-j])
         {
             j = j + 1
+            if (j>100){
+              j = 100
+              break
+            }
         }
         
         days = j
