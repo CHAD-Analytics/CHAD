@@ -530,9 +530,9 @@ ui <- tagList(
                                 
                                 fluidRow(
                                   valueBoxOutput("TotalPopulation",width = 3),
-                                  valueBoxOutput("PeakBedDate",width = 3), 
-                                  valueBoxOutput("PeakICUDate",width = 3),
-                                  valueBoxOutput("PeakVentDate",width = 3)                                  
+                                  # valueBoxOutput("PeakBedDate",width = 3), 
+                                  # valueBoxOutput("PeakICUDate",width = 3),
+                                  # valueBoxOutput("PeakVentDate",width = 3)                                  
                                 ),
 
                                 box(uiOutput("HospLine"),
