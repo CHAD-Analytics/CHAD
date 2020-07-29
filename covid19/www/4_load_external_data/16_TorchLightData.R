@@ -22,11 +22,12 @@
 #   }
 # }
 # 
-# save(CountyPredTable, file = "Torch_Model.rda")
-# write.csv(CountyPredTable,"C:/Users/taylo/Documents/CHADNew5/Torch_Model.csv", row.names = FALSE)
+# #save(CountyPredTable, file = "Torch_Model.rda")
+# write.csv(CountyPredTable,"C:/Users/taylo/Documents/CHADNew6/Torch_Model.csv", row.names = FALSE)
 # closeAllConnections()
 
 # Load Torch Data-----------------------------
 #load(file = "Torch_Model.rda")
 #Torch_Model = read_csv("C:/Users/taylo/Documents/CHADNew2/covid19/www/4_load_external_data/data_files/Torch_Model.csv")
+
 Torch_Model = read_csv("www/4_load_external_data/data_files/Torch_Model.csv")
