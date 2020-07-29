@@ -529,7 +529,7 @@ ui <- tagList(
                                 title = "Local Health Projections",
                                 
                                 fluidRow(
-                                  valueBoxOutput("TotalPopulation",width = 3),
+                                  valueBoxOutput("TotalPopulation",width = 3)#,
                                   # valueBoxOutput("PeakBedDate",width = 3), 
                                   # valueBoxOutput("PeakICUDate",width = 3),
                                   # valueBoxOutput("PeakVentDate",width = 3)                                  
