@@ -40,48 +40,48 @@ server <- function(input, output,session) {
     deletedCounties(NULL)
   })
 
-  observeEvent(event_data("plotly_click", source = "TEST"), {
-    county_clicked <- event_data("plotly_click", source = "TEST")
-    df<-MyCounties()
-    newCounty<-getNewCounty(df,input$Base, as.integer(county_clicked$curveNumber))
-    if(is.null(addedCounties())){ #do nothing
-    }else{ # see if new county is in addedcounties
-      myFIPS<-newCounty[[1]][["FIPS"]]
-      myRow<-which(addedCounties() == myFIPS, arr.ind = TRUE)#which(grepl(myFIPS, deletedCounties()))
-      if(is_empty(myRow)){
-      }else{
-        tempcounty<-addedCounties()
-        tempcounty<-tempcounty[-c(myRow[1,1]),] #remove it from addedCounties
-        if(nrow(tempcounty)==0){addedCounties(NULL)}else{addedCounties(tempcounty)}}
-    }
-    if(is.null(deletedCounties())){ #do nothing
-    }else{ # see if new county is in addedcounties
-      myFIPS<-newCounty[[1]][["FIPS"]]
-      myRow<-which(deletedCounties() == myFIPS, arr.ind = TRUE)#which(grepl(myFIPS, deletedCounties()))
-      if(is_empty(myRow)){
-      }else{
-        tempcounty<-deletedCounties()
-        tempcounty<-tempcounty[-c(myRow[1,1]),] #remove it from addedCounties
-        if(nrow(tempcounty)==0){deletedCounties(NULL)}else{deletedCounties(tempcounty)}
-      }
-    }
-    if(newCounty[[2]]==1){
-      if(is.null(addedCounties())){
-        addedCounties(newCounty[[1]])
-      }else{
-        tempcounty<-rbind(addedCounties(),newCounty[[1]])
-        addedCounties(tempcounty)
-      }
-    }else{
-      #checkAdded(newCounty[[1]],addedCounties(), deletedCounties())
-      if(is.null(deletedCounties())){
-        deletedCounties(newCounty[[1]])
-      }else{
-        tempcounty<-rbind(deletedCounties(),newCounty[[1]])
-        deletedCounties(tempcounty)
-      }
-    }
-  }) 
+  # observeEvent(event_data("plotly_click", source = "TEST"), {
+  #   county_clicked <- event_data("plotly_click", source = "TEST")
+  #   df<-MyCounties()
+  #   newCounty<-getNewCounty(df,input$Base, as.integer(county_clicked$curveNumber))
+  #   if(is.null(addedCounties())){ #do nothing
+  #   }else{ # see if new county is in addedcounties
+  #     myFIPS<-newCounty[[1]][["FIPS"]]
+  #     myRow<-which(addedCounties() == myFIPS, arr.ind = TRUE)#which(grepl(myFIPS, deletedCounties()))
+  #     if(is_empty(myRow)){
+  #     }else{
+  #       tempcounty<-addedCounties()
+  #       tempcounty<-tempcounty[-c(myRow[1,1]),] #remove it from addedCounties
+  #       if(nrow(tempcounty)==0){addedCounties(NULL)}else{addedCounties(tempcounty)}}
+  #   }
+  #   if(is.null(deletedCounties())){ #do nothing
+  #   }else{ # see if new county is in addedcounties
+  #     myFIPS<-newCounty[[1]][["FIPS"]]
+  #     myRow<-which(deletedCounties() == myFIPS, arr.ind = TRUE)#which(grepl(myFIPS, deletedCounties()))
+  #     if(is_empty(myRow)){
+  #     }else{
+  #       tempcounty<-deletedCounties()
+  #       tempcounty<-tempcounty[-c(myRow[1,1]),] #remove it from addedCounties
+  #       if(nrow(tempcounty)==0){deletedCounties(NULL)}else{deletedCounties(tempcounty)}
+  #     }
+  #   }
+  #   if(newCounty[[2]]==1){
+  #     if(is.null(addedCounties())){
+  #       addedCounties(newCounty[[1]])
+  #     }else{
+  #       tempcounty<-rbind(addedCounties(),newCounty[[1]])
+  #       addedCounties(tempcounty)
+  #     }
+  #   }else{
+  #     #checkAdded(newCounty[[1]],addedCounties(), deletedCounties())
+  #     if(is.null(deletedCounties())){
+  #       deletedCounties(newCounty[[1]])
+  #     }else{
+  #       tempcounty<-rbind(deletedCounties(),newCounty[[1]])
+  #       deletedCounties(tempcounty)
+  #     }
+  #   }
+  # }) 
 
   
   # Step Two
