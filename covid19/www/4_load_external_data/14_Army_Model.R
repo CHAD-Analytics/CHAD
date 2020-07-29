@@ -14,6 +14,8 @@ Army_Model <- merge(Army_Model,
 
 # Army_Model<-subset(Army_Model, select=-c(22,24,25,26,27,28,29,30,31,32))
 Army_Model<-subset(Army_Model, select= -c(15,16,17,18,19,20,21,22,23,24,25))
+colnames(Army_Model)<-c("FIPS","StateFull","ForecastDate","County","Infected","Fatalities","TFatalities"
+                        ,"LInfected","LFatalities","LTFatalities","UInfected","UFatalities","UTFatalities","State")
 Army_Model$FIPS <- as.numeric(Army_Model$FIPS)
 Army_Model$ForecastDate <- as.Date(Army_Model$ForecastDate, "%m/%d/%Y")
 #save(Army_Model, file = "Army_Model.rda")

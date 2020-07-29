@@ -29,7 +29,7 @@ currCount = 0
 
 
 # # Create data tables for analysis ---------------------------------------------------------------------------------------------------------------------------------------------------
-#  
+# 
 # AFrow = nrow(AFBaseLocations)
 # 
 # MTFSummaryReport <- setNames(data.frame(matrix(ncol = 7, nrow = 0)),c("Installation","MAJCOM","State","50MileTotalCases","50MileNewCases","50MileCasesPer1000","50MileDblRate"))
@@ -158,9 +158,9 @@ currCount = 0
 #   
 #   if (AFBaseLocations$Overseas[i] == "CONUS"){
 #     DaysProjected <- 120
-#     Army_State<-dplyr::filter(Army_Model,FIPS %in% MyCounties$FIPS)      
-#     Local<-subset(Army_State, select=-c(Location,County,Susceptible,Exposed,Removed,Fatalities,State))    
-#     Local$Date <- as.Date(Local$ForecastDate, "%m/%d/%y")
+#     Army_State<-dplyr::filter(Army_Model,FIPS %in% MyCounties$FIPS)
+#     Local<-subset(Army_State, select=c(ForecastDate,Infected))
+#     Local$ForecastDate <- as.Date(Local$ForecastDate, "%m/%d/%y")
 #     Local<-dplyr::filter(Local,ForecastDate >= Sys.Date())
 #   }
 # 
@@ -197,21 +197,21 @@ currCount = 0
 # 
 #     if (AFBaseLocations$Overseas[i] == "CONUS"){
 #       DaysProjected <- 120
-#       Army_State<-dplyr::filter(Army_Model,FIPS %in% MyCounties$FIPS)      
-#       Local<-subset(Army_State, select=-c(Location,County,Susceptible,Exposed,Removed,Fatalities,State))    
-#       Local$Date <- as.Date(Local$ForecastDate, "%m/%d/%y")
+#       Army_State<-dplyr::filter(Army_Model,FIPS %in% MyCounties$FIPS)
+#       Local<-subset(Army_State, select=c(ForecastDate,Infected))
+#       Local$ForecastDate <- as.Date(Local$ForecastDate, "%m/%d/%y")
 #       Local<-dplyr::filter(Local,ForecastDate >= Sys.Date())
 #       Local<-aggregate(Local[,sapply(Local,is.numeric)],Local["ForecastDate"],sum)
 #       Local<-Local[1:DaysProjected,]
-#       Local<-data.frame(Local$ForecastDate,Local$Infected*.055,Local$Infected)
+#       Local<-data.frame(Local$ForecastDate,Local$x*.055,Local$x)
 #       colnames(Local)<-c("ForecastDate", "Expected Hospitalizations","Expected Infections")
 #       Local$ForecastDate<-as.Date(Local$ForecastDate)
-#       Local <- dplyr::arrange(Local,ForecastDate)      
-#     } else if (AFBaseLocations$Overseas[i] == "OCONUS") {  
+#       Local <- dplyr::arrange(Local,ForecastDate)
+#     } else if (AFBaseLocations$Overseas[i] == "OCONUS") {
 #       Local = dplyr::filter(CHIME_All, Base == base)
 #       Local = dplyr::filter(Local, ForecastDate > Sys.Date())
-#     }  
-#       
+#     }
+# 
 #     doubling<-as.integer(CaseDblRate(MyCounties))
 # 
 #     ########################################################################################
@@ -235,7 +235,7 @@ currCount = 0
 #     PeakDateTwentyOneDayVal<-format(Local$ForecastDate[PeakDateTwentyOneDayVal], format="%b-%d")
 #     PeakDateThirtyDayVal<-format(Local$ForecastDate[PeakDateThirtyDayVal], format="%b-%d")
 #     PeakDateSixtyDayVal<-format(Local$ForecastDate[PeakDateSixtyDayVal], format="%b-%d")
-#     
+# 
 #     #BEGIN IHME CALCS
 #     I1 = round(IHME_Region$`Expected Hospitalizations`[7])
 #     I2 = round(IHME_Region$`Expected Hospitalizations`[14])
@@ -524,14 +524,16 @@ currCount = 0
 # 
 #   if (AFBaseLocations$Overseas[i] == "CONUS"){
 #     DaysProjected <- 120
-#     Army_State<-dplyr::filter(Army_Model,FIPS %in% MyCounties$FIPS)      
-#     Local<-subset(Army_State, select=-c(Location,County,Susceptible,Exposed,Removed,Fatalities,State))    
-#     Local$Date <- as.Date(Local$ForecastDate, "%m/%d/%y")
+#     #MyCounties$FIPS <- as.numeric(MyCounties$FIPS)
+#     #Army_State <- Army_Model %>% filter(FIPS %in% MyCounties$FIPS)
+#     Army_State<-dplyr::filter(Army_Model,FIPS %in% MyCounties$FIPS)
+#     Local<-subset(Army_State, select=c(ForecastDate,Infected))
+#     Local$ForecastDate <- as.Date(Local$ForecastDate, "%m/%d/%y")
 #     Local<-dplyr::filter(Local,ForecastDate >= Sys.Date())
 #   }
-#   
+# 
 #   if(nrow(IHME_Region) == 0 || TotPop == 0 || nrow(Local) == 0){
-#   
+# 
 #     MTFDF <- data.frame(AFBaseLocations$Base[i],AFBaseLocations$`Major Command`[i],AFBaseLocations$State[i],0,0)
 #     names(MTFDF)<-c("Installation","MAJCOM","State","TotalCases","DblRate")
 # 
@@ -559,23 +561,23 @@ currCount = 0
 # 
 #     if (AFBaseLocations$Overseas[i] == "CONUS"){
 #       DaysProjected <- 120
-#       Army_State<-dplyr::filter(Army_Model,FIPS %in% MyCounties$FIPS)      
-#       Local<-subset(Army_State, select=-c(Location,County,Susceptible,Exposed,Removed,Fatalities,State))    
-#       Local$Date <- as.Date(Local$ForecastDate, "%m/%d/%y")
+#       Army_State<-dplyr::filter(Army_Model,FIPS %in% MyCounties$FIPS)
+#       Local<-subset(Army_State, select=c(ForecastDate,Infected))
+#       Local$ForecastDate <- as.Date(Local$ForecastDate, "%m/%d/%y")
 #       Local<-dplyr::filter(Local,ForecastDate >= Sys.Date())
 #       Local<-aggregate(Local[,sapply(Local,is.numeric)],Local["ForecastDate"],sum)
 #       Local<-Local[1:DaysProjected,]
-#       Local<-data.frame(Local$ForecastDate,Local$Infected*.055,Local$Infected)
+#       Local<-data.frame(Local$ForecastDate,Local$x*.055,Local$x)
 #       colnames(Local)<-c("ForecastDate", "Expected Hospitalizations","Expected Infections")
 #       Local$ForecastDate<-as.Date(Local$ForecastDate)
-#       Local <- dplyr::arrange(Local,ForecastDate)      
-#     } else if (AFBaseLocations$Overseas[i] == "OCONUS") {  
+#       Local <- dplyr::arrange(Local,ForecastDate)
+#     } else if (AFBaseLocations$Overseas[i] == "OCONUS") {
 #       Local = dplyr::filter(CHIME_All, Base == base)
 #       Local = dplyr::filter(Local, ForecastDate > Sys.Date())
-#     }  
-#     
+#     }
+# 
 #     doubling<-as.integer(CaseDblRate(MyCounties))
-#     
+# 
 #     ########################################################################################
 #     SevDayVal<-round(Local$`Expected Hospitalizations`[7])
 #     FourteenDayVal<-round(Local$`Expected Hospitalizations`[14])
@@ -960,14 +962,7 @@ WORLDlist = list(region="world",
 # Load Torch Data-----------------------------
 #load(file = "Torch_Model.rda")
 #Torch_Model = read_csv("C:/Users/taylo/Documents/CHADNew2/covid19/www/4_load_external_data/data_files/Torch_Model.csv")
-Torch_Model = read_csv("www/4_load_external_data/data_files/Torch_Model.csv")
-
-
-
-
-
-
-
+#Torch_Model = read_csv("www/4_load_external_data/data_files/Torch_Model.csv")
 
 
 ###############################################################################################

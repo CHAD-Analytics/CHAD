@@ -17,8 +17,8 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
   # ChosenBase = AFBaseLocations$Base[i]
   # CONUSSelect <- "CONUS"
   # ChosenBase = "Air Force Plant 42"
-  # #CONUSSelect <- "OCONUS"
-  # #ChosenBase = "Andersen AFB"
+  # CONUSSelect <- "OCONUS"
+  # ChosenBase = "Andersen AFB"
   # SocialDistance = 15
   # DaysProjected = 30
   # HospitalInfo$DistanceMiles = himd[,as.character(ChosenBase)]
@@ -27,8 +27,8 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
   # CountyInfo$DistanceMiles = cimd[,as.character(ChosenBase)]
   # value = NULL
   # IncludedCounties<-GetCounties(ChosenBase,50,value,value)
-  # ###
-  # ###
+  ###
+  ###
   
   #Establish initial inputs such as base, counties, and filter IHME model
   BaseState<-dplyr::filter(AFBaseLocations, Base == toString(ChosenBase))
@@ -354,7 +354,7 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
     # CountyDataTable<-cbind(IncludedCounties,rev(CovidCounties)[,1],rev(DeathCounties)[,1],rev(CaseRate)[,1])
     # CountyDataTable<-data.frame(CountyDataTable$State,CountyDataTable$County,CountyDataTable$Population, rev(CountyDataTable)[,3], rev(CountyDataTable)[,2],rev(CountyDataTable)[,1])
     # colnames(CountyDataTable)<-c("State","County","Population","Total Confirmed Cases","Total Fatalities", "Case Doubling Rate (days)" )
-    
+
 
     HistoricalData$ID<-rep("Past Data", nrow(HistoricalData))
     HistoricalData <- dplyr::filter(HistoricalData, ForecastDate >= as.Date("2020-01-27") + 30 & ForecastDate <= Sys.Date())
@@ -887,9 +887,8 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
     # CountyDataTable<-cbind(IncludedCounties,rev(CovidCounties)[,1],rev(DeathCounties)[,1],rev(CaseRate)[,1])
     # CountyDataTable<-data.frame(CountyDataTable$State,CountyDataTable$County,CountyDataTable$Population, rev(CountyDataTable)[,3], rev(CountyDataTable)[,2],rev(CountyDataTable)[,1])
     # colnames(CountyDataTable)<-c("State","County","Population","Total Confirmed Cases","Total Fatalities", "Case Doubling Rate (days)" )
-    
 
-    
+
     #HistoricalData$ID<-rep("Past Data", nrow(HistoricalData))
     #HistoricalData <- dplyr::filter(HistoricalData, ForecastDate >= as.Date("2020-01-27") + 30)
     OverlayData$ForecastDate<-as.Date(OverlayData$ForecastDate)
@@ -1129,7 +1128,6 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
     # CountyDataTable<-data.frame(CountyDataTable$State,CountyDataTable$County,CountyDataTable$Population, rev(CountyDataTable)[,3], rev(CountyDataTable)[,2],rev(CountyDataTable)[,1])
     # colnames(CountyDataTable)<-c("State","County","Population","Total Confirmed Cases","Total Fatalities", "Case Doubling Rate (days)" )
     
-
     colnames(HistoricalData)<-c("ForecastDate", "Expected Fatalities", "Lower Estimate","Upper Estimate")
     HistoricalData$ID<-rep("Past Data", nrow(HistoricalData))
     HistoricalData <- dplyr::filter(HistoricalData, ForecastDate >= as.Date("2020-01-27") + 30 & ForecastDate <= Sys.Date())
