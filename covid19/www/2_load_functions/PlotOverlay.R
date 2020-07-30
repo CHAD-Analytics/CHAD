@@ -17,8 +17,8 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
   # ChosenBase = AFBaseLocations$Base[i]
   # CONUSSelect <- "CONUS"
   # ChosenBase = "Air Force Plant 42"
-  # CONUSSelect <- "OCONUS"
-  # ChosenBase = "Andersen AFB"
+  # #CONUSSelect <- "OCONUS"
+  # #ChosenBase = "Andersen AFB"
   # SocialDistance = 15
   # DaysProjected = 30
   # HospitalInfo$DistanceMiles = himd[,as.character(ChosenBase)]
