@@ -1,5 +1,4 @@
 #' Create National Data table on summary page
-#' 
 
 StatePop = CountyInfo
 StatePop$State = as.factor(StatePop$State)
