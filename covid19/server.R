@@ -1116,7 +1116,7 @@ server <- function(input, output,session) {
   # })
   
   
-  output$ForecastDataTableOut<-DT::renderDT({
+  output$ForecastDataTableOut<-DT::renderDT(server = FALSE, {
     forecastbaselist<-dplyr::filter(AFBaseLocations,Branch %in% input$Branch)                        
     forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE) 
     
