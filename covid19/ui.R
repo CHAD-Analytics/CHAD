@@ -52,12 +52,8 @@ ui <- tagList(
                                  sidebarMenu(id="tabs",
                                              #tags$p(paste0("* Current as of ",format(Sys.Date(),format = "%d %B %Y")," at 0600 EST *")),
                                              
-                                             
-                                             
-                                             
                                              # MAJCOM Summary Projection sidebar controls
                                              ######################################################################################################################
-                                             
                                              
                                              conditionalPanel(condition="input.tabselected==1",
                                                               "MAJCOM Summary Inputs",
@@ -111,7 +107,6 @@ ui <- tagList(
                                              
                                              # National/International sidebar controls
                                              ######################################################################################################################
-                                             
                                              
                                              conditionalPanel(condition="input.tabselected==2",
                                                               "International/National Summary",
@@ -249,9 +244,9 @@ ui <- tagList(
                                                                                                         "Columbia University: One time 5% increase in social contact"="CUM2",
                                                                                                         "Columbia University: 5% weekly increase in social contact"="CUM3",
                                                                                                         "Columbia University: Current levels of social mixing remain unchanged"="CUM4",                                                                
-                                                                                                        "DTRA 1 - Current Response"="DTRA1",
-                                                                                                        "DTRA 2 - Improved Response"="DTRA2", 
-                                                                                                        "DTRA 3 - Worst Case"="DTRA3"),
+                                                                                                        "DTRA 1 - Mild Seasonal Effects"="DTRA1",
+                                                                                                        "DTRA 2 - Minimial Seasonal Effects"="DTRA2", 
+                                                                                                        "DTRA 3 - Strong Seasonal Effects"="DTRA3"),
                                                                                                       selected = c("")),
                                                                                    actionLink("selectall2","Select All"))
                                                               ),
@@ -427,40 +422,31 @@ ui <- tagList(
                               tabPanel(
                                 value = 2,
                                 title = "International/National Summary",
-                                
                                 box(
                                   width = 12,
-                                  
                                   column(9,
                                          box(title = uiOutput("ImpactTitle"),
                                              width = NULL,
-      
                                              uiOutput("ImpactText"),
                                              htmlOutput("SummaryPlot")
                                          )
                                   ),
-                                  
                                   column(3, 
                                          box(title = "Top 5 Values",
                                              status = "danger",
                                              solidHeader = TRUE,
                                              width = NULL,
-                                             
                                              DT::dataTableOutput("TabIncreasing")
                                          ),
-                                         
                                          box(title = "Bottom 5 Values",
                                              status = "success",
                                              solidHeader = TRUE,
                                              width = NULL,
-                                             
                                              DT::dataTableOutput("TabDecreasing")
                                          )
                                   )
                                 ),
-
                                 DT::dataTableOutput("NationalDataTable1")
-                                
                               ),
                               
                               # Current Local Health Page
