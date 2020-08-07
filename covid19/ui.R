@@ -200,7 +200,6 @@ ui <- tagList(
                                              # Local Health Projections sidebar controls
                                              ######################################################################################################################
                                              
-                                             
                                              conditionalPanel(condition="input.tabselected==4",
                                                               "Local Health Projection Inputs",
                                                               tabName = "localHealthProj",
@@ -264,9 +263,6 @@ ui <- tagList(
                                                               )
                                                                                                                                                             
                                              ),
-                                             
-                                             
-                                             
                                              
                                              # Welcome Page sidebar controls
                                              ######################################################################################################################
