@@ -33,20 +33,20 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
   #Establish initial inputs such as base, counties, and filter IHME model
   BaseState<-dplyr::filter(AFBaseLocations, Base == toString(ChosenBase))
   if (CONUSSelect == "CONUS"){
-      IHME_State <- dplyr::filter(IHME_Model, State == toString(BaseState$State[1]))
-      # IHME_State2 <- dplyr::filter(IHME_Model2, State == toString(BaseState$State[1]))
-      # IHME_State3 <- dplyr::filter(IHME_Model3, State == toString(BaseState$State[1]))
-      # IHME_StateSum <- dplyr::filter(IHME_Summary, State == toString(BaseState$State[1]))      
-      YYG_State <- dplyr::filter(YYG_ModelU, region == toString(BaseState$State[1])) 
-      hospCounty <- subset(HospUtlzCounty, fips %in% IncludedCounties$FIPS)
-      TTBCounty <- sum(IncludedHospitals$BEDS)
-      StPopList <- dplyr::filter(CountyInfo, State == toString(BaseState$State[1]))
-
-      # # Get total hospital bed number across state
-      # IncludedHospitalsST <- dplyr::filter(HospitalInfo, STATE == toString(BaseState$State[1]))
-      # TotalBedsState <- sum(IncludedHospitalsST$BEDS)
-      # # Calculate bed ratio
-      # BedProp <- TotalBedsCounty/TotalBedsState    
+    IHME_State <- dplyr::filter(IHME_Model, State == toString(BaseState$State[1]))
+    # IHME_State2 <- dplyr::filter(IHME_Model2, State == toString(BaseState$State[1]))
+    # IHME_State3 <- dplyr::filter(IHME_Model3, State == toString(BaseState$State[1]))
+    # IHME_StateSum <- dplyr::filter(IHME_Summary, State == toString(BaseState$State[1]))      
+    YYG_State <- dplyr::filter(YYG_ModelU, region == toString(BaseState$State[1])) 
+    hospCounty <- subset(HospUtlzCounty, fips %in% IncludedCounties$FIPS)
+    TTBCounty <- sum(IncludedHospitals$BEDS)
+    StPopList <- dplyr::filter(CountyInfo, State == toString(BaseState$State[1]))
+    
+    # # Get total hospital bed number across state
+    # IncludedHospitalsST <- dplyr::filter(HospitalInfo, STATE == toString(BaseState$State[1]))
+    # TotalBedsState <- sum(IncludedHospitalsST$BEDS)
+    # # Calculate bed ratio
+    # BedProp <- TotalBedsCounty/TotalBedsState    
   } else {
     if (BaseState$Country[1] == "South Korea"){
       IHME_State <- dplyr::filter(IHME_Model, location_name == "Republic of Korea")
@@ -68,80 +68,80 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
         # IHME_StateSum <- dplyr::filter(IHME_Summary, location_name == toString(BaseState$County[1]))           
       }  
     }
-      YYG_State <- dplyr::filter(YYG_ModelG, country == toString(BaseState$Country[1])) 
-      StPopList <- dplyr::filter(CountyInfo, State == toString(BaseState$Country[1]))
+    YYG_State <- dplyr::filter(YYG_ModelG, country == toString(BaseState$Country[1])) 
+    StPopList <- dplyr::filter(CountyInfo, State == toString(BaseState$Country[1]))
   }
-
+  
   #Get regional and state populations
   RegPop <- sum(IncludedCounties$Population)
   StPop <- sum(StPopList$Population)
   
   # Use Population ratio to scale IHME
   PopRatio <- RegPop/StPop
-
+  
   if (CONUSSelect == "CONUS"){
-      #Army_State <- dplyr::filter(Army_Model, State == toString(BaseState$State[1]))  
-      Army_State<-dplyr::filter(Army_Model,FIPS %in% IncludedCounties$FIPS)
-      Torch_State<-dplyr::filter(Torch_Model,FIP %in% IncludedCounties$FIPS) 
-      
-      Torch_HospAvail <- unique(Torch_State$EstHospBedsAvail)
-      Torch_HospAvail <- sum(Torch_HospAvail) 
-      
-      Torch_ICUAvail <- unique(Torch_State$EstICUBedsAvail)
-      Torch_ICUAvail <- sum(Torch_ICUAvail)
-      
-      UT_State <- dplyr::filter(UT_Model, State == toString(BaseState$State[1]))  
-      DPT1<-dplyr::filter(DP1,FIPS %in% IncludedCounties$FIPS)
-      DPT2<-dplyr::filter(DP2,FIPS %in% IncludedCounties$FIPS)
-      DPT3<-dplyr::filter(DP3,FIPS %in% IncludedCounties$FIPS)      
-      #DPT1$ForecastDate <- strptime(as.character(DPT1$ForecastDate), "%m/%d/%Y")
-      #DPT2$ForecastDate <- strptime(as.character(DPT2$ForecastDate), "%m/%d/%Y")  
-      #DPT3$ForecastDate <- strptime(as.character(DPT3$ForecastDate), "%m/%d/%Y")        
-      DPT1$ForecastDate<-as.Date(DPT1$ForecastDate, "%Y-%m-%d")
-      DPT2$ForecastDate<-as.Date(DPT2$ForecastDate, "%Y-%m-%d")
-      DPT3$ForecastDate<-as.Date(DPT3$ForecastDate, "%Y-%m-%d")      
-      startdate <- "2020-05-22"
-      startdate <-as.Date(startdate, "%Y-%m-%d")
-      datediff <- as.numeric(Sys.Date()-startdate)
-      DPT1<-dplyr::filter(DPT1,(ForecastDate >= (Sys.Date()-datediff)))        
-      DPT2<-dplyr::filter(DPT2,(ForecastDate >= (Sys.Date()-datediff)))        
-      DPT3<-dplyr::filter(DPT3,(ForecastDate >= (Sys.Date()-datediff)))              
-      DPT1<-aggregate(data.frame(DPT1)[,sapply(data.frame(DPT1),is.numeric)],data.frame(DPT1)["ForecastDate"],sum)
-      DPT2<-aggregate(data.frame(DPT2)[,sapply(data.frame(DPT2),is.numeric)],data.frame(DPT2)["ForecastDate"],sum)
-      DPT3<-aggregate(data.frame(DPT3)[,sapply(data.frame(DPT3),is.numeric)],data.frame(DPT3)["ForecastDate"],sum)      
-      DPT1<-DPT1[1:DaysProjected,]
-      DPT2<-DPT2[1:DaysProjected,]
-      DPT3<-DPT3[1:DaysProjected,]      
-      DPT1$ID<-rep("DTRA1",nrow(DPT1))
-      DPT2$ID<-rep("DTRA2",nrow(DPT2))
-      DPT3$ID<-rep("DTRA3",nrow(DPT3))      
-  } 
-
+    #Army_State <- dplyr::filter(Army_Model, State == toString(BaseState$State[1]))  
+    Army_State<-dplyr::filter(Army_Model,FIPS %in% IncludedCounties$FIPS)
+    Torch_State<-dplyr::filter(Torch_Model,FIP %in% IncludedCounties$FIPS) 
     
+    Torch_HospAvail <- unique(Torch_State$EstHospBedsAvail)
+    Torch_HospAvail <- sum(Torch_HospAvail) 
+    
+    Torch_ICUAvail <- unique(Torch_State$EstICUBedsAvail)
+    Torch_ICUAvail <- sum(Torch_ICUAvail)
+    
+    UT_State <- dplyr::filter(UT_Model, State == toString(BaseState$State[1]))  
+    DPT1<-dplyr::filter(DP1,FIPS %in% IncludedCounties$FIPS)
+    DPT2<-dplyr::filter(DP2,FIPS %in% IncludedCounties$FIPS)
+    DPT3<-dplyr::filter(DP3,FIPS %in% IncludedCounties$FIPS)      
+    #DPT1$ForecastDate <- strptime(as.character(DPT1$ForecastDate), "%m/%d/%Y")
+    #DPT2$ForecastDate <- strptime(as.character(DPT2$ForecastDate), "%m/%d/%Y")  
+    #DPT3$ForecastDate <- strptime(as.character(DPT3$ForecastDate), "%m/%d/%Y")        
+    DPT1$ForecastDate<-as.Date(DPT1$ForecastDate, "%Y-%m-%d")
+    DPT2$ForecastDate<-as.Date(DPT2$ForecastDate, "%Y-%m-%d")
+    DPT3$ForecastDate<-as.Date(DPT3$ForecastDate, "%Y-%m-%d")      
+    startdate <- "2020-05-22"
+    startdate <-as.Date(startdate, "%Y-%m-%d")
+    datediff <- as.numeric(Sys.Date()-startdate)
+    DPT1<-dplyr::filter(DPT1,(ForecastDate >= (Sys.Date()-datediff)))        
+    DPT2<-dplyr::filter(DPT2,(ForecastDate >= (Sys.Date()-datediff)))        
+    DPT3<-dplyr::filter(DPT3,(ForecastDate >= (Sys.Date()-datediff)))              
+    DPT1<-aggregate(data.frame(DPT1)[,sapply(data.frame(DPT1),is.numeric)],data.frame(DPT1)["ForecastDate"],sum)
+    DPT2<-aggregate(data.frame(DPT2)[,sapply(data.frame(DPT2),is.numeric)],data.frame(DPT2)["ForecastDate"],sum)
+    DPT3<-aggregate(data.frame(DPT3)[,sapply(data.frame(DPT3),is.numeric)],data.frame(DPT3)["ForecastDate"],sum)      
+    DPT1<-DPT1[1:DaysProjected,]
+    DPT2<-DPT2[1:DaysProjected,]
+    DPT3<-DPT3[1:DaysProjected,]      
+    DPT1$ID<-rep("DTRA1",nrow(DPT1))
+    DPT2$ID<-rep("DTRA2",nrow(DPT2))
+    DPT3$ID<-rep("DTRA3",nrow(DPT3))      
+  } 
+  
+  
   if (StatisticType == "Hospitalizations") {
-
+    
     OverlayData <- setNames(data.frame(matrix(ncol = 5, nrow = 0)),c("ForecastDate", "Expected Hospitalizations", "Lower Estimate","Upper Estimate","ID"))
     
     if (CONUSSelect == "CONUS"){
-        LANL_State <- dplyr::filter(LANLC_Data, State == toString(BaseState$State[1]))
+      LANL_State <- dplyr::filter(LANLC_Data, State == toString(BaseState$State[1]))
     } else {
-        LANL_State <- dplyr::filter(LANLGC_Data, countries == toString(BaseState$Country[1]))
+      LANL_State <- dplyr::filter(LANLGC_Data, countries == toString(BaseState$Country[1]))
     }
     #Get covid cases and hospitalization rates for county
     CovidCounties<-subset(CovidConfirmedCases, CountyFIPS %in% IncludedCounties$FIPS)
     CovidCountiesHospRate <- subset(CountyHospRate, FIPS %in% IncludedCounties$FIPS)
-
+    
     #Get past data in daily hospital use
     #This will use a 5 day hospital stay as the average
     HistoricalDataDaily <- CovidCounties[,(5+5):length(CovidCounties)] - CovidCounties[,5:(length(CovidCounties)-5)]
     if (nrow(CovidCountiesHospRate) != 0){
-        HistoricalDataHosp<-colSums(HistoricalDataDaily*CovidCountiesHospRate$HospRate)
-
-        #Create dataframe to hold daily hospitalizations
-        #HistoricalDates<-seq(as.Date("2020-01-27"), length=length(HistoricalDataHosp), by="1 day")
-        HistoricalDates = as.Date(names(HistoricalDataHosp), "%m/%d/%y")
-        HistoricalData<-data.frame(HistoricalDates, HistoricalDataHosp, HistoricalDataHosp*0.75, HistoricalDataHosp*1.25)
-        colnames(HistoricalData)<-c("ForecastDate", "Expected Hospitalizations", "Lower Estimate","Upper Estimate")
+      HistoricalDataHosp<-colSums(HistoricalDataDaily*CovidCountiesHospRate$HospRate)
+      
+      #Create dataframe to hold daily hospitalizations
+      #HistoricalDates<-seq(as.Date("2020-01-27"), length=length(HistoricalDataHosp), by="1 day")
+      HistoricalDates = as.Date(names(HistoricalDataHosp), "%m/%d/%y")
+      HistoricalData<-data.frame(HistoricalDates, HistoricalDataHosp, HistoricalDataHosp*0.75, HistoricalDataHosp*1.25)
+      colnames(HistoricalData)<-c("ForecastDate", "Expected Hospitalizations", "Lower Estimate","Upper Estimate")
     } else {
       HistoricalDataHosp<-colSums(HistoricalDataDaily*HRate)
       
@@ -153,7 +153,7 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
     }
     
     currHosp = HistoricalData[nrow(HistoricalData),2]
-
+    
     if (nrow(IHME_State) !=0 ) {
       IHME_Region <- IHME_State
       IHME_Region$allbed_mean = round(IHME_State$allbed_mean*PopRatio)
@@ -184,35 +184,35 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
     }            
     
     if (nrow(YYG_State) !=0 ) {        
-        # Apply ratio's to YYG Data
-        # Multiple cases by 5.5% to estimate number of hospitalizations
-        YYG_Region <- YYG_State
-        YYG_Region$predicted_new_infected_mean = round(YYG_State$predicted_new_infected_mean*PopRatio)
-        YYG_Region$predicted_new_infected_lower = round(YYG_State$predicted_new_infected_lower*PopRatio)
-        YYG_Region$predicted_new_infected_upper = round(YYG_State$predicted_new_infected_upper*PopRatio)
-        YYG_Data<-data.frame(YYG_Region$date,YYG_Region$predicted_new_infected_mean*HRate,YYG_Region$predicted_new_infected_lower*HRate,YYG_Region$predicted_new_infected_upper*HRate)
-        colnames(YYG_Data)<-c("ForecastDate", "Expected Hospitalizations", "Lower Estimate","Upper Estimate")
-        YYG_Data$ID<-rep("YYG",nrow(YYG_Data)) 
-        OverlayData<-rbind(OverlayData,YYG_Data)        
+      # Apply ratio's to YYG Data
+      # Multiple cases by 5.5% to estimate number of hospitalizations
+      YYG_Region <- YYG_State
+      YYG_Region$predicted_new_infected_mean = round(YYG_State$predicted_new_infected_mean*PopRatio)
+      YYG_Region$predicted_new_infected_lower = round(YYG_State$predicted_new_infected_lower*PopRatio)
+      YYG_Region$predicted_new_infected_upper = round(YYG_State$predicted_new_infected_upper*PopRatio)
+      YYG_Data<-data.frame(YYG_Region$date,YYG_Region$predicted_new_infected_mean*HRate,YYG_Region$predicted_new_infected_lower*HRate,YYG_Region$predicted_new_infected_upper*HRate)
+      colnames(YYG_Data)<-c("ForecastDate", "Expected Hospitalizations", "Lower Estimate","Upper Estimate")
+      YYG_Data$ID<-rep("YYG",nrow(YYG_Data)) 
+      OverlayData<-rbind(OverlayData,YYG_Data)        
     }
     
     if (nrow(LANL_State) !=0 & max(as.Date(LANL_State$dates)) > Sys.Date()) {
-        # Apply ratio's to LANL Data
-        # Multiple cases by 5.5% to estimate number of hospitalizations
-        LANL_Region <- LANL_State
-        LANL_Region$q.25 = round(LANL_Region$q.25*PopRatio)
-        LANL_Region$q.50 = round(LANL_Region$q.50*PopRatio)
-        LANL_Region$q.75 = round(LANL_Region$q.75*PopRatio)
-        LANL_Region<-data.frame(LANL_Region$dates,LANL_Region$q.50*HRate,LANL_Region$q.25*HRate,LANL_Region$q.75*HRate)      
-        colnames(LANL_Region)<-c("ForecastDate", "Expected Hospitalizations", "Lower Estimate","Upper Estimate")
-        LANL_Region$ForecastDate<-as.Date(LANL_Region$ForecastDate)
-        
-        LANL_Region<-LANL_Region[order(as.Date(LANL_Region$ForecastDate, format="%Y/%m/%d")),]
-        LANL_Region$'Expected Hospitalizations'<-c(LANL_Region$'Expected Hospitalizations'[1],diff(LANL_Region$'Expected Hospitalizations'))
-        LANL_Region$'Lower Estimate'<-c(LANL_Region$'Lower Estimate'[1],diff(LANL_Region$'Lower Estimate'))
-        LANL_Region$'Upper Estimate'<-c(LANL_Region$'Upper Estimate'[1],diff(LANL_Region$'Upper Estimate'))
-        LANL_Region$ID<-rep("LANL",nrow(LANL_Region)) 
-        OverlayData<-rbind(OverlayData,LANL_Region)
+      # Apply ratio's to LANL Data
+      # Multiple cases by 5.5% to estimate number of hospitalizations
+      LANL_Region <- LANL_State
+      LANL_Region$q.25 = round(LANL_Region$q.25*PopRatio)
+      LANL_Region$q.50 = round(LANL_Region$q.50*PopRatio)
+      LANL_Region$q.75 = round(LANL_Region$q.75*PopRatio)
+      LANL_Region<-data.frame(LANL_Region$dates,LANL_Region$q.50*HRate,LANL_Region$q.25*HRate,LANL_Region$q.75*HRate)      
+      colnames(LANL_Region)<-c("ForecastDate", "Expected Hospitalizations", "Lower Estimate","Upper Estimate")
+      LANL_Region$ForecastDate<-as.Date(LANL_Region$ForecastDate)
+      
+      LANL_Region<-LANL_Region[order(as.Date(LANL_Region$ForecastDate, format="%Y/%m/%d")),]
+      LANL_Region$'Expected Hospitalizations'<-c(LANL_Region$'Expected Hospitalizations'[1],diff(LANL_Region$'Expected Hospitalizations'))
+      LANL_Region$'Lower Estimate'<-c(LANL_Region$'Lower Estimate'[1],diff(LANL_Region$'Lower Estimate'))
+      LANL_Region$'Upper Estimate'<-c(LANL_Region$'Upper Estimate'[1],diff(LANL_Region$'Upper Estimate'))
+      LANL_Region$ID<-rep("LANL",nrow(LANL_Region)) 
+      OverlayData<-rbind(OverlayData,LANL_Region)
     }        
     # #Calculate IHME Peak date, create data table of peak dates for hospitalizations 
     # IHMEPeak<-round(max(IHME_Data$`Expected Hospitalizations`[1:DaysProjected]))
@@ -231,122 +231,122 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
     
     
     if (CONUSSelect == "CONUS"){
-        # Apply ratio's to UT data
-        # Multiple by 16 to reflect hospitalizations at 8% from death rate of 0.5%
-        UT_Region <- UT_State
-        UT_Region$daily_deaths_est = round(UT_State$daily_deaths_est*PopRatio*16)
-        UT_Region$daily_deaths_90CI_lower = round(UT_State$daily_deaths_95CI_lower*PopRatio*16)
-        UT_Region$daily_deaths_90CI_upper = round(UT_State$daily_deaths_95CI_upper*PopRatio*16)
-        UT_Data<-data.frame(UT_Region$date,UT_Region$daily_deaths_est, UT_Region$daily_deaths_95CI_lower, UT_Region$daily_deaths_95CI_upper)    
-        
-        #For DTRA Data, multiply number of cases by projected hospitalization rate
-        DPT1<-data.frame(DPT1$ForecastDate,DPT1$'Expected.Hospitalizations'*HRate,DPT1$'Lower.Estimate'*HRate,DPT1$'Upper.Estimate'*HRate,DPT1$ID)
-        DPT2<-data.frame(DPT2$ForecastDate,DPT2$'Expected.Hospitalizations'*HRate,DPT2$'Lower.Estimate'*HRate,DPT2$'Upper.Estimate'*HRate,DPT2$ID)  
-        DPT3<-data.frame(DPT3$ForecastDate,DPT3$'Expected.Hospitalizations'*HRate,DPT3$'Lower.Estimate'*HRate,DPT3$'Upper.Estimate'*HRate,DPT3$ID)          
-        colnames(DPT1)<-c("ForecastDate", "Expected Hospitalizations", "Lower Estimate","Upper Estimate", "ID")
-        colnames(DPT2)<-c("ForecastDate", "Expected Hospitalizations", "Lower Estimate","Upper Estimate", "ID")    
-        colnames(DPT3)<-c("ForecastDate", "Expected Hospitalizations", "Lower Estimate","Upper Estimate", "ID")         
-
-        Torch_State$Date <- as.Date(Torch_State$Date, "%m/%d/%Y")
-        Torch_State<-dplyr::filter(Torch_State,Date >= Sys.Date())
-        Torch_State<-aggregate(Torch_State[,sapply(Torch_State,is.numeric)],Torch_State["Date"],sum)
-        Torch_State<-Torch_State[1:DaysProjected,]
-        Torch_State<-data.frame(Torch_State$Date,Torch_State$HCasesEst,Torch_State$HCasesEstLow,Torch_State$HCasesEstUp)
-        colnames(Torch_State)<-c("ForecastDate","Expected Hospitalizations","Lower Estimate","Upper Estimate")
-        Torch_State$ID<-rep("Torch",nrow(Torch_State))
-        OverlayData<-rbind(OverlayData,Torch_State)        
-                
-        Army_State<-subset(Army_State, select=c(ForecastDate,Infected,LInfected,UInfected))    
-        Army_State$ForecastDate <- as.Date(Army_State$ForecastDate, "%m/%d/%Y")
-        Army_State<-dplyr::filter(Army_State,ForecastDate >= Sys.Date())
-        Army_State<-aggregate(data.frame(Army_State)[,sapply(data.frame(Army_State),is.numeric)],data.frame(Army_State)["ForecastDate"],sum)
-        Army_State<-Army_State[1:DaysProjected,]
-        Army_State<-data.frame(Army_State$ForecastDate,Army_State$Infected*HRate,Army_State$LInfected*HRate,Army_State$UInfected*HRate)
-        colnames(Army_State)<-c("ForecastDate","Expected Hospitalizations","Lower Estimate","Upper Estimate")
-        Army_State$ID<-rep("CAA",nrow(Army_State))
-        OverlayData<-rbind(OverlayData,Army_State)
-            
-        CUM1_State<-dplyr::filter(CUM1,fips %in% IncludedCounties$FIPS)
-        CUM2_State<-dplyr::filter(CUM2,fips %in% IncludedCounties$FIPS)
-        CUM3_State<-dplyr::filter(CUM3,fips %in% IncludedCounties$FIPS)
-        CUM4_State<-dplyr::filter(CUM4,fips %in% IncludedCounties$FIPS) 
-        
-        CUM1_State<-subset(CUM1_State, select=-c(County,State)) 
-        CUM2_State<-subset(CUM2_State, select=-c(County,State))     
-        CUM3_State<-subset(CUM3_State, select=-c(County,State)) 
-        CUM4_State<-subset(CUM4_State, select=-c(County,State))    
-        
-        CUM1_State$Date <- as.Date(CUM1_State$Date, "%m/%d/%y")
-        CUM2_State$Date <- as.Date(CUM2_State$Date, "%m/%d/%y")
-        CUM3_State$Date <- as.Date(CUM3_State$Date, "%m/%d/%y")
-        CUM4_State$Date <- as.Date(CUM4_State$Date, "%m/%d/%y") 
-        
-        CUM1_State<-dplyr::filter(CUM1_State,Date >= Sys.Date())
-        CUM2_State<-dplyr::filter(CUM2_State,Date >= Sys.Date())      
-        CUM3_State<-dplyr::filter(CUM3_State,Date >= Sys.Date())
-        CUM4_State<-dplyr::filter(CUM4_State,Date >= Sys.Date())
-        
-        CUM1_State<-aggregate(CUM1_State[,sapply(CUM1_State,is.numeric)],CUM1_State["Date"],sum)
-        CUM2_State<-aggregate(CUM2_State[,sapply(CUM2_State,is.numeric)],CUM2_State["Date"],sum)
-        CUM3_State<-aggregate(CUM3_State[,sapply(CUM3_State,is.numeric)],CUM3_State["Date"],sum)
-        CUM4_State<-aggregate(CUM4_State[,sapply(CUM4_State,is.numeric)],CUM4_State["Date"],sum)  
-        
-        CUM1_State<-CUM1_State[1:DaysProjected,]
-        CUM2_State<-CUM2_State[1:DaysProjected,]
-        CUM3_State<-CUM3_State[1:DaysProjected,]
-        CUM4_State<-CUM4_State[1:DaysProjected,]
-        
-        CUM1_State <- data.frame(CUM1_State$Date,CUM1_State$hosp_need_50,CUM1_State$hosp_need_25,CUM1_State$hosp_need_75)
-        CUM2_State <- data.frame(CUM2_State$Date,CUM2_State$hosp_need_50,CUM2_State$hosp_need_25,CUM2_State$hosp_need_75)
-        CUM3_State <- data.frame(CUM3_State$Date,CUM3_State$hosp_need_50,CUM3_State$hosp_need_25,CUM3_State$hosp_need_75)
-        CUM4_State <- data.frame(CUM4_State$Date,CUM4_State$hosp_need_50,CUM4_State$hosp_need_25,CUM4_State$hosp_need_75)      
-        
-        colnames(CUM1_State)<-c("ForecastDate","Expected Hospitalizations","Lower Estimate","Upper Estimate")
-        CUM1_State$ID<-rep("CUM1",nrow(CUM1_State))
-        colnames(CUM2_State)<-c("ForecastDate","Expected Hospitalizations","Lower Estimate","Upper Estimate")
-        CUM2_State$ID<-rep("CUM2",nrow(CUM2_State))
-        colnames(CUM3_State)<-c("ForecastDate","Expected Hospitalizations","Lower Estimate","Upper Estimate")
-        CUM3_State$ID<-rep("CUM3",nrow(CUM3_State))
-        colnames(CUM4_State)<-c("ForecastDate","Expected Hospitalizations","Lower Estimate","Upper Estimate")
-        CUM4_State$ID<-rep("CUM4",nrow(CUM4_State))      
-    
-        colnames(UT_Data)<-c("ForecastDate", "Expected Hospitalizations", "Lower Estimate","Upper Estimate")
-        UT_Data$ID<-rep("UT",nrow(UT_Data))
-
-        OverlayData<-rbind(OverlayData,UT_Data)      
-        OverlayData<-rbind(OverlayData,CUM1_State)
-        OverlayData<-rbind(OverlayData,CUM2_State)
-        OverlayData<-rbind(OverlayData,CUM3_State)
-        OverlayData<-rbind(OverlayData,CUM4_State)
-        OverlayData<-rbind(OverlayData,DPT1)
-        OverlayData<-rbind(OverlayData,DPT2)
-        OverlayData<-rbind(OverlayData,DPT3)        
-        
-        # UTPeak<-round(max(UT_Data$`Expected Hospitalizations`[1:DaysProjected]))
-        # UTDate<-which.max(UT_Data$`Expected Hospitalizations`[1:DaysProjected])
-        # UTDate<-format(UT_Data$ForecastDate[UTDate], format="%b-%d")    
-        # PeakDates<-rbind(PeakDates,UTDate)
-        # PeakValues<-rbind(PeakValues,UTPeak)    
-        # CU1Peak<-round(max(CUM1_State$`Expected Hospitalizations`[1:DaysProjected]))
-        # PeakDate<-which.max(CUM1_State$`Expected Hospitalizations`[1:DaysProjected])
-        # PeakDate<-format(CUM1_State$ForecastDate[PeakDate], format="%b-%d")       
-        # PeakDates<-rbind(PeakDates,PeakDate)
-        # PeakValues<-rbind(PeakValues,CU1Peak)           
-        # CU2Peak<-round(max(CUM2_State$`Expected Hospitalizations`[1:DaysProjected]))
-        # PeakDate<-which.max(CUM2_State$`Expected Hospitalizations`[1:DaysProjected])
-        # PeakDate<-format(CUM2_State$ForecastDate[PeakDate], format="%b-%d")         
-        # PeakDates<-rbind(PeakDates,PeakDate)
-        # PeakValues<-rbind(PeakValues,CU2Peak)          
-        # CU3Peak<-round(max(CUM3_State$`Expected Hospitalizations`[1:DaysProjected]))
-        # PeakDate<-which.max(CUM3_State$`Expected Hospitalizations`[1:DaysProjected])
-        # PeakDate<-format(CUM3_State$ForecastDate[PeakDate], format="%b-%d")      
-        # PeakDates<-rbind(PeakDates,PeakDate)
-        # PeakValues<-rbind(PeakValues,CU3Peak)
-        # CU4Peak<-round(max(CUM4_State$`Expected Hospitalizations`[1:DaysProjected]))
-        # PeakDate<-which.max(CUM4_State$`Expected Hospitalizations`[1:DaysProjected])
-        # PeakDate<-format(CUM4_State$ForecastDate[PeakDate], format="%b-%d")      
-        # PeakDates<-rbind(PeakDates,PeakDate)
-        # PeakValues<-rbind(PeakValues,CU4Peak)         
+      # Apply ratio's to UT data
+      # Multiple by 16 to reflect hospitalizations at 8% from death rate of 0.5%
+      UT_Region <- UT_State
+      UT_Region$daily_deaths_est = round(UT_State$daily_deaths_est*PopRatio*16)
+      UT_Region$daily_deaths_90CI_lower = round(UT_State$daily_deaths_95CI_lower*PopRatio*16)
+      UT_Region$daily_deaths_90CI_upper = round(UT_State$daily_deaths_95CI_upper*PopRatio*16)
+      UT_Data<-data.frame(UT_Region$date,UT_Region$daily_deaths_est, UT_Region$daily_deaths_95CI_lower, UT_Region$daily_deaths_95CI_upper)    
+      
+      #For DTRA Data, multiply number of cases by projected hospitalization rate
+      DPT1<-data.frame(DPT1$ForecastDate,DPT1$'Expected.Hospitalizations'*HRate,DPT1$'Lower.Estimate'*HRate,DPT1$'Upper.Estimate'*HRate,DPT1$ID)
+      DPT2<-data.frame(DPT2$ForecastDate,DPT2$'Expected.Hospitalizations'*HRate,DPT2$'Lower.Estimate'*HRate,DPT2$'Upper.Estimate'*HRate,DPT2$ID)  
+      DPT3<-data.frame(DPT3$ForecastDate,DPT3$'Expected.Hospitalizations'*HRate,DPT3$'Lower.Estimate'*HRate,DPT3$'Upper.Estimate'*HRate,DPT3$ID)          
+      colnames(DPT1)<-c("ForecastDate", "Expected Hospitalizations", "Lower Estimate","Upper Estimate", "ID")
+      colnames(DPT2)<-c("ForecastDate", "Expected Hospitalizations", "Lower Estimate","Upper Estimate", "ID")    
+      colnames(DPT3)<-c("ForecastDate", "Expected Hospitalizations", "Lower Estimate","Upper Estimate", "ID")         
+      
+      Torch_State$Date <- as.Date(Torch_State$Date, "%m/%d/%Y")
+      Torch_State<-dplyr::filter(Torch_State,Date >= Sys.Date())
+      Torch_State<-aggregate(Torch_State[,sapply(Torch_State,is.numeric)],Torch_State["Date"],sum)
+      Torch_State<-Torch_State[1:DaysProjected,]
+      Torch_State<-data.frame(Torch_State$Date,Torch_State$HCasesEst,Torch_State$HCasesEstLow,Torch_State$HCasesEstUp)
+      colnames(Torch_State)<-c("ForecastDate","Expected Hospitalizations","Lower Estimate","Upper Estimate")
+      Torch_State$ID<-rep("Torch",nrow(Torch_State))
+      OverlayData<-rbind(OverlayData,Torch_State)        
+      
+      Army_State<-subset(Army_State, select=c(ForecastDate,Infected,LInfected,UInfected))    
+      Army_State$ForecastDate <- as.Date(Army_State$ForecastDate, "%m/%d/%Y")
+      Army_State<-dplyr::filter(Army_State,ForecastDate >= Sys.Date())
+      Army_State<-aggregate(data.frame(Army_State)[,sapply(data.frame(Army_State),is.numeric)],data.frame(Army_State)["ForecastDate"],sum)
+      Army_State<-Army_State[1:DaysProjected,]
+      Army_State<-data.frame(Army_State$ForecastDate,Army_State$Infected*HRate,Army_State$LInfected*HRate,Army_State$UInfected*HRate)
+      colnames(Army_State)<-c("ForecastDate","Expected Hospitalizations","Lower Estimate","Upper Estimate")
+      Army_State$ID<-rep("CAA",nrow(Army_State))
+      OverlayData<-rbind(OverlayData,Army_State)
+      
+      CUM1_State<-dplyr::filter(CUM1,fips %in% IncludedCounties$FIPS)
+      CUM2_State<-dplyr::filter(CUM2,fips %in% IncludedCounties$FIPS)
+      CUM3_State<-dplyr::filter(CUM3,fips %in% IncludedCounties$FIPS)
+      CUM4_State<-dplyr::filter(CUM4,fips %in% IncludedCounties$FIPS) 
+      
+      CUM1_State<-subset(CUM1_State, select=-c(County,State)) 
+      CUM2_State<-subset(CUM2_State, select=-c(County,State))     
+      CUM3_State<-subset(CUM3_State, select=-c(County,State)) 
+      CUM4_State<-subset(CUM4_State, select=-c(County,State))    
+      
+      CUM1_State$Date <- as.Date(CUM1_State$Date, "%m/%d/%y")
+      CUM2_State$Date <- as.Date(CUM2_State$Date, "%m/%d/%y")
+      CUM3_State$Date <- as.Date(CUM3_State$Date, "%m/%d/%y")
+      CUM4_State$Date <- as.Date(CUM4_State$Date, "%m/%d/%y") 
+      
+      CUM1_State<-dplyr::filter(CUM1_State,Date >= Sys.Date())
+      CUM2_State<-dplyr::filter(CUM2_State,Date >= Sys.Date())      
+      CUM3_State<-dplyr::filter(CUM3_State,Date >= Sys.Date())
+      CUM4_State<-dplyr::filter(CUM4_State,Date >= Sys.Date())
+      
+      CUM1_State<-aggregate(CUM1_State[,sapply(CUM1_State,is.numeric)],CUM1_State["Date"],sum)
+      CUM2_State<-aggregate(CUM2_State[,sapply(CUM2_State,is.numeric)],CUM2_State["Date"],sum)
+      CUM3_State<-aggregate(CUM3_State[,sapply(CUM3_State,is.numeric)],CUM3_State["Date"],sum)
+      CUM4_State<-aggregate(CUM4_State[,sapply(CUM4_State,is.numeric)],CUM4_State["Date"],sum)  
+      
+      CUM1_State<-CUM1_State[1:DaysProjected,]
+      CUM2_State<-CUM2_State[1:DaysProjected,]
+      CUM3_State<-CUM3_State[1:DaysProjected,]
+      CUM4_State<-CUM4_State[1:DaysProjected,]
+      
+      CUM1_State <- data.frame(CUM1_State$Date,CUM1_State$hosp_need_50,CUM1_State$hosp_need_25,CUM1_State$hosp_need_75)
+      CUM2_State <- data.frame(CUM2_State$Date,CUM2_State$hosp_need_50,CUM2_State$hosp_need_25,CUM2_State$hosp_need_75)
+      CUM3_State <- data.frame(CUM3_State$Date,CUM3_State$hosp_need_50,CUM3_State$hosp_need_25,CUM3_State$hosp_need_75)
+      CUM4_State <- data.frame(CUM4_State$Date,CUM4_State$hosp_need_50,CUM4_State$hosp_need_25,CUM4_State$hosp_need_75)      
+      
+      colnames(CUM1_State)<-c("ForecastDate","Expected Hospitalizations","Lower Estimate","Upper Estimate")
+      CUM1_State$ID<-rep("CUM1",nrow(CUM1_State))
+      colnames(CUM2_State)<-c("ForecastDate","Expected Hospitalizations","Lower Estimate","Upper Estimate")
+      CUM2_State$ID<-rep("CUM2",nrow(CUM2_State))
+      colnames(CUM3_State)<-c("ForecastDate","Expected Hospitalizations","Lower Estimate","Upper Estimate")
+      CUM3_State$ID<-rep("CUM3",nrow(CUM3_State))
+      colnames(CUM4_State)<-c("ForecastDate","Expected Hospitalizations","Lower Estimate","Upper Estimate")
+      CUM4_State$ID<-rep("CUM4",nrow(CUM4_State))      
+      
+      colnames(UT_Data)<-c("ForecastDate", "Expected Hospitalizations", "Lower Estimate","Upper Estimate")
+      UT_Data$ID<-rep("UT",nrow(UT_Data))
+      
+      OverlayData<-rbind(OverlayData,UT_Data)      
+      OverlayData<-rbind(OverlayData,CUM1_State)
+      OverlayData<-rbind(OverlayData,CUM2_State)
+      OverlayData<-rbind(OverlayData,CUM3_State)
+      OverlayData<-rbind(OverlayData,CUM4_State)
+      OverlayData<-rbind(OverlayData,DPT1)
+      OverlayData<-rbind(OverlayData,DPT2)
+      OverlayData<-rbind(OverlayData,DPT3)        
+      
+      # UTPeak<-round(max(UT_Data$`Expected Hospitalizations`[1:DaysProjected]))
+      # UTDate<-which.max(UT_Data$`Expected Hospitalizations`[1:DaysProjected])
+      # UTDate<-format(UT_Data$ForecastDate[UTDate], format="%b-%d")    
+      # PeakDates<-rbind(PeakDates,UTDate)
+      # PeakValues<-rbind(PeakValues,UTPeak)    
+      # CU1Peak<-round(max(CUM1_State$`Expected Hospitalizations`[1:DaysProjected]))
+      # PeakDate<-which.max(CUM1_State$`Expected Hospitalizations`[1:DaysProjected])
+      # PeakDate<-format(CUM1_State$ForecastDate[PeakDate], format="%b-%d")       
+      # PeakDates<-rbind(PeakDates,PeakDate)
+      # PeakValues<-rbind(PeakValues,CU1Peak)           
+      # CU2Peak<-round(max(CUM2_State$`Expected Hospitalizations`[1:DaysProjected]))
+      # PeakDate<-which.max(CUM2_State$`Expected Hospitalizations`[1:DaysProjected])
+      # PeakDate<-format(CUM2_State$ForecastDate[PeakDate], format="%b-%d")         
+      # PeakDates<-rbind(PeakDates,PeakDate)
+      # PeakValues<-rbind(PeakValues,CU2Peak)          
+      # CU3Peak<-round(max(CUM3_State$`Expected Hospitalizations`[1:DaysProjected]))
+      # PeakDate<-which.max(CUM3_State$`Expected Hospitalizations`[1:DaysProjected])
+      # PeakDate<-format(CUM3_State$ForecastDate[PeakDate], format="%b-%d")      
+      # PeakDates<-rbind(PeakDates,PeakDate)
+      # PeakValues<-rbind(PeakValues,CU3Peak)
+      # CU4Peak<-round(max(CUM4_State$`Expected Hospitalizations`[1:DaysProjected]))
+      # PeakDate<-which.max(CUM4_State$`Expected Hospitalizations`[1:DaysProjected])
+      # PeakDate<-format(CUM4_State$ForecastDate[PeakDate], format="%b-%d")      
+      # PeakDates<-rbind(PeakDates,PeakDate)
+      # PeakValues<-rbind(PeakValues,CU4Peak)         
     }
     
     # DeathCounties<-subset(CovidDeaths, CountyFIPS %in% IncludedCounties$FIPS)
@@ -354,11 +354,11 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
     # CountyDataTable<-cbind(IncludedCounties,rev(CovidCounties)[,1],rev(DeathCounties)[,1],rev(CaseRate)[,1])
     # CountyDataTable<-data.frame(CountyDataTable$State,CountyDataTable$County,CountyDataTable$Population, rev(CountyDataTable)[,3], rev(CountyDataTable)[,2],rev(CountyDataTable)[,1])
     # colnames(CountyDataTable)<-c("State","County","Population","Total Confirmed Cases","Total Fatalities", "Case Doubling Rate (days)" )
-
-
+    
+    
     HistoricalData$ID<-rep("Past Data", nrow(HistoricalData))
     HistoricalData <- dplyr::filter(HistoricalData, ForecastDate >= as.Date("2020-01-27") + 30 & ForecastDate <= Sys.Date())
-
+    
     OverlayData$ForecastDate<-as.Date(OverlayData$ForecastDate)
     
     OverlayData<- dplyr::filter(OverlayData, ForecastDate >= (Sys.Date()) & ForecastDate <= (Sys.Date() + DaysProjected))
@@ -387,7 +387,7 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
       #scale_fill_manual(values = c("tan4", "cadetblue", "gray","red"))+
       #scale_linetype_manual(values=c("dashed", "solid", "dashed", "solid"))+
       #geom_ribbon(aes(ymin = `Lower Estimate`, ymax = `Upper Estimate`),alpha = .2)+
-  
+      
       #geom_hline(aes(yintercept = bcap,linetype = "Estimated COVID Patient Bed Capacity"),colour = "red")+
       ggtitle("Projected Daily Hospital Bed Utilization")+
       ylab("Daily Beds Needed")+
@@ -458,7 +458,7 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
     #   HistoricalData<-data.frame(HistoricalDates, HistoricalDataHosp, HistoricalDataHosp*0.75, HistoricalDataHosp*1.25)
     #   colnames(HistoricalData)<-c("ForecastDate", "Expected ICU Patients", "Lower Estimate","Upper Estimate")      
     # }
-  
+    
     
     #IHME has their own ICU data
     if (nrow(IHME_State) !=0 ) {
@@ -468,10 +468,10 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
       IHME_Region$newICU_upper = round(IHME_State$newICU_upper*PopRatio)
       IHME_Data<-data.frame(IHME_Region$date,IHME_Region$newICU_mean, IHME_Region$newICU_lower, IHME_Region$newICU_upper)
       colnames(IHME_Data)<-c("ForecastDate", "Expected ICU Patients", "Lower Estimate","Upper Estimate")
-
+      
       HistoricalData <- dplyr::filter(IHME_Data, ForecastDate >= as.Date("2020-01-27") + 30)      
       HistoricalData$ID<-rep("Past Data", nrow(HistoricalData))
-
+      
       IHME_Data$ID<-rep("IHME",nrow(IHME_Data))    
       OverlayData<-rbind(OverlayData,IHME_Data)
       
@@ -493,10 +493,10 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
       # IHME_Data3$ID<-rep("IHME-Worse",nrow(IHME_Data3))    
       # OverlayData<-rbind(OverlayData,IHME_Data3)      
     }            
-
+    
     
     currHosp = HistoricalData[nrow(HistoricalData),2]
-        
+    
     #YYG only has case data
     if (nrow(YYG_State) !=0 ) {        
       # Apply ratio's to YYG Data
@@ -529,7 +529,7 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
       LANL_Region$ID<-rep("LANL",nrow(LANL_Region)) 
       OverlayData<-rbind(OverlayData,LANL_Region)
     }        
-         
+    
     if (CONUSSelect == "CONUS"){
       # Apply ratio's to UT data
       # Multiple by 16 to reflect hospitalizations at 8% from death rate of 0.5%
@@ -621,7 +621,7 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
       OverlayData<-rbind(OverlayData,DPT1)
       OverlayData<-rbind(OverlayData,DPT2)
       OverlayData<-rbind(OverlayData,DPT3)        
-    
+      
     }
     
     # DeathCounties<-subset(CovidDeaths, CountyFIPS %in% IncludedCounties$FIPS)
@@ -630,7 +630,7 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
     # CountyDataTable<-data.frame(CountyDataTable$State,CountyDataTable$County,CountyDataTable$Population, rev(CountyDataTable)[,3], rev(CountyDataTable)[,2],rev(CountyDataTable)[,1])
     # colnames(CountyDataTable)<-c("State","County","Population","Total Confirmed Cases","Total Fatalities", "Case Doubling Rate (days)" )
     
-
+    
     OverlayData$ForecastDate<-as.Date(OverlayData$ForecastDate)
     
     HistoricalData<-dplyr::filter(HistoricalData, ForecastDate <= Sys.Date())
@@ -654,11 +654,11 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
     #bcap = TotalBeds * (1-baseUtlz)
     
     # IHMEICU<-round(IHME_StateSum$icu_bed_capacity*PopRatio)
-
+    
     projections <-  ggplot(OverlayData, aes(x=ForecastDate, y=`Expected ICU Patients`, color = ID, fill = ID, linetype = ID)) +
       geom_line(aes(linetype = ID, color = ID)) + 
       geom_ribbon(aes(ymin = `Lower Estimate`, ymax = `Upper Estimate`),alpha = .2) +
-
+      
       ggtitle("Projected Daily ICU Patient Bed Utilization")+
       ylab("Daily Beds Needed")+
       theme_bw() + 
@@ -675,12 +675,12 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
       labs(color = "ID")
     
     if (RedLine == "ShowLine"){
-        # projections = projections + geom_hline(aes(yintercept = IHMEICU,linetype = "Estimated Hospital Bed Capacity - IHME"),colour = "green")      
-        if (CONUSSelect == "CONUS"){
-            projections = projections + geom_hline(aes(yintercept = Torch_ICUAvail,linetype = "Estimated COVID ICU Patient Bed Capacity"),colour = "blue")
-        }
+      # projections = projections + geom_hline(aes(yintercept = IHMEICU,linetype = "Estimated Hospital Bed Capacity - IHME"),colour = "green")      
+      if (CONUSSelect == "CONUS"){
+        projections = projections + geom_hline(aes(yintercept = Torch_ICUAvail,linetype = "Estimated COVID ICU Patient Bed Capacity"),colour = "blue")
+      }
     }
-
+    
     projections <- ggplotly(projections)
     # projections <- projections %>% config(displayModeBar = FALSE)
     projections <- projections %>% config(toImageButtonOptions = list(format = "png",width = 1100,height = 500))
@@ -754,7 +754,7 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
     }            
     
     currHosp = HistoricalData[nrow(HistoricalData),2]
-        
+    
     #YYG only has case data
     if (nrow(YYG_State) !=0 ) {        
       # Apply ratio's to YYG Data
@@ -813,7 +813,7 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
       colnames(Torch_State)<-c("ForecastDate","Expected Ventilator Patients","Lower Estimate","Upper Estimate")
       Torch_State$ID<-rep("Torch",nrow(Torch_State))
       OverlayData<-rbind(OverlayData,Torch_State)        
-
+      
       Army_State<-subset(Army_State, select=c(ForecastDate,Infected,LInfected,UInfected))    
       Army_State$ForecastDate <- as.Date(Army_State$ForecastDate, "%m/%d/%Y")
       Army_State<-dplyr::filter(Army_State,ForecastDate >= Sys.Date())
@@ -887,8 +887,8 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
     # CountyDataTable<-cbind(IncludedCounties,rev(CovidCounties)[,1],rev(DeathCounties)[,1],rev(CaseRate)[,1])
     # CountyDataTable<-data.frame(CountyDataTable$State,CountyDataTable$County,CountyDataTable$Population, rev(CountyDataTable)[,3], rev(CountyDataTable)[,2],rev(CountyDataTable)[,1])
     # colnames(CountyDataTable)<-c("State","County","Population","Total Confirmed Cases","Total Fatalities", "Case Doubling Rate (days)" )
-
-
+    
+    
     #HistoricalData$ID<-rep("Past Data", nrow(HistoricalData))
     #HistoricalData <- dplyr::filter(HistoricalData, ForecastDate >= as.Date("2020-01-27") + 30)
     OverlayData$ForecastDate<-as.Date(OverlayData$ForecastDate)
@@ -930,7 +930,7 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
       scale_x_date(date_breaks = "1 week")+
       labs(color = "ID")
     
-
+    
     projections <- ggplotly(projections)
     # projections <- projections %>% config(displayModeBar = FALSE)
     projections <- projections %>% config(toImageButtonOptions = list(format = "png",width = 1100,height = 500))
@@ -962,6 +962,9 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
     #HistoricalDates<-seq(as.Date("2020-01-22"), length=length(HistoricalData), by="1 day")
     HistoricalData<-data.frame(HistoricalDates, HistoricalData, HistoricalData, HistoricalData)
     colnames(HistoricalData)<-c("ForecastDate", "Expected Fatalities", "Lower Estimate","Upper Estimate")
+    
+    hrow <- nrow(HistoricalData)
+    Hdeath <- HistoricalData$"Expected Fatalities"[hrow]
     
     if (nrow(IHME_State) !=0 ) {
       # Apply ratio's to IHME data
@@ -997,10 +1000,10 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
       # Apply ratio's to YYG Data
       # Multiple cases by 5.5% to estimate number of hospitalizations
       YYG_Region <- YYG_State
-      YYG_Region$predicted_deaths_mean = round(YYG_State$predicted_deaths_mean*PopRatio)
-      YYG_Region$predicted_deaths_lower = round(YYG_State$predicted_deaths_lower*PopRatio)
-      YYG_Region$predicted_deaths_upper = round(YYG_State$predicted_deaths_upper*PopRatio)
-      YYG_Data<-data.frame(YYG_Region$date,YYG_Region$predicted_deaths_mean,YYG_Region$predicted_deaths_lower,YYG_Region$predicted_deaths_upper)
+      YYG_Region$predicted_total_deaths_mean = round(YYG_State$predicted_total_deaths_mean*PopRatio)
+      YYG_Region$predicted_total_deaths_lower = round(YYG_State$predicted_total_deaths_lower*PopRatio)
+      YYG_Region$predicted_total_deaths_upper = round(YYG_State$predicted_total_deaths_upper*PopRatio)
+      YYG_Data<-data.frame(YYG_Region$date,YYG_Region$predicted_total_deaths_mean,YYG_Region$predicted_total_deaths_lower,YYG_Region$predicted_total_deaths_upper)
       colnames(YYG_Data)<-c("ForecastDate", "Expected Fatalities", "Lower Estimate","Upper Estimate")
       
       YYG_Data<-YYG_Data[order(as.Date(YYG_Data$ForecastDate, format="%Y/%m/%d")),]
@@ -1033,34 +1036,69 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
     if (CONUSSelect == "CONUS"){     
       # Apply ratio's to UT data
       UT_Region <- UT_State
-      UT_Region$daily_deaths_est = round(UT_State$daily_deaths_est*PopRatio)
-      UT_Region$daily_deaths_90CI_lower = round(UT_State$daily_deaths_95CI_lower*PopRatio)
-      UT_Region$daily_deaths_90CI_upper = round(UT_State$daily_deaths_95CI_upper*PopRatio)
-      UT_Data<-data.frame(UT_Region$date,UT_Region$daily_deaths_est, UT_Region$daily_deaths_95CI_lower, UT_Region$daily_deaths_95CI_upper)
+      UT_Region$cumulative_deaths_est = round(UT_State$cumulative_deaths_est*PopRatio)
+      UT_Region$cumulative_deaths_95CI_lower = round(UT_State$cumulative_deaths_95CI_lower*PopRatio)
+      UT_Region$cumulative_deaths_95CI_upper = round(UT_State$cumulative_deaths_95CI_upper*PopRatio)
+      UT_Data<-data.frame(UT_Region$date,UT_Region$cumulative_deaths_est, UT_Region$cumulative_deaths_95CI_lower , UT_Region$cumulative_deaths_95CI_upper) 
       
       #For DTRA Data, multiply number of cases by projected hospitalization rate
       DPT1<-data.frame(DPT1$ForecastDate,DPT1$'Expected.Hospitalizations'*FCRate,DPT1$'Lower.Estimate'*FCRate,DPT1$'Upper.Estimate'*FCRate,DPT1$ID)
       DPT2<-data.frame(DPT2$ForecastDate,DPT2$'Expected.Hospitalizations'*FCRate,DPT2$'Lower.Estimate'*FCRate,DPT2$'Upper.Estimate'*FCRate,DPT2$ID)
       DPT3<-data.frame(DPT3$ForecastDate,DPT3$'Expected.Hospitalizations'*FCRate,DPT3$'Lower.Estimate'*FCRate,DPT3$'Upper.Estimate'*FCRate,DPT3$ID)        
-      colnames(DPT1)<-c("ForecastDate", "Expected Fatalities", "Lower Estimate","Upper Estimate","ID")
-      colnames(DPT2)<-c("ForecastDate", "Expected Fatalities", "Lower Estimate","Upper Estimate","ID")   
-      colnames(DPT3)<-c("ForecastDate", "Expected Fatalities", "Lower Estimate","Upper Estimate","ID")  
+      colnames(DPT1)<-c("ForecastDate", "Expected", "Lower","Upper","ID")
+      colnames(DPT2)<-c("ForecastDate", "Expected", "Lower","Upper","ID")   
+      colnames(DPT3)<-c("ForecastDate", "Expected", "Lower","Upper","ID")  
+
+      DPT1[,"Expected"] <- DPT1$Expected[1] + Hdeath
+      DPT1[,"Lower"] <- DPT1$Lower[1] + Hdeath
+      DPT1[,"Upper"] <- DPT1$Upper[1] + Hdeath
+      DPT2[,"Expected"] <- DPT2$Expected[1] + Hdeath
+      DPT2[,"Lower"] <- DPT2$Lower[1] + Hdeath
+      DPT2[,"Upper"] <- DPT2$Upper[1] + Hdeath
+      DPT3[,"Expected"] <- DPT3$Expected[1] + Hdeath
+      DPT3[,"Lower"] <- DPT3$Lower[1] + Hdeath
+      DPT3[,"Upper"] <- DPT3$Upper[1] + Hdeath      
+            
+      DPT1[,"Expected Fatalities"] <- cumsum(DPT1$Expected)
+      DPT1[,"Lower Estimate"] <- cumsum(DPT1$Lower) 
+      DPT1[,"Upper Estimate"] <- cumsum(DPT1$Upper) 
+      DPT2[,"Expected Fatalities"] <- cumsum(DPT2$Expected)
+      DPT2[,"Lower Estimate"] <- cumsum(DPT2$Lower) 
+      DPT2[,"Upper Estimate"] <- cumsum(DPT2$Upper) 
+      DPT3[,"Expected Fatalities"] <- cumsum(DPT3$Expected)
+      DPT3[,"Lower Estimate"] <- cumsum(DPT3$Lower)
+      DPT3[,"Upper Estimate"] <- cumsum(DPT3$Upper)
       
+      DPT1 <- data.frame(DPT1$ForecastDate,DPT1$"Expected Fatalities",DPT1$"Lower Estimate",DPT1$"Upper Estimate",DPT1$ID)
+      DPT2 <- data.frame(DPT2$ForecastDate,DPT2$"Expected Fatalities",DPT2$"Lower Estimate",DPT2$"Upper Estimate",DPT2$ID)
+      DPT3 <- data.frame(DPT3$ForecastDate,DPT3$"Expected Fatalities",DPT3$"Lower Estimate",DPT3$"Upper Estimate",DPT3$ID)
+      colnames(DPT1)<-c("ForecastDate","Expected Fatalities","Lower Estimate","Upper Estimate","ID")
+      colnames(DPT2)<-c("ForecastDate","Expected Fatalities","Lower Estimate","Upper Estimate","ID")
+      colnames(DPT3)<-c("ForecastDate","Expected Fatalities","Lower Estimate","Upper Estimate","ID")
+
       Torch_State$Date <- as.Date(Torch_State$Date, "%m/%d/%Y")
       Torch_State<-dplyr::filter(Torch_State,Date >= Sys.Date())
       Torch_State<-aggregate(Torch_State[,sapply(Torch_State,is.numeric)],Torch_State["Date"],sum)
       Torch_State<-Torch_State[1:DaysProjected,]
       Torch_State<-data.frame(Torch_State$Date,Torch_State$HCasesEst*FHRate,Torch_State$HCasesEstLow*FHRate,Torch_State$HCasesEstUp*FHRate)
-      colnames(Torch_State)<-c("ForecastDate","Expected Fatalities","Lower Estimate","Upper Estimate")
+      colnames(Torch_State)<-c("ForecastDate", "Expected", "Lower","Upper")
+      Torch_State[,"Expected"] <- Torch_State$Expected[1]+Hdeath
+      Torch_State[,"Lower"] <- Torch_State$Lower[1]+Hdeath
+      Torch_State[,"Upper"] <- Torch_State$Upper[1]+Hdeath
+      Torch_State[,"Expected Fatalities"] <- cumsum(Torch_State$Expected)
+      Torch_State[,"Lower Estimate"] <- cumsum(Torch_State$Lower)
+      Torch_State[,"Upper Estimate"] <- cumsum(Torch_State$Upper)   
+      Torch_State <- data.frame(Torch_State$ForecastDate,Torch_State$"Expected Fatalities",Torch_State$"Lower Estimate",Torch_State$"Upper Estimate")      
       Torch_State$ID<-rep("Torch",nrow(Torch_State))
+      colnames(Torch_State)<-c("ForecastDate","Expected Fatalities","Lower Estimate","Upper Estimate","ID")      
       OverlayData<-rbind(OverlayData,Torch_State)       
       
-      Army_State<-subset(Army_State, select=c(ForecastDate,Fatalities,LFatalities,UFatalities))    
+      Army_State<-subset(Army_State, select=c(ForecastDate,TFatalities,LTFatalities,UTFatalities))    
       Army_State$ForecastDate <- as.Date(Army_State$ForecastDate, "%m/%d/%Y")
       Army_State<-dplyr::filter(Army_State,ForecastDate >= Sys.Date())
       Army_State<-aggregate(data.frame(Army_State)[,sapply(data.frame(Army_State),is.numeric)],data.frame(Army_State)["ForecastDate"],sum)
       Army_State<-Army_State[1:DaysProjected,]
-      Army_State<-data.frame(Army_State$ForecastDate,Army_State$Fatalities,Army_State$LFatalities,Army_State$UFatalities)      
+      Army_State<-data.frame(Army_State$ForecastDate,Army_State$TFatalities,Army_State$LTFatalities,Army_State$UTFatalities)      
       colnames(Army_State)<-c("ForecastDate","Expected Fatalities","Lower Estimate","Upper Estimate")
       Army_State$ID<-rep("CAA",nrow(Army_State)) 
       OverlayData<-rbind(OverlayData,Army_State)
@@ -1074,40 +1112,76 @@ PlotOverlay<-function(ChosenBase, IncludedCounties, IncludedHospitals,ModelIDLis
       CUM2_State<-subset(CUM2_State, select=-c(County,State)) #,death_25,death_50,death_75))    
       CUM3_State<-subset(CUM3_State, select=-c(County,State)) #,death_25,death_50,death_75))
       CUM4_State<-subset(CUM4_State, select=-c(County,State)) #,death_25,death_50,death_75))     
-      
-      CUM1_State$Date <- as.Date(CUM1_State$Date, "%m/%d/%y")
-      CUM2_State$Date <- as.Date(CUM2_State$Date, "%m/%d/%y")
-      CUM3_State$Date <- as.Date(CUM3_State$Date, "%m/%d/%y")
-      CUM4_State$Date <- as.Date(CUM4_State$Date, "%m/%d/%y") 
-      
-      CUM1_State<-dplyr::filter(CUM1_State,Date >= Sys.Date())
-      CUM2_State<-dplyr::filter(CUM2_State,Date >= Sys.Date())      
-      CUM3_State<-dplyr::filter(CUM3_State,Date >= Sys.Date())
-      CUM4_State<-dplyr::filter(CUM4_State,Date >= Sys.Date())
-      
+
       CUM1_State<-aggregate(CUM1_State[,sapply(CUM1_State,is.numeric)],CUM1_State["Date"],sum)
       CUM2_State<-aggregate(CUM2_State[,sapply(CUM2_State,is.numeric)],CUM2_State["Date"],sum)
       CUM3_State<-aggregate(CUM3_State[,sapply(CUM3_State,is.numeric)],CUM3_State["Date"],sum)
-      CUM4_State<-aggregate(CUM4_State[,sapply(CUM4_State,is.numeric)],CUM4_State["Date"],sum)  
+      CUM4_State<-aggregate(CUM4_State[,sapply(CUM4_State,is.numeric)],CUM4_State["Date"],sum)      
+      
+      CUM1_State <- data.frame(CUM1_State$Date,CUM1_State$death_50,CUM1_State$death_25,CUM1_State$death_75)
+      CUM2_State <- data.frame(CUM2_State$Date,CUM2_State$death_50,CUM2_State$death_25,CUM2_State$death_75)
+      CUM3_State <- data.frame(CUM3_State$Date,CUM3_State$death_50,CUM3_State$death_25,CUM3_State$death_75)
+      CUM4_State <- data.frame(CUM4_State$Date,CUM4_State$death_50,CUM4_State$death_25,CUM4_State$death_75)        
+
+      colnames(CUM1_State)<-c("ForecastDate","Expected","Lower","Upper")
+      colnames(CUM2_State)<-c("ForecastDate","Expected","Lower","Upper")
+      colnames(CUM3_State)<-c("ForecastDate","Expected","Lower","Upper")
+      colnames(CUM4_State)<-c("ForecastDate","Expected","Lower","Upper")
+
+      CUM1_State$ForecastDate <- as.Date(CUM1_State$ForecastDate, "%m/%d/%y")
+      CUM2_State$ForecastDate <- as.Date(CUM2_State$ForecastDate, "%m/%d/%y")
+      CUM3_State$ForecastDate <- as.Date(CUM3_State$ForecastDate, "%m/%d/%y")
+      CUM4_State$ForecastDate <- as.Date(CUM4_State$ForecastDate, "%m/%d/%y")     
+      
+      CUM1_State[,"Expected"] <- CUM1_State$Expected[1] + Hdeath
+      CUM1_State[,"Lower"] <- CUM1_State$Lower[1] + Hdeath
+      CUM1_State[,"Upper"] <- CUM1_State$Upper[1] + Hdeath
+      CUM2_State[,"Expected"] <- CUM2_State$Expected[1] + Hdeath
+      CUM2_State[,"Lower"] <- CUM2_State$Lower[1] + Hdeath
+      CUM2_State[,"Upper"] <- CUM2_State$Upper[1] + Hdeath
+      CUM3_State[,"Expected"] <- CUM3_State$Expected[1] + Hdeath
+      CUM3_State[,"Lower"] <- CUM3_State$Lower[1] + Hdeath
+      CUM3_State[,"Upper"] <- CUM3_State$Upper[1] + Hdeath   
+      CUM4_State[,"Expected"] <- CUM4_State$Expected[1] + Hdeath
+      CUM4_State[,"Lower"] <- CUM4_State$Lower[1] + Hdeath
+      CUM4_State[,"Upper"] <- CUM4_State$Upper[1] + Hdeath         
+                  
+      CUM1_State[,"Expected Fatalities"] <- cumsum(CUM1_State$Expected)
+      CUM1_State[,"Lower Estimate"] <- cumsum(CUM1_State$Lower)
+      CUM1_State[,"Upper Estimate"] <- cumsum(CUM1_State$Upper)
+      CUM2_State[,"Expected Fatalities"] <- cumsum(CUM2_State$Expected)
+      CUM2_State[,"Lower Estimate"] <- cumsum(CUM2_State$Lower)
+      CUM2_State[,"Upper Estimate"] <- cumsum(CUM2_State$Upper)
+      CUM3_State[,"Expected Fatalities"] <- cumsum(CUM3_State$Expected)
+      CUM3_State[,"Lower Estimate"] <- cumsum(CUM3_State$Lower)
+      CUM3_State[,"Upper Estimate"] <- cumsum(CUM3_State$Upper)
+      CUM4_State[,"Expected Fatalities"] <- cumsum(CUM4_State$Expected)
+      CUM4_State[,"Lower Estimate"] <- cumsum(CUM4_State$Lower)
+      CUM4_State[,"Upper Estimate"] <- cumsum(CUM4_State$Upper)
+      
+      CUM1_State <- data.frame(CUM1_State$ForecastDate,CUM1_State$"Expected Fatalities",CUM1_State$"Lower Estimate",CUM1_State$"Upper Estimate")
+      CUM2_State <- data.frame(CUM2_State$ForecastDate,CUM2_State$"Expected Fatalities",CUM2_State$"Lower Estimate",CUM2_State$"Upper Estimate")
+      CUM3_State <- data.frame(CUM3_State$ForecastDate,CUM3_State$"Expected Fatalities",CUM3_State$"Lower Estimate",CUM3_State$"Upper Estimate")
+      CUM4_State <- data.frame(CUM4_State$ForecastDate,CUM4_State$"Expected Fatalities",CUM4_State$"Lower Estimate",CUM4_State$"Upper Estimate")  
+      colnames(CUM1_State)<-c("ForecastDate","Expected Fatalities","Lower Estimate","Upper Estimate")
+      colnames(CUM2_State)<-c("ForecastDate","Expected Fatalities","Lower Estimate","Upper Estimate")
+      colnames(CUM3_State)<-c("ForecastDate","Expected Fatalities","Lower Estimate","Upper Estimate")
+      colnames(CUM4_State)<-c("ForecastDate","Expected Fatalities","Lower Estimate","Upper Estimate")      
+      
+      CUM1_State$ID<-rep("CUM1",nrow(CUM1_State))
+      CUM2_State$ID<-rep("CUM2",nrow(CUM2_State))
+      CUM3_State$ID<-rep("CUM3",nrow(CUM3_State))
+      CUM4_State$ID<-rep("CUM4",nrow(CUM4_State))        
+      
+      CUM1_State<-dplyr::filter(CUM1_State,ForecastDate >= Sys.Date())
+      CUM2_State<-dplyr::filter(CUM2_State,ForecastDate >= Sys.Date())      
+      CUM3_State<-dplyr::filter(CUM3_State,ForecastDate >= Sys.Date())
+      CUM4_State<-dplyr::filter(CUM4_State,ForecastDate >= Sys.Date())
       
       CUM1_State<-CUM1_State[1:DaysProjected,]
       CUM2_State<-CUM2_State[1:DaysProjected,]
       CUM3_State<-CUM3_State[1:DaysProjected,]
       CUM4_State<-CUM4_State[1:DaysProjected,]
-      
-      CUM1_State <- data.frame(CUM1_State$Date,CUM1_State$death_50,CUM1_State$death_25,CUM1_State$death_75)
-      CUM2_State <- data.frame(CUM2_State$Date,CUM2_State$death_50,CUM2_State$death_25,CUM2_State$death_75)
-      CUM3_State <- data.frame(CUM3_State$Date,CUM3_State$death_50,CUM3_State$death_25,CUM3_State$death_75)
-      CUM4_State <- data.frame(CUM4_State$Date,CUM4_State$death_50,CUM4_State$death_25,CUM4_State$death_75)      
-      
-      colnames(CUM1_State)<-c("ForecastDate","Expected Fatalities","Lower Estimate","Upper Estimate")
-      CUM1_State$ID<-rep("CUM1",nrow(CUM1_State))
-      colnames(CUM2_State)<-c("ForecastDate","Expected Fatalities","Lower Estimate","Upper Estimate")
-      CUM2_State$ID<-rep("CUM2",nrow(CUM2_State))
-      colnames(CUM3_State)<-c("ForecastDate","Expected Fatalities","Lower Estimate","Upper Estimate")
-      CUM3_State$ID<-rep("CUM3",nrow(CUM3_State))
-      colnames(CUM4_State)<-c("ForecastDate","Expected Fatalities","Lower Estimate","Upper Estimate")
-      CUM4_State$ID<-rep("CUM4",nrow(CUM4_State))      
       
       colnames(UT_Data)<-c("ForecastDate", "Expected Fatalities", "Lower Estimate","Upper Estimate")
       UT_Data$ID<-rep("UT",nrow(UT_Data))
