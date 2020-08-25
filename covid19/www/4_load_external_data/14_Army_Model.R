@@ -11,7 +11,10 @@
 # save(Army_Model, file = "Army_Model.rda")
 # ncol(Army_Model)
 
+ncol(Army_Model)
 colset<-c(1,2,3,4,7,9,10,13,15,16,19,21,22)
+
+ncol(Army_Model)
 Army_Model<-Army_Model[, names(Army_Model)[colset]]
 colnames(Army_Model)<-c("ForecastDate","FIPS","County","StateFull"                                       
                         ,"Infected","Fatalities","TFatalities"      
