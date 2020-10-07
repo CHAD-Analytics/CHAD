@@ -150,7 +150,7 @@ ui <- tagList(
                                              ######################################################################################################################
                                              
                                              
-                                             conditionalPanel(condition="input.tabselected == 3 || input.tabselected == 4",
+                                             conditionalPanel(condition="input.tabselected == 3", # || input.tabselected == 4",
                                                               
                                                               selectInput("BranchP",
                                                                           "Service Branch:", 
@@ -200,69 +200,69 @@ ui <- tagList(
                                              # Local Health Projections sidebar controls
                                              ######################################################################################################################
                                              
-                                             conditionalPanel(condition="input.tabselected==4",
-                                                              "Local Health Projection Inputs",
-                                                              tabName = "localHealthProj",
-                                                              icon = icon("sliders-h"),
-                                                              div(id = "single", style="display: none;", numericInput("tckt", "Ticket Number : ", 12345,  width = 300)),
-                                                              
-                                                              radioButtons("StatisticType", "Choose projected statistic:",
-                                                                           c("Hospitalizations"="Hospitalizations",
-                                                                             "ICU Patients"="ICUPatients",
-                                                                             "Ventilator Patients"="VentPatients",
-                                                                             "Fatalities"="Fatalities")),
-                                                              
-                                                              sliderInput("proj_days",
-                                                                          "Projection days:",
-                                                                          min = 7,
-                                                                          max = 30,
-                                                                          value = 14),
-                                                              
-                                                              
-                                                              conditionalPanel(condition = "input.CONUSP == 'CONUS'",  
-                                                                                   
-                                                                  checkboxGroupInput("ModelSelectionValue1","Forecasting Model(s): ",
-                                                                                     c("IHME (U. of Washinton)"="IHME",
-                                                                                       "Center for Army Analysis"="CAA",
-                                                                                       "Torch Insight"="Torch",
-                                                                                       "Youyang Gu (YYG) Model"="YYG",
-                                                                                       "University of Texas"="UT",
-                                                                                       "Columbia University: Current contact rates remain unchanged"="CUM1"),
-                                                                                     selected = c("IHME","CAA","Torch")),
-                                                                  actionLink("selectall1","Select All"),
-                                                                  
-                                                                  checkboxGroupInput("AdditionalModels","Additional Forecasting Model(s): ",
-                                                                                     c("Show All"="ShowAll"),
-                                                                                     selected = c("")),
-                                                                  
-                                                                  conditionalPanel(condition = "input.AdditionalModels== 'ShowAll'",  
-                                                                                   checkboxGroupInput("ModelSelectionValue2","Forecasting Model(s): ",
-                                                                                                      c("IHME (Best Case)"="IHME-Best",
-                                                                                                        "IHME (Worse Case)"="IHME-Worse",
-                                                                                                        "Los Alamos National Labs (LANL)"="LANL","Los Alamos National Labs (LANL)"="LANL",
-                                                                                                        "Columbia University: One time 5% increase in social contact"="CUM2",
-                                                                                                        "Columbia University: 5% weekly increase in social contact"="CUM3",
-                                                                                                        "Columbia University: Current levels of social mixing remain unchanged"="CUM4",                                                                
-                                                                                                        "DTRA 1 - Mild Seasonal Effects"="DTRA1",
-                                                                                                        "DTRA 2 - Minimial Seasonal Effects"="DTRA2", 
-                                                                                                        "DTRA 3 - Strong Seasonal Effects"="DTRA3"),
-                                                                                                      selected = c("")),
-                                                                                   actionLink("selectall2","Select All"))
-                                                              ),
-                                                              
-                                                              conditionalPanel(condition = "input.CONUSP == 'OCONUS'",  
-                                                                               
-                                                                               checkboxGroupInput("ModelSelectionValue3","Forecasting Model(s): ",
-                                                                                                  c("IHME (U. of Washinton)"="IHME",
-                                                                                                    "IHME (Best Case)"="IHME-Best",
-                                                                                                    "IHME (Worse Case)"="IHME-Worse",                                                                                                    
-                                                                                                    "Youyang Gu (YYG) Model"="YYG",
-                                                                                                    "Los Alamos National Labs (LANL)"="LANL"),                                                                
-                                                                                                  selected = c("IHME","YYG","LANL")),
-                                                                               actionLink("selectall3","Select All")
-                                                              )
-                                                                                                                                                            
-                                             ),
+                                             # conditionalPanel(condition="input.tabselected==4",
+                                             #                  "Local Health Projection Inputs",
+                                             #                  tabName = "localHealthProj",
+                                             #                  icon = icon("sliders-h"),
+                                             #                  div(id = "single", style="display: none;", numericInput("tckt", "Ticket Number : ", 12345,  width = 300)),
+                                             #                  
+                                             #                  radioButtons("StatisticType", "Choose projected statistic:",
+                                             #                               c("Hospitalizations"="Hospitalizations",
+                                             #                                 "ICU Patients"="ICUPatients",
+                                             #                                 "Ventilator Patients"="VentPatients",
+                                             #                                 "Fatalities"="Fatalities")),
+                                             #                  
+                                             #                  sliderInput("proj_days",
+                                             #                              "Projection days:",
+                                             #                              min = 7,
+                                             #                              max = 30,
+                                             #                              value = 14),
+                                             #                  
+                                             #                  
+                                             #                  conditionalPanel(condition = "input.CONUSP == 'CONUS'",  
+                                             #                                       
+                                             #                      checkboxGroupInput("ModelSelectionValue1","Forecasting Model(s): ",
+                                             #                                         c("IHME (U. of Washinton)"="IHME",
+                                             #                                           "Center for Army Analysis"="CAA",
+                                             #                                           "Torch Insight"="Torch",
+                                             #                                           "Youyang Gu (YYG) Model"="YYG",
+                                             #                                           "University of Texas"="UT",
+                                             #                                           "Columbia University: Current contact rates remain unchanged"="CUM1"),
+                                             #                                         selected = c("IHME","CAA","Torch")),
+                                             #                      actionLink("selectall1","Select All"),
+                                             #                      
+                                             #                      checkboxGroupInput("AdditionalModels","Additional Forecasting Model(s): ",
+                                             #                                         c("Show All"="ShowAll"),
+                                             #                                         selected = c("")),
+                                             #                      
+                                             #                      conditionalPanel(condition = "input.AdditionalModels== 'ShowAll'",  
+                                             #                                       checkboxGroupInput("ModelSelectionValue2","Forecasting Model(s): ",
+                                             #                                                          c("IHME (Best Case)"="IHME-Best",
+                                             #                                                            "IHME (Worse Case)"="IHME-Worse",
+                                             #                                                            "Los Alamos National Labs (LANL)"="LANL","Los Alamos National Labs (LANL)"="LANL",
+                                             #                                                            "Columbia University: One time 5% increase in social contact"="CUM2",
+                                             #                                                            "Columbia University: 5% weekly increase in social contact"="CUM3",
+                                             #                                                            "Columbia University: Current levels of social mixing remain unchanged"="CUM4",                                                                
+                                             #                                                            "DTRA 1 - Mild Seasonal Effects"="DTRA1",
+                                             #                                                            "DTRA 2 - Minimial Seasonal Effects"="DTRA2", 
+                                             #                                                            "DTRA 3 - Strong Seasonal Effects"="DTRA3"),
+                                             #                                                          selected = c("")),
+                                             #                                       actionLink("selectall2","Select All"))
+                                             #                  ),
+                                             #                  
+                                             #                  conditionalPanel(condition = "input.CONUSP == 'OCONUS'",  
+                                             #                                   
+                                             #                                   checkboxGroupInput("ModelSelectionValue3","Forecasting Model(s): ",
+                                             #                                                      c("IHME (U. of Washinton)"="IHME",
+                                             #                                                        "IHME (Best Case)"="IHME-Best",
+                                             #                                                        "IHME (Worse Case)"="IHME-Worse",                                                                                                    
+                                             #                                                        "Youyang Gu (YYG) Model"="YYG",
+                                             #                                                        "Los Alamos National Labs (LANL)"="LANL"),                                                                
+                                             #                                                      selected = c("IHME","YYG","LANL")),
+                                             #                                   actionLink("selectall3","Select All")
+                                             #                  )
+                                             #                                                                                                                
+                                             # ),
                                              
                                              # Welcome Page sidebar controls
                                              ######################################################################################################################
@@ -456,19 +456,17 @@ ui <- tagList(
                                 fluidRow(
                                   valueBoxOutput("CovidCases", width = 2),
                                   valueBoxOutput("CaseChangeLocal", width = 2),
-                                  valueBoxOutput("CasesPer1000", width = 2),
-                                  valueBoxOutput("HospitalUtilization", width = 2),
                                   valueBoxOutput("Est_Active", width = 2),
+                                  valueBoxOutput("CasesPer1000", width = 2),
                                   valueBoxOutput("Est_Testing", width = 2)                                  
                                 ),
                                 
                                 fluidRow(
                                   valueBoxOutput("LocalCovidDeaths", width = 2),
                                   valueBoxOutput("DeathChangeLocal", width = 2),
-                                  valueBoxOutput("CaseDbRate", width = 2),
-                                  valueBoxOutput("Rt_Estimate", width = 2),
                                   valueBoxOutput("Est_Recover", width = 2),
-                                  valueBoxOutput("Est_TestRate", width = 2)                                                                    
+                                  valueBoxOutput("HospitalUtilization", width = 2),
+                                  valueBoxOutput("Est_TestRate", width = 2)
                                 ),
                                 downloadButton("downloadplotdata"),
                                 fluidRow( 
@@ -497,7 +495,7 @@ ui <- tagList(
                                         style = "height:240px;overflow-y: scroll"),
                                       height = 300)
                                 )
-                              ),
+                              )
 
                               
                               
@@ -506,23 +504,23 @@ ui <- tagList(
                               ######################################################################################################################
                               
                               
-                              tabPanel(
-                                value= 4,
-                                title = "Local Health Projections",
-                                
-                                fluidRow(
-
-                                  valueBoxOutput("TotalPopulation",width = 3)#,
-
-                                  # valueBoxOutput("PeakBedDate",width = 3), 
-                                  # valueBoxOutput("PeakICUDate",width = 3),
-                                  # valueBoxOutput("PeakVentDate",width = 3)                                  
-                                ),
-
-                                box(uiOutput("HospLine"),
-                                    textOutput("line"),
-                                    plotlyOutput("OverlayPlots"),height=600, width=1500)                             
-                              )
+                              # tabPanel(
+                              #   value= 4,
+                              #   title = "Local Health Projections",
+                              #   
+                              #   fluidRow(
+                              # 
+                              #     valueBoxOutput("TotalPopulation",width = 3)#,
+                              # 
+                              #     # valueBoxOutput("PeakBedDate",width = 3), 
+                              #     # valueBoxOutput("PeakICUDate",width = 3),
+                              #     # valueBoxOutput("PeakVentDate",width = 3)                                  
+                              #   ),
+                              # 
+                              #   box(uiOutput("HospLine"),
+                              #       textOutput("line"),
+                              #       plotlyOutput("OverlayPlots"),height=600, width=1500)                             
+                              # )
 
                               
                   )

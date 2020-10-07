@@ -37,7 +37,7 @@ colnames(CovidConfirmedCases) = c(colnames(CovidConfirmedCases[1:4]),
 
 #Split cases and deaths into separate data frames. Then convert from long to wide, then order it by country.
 #We need to remove first entry of any duplicate, this way we do not double count any countries that are split by region as well.
-GlobalCases<- GlobalData[,-c(7,9)]
+GlobalCases<- GlobalData[,-c(5,6,7)]
 GlobalCases = GlobalCases[!duplicated(GlobalCases[c(1,2,3)]),]
 GlobalCases <- spread(GlobalCases, Date, Confirmed)
 GlobalCases<-GlobalCases %>% arrange(GlobalCases$CountryName)
@@ -52,7 +52,7 @@ GlobalCases = cbind(GlobalInfo,GlobalCases[,33:(ncol(GlobalCases)-ncol(CountyInf
 
 #GlobalCases<-GlobalCases[,c(1,6,4,3,33:ncol(GlobalCases))] #Need the correct number of days now, otherwise rbind wont line up
 GlobalCases[,5][is.na(GlobalCases[,5])] <- 0
-GlobalCases<- data.frame(t(apply(GlobalCases[,], 1, zoo::na.locf)))
+GlobalCases<- data.frame(t(apply(GlobalCases[,], 1, zoo::na.locf))) ### LONG RUN TIME ### 19 secs
 colnames(GlobalCases) = c(colnames(CovidConfirmedCases[1:4]),
                           format.Date(sub('.',
                                           '',
@@ -79,3 +79,4 @@ tempTbl = left_join(CovidConfirmedCases, CountyInfo, by = c("CountyFIPS" = "FIPS
 labelsDF = c(colnames(CovidConfirmedCases)[1:4], "Continent", "Country", colnames(CovidConfirmedCases)[5:ncol(CovidConfirmedCases)])
 ContinentMap = data.frame(tempTbl[1:4], tempTbl$Continent, tempTbl$Country, tempTbl[5:ncol(CovidConfirmedCases)])
 names(ContinentMap) = labelsDF
+

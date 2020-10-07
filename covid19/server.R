@@ -510,101 +510,101 @@ server <- function(input, output,session) {
   # }, ignoreNULL = FALSE)  
   
 
-  observe({
-    if(input$selectall1 == 0) return(NULL) 
-    else if (input$selectall1%%2 == 0)
-    {
-      updateCheckboxGroupInput(session,"ModelSelectionValue1","Forecasting Model(s): ",choices=c("IHME (University of Washington)"="IHME",
-                                                                                                 "Center for Army Analysis"="CAA",
-                                                                                                 "Torch Insight"="Torch",
-                                                                                                 "Youyang Gu - Independent (YYG) Model"="YYG",
-                                                                                                 "University of Texas"="UT",
-                                                                                                 "Columbia University: Current contact rates remain unchanged"="CUM1"))
-  
-    }
-    else
-    {
-      updateCheckboxGroupInput(session,"ModelSelectionValue1","Forecasting Model(s):",choices=c("IHME (University of Washington)"="IHME",
-                                                                                                "Center for Army Analysis"="CAA",
-                                                                                                "Torch Insight"="Torch",                                                                                                
-                                                                                                "Youyang Gu - Independent (YYG) Model"="YYG",
-                                                                                                "University of Texas"="UT",
-                                                                                                "Columbia University: Current contact rates remain unchanged"="CUM1"),                                                                                               
-                               
-                               selected=c("IHME (University of Washington)"="IHME",
-                                          "Center for Army Analysis"="CAA",
-                                          "Torch Insight"="Torch",                                          
-                                          "Youyang Gu - Independent (YYG) Model"="YYG",
-                                          "University of Texas"="UT",
-                                          "Columbia University: Current contact rates remain unchanged"="CUM1"))                                                                                    
-    }
-  })
-  
-  
-  observe({
-    if(input$selectall2 == 0) return(NULL) 
-    else if (input$selectall2%%2 == 0)
-    {
-      updateCheckboxGroupInput(session,"ModelSelectionValue2","Forecasting Model(s): ",choices=c("IHME (Best Case)"="IHME-Best",
-                                                                                                 "IHME (Worse Case)"="IHME-Worse",
-                                                                                                 "DTRA 1 - Current Response"="DTRA1",
-                                                                                                 "DTRA 2 - Improved Response"="DTRA2", 
-                                                                                                 "DTRA 3 - Worst Case"="DTRA3",
-                                                                                                 "Los Alamos National Labs (LANL)"="LANL",
-                                                                                                 "Columbia University: One time 5% increase in social contact"="CUM2",
-                                                                                                 "Columbia University: 5% weekly increase in social contact"="CUM3",
-                                                                                                 "Columbia University: Current levels of social mixing remain unchanged"="CUM4"))                                                                                                                                                                                                
-    }
-    else
-    {
-      updateCheckboxGroupInput(session,"ModelSelectionValue2","Forecasting Model(s):",choices=c("IHME (Best Case)"="IHME-Best",
-                                                                                                "IHME (Worse Case)"="IHME-Worse",
-                                                                                                "DTRA 1 - Current Response"="DTRA1",
-                                                                                                "DTRA 2 - Improved Response"="DTRA2", 
-                                                                                                "DTRA 3 - Worst Case"="DTRA3",
-                                                                                                "Los Alamos National Labs (LANL)"="LANL",
-                                                                                                "Columbia University: One time 5% increase in social contact"="CUM2",
-                                                                                                "Columbia University: 5% weekly increase in social contact"="CUM3",
-                                                                                                "Columbia University: Current levels of social mixing remain unchanged"="CUM4"),                                                                                               
-                               
-                               selected=c("IHME (Best Case)"="IHME-Best",
-                                          "IHME (Worse Case)"="IHME-Worse",
-                                          "DTRA 1 - Current Response"="DTRA1",
-                                          "DTRA 2 - Improved Response"="DTRA2", 
-                                          "DTRA 3 - Worst Case"="DTRA3",
-                                          "Los Alamos National Labs (LANL)"="LANL",
-                                          "Columbia University: One time 5% increase in social contact"="CUM2",
-                                          "Columbia University: 5% weekly increase in social contact"="CUM3",
-                                          "Columbia University: Current levels of social mixing remain unchanged"="CUM4"))                                                                                    
-    }
-  })  
+  # observe({
+  #   if(input$selectall1 == 0) return(NULL) 
+  #   else if (input$selectall1%%2 == 0)
+  #   {
+  #     updateCheckboxGroupInput(session,"ModelSelectionValue1","Forecasting Model(s): ",choices=c("IHME (University of Washington)"="IHME",
+  #                                                                                                "Center for Army Analysis"="CAA",
+  #                                                                                                "Torch Insight"="Torch",
+  #                                                                                                "Youyang Gu - Independent (YYG) Model"="YYG",
+  #                                                                                                "University of Texas"="UT",
+  #                                                                                                "Columbia University: Current contact rates remain unchanged"="CUM1"))
+  # 
+  #   }
+  #   else
+  #   {
+  #     updateCheckboxGroupInput(session,"ModelSelectionValue1","Forecasting Model(s):",choices=c("IHME (University of Washington)"="IHME",
+  #                                                                                               "Center for Army Analysis"="CAA",
+  #                                                                                               "Torch Insight"="Torch",                                                                                                
+  #                                                                                               "Youyang Gu - Independent (YYG) Model"="YYG",
+  #                                                                                               "University of Texas"="UT",
+  #                                                                                               "Columbia University: Current contact rates remain unchanged"="CUM1"),                                                                                               
+  #                              
+  #                              selected=c("IHME (University of Washington)"="IHME",
+  #                                         "Center for Army Analysis"="CAA",
+  #                                         "Torch Insight"="Torch",                                          
+  #                                         "Youyang Gu - Independent (YYG) Model"="YYG",
+  #                                         "University of Texas"="UT",
+  #                                         "Columbia University: Current contact rates remain unchanged"="CUM1"))                                                                                    
+  #   }
+  # })
   
   
-  observe({
-    if(input$selectall3 == 0) return(NULL) 
-    else if (input$selectall3%%2 == 0)
-    {
-      updateCheckboxGroupInput(session,"ModelSelectionValue3","Forecasting Model(s): ",choices=c("IHME (University of Washington)"="IHME",
-                                                                                                 "IHME (Best Case)"="IHME-Best",
-                                                                                                 "IHME (Worse Case)"="IHME-Worse",
-                                                                                                 "Youyang Gu - Independent (YYG) Model"="YYG",
-                                                                                                 "Los Alamos National Labs (LANL)"="LANL"))
-    }
-    else
-    {
-      updateCheckboxGroupInput(session,"ModelSelectionValue3","Forecasting Model(s):",choices=c("IHME (University of Washington)"="IHME",
-                                                                                                "IHME (Best Case)"="IHME-Best",
-                                                                                                "IHME (Worse Case)"="IHME-Worse",
-                                                                                                "Youyang Gu - Independent (YYG) Model"="YYG",
-                                                                                                "Los Alamos National Labs (LANL)"="LANL"),                                                                                               
-                               
-                               selected=c("IHME (University of Washington)"="IHME",
-                                          "IHME (Best Case)"="IHME-Best",
-                                          "IHME (Worse Case)"="IHME-Worse",
-                                          "Youyang Gu - Independent (YYG) Model"="YYG",
-                                          "Los Alamos National Labs (LANL)"="LANL"))                                                                                    
-    }
-  })
+  # observe({
+  #   if(input$selectall2 == 0) return(NULL) 
+  #   else if (input$selectall2%%2 == 0)
+  #   {
+  #     updateCheckboxGroupInput(session,"ModelSelectionValue2","Forecasting Model(s): ",choices=c("IHME (Best Case)"="IHME-Best",
+  #                                                                                                "IHME (Worse Case)"="IHME-Worse",
+  #                                                                                                "DTRA 1 - Current Response"="DTRA1",
+  #                                                                                                "DTRA 2 - Improved Response"="DTRA2", 
+  #                                                                                                "DTRA 3 - Worst Case"="DTRA3",
+  #                                                                                                "Los Alamos National Labs (LANL)"="LANL",
+  #                                                                                                "Columbia University: One time 5% increase in social contact"="CUM2",
+  #                                                                                                "Columbia University: 5% weekly increase in social contact"="CUM3",
+  #                                                                                                "Columbia University: Current levels of social mixing remain unchanged"="CUM4"))                                                                                                                                                                                                
+  #   }
+  #   else
+  #   {
+  #     updateCheckboxGroupInput(session,"ModelSelectionValue2","Forecasting Model(s):",choices=c("IHME (Best Case)"="IHME-Best",
+  #                                                                                               "IHME (Worse Case)"="IHME-Worse",
+  #                                                                                               "DTRA 1 - Current Response"="DTRA1",
+  #                                                                                               "DTRA 2 - Improved Response"="DTRA2", 
+  #                                                                                               "DTRA 3 - Worst Case"="DTRA3",
+  #                                                                                               "Los Alamos National Labs (LANL)"="LANL",
+  #                                                                                               "Columbia University: One time 5% increase in social contact"="CUM2",
+  #                                                                                               "Columbia University: 5% weekly increase in social contact"="CUM3",
+  #                                                                                               "Columbia University: Current levels of social mixing remain unchanged"="CUM4"),                                                                                               
+  #                              
+  #                              selected=c("IHME (Best Case)"="IHME-Best",
+  #                                         "IHME (Worse Case)"="IHME-Worse",
+  #                                         "DTRA 1 - Current Response"="DTRA1",
+  #                                         "DTRA 2 - Improved Response"="DTRA2", 
+  #                                         "DTRA 3 - Worst Case"="DTRA3",
+  #                                         "Los Alamos National Labs (LANL)"="LANL",
+  #                                         "Columbia University: One time 5% increase in social contact"="CUM2",
+  #                                         "Columbia University: 5% weekly increase in social contact"="CUM3",
+  #                                         "Columbia University: Current levels of social mixing remain unchanged"="CUM4"))                                                                                    
+  #   }
+  # })  
+  
+  
+  # observe({
+  #   if(input$selectall3 == 0) return(NULL) 
+  #   else if (input$selectall3%%2 == 0)
+  #   {
+  #     updateCheckboxGroupInput(session,"ModelSelectionValue3","Forecasting Model(s): ",choices=c("IHME (University of Washington)"="IHME",
+  #                                                                                                "IHME (Best Case)"="IHME-Best",
+  #                                                                                                "IHME (Worse Case)"="IHME-Worse",
+  #                                                                                                "Youyang Gu - Independent (YYG) Model"="YYG",
+  #                                                                                                "Los Alamos National Labs (LANL)"="LANL"))
+  #   }
+  #   else
+  #   {
+  #     updateCheckboxGroupInput(session,"ModelSelectionValue3","Forecasting Model(s):",choices=c("IHME (University of Washington)"="IHME",
+  #                                                                                               "IHME (Best Case)"="IHME-Best",
+  #                                                                                               "IHME (Worse Case)"="IHME-Worse",
+  #                                                                                               "Youyang Gu - Independent (YYG) Model"="YYG",
+  #                                                                                               "Los Alamos National Labs (LANL)"="LANL"),                                                                                               
+  #                              
+  #                              selected=c("IHME (University of Washington)"="IHME",
+  #                                         "IHME (Best Case)"="IHME-Best",
+  #                                         "IHME (Worse Case)"="IHME-Worse",
+  #                                         "Youyang Gu - Independent (YYG) Model"="YYG",
+  #                                         "Los Alamos National Labs (LANL)"="LANL"))                                                                                    
+  #   }
+  # })
   
 
   
@@ -1058,49 +1058,49 @@ server <- function(input, output,session) {
   # })
   # observeEvent(input$OperationalInput,{updateSelectInput(session,"NAFInput",choices = NAFList())})  
   
-  WingList<- reactive({
-    if (input$NAFInput != "All"){
-      #Once add additional NAFS, change NAFList to input$NAFInput
-      AFWings<-dplyr::filter(AFNAFS,NAF %in% input$NAFInput)
-      WingList <- sort(unique(AFWings$Wing), decreasing = FALSE)
-      WingList <- c("All",WingList)
-    } else {  
-      AFWings<-dplyr::filter(AFNAFS,NAF %in% NAFList)
-      WingList <- sort(unique(AFWings$Wing), decreasing = FALSE)
-      WingList <- c("All",WingList)      
-    }
-  })
-  observeEvent(input$NAFInput,{updateSelectInput(session,"WingInput",choices = WingList())})  
+  # WingList<- reactive({
+  #   if (input$NAFInput != "All"){
+  #     #Once add additional NAFS, change NAFList to input$NAFInput
+  #     AFWings<-dplyr::filter(AFNAFS,NAF %in% input$NAFInput)
+  #     WingList <- sort(unique(AFWings$Wing), decreasing = FALSE)
+  #     WingList <- c("All",WingList)
+  #   } else {  
+  #     AFWings<-dplyr::filter(AFNAFS,NAF %in% NAFList)
+  #     WingList <- sort(unique(AFWings$Wing), decreasing = FALSE)
+  #     WingList <- c("All",WingList)      
+  #   }
+  # })
+  # observeEvent(input$NAFInput,{updateSelectInput(session,"WingInput",choices = WingList())})  
   
   
-  GroupList <- reactive({
-    if (input$NAFInput != "All"){
-      if (input$WingInput != "All") {
-        AFWings<-dplyr::filter(AFNAFS,NAF %in% input$NAFInput)        
-        GroupList<-dplyr::filter(AFWings,Wing %in% input$WingInput)
-        GroupList<-sort(unique(GroupList$`Group`), decreasing = FALSE)
-        GroupList<-c("All",GroupList)
-      }else {
-        AFWings<-dplyr::filter(AFNAFS,NAF %in% input$NAFInput) 
-        GroupList<-sort(unique(AFWings$`Group`), decreasing = FALSE)
-        GroupList<-c("All",GroupList)
-      }
-    } else {
-      if (input$WingInput != "All") {
-        AFWings<-dplyr::filter(AFNAFS,NAF %in% NAFList)        
-        GroupList<-dplyr::filter(AFWings,Wing %in% input$WingInput)
-        GroupList<-sort(unique(GroupList$`Group`), decreasing = FALSE)
-        GroupList<-c("All",GroupList)
-      }else {
-        AFWings<-dplyr::filter(AFNAFS,NAF %in% NAFList)  
-        GroupList<-sort(unique(AFWings$`Group`), decreasing = FALSE)
-        GroupList<-c("All",GroupList)
-      }        
-    }
-    
-  })
-  observeEvent(input$NAFInput,{updateSelectInput(session,"GroupInput",choices = GroupList())})      
-  observeEvent(input$WingInput,{updateSelectInput(session,"GroupInput",choices = GroupList())})          
+  # GroupList <- reactive({
+  #   if (input$NAFInput != "All"){
+  #     if (input$WingInput != "All") {
+  #       AFWings<-dplyr::filter(AFNAFS,NAF %in% input$NAFInput)        
+  #       GroupList<-dplyr::filter(AFWings,Wing %in% input$WingInput)
+  #       GroupList<-sort(unique(GroupList$`Group`), decreasing = FALSE)
+  #       GroupList<-c("All",GroupList)
+  #     }else {
+  #       AFWings<-dplyr::filter(AFNAFS,NAF %in% input$NAFInput) 
+  #       GroupList<-sort(unique(AFWings$`Group`), decreasing = FALSE)
+  #       GroupList<-c("All",GroupList)
+  #     }
+  #   } else {
+  #     if (input$WingInput != "All") {
+  #       AFWings<-dplyr::filter(AFNAFS,NAF %in% NAFList)        
+  #       GroupList<-dplyr::filter(AFWings,Wing %in% input$WingInput)
+  #       GroupList<-sort(unique(GroupList$`Group`), decreasing = FALSE)
+  #       GroupList<-c("All",GroupList)
+  #     }else {
+  #       AFWings<-dplyr::filter(AFNAFS,NAF %in% NAFList)  
+  #       GroupList<-sort(unique(AFWings$`Group`), decreasing = FALSE)
+  #       GroupList<-c("All",GroupList)
+  #     }        
+  #   }
+  #   
+  # })
+  # observeEvent(input$NAFInput,{updateSelectInput(session,"GroupInput",choices = GroupList())})      
+  # observeEvent(input$WingInput,{updateSelectInput(session,"GroupInput",choices = GroupList())})          
   
   
   
@@ -1343,193 +1343,193 @@ server <- function(input, output,session) {
   
   # })
   
-  output$downloadData <- downloadHandler(
-    filename = function() { 
-      if(input$SummaryStatistic == "Cases") {
-        PrintDT<-ForecastDataTableCases 
-        FName<-"Cases"
-      } else if (input$SummaryStatistic == "Hospitalizations") {
-        PrintDT<-ForecastDataTable
-        FName<-"Hospitalizations"
-      } 
-      paste("SummaryDataset-",FName,"-",Sys.Date(), ".csv", sep="")
-    },
-    content = function(file) {
-      write.csv(PrintDT, file)
-    })
+  # output$downloadData <- downloadHandler(
+  #   filename = function() { 
+  #     if(input$SummaryStatistic == "Cases") {
+  #       PrintDT<-ForecastDataTableCases 
+  #       FName<-"Cases"
+  #     } else if (input$SummaryStatistic == "Hospitalizations") {
+  #       PrintDT<-ForecastDataTable
+  #       FName<-"Hospitalizations"
+  #     } 
+  #     paste("SummaryDataset-",FName,"-",Sys.Date(), ".csv", sep="")
+  #   },
+  #   content = function(file) {
+  #     write.csv(PrintDT, file)
+  #   })
+  # 
+  # output$downloadFilteredData <- downloadHandler(
+  #   filename = function() { 
+  #     paste("FilteredSummaryDataset-", Sys.Date(), ".csv", sep="")
+  #   },
+  #   content = function(file) {
+  #     if (input$MAJCOMNAF == "MAJCOM") {
+  #       if (input$MAJCOMInput == "All") {
+  #         if(input$SummaryStatistic == "Cases") {
+  #           ForecastDataTableCases<-FilterDataTable(ForecastDataTableCases,input$SummaryModelType,input$SummaryForecast,input$SummaryStatistic)
+  #           FTPrint<-ForecastDataTableCases
+  #         } else {
+  #           ForecastDataTable<-FilterDataTable(ForecastDataTable,input$SummaryModelType,input$SummaryForecast,input$SummaryStatistic)
+  #           FTPrint<-ForecastDataTableCases
+  #         }
+  #       } else if(input$MAJCOMInput=="Active Duty"){
+  #         if(input$SummaryStatistic == "Cases") {
+  #           ForecastDataTableCases<-FilterDataTable(ForecastDataTableCases,input$SummaryModelType,input$SummaryForecast,input$SummaryStatistic)
+  #           FTPrint<-ForecastDataTableCases
+  #         } else {
+  #           ForecastDataTable<-FilterDataTable(ForecastDataTable,input$SummaryModelType,input$SummaryForecast,input$SummaryStatistic)
+  #           FTPrint<-ForecastDataTable
+  #         }
+  #       }
+  #       else {
+  #         if(input$SummaryStatistic == "Cases") {
+  #           ForecastDataTableCases<-FilterDataTable(ForecastDataTableCases,input$SummaryModelType,input$SummaryForecast,input$SummaryStatistic)
+  #           FTPrint<-ForecastDataTableCases
+  #         } else {
+  #           ForecastDataTable<-FilterDataTable(ForecastDataTable,input$SummaryModelType,input$SummaryForecast,input$SummaryStatistic)
+  #           FTPrint<-ForecastDataTable                    
+  #         }
+  #       }
+  #     } else if (input$MAJCOMNAF == "NAF") {
+  #       AFWings<-dplyr::filter(AFNAFS,NAF %in% NAFList)  # We do not allow for all NAFs to be selected, too many units                     
+  #       colset<-c(1,3,2,14,15,16,4,6,7,8,9,10)
+  #       
+  #       if (input$WingInput == "All") {     
+  #         #AFWings<-dplyr::filter(AFWings,Wing %in% WingList)
+  #         if (input$GroupInput == "All") {                
+  #           GroupList<-sort(unique(AFWings$`Group`), decreasing = FALSE)
+  #           forecastbaselist<-dplyr::filter(AFWings,Group %in% GroupList)                        
+  #           forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE) 
+  #           ForecastDataTableCases<-dplyr::filter(ForecastDataTableCases,Installation %in% forecastbaselist) 
+  #           ForecastDataTable<-dplyr::filter(ForecastDataTable,Installation %in% forecastbaselist) 
+  #           
+  #           if(input$SummaryStatistic == "Cases") {  #if all groups are selected
+  #             ForecastDataTableCases<-FilterDataTable(ForecastDataTableCases,input$SummaryModelType,input$SummaryForecast,input$SummaryStatistic)
+  #             ForecastDataTableCases<-merge(ForecastDataTableCases,AFNAFS, by.x = "Installation", by.y = "Base")
+  #             ForecastDataTableCases<-ForecastDataTableCases[, names(ForecastDataTableCases)[colset]]  
+  #             colnames(ForecastDataTableCases)[2]<-"State"
+  #             FTPrint<-ForecastDataTableCases                        
+  #           } else {                                 #if one group is selected
+  #             ForecastDataTable<-FilterDataTable(ForecastDataTable,input$SummaryModelType,input$SummaryForecast,input$SummaryStatistic)
+  #             ForecastDataTable<-merge(ForecastDataTable,AFNAFS, by.x = "Installation", by.y = "Base")
+  #             ForecastDataTable<-ForecastDataTable[, names(ForecastDataTable)[colset]]  
+  #             colnames(ForecastDataTable)[2]<-"State"
+  #             FTPrint<-ForecastDataTable                        
+  #           }
+  #         } else {                                    
+  #           forecastbaselist<-dplyr::filter(AFWings,Group %in% input$GroupInput)                        
+  #           forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE) 
+  #           ForecastDataTableCases<-dplyr::filter(ForecastDataTableCases,Installation %in% forecastbaselist) 
+  #           ForecastDataTable<-dplyr::filter(ForecastDataTable,Installation %in% forecastbaselist)                     
+  #           
+  #           if(input$SummaryStatistic == "Cases") {  #if all groups are selected
+  #             ForecastDataTableCases<-FilterDataTable(ForecastDataTableCases,input$SummaryModelType,input$SummaryForecast,input$SummaryStatistic)
+  #             ForecastDataTableCases<-merge(ForecastDataTableCases,AFNAFS, by.x = "Installation", by.y = "Base")
+  #             ForecastDataTableCases<-ForecastDataTableCases[, names(ForecastDataTableCases)[colset]]  
+  #             colnames(ForecastDataTableCases)[2]<-"State"
+  #             FTPrint<-ForecastDataTableCases                        
+  #           } else {                                 #if one group is selected
+  #             ForecastDataTable<-FilterDataTable(ForecastDataTable,input$SummaryModelType,input$SummaryForecast,input$SummaryStatistic)
+  #             ForecastDataTable<-merge(ForecastDataTable,AFNAFS, by.x = "Installation", by.y = "Base")
+  #             ForecastDataTable<-ForecastDataTable[, names(ForecastDataTableCases)[colset]]
+  #             colnames(ForecastDataTable)[2]<-"State"
+  #             FTPrint<-ForecastDataTable
+  #           }
+  #         }
+  #       } else {      #If one wing is selected
+  #         
+  #         AFWings<-dplyr::filter(AFWings,Wing %in% input$WingInput)            
+  #         
+  #         if (input$GroupInput == "All") {
+  #           GroupList<-sort(unique(AFWings$`Group`), decreasing = FALSE)
+  #           forecastbaselist<-dplyr::filter(AFWings,Group %in% GroupList)                        
+  #           forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE) 
+  #           ForecastDataTableCases<-dplyr::filter(ForecastDataTableCases,Installation %in% forecastbaselist) 
+  #           ForecastDataTable<-dplyr::filter(ForecastDataTable,Installation %in% forecastbaselist) 
+  #           
+  #           if(input$SummaryStatistic == "Cases") {  #if all groups are selected
+  #             ForecastDataTableCases<-FilterDataTable(ForecastDataTableCases,input$SummaryModelType,input$SummaryForecast,input$SummaryStatistic)
+  #             ForecastDataTableCases<-merge(ForecastDataTableCases,AFNAFS, by.x = "Installation", by.y = "Base")
+  #             ForecastDataTableCases<-ForecastDataTableCases[, names(ForecastDataTableCases)[colset]]  
+  #             colnames(ForecastDataTableCases)[2]<-"State"
+  #             FTPrint<-ForecastDataTableCases                        
+  #           } else {                                 #if one group is selected
+  #             ForecastDataTable<-FilterDataTable(ForecastDataTable,input$SummaryModelType,input$SummaryForecast,input$SummaryStatistic)
+  #             ForecastDataTable<-merge(ForecastDataTable,AFNAFS, by.x = "Installation", by.y = "Base")
+  #             ForecastDataTable<-ForecastDataTable[, names(ForecastDataTable)[colset]]  
+  #             colnames(ForecastDataTable)[2]<-"State"
+  #             FTPrint<-ForecastDataTable                        
+  #           }
+  #         } else {                                    
+  #           forecastbaselist<-dplyr::filter(AFWings,Group %in% input$GroupInput)                        
+  #           forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE) 
+  #           ForecastDataTableCases<-dplyr::filter(ForecastDataTableCases,Installation %in% forecastbaselist) 
+  #           ForecastDataTable<-dplyr::filter(ForecastDataTable,Installation %in% forecastbaselist)                     
+  #           
+  #           if(input$SummaryStatistic == "Cases") {  #if all groups are selected
+  #             ForecastDataTableCases<-FilterDataTable(ForecastDataTableCases,input$SummaryModelType,input$SummaryForecast,input$SummaryStatistic)
+  #             ForecastDataTableCases<-merge(ForecastDataTableCases,AFNAFS, by.x = "Installation", by.y = "Base")
+  #             ForecastDataTableCases<-ForecastDataTableCases[, names(ForecastDataTableCases)[colset]]  
+  #             colnames(ForecastDataTableCases)[2]<-"State"
+  #             FTPrint<-ForecastDataTableCases                        
+  #           } else {                                 #if one group is selected
+  #             ForecastDataTable<-FilterDataTable(ForecastDataTable,input$SummaryModelType,input$SummaryForecast,input$SummaryStatistic)
+  #             ForecastDataTable<-merge(ForecastDataTable,AFNAFS, by.x = "Installation", by.y = "Base")
+  #             ForecastDataTable<-ForecastDataTable[, names(ForecastDataTable)[colset]]  
+  #             colnames(ForecastDataTable)[2]<-"State"
+  #             FTPrint<-ForecastDataTable                        
+  #           }
+  #         }
+  #       }
+  #     }        
+  #     
+  #     
+  #     write.csv(FTPrint, file)
+  #   })
   
-  output$downloadFilteredData <- downloadHandler(
-    filename = function() { 
-      paste("FilteredSummaryDataset-", Sys.Date(), ".csv", sep="")
-    },
-    content = function(file) {
-      if (input$MAJCOMNAF == "MAJCOM") {
-        if (input$MAJCOMInput == "All") {
-          if(input$SummaryStatistic == "Cases") {
-            ForecastDataTableCases<-FilterDataTable(ForecastDataTableCases,input$SummaryModelType,input$SummaryForecast,input$SummaryStatistic)
-            FTPrint<-ForecastDataTableCases
-          } else {
-            ForecastDataTable<-FilterDataTable(ForecastDataTable,input$SummaryModelType,input$SummaryForecast,input$SummaryStatistic)
-            FTPrint<-ForecastDataTableCases
-          }
-        } else if(input$MAJCOMInput=="Active Duty"){
-          if(input$SummaryStatistic == "Cases") {
-            ForecastDataTableCases<-FilterDataTable(ForecastDataTableCases,input$SummaryModelType,input$SummaryForecast,input$SummaryStatistic)
-            FTPrint<-ForecastDataTableCases
-          } else {
-            ForecastDataTable<-FilterDataTable(ForecastDataTable,input$SummaryModelType,input$SummaryForecast,input$SummaryStatistic)
-            FTPrint<-ForecastDataTable
-          }
-        }
-        else {
-          if(input$SummaryStatistic == "Cases") {
-            ForecastDataTableCases<-FilterDataTable(ForecastDataTableCases,input$SummaryModelType,input$SummaryForecast,input$SummaryStatistic)
-            FTPrint<-ForecastDataTableCases
-          } else {
-            ForecastDataTable<-FilterDataTable(ForecastDataTable,input$SummaryModelType,input$SummaryForecast,input$SummaryStatistic)
-            FTPrint<-ForecastDataTable                    
-          }
-        }
-      } else if (input$MAJCOMNAF == "NAF") {
-        AFWings<-dplyr::filter(AFNAFS,NAF %in% NAFList)  # We do not allow for all NAFs to be selected, too many units                     
-        colset<-c(1,3,2,14,15,16,4,6,7,8,9,10)
-        
-        if (input$WingInput == "All") {     
-          #AFWings<-dplyr::filter(AFWings,Wing %in% WingList)
-          if (input$GroupInput == "All") {                
-            GroupList<-sort(unique(AFWings$`Group`), decreasing = FALSE)
-            forecastbaselist<-dplyr::filter(AFWings,Group %in% GroupList)                        
-            forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE) 
-            ForecastDataTableCases<-dplyr::filter(ForecastDataTableCases,Installation %in% forecastbaselist) 
-            ForecastDataTable<-dplyr::filter(ForecastDataTable,Installation %in% forecastbaselist) 
-            
-            if(input$SummaryStatistic == "Cases") {  #if all groups are selected
-              ForecastDataTableCases<-FilterDataTable(ForecastDataTableCases,input$SummaryModelType,input$SummaryForecast,input$SummaryStatistic)
-              ForecastDataTableCases<-merge(ForecastDataTableCases,AFNAFS, by.x = "Installation", by.y = "Base")
-              ForecastDataTableCases<-ForecastDataTableCases[, names(ForecastDataTableCases)[colset]]  
-              colnames(ForecastDataTableCases)[2]<-"State"
-              FTPrint<-ForecastDataTableCases                        
-            } else {                                 #if one group is selected
-              ForecastDataTable<-FilterDataTable(ForecastDataTable,input$SummaryModelType,input$SummaryForecast,input$SummaryStatistic)
-              ForecastDataTable<-merge(ForecastDataTable,AFNAFS, by.x = "Installation", by.y = "Base")
-              ForecastDataTable<-ForecastDataTable[, names(ForecastDataTable)[colset]]  
-              colnames(ForecastDataTable)[2]<-"State"
-              FTPrint<-ForecastDataTable                        
-            }
-          } else {                                    
-            forecastbaselist<-dplyr::filter(AFWings,Group %in% input$GroupInput)                        
-            forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE) 
-            ForecastDataTableCases<-dplyr::filter(ForecastDataTableCases,Installation %in% forecastbaselist) 
-            ForecastDataTable<-dplyr::filter(ForecastDataTable,Installation %in% forecastbaselist)                     
-            
-            if(input$SummaryStatistic == "Cases") {  #if all groups are selected
-              ForecastDataTableCases<-FilterDataTable(ForecastDataTableCases,input$SummaryModelType,input$SummaryForecast,input$SummaryStatistic)
-              ForecastDataTableCases<-merge(ForecastDataTableCases,AFNAFS, by.x = "Installation", by.y = "Base")
-              ForecastDataTableCases<-ForecastDataTableCases[, names(ForecastDataTableCases)[colset]]  
-              colnames(ForecastDataTableCases)[2]<-"State"
-              FTPrint<-ForecastDataTableCases                        
-            } else {                                 #if one group is selected
-              ForecastDataTable<-FilterDataTable(ForecastDataTable,input$SummaryModelType,input$SummaryForecast,input$SummaryStatistic)
-              ForecastDataTable<-merge(ForecastDataTable,AFNAFS, by.x = "Installation", by.y = "Base")
-              ForecastDataTable<-ForecastDataTable[, names(ForecastDataTableCases)[colset]]
-              colnames(ForecastDataTable)[2]<-"State"
-              FTPrint<-ForecastDataTable
-            }
-          }
-        } else {      #If one wing is selected
-          
-          AFWings<-dplyr::filter(AFWings,Wing %in% input$WingInput)            
-          
-          if (input$GroupInput == "All") {
-            GroupList<-sort(unique(AFWings$`Group`), decreasing = FALSE)
-            forecastbaselist<-dplyr::filter(AFWings,Group %in% GroupList)                        
-            forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE) 
-            ForecastDataTableCases<-dplyr::filter(ForecastDataTableCases,Installation %in% forecastbaselist) 
-            ForecastDataTable<-dplyr::filter(ForecastDataTable,Installation %in% forecastbaselist) 
-            
-            if(input$SummaryStatistic == "Cases") {  #if all groups are selected
-              ForecastDataTableCases<-FilterDataTable(ForecastDataTableCases,input$SummaryModelType,input$SummaryForecast,input$SummaryStatistic)
-              ForecastDataTableCases<-merge(ForecastDataTableCases,AFNAFS, by.x = "Installation", by.y = "Base")
-              ForecastDataTableCases<-ForecastDataTableCases[, names(ForecastDataTableCases)[colset]]  
-              colnames(ForecastDataTableCases)[2]<-"State"
-              FTPrint<-ForecastDataTableCases                        
-            } else {                                 #if one group is selected
-              ForecastDataTable<-FilterDataTable(ForecastDataTable,input$SummaryModelType,input$SummaryForecast,input$SummaryStatistic)
-              ForecastDataTable<-merge(ForecastDataTable,AFNAFS, by.x = "Installation", by.y = "Base")
-              ForecastDataTable<-ForecastDataTable[, names(ForecastDataTable)[colset]]  
-              colnames(ForecastDataTable)[2]<-"State"
-              FTPrint<-ForecastDataTable                        
-            }
-          } else {                                    
-            forecastbaselist<-dplyr::filter(AFWings,Group %in% input$GroupInput)                        
-            forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE) 
-            ForecastDataTableCases<-dplyr::filter(ForecastDataTableCases,Installation %in% forecastbaselist) 
-            ForecastDataTable<-dplyr::filter(ForecastDataTable,Installation %in% forecastbaselist)                     
-            
-            if(input$SummaryStatistic == "Cases") {  #if all groups are selected
-              ForecastDataTableCases<-FilterDataTable(ForecastDataTableCases,input$SummaryModelType,input$SummaryForecast,input$SummaryStatistic)
-              ForecastDataTableCases<-merge(ForecastDataTableCases,AFNAFS, by.x = "Installation", by.y = "Base")
-              ForecastDataTableCases<-ForecastDataTableCases[, names(ForecastDataTableCases)[colset]]  
-              colnames(ForecastDataTableCases)[2]<-"State"
-              FTPrint<-ForecastDataTableCases                        
-            } else {                                 #if one group is selected
-              ForecastDataTable<-FilterDataTable(ForecastDataTable,input$SummaryModelType,input$SummaryForecast,input$SummaryStatistic)
-              ForecastDataTable<-merge(ForecastDataTable,AFNAFS, by.x = "Installation", by.y = "Base")
-              ForecastDataTable<-ForecastDataTable[, names(ForecastDataTable)[colset]]  
-              colnames(ForecastDataTable)[2]<-"State"
-              FTPrint<-ForecastDataTable                        
-            }
-          }
-        }
-      }        
-      
-      
-      write.csv(FTPrint, file)
-    })
-  
-  output$HotSpotData <- downloadHandler(
-    filename = function() { 
-      paste("HotspotDataset-", Sys.Date(), ".csv", sep="")
-    },
-    content = function(file) {
-      write.csv(Top15Report, file)
-      
-    })    
-  
-  output$HotSpotDataOneMile <- downloadHandler(
-    filename = function() { 
-      paste("HotspotDatasetOneMile-", Sys.Date(), ".csv", sep="")
-    },
-    content = function(file) {
-      write.csv(Top15ReportOneMile, file)
-      
-    })  
-  
-  output$MTFSummaryT <- downloadHandler(
-    filename = function() { 
-      paste("MTFSummary-", Sys.Date(), ".csv", sep="")
-    },
-    content = function(file) {
-
-      forecastbaselist<-dplyr::filter(AFBaseLocations,Branch %in% input$Branch)                        
-      forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE) 
-
-      FilteredDT1<-dplyr::filter(MTFSummaryReport,Installation %in% forecastbaselist)                        
-
-      if(input$OperationalInput != "All") {
-        forecastbaselist<-dplyr::filter(AFBaseLocations,Operational %in% input$OperationalInput)                        
-        forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE)         
-        FilteredDT1<-dplyr::filter(FilteredDT1,Installation %in% forecastbaselist)
-      }      
-      
-      if (input$MAJCOMInput == "All") {
-        FTPrint<-FilteredDT1
-      } else {
-        FTPrint<-dplyr::filter(FilteredDT1,MAJCOM %in% input$MAJCOMInput)                        
-      }
-      
-      write.csv(FTPrint, file)
-    })    
+  # output$HotSpotData <- downloadHandler(
+  #   filename = function() { 
+  #     paste("HotspotDataset-", Sys.Date(), ".csv", sep="")
+  #   },
+  #   content = function(file) {
+  #     write.csv(Top15Report, file)
+  #     
+  #   })    
+  # 
+  # output$HotSpotDataOneMile <- downloadHandler(
+  #   filename = function() { 
+  #     paste("HotspotDatasetOneMile-", Sys.Date(), ".csv", sep="")
+  #   },
+  #   content = function(file) {
+  #     write.csv(Top15ReportOneMile, file)
+  #     
+  #   })  
+  # 
+  # output$MTFSummaryT <- downloadHandler(
+  #   filename = function() { 
+  #     paste("MTFSummary-", Sys.Date(), ".csv", sep="")
+  #   },
+  #   content = function(file) {
+  # 
+  #     forecastbaselist<-dplyr::filter(AFBaseLocations,Branch %in% input$Branch)                        
+  #     forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE) 
+  # 
+  #     FilteredDT1<-dplyr::filter(MTFSummaryReport,Installation %in% forecastbaselist)                        
+  # 
+  #     if(input$OperationalInput != "All") {
+  #       forecastbaselist<-dplyr::filter(AFBaseLocations,Operational %in% input$OperationalInput)                        
+  #       forecastbaselist<-sort(unique(forecastbaselist$Base), decreasing = FALSE)         
+  #       FilteredDT1<-dplyr::filter(FilteredDT1,Installation %in% forecastbaselist)
+  #     }      
+  #     
+  #     if (input$MAJCOMInput == "All") {
+  #       FTPrint<-FilteredDT1
+  #     } else {
+  #       FTPrint<-dplyr::filter(FilteredDT1,MAJCOM %in% input$MAJCOMInput)                        
+  #     }
+  #     
+  #     write.csv(FTPrint, file)
+  #   })    
   
   # output$MTFSummaryT <- downloadHandler(
   #   if (input$Branch == "Air Force"){
@@ -1778,6 +1778,9 @@ server <- function(input, output,session) {
         UpdateLink)
     )
   })
+
+  
+  
   # 
   # observeEvent(input$overviewInfo, {
   #   showModal(
@@ -1819,6 +1822,23 @@ server <- function(input, output,session) {
   # })
   
   
+  # start_message <- modalDialog(
+  #   title = "yo",
+  #   easyClose = TRUE,
+  #   "dfsdfsfsfssf",
+  #   footer = tagList(
+  #     actionButton("close_msg", "Close")
+  #   )
+  # )
+  # 
+  # 
+  # showModal(start_message)
+  # 
+  # 
+  # observeEvent(input$close_msg, {
+  #   removeModal()
+  # })
+
   observeEvent(input$rskLvls, {
     showModal(
       modalDialog(

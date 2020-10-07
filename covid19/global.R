@@ -10,7 +10,6 @@
 # rm(list=ls())
 # closeAllConnections()
 
-
 # Step 1: load R packages containing functions used throughout the app
 pkg_files <- list.files("www/1_load_pkgs", 
                         pattern = "\\.R$",
@@ -52,3 +51,4 @@ ProjLink <- includeMarkdown("www/6_load_info_docs/ProjInfo.md")
 UpdateLink <- includeMarkdown("www/6_load_info_docs/UpdateInfo.md")
 
 closeAllConnections()
+

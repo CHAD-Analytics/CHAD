@@ -1,10 +1,10 @@
-NAFList <- sort(unique(AFNAFS$NAF), decreasing = FALSE)
-NAFList <- c(NAFList) 
-NAFID <- sort(unique(AFNAFS$ID), decreasing = FALSE)
-NAFID <- c(NAFID) 
-AFWings<-dplyr::filter(AFNAFS,NAF %in% NAFList)
-WingList <- sort(unique(AFWings$Wing), decreasing = FALSE)
-WingList <- c("All",WingList)
+# NAFList <- sort(unique(AFNAFS$NAF), decreasing = FALSE)
+# NAFList <- c(NAFList) 
+# NAFID <- sort(unique(AFNAFS$ID), decreasing = FALSE)
+# NAFID <- c(NAFID) 
+# AFWings<-dplyr::filter(AFNAFS,NAF %in% NAFList)
+# WingList <- sort(unique(AFWings$Wing), decreasing = FALSE)
+# WingList <- c("All",WingList)
 
 #Create list of hospitals, bases, and counties.
 BaseList <- sort(AFBaseLocations$Base, decreasing = FALSE)
@@ -20,7 +20,7 @@ MAJCOMList<-c("All",MAJCOMList)
 OperationalList <- sort(unique(AFBases$Operational), decreasing = FALSE)
 OperationalListP <- sort(unique(AFBases$Operational), decreasing = FALSE)
 # Is this used anywhere?
-currCount = 0
+# currCount = 0
 
 
 ##########################################################################################################
