@@ -37,7 +37,8 @@ colnames(CovidConfirmedCases) = c(colnames(CovidConfirmedCases[1:4]),
 
 #Split cases and deaths into separate data frames. Then convert from long to wide, then order it by country.
 #We need to remove first entry of any duplicate, this way we do not double count any countries that are split by region as well.
-GlobalCases<- GlobalData[,-c(5,6,7)]
+GlobalCases<- GlobalData[,-c(5,6,7)] %>%
+  dplyr::select(-Deaths)
 GlobalCases = GlobalCases[!duplicated(GlobalCases[c(1,2,3)]),]
 GlobalCases <- spread(GlobalCases, Date, Confirmed)
 GlobalCases<-GlobalCases %>% arrange(GlobalCases$CountryName)
