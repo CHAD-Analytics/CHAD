@@ -1822,22 +1822,22 @@ server <- function(input, output,session) {
   # })
   
   
-  # start_message <- modalDialog(
-  #   title = "yo",
-  #   easyClose = TRUE,
-  #   "dfsdfsfsfssf",
-  #   footer = tagList(
-  #     actionButton("close_msg", "Close")
-  #   )
-  # )
-  # 
-  # 
-  # showModal(start_message)
-  # 
-  # 
-  # observeEvent(input$close_msg, {
-  #   removeModal()
-  # })
+  start_message <- modalDialog(
+    title = "IMPORTANT UPDATE",
+    easyClose = TRUE,
+    includeMarkdown("www/6_load_info_docs/popup.md"),
+    footer = tagList(
+      actionButton("close_msg", "Close")
+    )
+  )
+
+
+  showModal(start_message)
+
+
+  observeEvent(input$close_msg, {
+    removeModal()
+  })
 
   observeEvent(input$rskLvls, {
     showModal(
