@@ -35,15 +35,14 @@ the *Projections* info panel (for the Projections tabs)
 When using the model projections, it is important to keep in mind that these are based on models with multiple parameters and **subject to considerable uncertainty**.  Additionally, reasonable parameter values will vary locally and over time subject to changes in mitigation behavior (e.g. social distancing) and other factors.  Read more in the *Projections* info panel and reach out to the designated A9 representative for your MAJCOM for additional support and assistance.
 
 ### Other Agency Resources
-Additional installation-specific information such as current HPCON status, travel guidance metrics, HPCON decision support, and operational risk considerations can be accessed on the CHAD FOUO site.
+Utilize AFRL's EXAIL dashboard for all CHAD information and installation-specific information such as current HPCON status, travel guidance metrics, and HPCON decision support.
 
-https://cprobe.army.mil/rsc/covid/
+**Public**: https://afrlcovid.kbrawsdl.com/
 
-**FOUO CHAD site requires CAC authentication**
+**FOUO**: https://afrlcovidgov.kbrawsdl.com/
 
-Air Mobility Command (AMC) has also developed a tool to provide insights on the spread of COVID-19. The SEIR model developed by AMC/A9 presents the expected epidemiology impact to local personnel based on parameters derived from available data. This model allows users to compare COAs and preventative policies to view corresponding effects on air and support crews. This can be adapted to organizations outside of flying wings with the aid of MAJCOM analysts.
+**FOUO site requires CAC authentication**
 
-The link to the AMC tool is located here: https://eim2.amc.af.mil/org/amcds/CBS/_layouts/15/start.aspx#/A9%20Models/Forms/Thumbnails.aspx
 
 ### Supporting Agencies
 Various agencies were involved to launch CHAD. The design and development of CHAD was sponsored by the Air Force Institute of Technology (AFIT), who was critical in ensuring appropriate contacts and collaborations were successful. Additional collaboration was conducted with Army Futures Command in developing model projections.
