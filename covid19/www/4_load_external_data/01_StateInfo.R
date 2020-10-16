@@ -53,7 +53,7 @@
   extensions <- as.data.frame(extensions)
   
   #Make into data frame and pull the 17th row from the bottom which should consistently be our most recent file
-  Most_Recent_Extension <- as.data.frame(extensions[(nrow(extensions)-21), ])
+  Most_Recent_Extension <- as.data.frame(extensions[(nrow(extensions)-20), ])
   
   #We could attempt to follow extensions and go to the next two pages down the line and pull the raw file
   #However its probably easier to just update the "raw" link with the most recently populated date from the available extensions
@@ -61,7 +61,7 @@
   
   #Convert to character to enable use of left/right functions
   #This is a weird column name could rename if desired
-  Most_Recent_Extension$'extensions[(nrow(extensions) - 21), ]' <- as.character(Most_Recent_Extension$'extensions[(nrow(extensions) - 21), ]')
+  Most_Recent_Extension$'extensions[(nrow(extensions) - 20), ]' <- as.character(Most_Recent_Extension$'extensions[(nrow(extensions) - 20), ]')
   
   #Capture date from most recent file in folder
   righttext <-  substr(Most_Recent_Extension[1,], nchar(Most_Recent_Extension[1,]) - (14-1), nchar(Most_Recent_Extension[1,]))   
