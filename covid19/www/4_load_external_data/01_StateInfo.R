@@ -73,8 +73,8 @@
   Most_Recent_Link2 <- paste0("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports_us/",lefttext,".csv")
   
   #Read in the most recent data
-  CovidActiveCases1 <- read.csv(Most_Recent_Link1)
-  CovidActiveCases2 <- read.csv(Most_Recent_Link2)
+  try(CovidActiveCases1 <- read.csv(Most_Recent_Link1))
+  try(CovidActiveCases2 <- read.csv(Most_Recent_Link2))
   CovidActiveCases1$Last_Update <- strptime(as.character(CovidActiveCases1$Last_Update), "%Y-%m-%d")
   CovidActiveCases2$Last_Update <- strptime(as.character(CovidActiveCases2$Last_Update), "%Y-%m-%d")
   CovidActiveCases1 <- merge(CovidActiveCases1,StateList,by.x = names(CovidActiveCases1)[3],by.y = names(StateList)[1])

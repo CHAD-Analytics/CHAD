@@ -23,18 +23,18 @@
   #                       skip = F,
   #                       overwrite = T)
 
-  GlobalData = as.data.frame(data.table::fread("https://open-covid-19.github.io/data/data.csv"))
-  GlobalData1 = as.data.frame(data.table::fread("https://open-covid-19.github.io/data/v2/epidemiology.csv"))
-  GlobalData2 = as.data.frame(data.table::fread("https://open-covid-19.github.io/data/v2/hospitalizations.csv")) 
-  
-  GlobalActive = GlobalData %>% full_join(GlobalData1,by=c("Key" = "key","Date"="date"))
-  GlobalActive = GlobalActive %>% full_join(GlobalData2,by=c("Key" = "key","Date"="date"))  
-  
-  GlobalActive = inner_join(GlobalActive,CountyInfo, by = "Key")
+  # GlobalData = as.data.frame(data.table::fread("https://storage.googleapis.com/covid19-open-data/v2/data/data.csv"))
+  GlobalData = as.data.frame(data.table::fread("https://storage.googleapis.com/covid19-open-data/v2/epidemiology.csv"))
+  GlobalData2 = as.data.frame(data.table::fread("https://storage.googleapis.com/covid19-open-data/v2/hospitalizations.csv")) 
+
+  # GlobalActive = GlobalData %>% full_join(GlobalData1,by=c("Key" = "key","Date"="date"))
+  # GlobalActive = GlobalActive %>% full_join(GlobalData2,by=c("Key" = "key","Date"="date"))  
+  # 
+  # GlobalActive = inner_join(GlobalActive,CountyInfo, by = "Key")
   #colset<-c(Latitude.x,Longitude.x,Population.x,Latitude.y,Longitude.y,Population.y,Sort,'County Seat',DistanceMiles)
   #colset <- c(9,10,11,29,33,34,35,36,37)
-  colset <- c(1,2,3,4,5,6,7,8,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,30,31,32,38,39)
-  GlobalActive<-GlobalActive[, names(GlobalActive)[colset]] 
+  # colset <- c(1,2,3,4,5,6,7,8,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,30,31,32,38,39)
+  # GlobalActive<-GlobalActive[, names(GlobalActive)[colset]] 
 
  
   

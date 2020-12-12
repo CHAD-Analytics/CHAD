@@ -975,6 +975,23 @@ BaseSummaryList <- setNames(data.frame(matrix(ncol = 20, nrow = 0)),
                               "Population","Cases Per Capita","Total Weekly Case Change","Weekly Case Change",
                               "Total Cases", "New Weekly Cases", "New Weekly Cases (per capita)", "Deaths Per Capita", "Total Deaths", "New Weekly Deaths", "Risk", "Trending"))
 
+# BaseSummaryList = AFBaseLocations %>%
+#   dplyr::select(ID, Base, Branch, Operational, MAJCOM = `Major Command`, lat = Lat, long = Long) %>%
+#   mutate(Region = "",
+#          Population = 0,
+#          `Cases Per Capita` = 0,
+#          `Total Weekly Case Change` = 0,
+#          `Weekly Case Change` = 0,
+#          `Total Cases` = 0,
+#          `New Weekly Cases` = 0,
+#          `New Weekly Cases (per capita)` = 0,
+#          `Deaths Per Capita` = 0,
+#          `Total Deaths` = 0,
+#          `New Weekly Deaths` = 0,
+#          Risk = "",
+#          Trending = "")
+
+
 for (i in 1:nrow(AFBaseLocations)){
   
   # Find counties in radius
@@ -1034,7 +1051,7 @@ for (i in 1:nrow(AFBaseLocations)){
   }
   
   # Append to list
-  ListTemp = cbind(baseDF[1:5],baseDF$`State Name`,baseDF$Lat,baseDF$Long,PopReg,CasesPerCap,WeeklyTotChange,WeeklyChange,CummCases,weeklyCases,weeklyCaseCapita,DeathsPerCap,CummDeaths,weeklyDeaths,risk,trend)
+  ListTemp = cbind(baseDF[1:5], baseDF$`State Name`, baseDF$Lat,baseDF$Long,PopReg,CasesPerCap,WeeklyTotChange,WeeklyChange,CummCases,weeklyCases,weeklyCaseCapita,DeathsPerCap,CummDeaths,weeklyDeaths,risk,trend)
   colnames(ListTemp) = colnames(BaseSummaryList)
   BaseSummaryList = rbind(BaseSummaryList, ListTemp, make.row.names = FALSE, stringsAsFactors = FALSE)
   

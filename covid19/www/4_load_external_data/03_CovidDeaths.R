@@ -32,15 +32,14 @@ colnames(CovidDeaths) = c(colnames(CovidDeaths[1:4]),
 
 # #Split cases and deaths into separate data frames. Then convert from long to wide, then order it by country.
 # #We need to remove first entry of any duplicate, this way we do not double count any countries that are split by region as well.
-GlobalDeaths<- GlobalData[,-c(5,6,7)] %>%
-  dplyr::select(-Confirmed)
-GlobalDeaths = GlobalDeaths[!duplicated(GlobalDeaths[c(1,2,3)]),]
-GlobalDeaths <- spread(GlobalDeaths, Date, Deaths)
-GlobalDeaths<-GlobalDeaths%>% arrange(GlobalDeaths$CountryName)
+GlobalDeaths<-GlobalData[,c(1,2,8)]
+GlobalDeaths = GlobalDeaths[!duplicated(GlobalDeaths[c(1,2)]),]
+GlobalDeaths <- spread(GlobalDeaths, date, total_deceased) %>% 
+  arrange(key)
 #GlobalDeaths<-GlobalDeaths %>% group_by(CountryName) %>% filter(duplicated(CountryName) | n()==1)
-GlobalDeaths<- filter(GlobalDeaths, !(CountryName %in% "United States of America"))
+# GlobalDeaths<- filter(GlobalDeaths, !(CountryName %in% "United States of America"))
 
-GlobalDeaths = inner_join(GlobalDeaths,CountyInfo, by = "Key")
+GlobalDeaths = inner_join(CountyInfo, GlobalDeaths, by = c("Key" = "key"))
 
 GlobalInfo = data.frame(GlobalDeaths$FIPS,GlobalDeaths$County,GlobalDeaths$State,GlobalDeaths$Key)
 GlobalDeaths = cbind(GlobalInfo,GlobalDeaths[,33:(ncol(GlobalDeaths)-ncol(CountyInfo)+1)])

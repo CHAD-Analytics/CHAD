@@ -1316,7 +1316,9 @@ server <- function(input, output,session) {
     
     dt = dplyr::filter(dt, Risk != "")
     plot_data = dt %>% distinct(Base, .keep_all = TRUE)
-    plot_data = dplyr::select(plot_data, Base, lat, long, Risk)
+    plot_data = dplyr::select(plot_data, Base, lat, long, Risk) %>%
+      mutate(lat = as.numeric(lat),
+             long = as.numeric(long))
     
     labs = lapply(seq(nrow(plot_data)), 
                   function(i) {
@@ -1822,22 +1824,22 @@ server <- function(input, output,session) {
   # })
   
   
-  start_message <- modalDialog(
-    title = "IMPORTANT UPDATE",
-    easyClose = TRUE,
-    includeMarkdown("www/6_load_info_docs/popup.md"),
-    footer = tagList(
-      actionButton("close_msg", "Close")
-    )
-  )
+  # start_message <- modalDialog(
+  #   title = "IMPORTANT UPDATE",
+  #   easyClose = TRUE,
+  #   includeMarkdown("www/6_load_info_docs/popup.md"),
+  #   footer = tagList(
+  #     actionButton("close_msg", "Close")
+  #   )
+  # )
 
 
-  showModal(start_message)
-
-
-  observeEvent(input$close_msg, {
-    removeModal()
-  })
+  # showModal(start_message)
+  # 
+  # 
+  # observeEvent(input$close_msg, {
+  #   removeModal()
+  # })
 
   observeEvent(input$rskLvls, {
     showModal(
